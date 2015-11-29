@@ -1,0 +1,20 @@
+repositories {
+    maven { 
+        url config.binaryRepository.releaseUrl 
+    }
+}
+
+configurations {
+    sistcoop
+}
+
+dependencies {
+    sistcoop group: project.group, name: project.name, version: project.version.toString(), ext: 'war'
+}
+
+ext.downloadDir = file("$buildDir/download/artifacts")
+
+task fetchSistcoopWar(type: Copy) {
+    from configurations.sistcoop
+    into downloadDir
+}

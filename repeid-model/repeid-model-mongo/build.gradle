@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":$projectName-model:$projectName-model-api")
+}
+	

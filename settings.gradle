@@ -1,0 +1,12 @@
+rootProject.name = projectName
+
+include "$projectName-web"
+include "$projectName-core"
+include "$projectName-core-jaxrs"
+include "$projectName-services"
+include "$projectName-model:$projectName-model-api"
+include "$projectName-model:$projectName-model-jpa"
+include "$projectName-model:$projectName-model-mongo"
+include "$projectName-integration:$projectName-client"
+include "$projectName-testsuite:$projectName-testsuite-model"
+include "$projectName-testsuite:$projectName-testsuite-client"
