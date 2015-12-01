@@ -42,4 +42,10 @@ public class PersonaNaturalManager {
         return null;
     }
 
+    public void setFoto(PersonaNaturalModel personaNatural, StoredFileProvider storedFileProvider,
+            byte[] bytes) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

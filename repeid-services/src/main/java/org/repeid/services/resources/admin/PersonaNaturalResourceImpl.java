@@ -74,13 +74,34 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
 
     @Override
     public void getFirma() {
-        // TODO Auto-generated method stub
-
+        PersonaNaturalModel personaNatural = getPersonaNaturalModel();
+        StoredFileModel storedFileModel = personaNatural.getFirma();
+        storedFileModel.get
+        StorageConfigurationModel config = storageConfigurationProvider.getDefaultStoreConfiguration();
+        StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
+        personaNaturalManager.setFoto(personaNatural, storedFileProvider, bytes);
     }
 
     @Override
     public void setFoto(MultipartFormDataInput input) {
+        PersonaNaturalModel personaNatural = getPersonaNaturalModel();
 
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+        List<InputPart> inputParts = uploadForm.get("file");
+        for (InputPart inputPart : inputParts) {
+            try {
+                // convert the uploaded file to inputstream
+                InputStream inputStream = inputPart.getBody(InputStream.class, null);
+                byte[] bytes = IOUtils.toByteArray(inputStream);
+
+                StorageConfigurationModel config = storageConfigurationProvider
+                        .getDefaultStoreConfiguration();
+                StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
+                personaNaturalManager.setFoto(personaNatural, storedFileProvider, bytes);
+            } catch (IOException e) {
+                throw new InternalServerErrorException();
+            }
+        }
     }
 
     @Override
@@ -98,8 +119,7 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
                 StorageConfigurationModel config = storageConfigurationProvider
                         .getDefaultStoreConfiguration();
                 StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
-                StoredFileModel storedFileModel = personaNaturalManager.setFirma(personaNatural,
-                        storedFileProvider, bytes);
+                personaNaturalManager.setFirma(personaNatural, storedFileProvider, bytes);
             } catch (IOException e) {
                 throw new InternalServerErrorException();
             }

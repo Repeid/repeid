@@ -23,13 +23,13 @@ import org.hibernate.validator.constraints.NotBlank;
 public abstract class PersonaEntity implements Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TIPO_DOCUMENTO_ID", foreignKey = @ForeignKey)
+    @JoinColumn(name = "TIPO_DOCUMENTO_ID", foreignKey = @ForeignKey )
     protected TipoDocumentoEntity tipoDocumento;
 
     @NotNull

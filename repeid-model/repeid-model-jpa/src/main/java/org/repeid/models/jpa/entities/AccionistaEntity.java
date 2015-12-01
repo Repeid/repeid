@@ -2,7 +2,6 @@ package org.repeid.models.jpa.entities;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,14 +21,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.envers.Audited;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Audited
-@Cacheable
 @Entity
 @Table(name = "ACCIONISTA")
 @NamedQueries(value = {
@@ -49,13 +45,13 @@ public class AccionistaEntity implements java.io.Serializable {
     @NotNull
     @NaturalId
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERSONA_NATURAL_ID", foreignKey = @ForeignKey)
+    @JoinColumn(name = "PERSONA_NATURAL_ID", foreignKey = @ForeignKey )
     private PersonaNaturalEntity personaNatural;
 
     @NotNull
     @NaturalId
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERSONA_JURIDICA_ID", foreignKey = @ForeignKey)
+    @JoinColumn(name = "PERSONA_JURIDICA_ID", foreignKey = @ForeignKey )
     private PersonaJuridicaEntity personaJuridica;
 
     @NotNull
@@ -122,8 +118,7 @@ public class AccionistaEntity implements java.io.Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((personaJuridica == null) ? 0 : personaJuridica.hashCode());
-        result = prime * result + ((personaNatural == null) ? 0 : personaNatural.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -133,19 +128,15 @@ public class AccionistaEntity implements java.io.Serializable {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof AccionistaEntity))
+        if (getClass() != obj.getClass())
             return false;
         AccionistaEntity other = (AccionistaEntity) obj;
-        if (personaJuridica == null) {
-            if (other.personaJuridica != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!personaJuridica.equals(other.personaJuridica))
-            return false;
-        if (personaNatural == null) {
-            if (other.personaNatural != null)
-                return false;
-        } else if (!personaNatural.equals(other.personaNatural))
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }
+
 }

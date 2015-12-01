@@ -4,19 +4,22 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.Audited;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Audited
 @Entity
 @Table(name = "STORED_FILE")
 public class StoredFileEntity implements Serializable {
@@ -36,9 +39,10 @@ public class StoredFileEntity implements Serializable {
     @Column(name = "FILE_ID")
     private String fileId;
 
-    @Size(min = 0, max = 100)
-    @Column(name = "PROVIDER") // GoogleDrive, Dropbox, localhost
-    private String provider;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STORE_CONFIGURATION_ID", foreignKey = @ForeignKey )
+    private StoreConfigurationEntity storeConfiguration;
 
     @Size(min = 0)
     @Column(name = "URL")
@@ -60,20 +64,20 @@ public class StoredFileEntity implements Serializable {
         this.fileId = fileId;
     }
 
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public StoreConfigurationEntity getStoreConfiguration() {
+        return storeConfiguration;
+    }
+
+    public void setStoreConfiguration(StoreConfigurationEntity storeConfiguration) {
+        this.storeConfiguration = storeConfiguration;
     }
 
     @Override
