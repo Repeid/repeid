@@ -7,83 +7,79 @@ import org.repeid.models.enums.Sexo;
 
 public interface PersonaNaturalModel extends Model {
 
-	String APELLIDO_PATERNO = "apellidoPaterno";
-	String APELLIDO_MATERNO = "apellidoMaterno";
-	String NOMBRES = "nombres";
-	String NUMERO_DOCUMENTO = "numeroDocumento";
+    String APELLIDO_PATERNO = "apellidoPaterno";
+    String APELLIDO_MATERNO = "apellidoMaterno";
+    String NOMBRES = "nombres";
+    String NUMERO_DOCUMENTO = "numeroDocumento";
 
-	String getId();
+    String getId();
 
-	String getCodigoPais();
+    String getCodigoPais();
 
-	void setCodigoPais(String codigoPais);
+    void setCodigoPais(String codigoPais);
 
-	TipoDocumentoModel getTipoDocumento();
+    TipoDocumentoModel getTipoDocumento();
 
-	String getNumeroDocumento();
+    String getNumeroDocumento();
 
-	String getApellidoPaterno();
+    String getApellidoPaterno();
 
-	void setApellidoPaterno(String apellidoPaterno);
+    void setApellidoPaterno(String apellidoPaterno);
 
-	String getApellidoMaterno();
+    String getApellidoMaterno();
 
-	void setApellidoMaterno(String apellidoMaterno);
+    void setApellidoMaterno(String apellidoMaterno);
 
-	String getNombres();
+    String getNombres();
 
-	void setNombres(String nombres);
+    void setNombres(String nombres);
 
-	Date getFechaNacimiento();
+    Date getFechaNacimiento();
 
-	void setFechaNacimiento(Date fechaNacimiento);
+    void setFechaNacimiento(Date fechaNacimiento);
 
-	Sexo getSexo();
+    Sexo getSexo();
 
-	void setSexo(Sexo sexo);
+    void setSexo(Sexo sexo);
 
-	EstadoCivil getEstadoCivil();
+    EstadoCivil getEstadoCivil();
 
-	void setEstadoCivil(EstadoCivil estadoCivil);
+    void setEstadoCivil(EstadoCivil estadoCivil);
 
-	String getOcupacion();
+    String getOcupacion();
 
-	void setOcupacion(String ocupacion);
+    void setOcupacion(String ocupacion);
 
-	String getUrlFoto();
+    String getUbigeo();
 
-	void setUrlFoto(String urlFoto);
+    void setUbigeo(String ubigeo);
 
-	String getUrlFirma();
+    String getDireccion();
 
-	void setUrlFirma(String urlFirma);
+    void setDireccion(String direccion);
 
-	String getUbigeo();
+    String getReferencia();
 
-	void setUbigeo(String ubigeo);
+    void setReferencia(String referencia);
 
-	String getDireccion();
+    String getTelefono();
 
-	void setDireccion(String direccion);
+    void setTelefono(String telefono);
 
-	String getReferencia();
+    String getCelular();
 
-	void setReferencia(String referencia);
+    void setCelular(String celular);
 
-	String getTelefono();
+    String getEmail();
 
-	void setTelefono(String telefono);
+    void setEmail(String email);
 
-	String getCelular();
+    StoredFileModel getFoto();
 
-	void setCelular(String celular);
+    void setFoto(StoredFileModel foto);
 
-	String getEmail();
+    StoredFileModel getFirma();
 
-	void setEmail(String email);
-
-	FileStoreModel getFoto();
-
-	FileStoreModel getFirma();
+    void setFirma(StoredFileModel firma);
 
 }

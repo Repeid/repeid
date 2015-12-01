@@ -1,5 +1,5 @@
 package org.repeid.models.enums;
 
-public enum FileStoreProviderName {
+public enum StoredFileProviderName {
 	localhost, GoogleDrive, Dropbox
 }

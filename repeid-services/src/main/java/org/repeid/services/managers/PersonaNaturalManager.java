@@ -5,6 +5,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
 import org.repeid.models.PersonaNaturalModel;
+import org.repeid.models.StoredFileModel;
+import org.repeid.models.StoredFileProvider;
 import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
@@ -20,8 +22,8 @@ public class PersonaNaturalManager {
         model.setNombres(representation.getNombres());
         model.setFechaNacimiento(representation.getFechaNacimiento());
         model.setSexo(Sexo.valueOf(representation.getSexo().toUpperCase()));
-        model.setEstadoCivil(representation.getEstadoCivil() != null ? EstadoCivil.valueOf(representation
-                .getEstadoCivil().toUpperCase()) : null);
+        model.setEstadoCivil(representation.getEstadoCivil() != null
+                ? EstadoCivil.valueOf(representation.getEstadoCivil().toUpperCase()) : null);
 
         model.setUbigeo(representation.getUbigeo());
         model.setDireccion(representation.getDireccion());
@@ -32,6 +34,12 @@ public class PersonaNaturalManager {
         model.setEmail(representation.getEmail());
 
         model.commit();
+    }
+
+    public StoredFileModel setFirma(PersonaNaturalModel personaNatural, StoredFileProvider storedFileProvider,
+            byte[] bytes) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

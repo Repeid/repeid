@@ -60,6 +60,7 @@ subprojects {
         compile "com.google.oauth-client:google-oauth-client-jetty:1.20.0"
         
         //compile "com.dropbox.core:dropbox-core-sdk:2.0-beta-2"
+        compile "com.dropbox.core:dropbox-core-sdk:1.8.2"        
     }
 
 	sonarqube {

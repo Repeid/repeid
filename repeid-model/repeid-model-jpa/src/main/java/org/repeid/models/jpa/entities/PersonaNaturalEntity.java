@@ -26,7 +26,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
 import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 
@@ -93,21 +92,13 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
     @Column(name = "OCUPACION")
     private String ocupacion;
 
-    @URL
-    @Column(name = "URL_FOTO")
-    private String urlFoto;
-
-    @URL
-    @Column(name = "URL_FIRMA")
-    private String urlFirma;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STORED_FILE_FOTO_ID", foreignKey = @ForeignKey )
+    private StoredFileEntity foto;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FILE_STORE_FOTO_ID", foreignKey = @ForeignKey )
-    private FileStoreEntity foto;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FILE_STORE_FIRMA_ID", foreignKey = @ForeignKey )
-    private FileStoreEntity firma;
+    @JoinColumn(name = "STORED_FILE_FIRMA_ID", foreignKey = @ForeignKey )
+    private StoredFileEntity firma;
 
     public PersonaNaturalEntity() {
         super();
@@ -186,35 +177,19 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
         this.ocupacion = ocupacion;
     }
 
-    public String getUrlFoto() {
-        return urlFoto;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
-    }
-
-    public String getUrlFirma() {
-        return urlFirma;
-    }
-
-    public void setUrlFirma(String urlFirma) {
-        this.urlFirma = urlFirma;
-    }
-
-    public FileStoreEntity getFoto() {
+    public StoredFileEntity getFoto() {
         return foto;
     }
 
-    public void setFoto(FileStoreEntity foto) {
+    public void setFoto(StoredFileEntity foto) {
         this.foto = foto;
     }
 
-    public FileStoreEntity getFirma() {
+    public StoredFileEntity getFirma() {
         return firma;
     }
 
-    public void setFirma(FileStoreEntity firma) {
+    public void setFirma(StoredFileEntity firma) {
         this.firma = firma;
     }
 

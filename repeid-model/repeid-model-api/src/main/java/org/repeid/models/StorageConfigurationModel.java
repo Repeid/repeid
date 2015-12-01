@@ -4,7 +4,7 @@ package org.repeid.models;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-public interface StoreConfigurationModel extends Model {
+public interface StorageConfigurationModel extends Model {
 
     String getId();
 

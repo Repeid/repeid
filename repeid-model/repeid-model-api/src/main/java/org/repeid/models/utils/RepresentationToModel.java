@@ -39,11 +39,9 @@ public class RepresentationToModel {
                 rep.getNumeroDocumento(), rep.getApellidoPaterno(), rep.getApellidoMaterno(),
                 rep.getNombres(), rep.getFechaNacimiento(), Sexo.valueOf(rep.getSexo().toUpperCase()));
 
-        model.setEstadoCivil(rep.getEstadoCivil() != null ? EstadoCivil.valueOf(rep.getEstadoCivil()
-                .toUpperCase()) : null);
+        model.setEstadoCivil(rep.getEstadoCivil() != null
+                ? EstadoCivil.valueOf(rep.getEstadoCivil().toUpperCase()) : null);
         model.setOcupacion(rep.getOcupacion());
-        model.setUrlFoto(rep.getUrlFoto());
-        model.setUrlFirma(rep.getUrlFirma());
         model.setUbigeo(rep.getUbigeo());
         model.setDireccion(rep.getDireccion());
         model.setReferencia(rep.getReferencia());

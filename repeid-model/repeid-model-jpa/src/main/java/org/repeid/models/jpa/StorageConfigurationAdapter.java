@@ -2,29 +2,29 @@ package org.repeid.models.jpa;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.models.StoreConfigurationModel;
+import org.repeid.models.StorageConfigurationModel;
 import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-public class StoreConfigurationAdapter implements StoreConfigurationModel {
+public class StorageConfigurationAdapter implements StorageConfigurationModel {
 
     private static final long serialVersionUID = 1L;
 
     private StoreConfigurationEntity storeConfigurationEntity;
     private transient EntityManager em;
 
-    public StoreConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
+    public StorageConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
         this.em = em;
         this.storeConfigurationEntity = storeConfigurationEntity;
     }
 
-    public static StoreConfigurationEntity toStoreConfigurationEntity(StoreConfigurationModel model,
+    public static StoreConfigurationEntity toStoreConfigurationEntity(StorageConfigurationModel model,
             EntityManager em) {
-        if (model instanceof StoreConfigurationAdapter) {
-            return ((StoreConfigurationAdapter) model).getStoreConfigurationEntity();
+        if (model instanceof StorageConfigurationAdapter) {
+            return ((StorageConfigurationAdapter) model).getStoreConfigurationEntity();
         }
         return em.getReference(StoreConfigurationEntity.class, model.getId());
     }
@@ -142,9 +142,9 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof StoreConfigurationModel))
+        if (!(obj instanceof StorageConfigurationModel))
             return false;
-        StoreConfigurationModel other = (StoreConfigurationModel) obj;
+        StorageConfigurationModel other = (StorageConfigurationModel) obj;
         if (getDenominacion() == null) {
             if (other.getDenominacion() != null)
                 return false;
