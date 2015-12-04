@@ -3,7 +3,6 @@ package org.repeid.models.jpa.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,7 +23,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
@@ -33,8 +31,6 @@ import org.repeid.models.enums.Sexo;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Audited
-@Cacheable
 @Entity
 @Table(name = "PERSONA_NATURAL")
 @NamedQueries(value = {

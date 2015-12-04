@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +28,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import org.repeid.models.enums.TipoEmpresa;
 
@@ -37,8 +35,6 @@ import org.repeid.models.enums.TipoEmpresa;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Audited
-@Cacheable
 @Entity
 @Table(name = "PERSONA_JURIDICA")
 @NamedQueries(value = {

@@ -15,14 +15,12 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Audited
 @Entity
 @Table(name = "STORE_CONFIGURATION")
 @NamedQueries(value = {
