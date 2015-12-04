@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.representations.idm.StoredFileRepresentation;
 
 /**
  * @author carlosthe19916@gmail.com
@@ -19,36 +20,36 @@ import org.repeid.representations.idm.PersonaNaturalRepresentation;
 
 public interface PersonaNaturalResource {
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public PersonaNaturalRepresentation toRepresentation();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public PersonaNaturalRepresentation toRepresentation();
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void update(PersonaNaturalRepresentation rep);
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void update(PersonaNaturalRepresentation rep);
 
-	@GET
-	@Path("foto")
-	@Produces("image/png")
-	public void getFoto();
+    @GET
+    @Path("foto")
+    @Produces("image/png")
+    public Response getFoto();
 
-	@POST
-	@Path("foto")
-	@Consumes("multipart/form-data")
-	public void setFoto(MultipartFormDataInput input);
+    @POST
+    @Path("foto")
+    @Consumes("multipart/form-data")
+    public StoredFileRepresentation setFoto(MultipartFormDataInput input);
 
-	@GET
-	@Path("firma")
-	@Produces("image/png")
-	public void getFirma();
+    @GET
+    @Path("firma")
+    @Produces("image/png")
+    public Response getFirma();
 
-	@POST
-	@Path("firma")
-	@Consumes("multipart/form-data")
-	public void setFirma(MultipartFormDataInput input);
+    @POST
+    @Path("firma")
+    @Consumes("multipart/form-data")
+    public StoredFileRepresentation setFirma(MultipartFormDataInput input);
 
-	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response remove();
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response remove();
 
 }

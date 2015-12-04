@@ -36,13 +36,19 @@ public class JpaStoredFileGoogleDriveProvider implements StoredFileProvider {
     }
 
     @Override
-    public StoredFileModel create(File file) {
+    public StoredFileModel upload(byte[] file) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public boolean remove(String id) {
+    public byte[] download(String fileId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean remove(StoredFileModel storedFile) {
         // TODO Auto-generated method stub
         return false;
     }

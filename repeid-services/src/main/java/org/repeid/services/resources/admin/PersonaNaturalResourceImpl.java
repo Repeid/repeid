@@ -1,6 +1,6 @@
 package org.repeid.services.resources.admin;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -19,13 +19,14 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.repeid.admin.client.resource.PersonaNaturalResource;
 import org.repeid.models.PersonaNaturalModel;
 import org.repeid.models.PersonaNaturalProvider;
-import org.repeid.models.StorageConfigurationModel;
-import org.repeid.models.StorageConfigurationProvider;
+import org.repeid.models.StoreConfigurationModel;
+import org.repeid.models.StoreConfigurationProvider;
 import org.repeid.models.StoredFileModel;
 import org.repeid.models.StoredFileProvider;
 import org.repeid.models.StoredFileProviderFactory;
 import org.repeid.models.utils.ModelToRepresentation;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.representations.idm.StoredFileRepresentation;
 import org.repeid.services.ErrorResponse;
 import org.repeid.services.managers.PersonaNaturalManager;
 
@@ -42,7 +43,7 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
     private PersonaNaturalManager personaNaturalManager;
 
     @Inject
-    private StorageConfigurationProvider storageConfigurationProvider;
+    private StoreConfigurationProvider storageConfigurationProvider;
 
     @Inject
     private StoredFileProviderFactory storedFileProviderFactory;
@@ -67,23 +68,33 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
     }
 
     @Override
-    public void getFoto() {
-        // TODO Auto-generated method stub
+    public Response getFoto() {
+        PersonaNaturalModel personaNatural = getPersonaNaturalModel();
+        StoredFileModel storedFileModel = personaNatural.getFoto();
+        StoreConfigurationModel config = storedFileModel.getStoreConfiguration();
+        StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
+        byte[] file = storedFileProvider.download(storedFileModel.getId());
 
+        personaNaturalManager.setFoto(personaNatural, storedFileProvider, file);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file);
+        return Response.ok(byteArrayInputStream).build();
     }
 
     @Override
-    public void getFirma() {
+    public Response getFirma() {
         PersonaNaturalModel personaNatural = getPersonaNaturalModel();
         StoredFileModel storedFileModel = personaNatural.getFirma();
-        storedFileModel.get
-        StorageConfigurationModel config = storageConfigurationProvider.getDefaultStoreConfiguration();
+        StoreConfigurationModel config = storedFileModel.getStoreConfiguration();
         StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
-        personaNaturalManager.setFoto(personaNatural, storedFileProvider, bytes);
+        byte[] file = storedFileProvider.download(storedFileModel.getId());
+
+        personaNaturalManager.setFoto(personaNatural, storedFileProvider, file);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file);
+        return Response.ok(byteArrayInputStream).build();
     }
 
     @Override
-    public void setFoto(MultipartFormDataInput input) {
+    public StoredFileRepresentation setFoto(MultipartFormDataInput input) {
         PersonaNaturalModel personaNatural = getPersonaNaturalModel();
 
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
@@ -94,18 +105,20 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
                 InputStream inputStream = inputPart.getBody(InputStream.class, null);
                 byte[] bytes = IOUtils.toByteArray(inputStream);
 
-                StorageConfigurationModel config = storageConfigurationProvider
-                        .getDefaultStoreConfiguration();
-                StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
-                personaNaturalManager.setFoto(personaNatural, storedFileProvider, bytes);
+                StoreConfigurationModel config = storageConfigurationProvider.getDefaultStoreConfiguration();
+                StoredFileProvider fileProvider = storedFileProviderFactory.get(config);
+                StoredFileModel storedFileModel = personaNaturalManager.setFoto(personaNatural, fileProvider,
+                        bytes);
+                return ModelToRepresentation.toRepresentation(storedFileModel);
             } catch (IOException e) {
                 throw new InternalServerErrorException();
             }
         }
+        return null;
     }
 
     @Override
-    public void setFirma(MultipartFormDataInput input) {
+    public StoredFileRepresentation setFirma(MultipartFormDataInput input) {
         PersonaNaturalModel personaNatural = getPersonaNaturalModel();
 
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
@@ -116,14 +129,16 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
                 InputStream inputStream = inputPart.getBody(InputStream.class, null);
                 byte[] bytes = IOUtils.toByteArray(inputStream);
 
-                StorageConfigurationModel config = storageConfigurationProvider
-                        .getDefaultStoreConfiguration();
-                StoredFileProvider storedFileProvider = storedFileProviderFactory.get(config);
-                personaNaturalManager.setFirma(personaNatural, storedFileProvider, bytes);
+                StoreConfigurationModel config = storageConfigurationProvider.getDefaultStoreConfiguration();
+                StoredFileProvider fileProvider = storedFileProviderFactory.get(config);
+                StoredFileModel storedFileModel = personaNaturalManager.setFirma(personaNatural, fileProvider,
+                        bytes);
+                return ModelToRepresentation.toRepresentation(storedFileModel);
             } catch (IOException e) {
                 throw new InternalServerErrorException();
             }
         }
+        return null;
     }
 
     @Override

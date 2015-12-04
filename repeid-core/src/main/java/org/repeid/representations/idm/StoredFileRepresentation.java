@@ -15,8 +15,6 @@ public class StoredFileRepresentation implements Serializable {
 
     private String id;
     private String fileId;
-    private String provider;
-    private Byte[] file;
     private String url;
 
     public StoredFileRepresentation() {
@@ -37,22 +35,6 @@ public class StoredFileRepresentation implements Serializable {
 
     public void setFileId(String fileId) {
         this.fileId = fileId;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
-    public Byte[] getFile() {
-        return file;
-    }
-
-    public void setFile(Byte[] file) {
-        this.file = file;
     }
 
     public String getUrl() {

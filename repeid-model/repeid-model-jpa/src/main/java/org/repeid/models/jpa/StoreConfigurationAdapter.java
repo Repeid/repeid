@@ -2,29 +2,30 @@ package org.repeid.models.jpa;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.models.StorageConfigurationModel;
+import org.repeid.models.StoreConfigurationModel;
+import org.repeid.models.enums.StoreFileProviderName;
 import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-public class StorageConfigurationAdapter implements StorageConfigurationModel {
+public class StoreConfigurationAdapter implements StoreConfigurationModel {
 
     private static final long serialVersionUID = 1L;
 
     private StoreConfigurationEntity storeConfigurationEntity;
-    private transient EntityManager em;
+    private EntityManager em;
 
-    public StorageConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
+    public StoreConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
         this.em = em;
         this.storeConfigurationEntity = storeConfigurationEntity;
     }
 
-    public static StoreConfigurationEntity toStoreConfigurationEntity(StorageConfigurationModel model,
+    public static StoreConfigurationEntity toStoreConfigurationEntity(StoreConfigurationModel model,
             EntityManager em) {
-        if (model instanceof StorageConfigurationAdapter) {
-            return ((StorageConfigurationAdapter) model).getStoreConfigurationEntity();
+        if (model instanceof StoreConfigurationAdapter) {
+            return ((StoreConfigurationAdapter) model).getStoreConfigurationEntity();
         }
         return em.getReference(StoreConfigurationEntity.class, model.getId());
     }
@@ -41,6 +42,11 @@ public class StorageConfigurationAdapter implements StorageConfigurationModel {
     @Override
     public String getId() {
         return storeConfigurationEntity.getId();
+    }
+
+    @Override
+    public StoreFileProviderName getProviderName() {
+        return StoreFileProviderName.valueOf(storeConfigurationEntity.getProviderName());
     }
 
     @Override
@@ -142,9 +148,9 @@ public class StorageConfigurationAdapter implements StorageConfigurationModel {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof StorageConfigurationModel))
+        if (!(obj instanceof StoreConfigurationModel))
             return false;
-        StorageConfigurationModel other = (StorageConfigurationModel) obj;
+        StoreConfigurationModel other = (StoreConfigurationModel) obj;
         if (getDenominacion() == null) {
             if (other.getDenominacion() != null)
                 return false;

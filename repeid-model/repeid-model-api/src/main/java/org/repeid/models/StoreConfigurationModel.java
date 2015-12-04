@@ -1,12 +1,16 @@
 package org.repeid.models;
 
+import org.repeid.models.enums.StoreFileProviderName;
+
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-public interface StorageConfigurationModel extends Model {
+public interface StoreConfigurationModel extends Model {
 
     String getId();
+
+    StoreFileProviderName getProviderName();
 
     String getDenominacion();
 

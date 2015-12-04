@@ -2,8 +2,9 @@ package org.repeid.models.jpa;
 
 import javax.persistence.EntityManager;
 
+import org.repeid.models.StoreConfigurationModel;
 import org.repeid.models.StoredFileModel;
-import org.repeid.models.enums.StoredFileProviderName;
+import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 import org.repeid.models.jpa.entities.StoredFileEntity;
 
 /**
@@ -54,25 +55,6 @@ public class StoredFileAdapter implements StoredFileModel {
     }
 
     @Override
-    public StoredFileProviderName getProvider() {
-        String provider = fileStoreEntity.getProvider();
-        if (provider != null) {
-            return StoredFileProviderName.valueOf(provider);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void setProvider(StoredFileProviderName provider) {
-        if (provider != null) {
-            fileStoreEntity.setProvider(provider.toString());
-        } else {
-            fileStoreEntity.setProvider(null);
-        }
-    }
-
-    @Override
     public String getUrl() {
         return fileStoreEntity.getUrl();
     }
@@ -80,6 +62,12 @@ public class StoredFileAdapter implements StoredFileModel {
     @Override
     public void setUrl(String url) {
         fileStoreEntity.setUrl(url);
+    }
+
+    @Override
+    public StoreConfigurationModel getStoreConfiguration() {
+        StoreConfigurationEntity storeConfigurationEntity = fileStoreEntity.getStoreConfiguration();
+        return new StoreConfigurationAdapter(em, storeConfigurationEntity);
     }
 
     @Override

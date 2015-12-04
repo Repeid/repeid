@@ -42,6 +42,12 @@ public class StoreConfigurationEntity implements Serializable {
     @Column(name = "ID")
     private String id;
 
+    @NotNull
+    @Size(min = 1, max = 100)
+    @NotBlank
+    @Column(name = "PROVIDER_NAME")
+    private String providerName;
+
     @NaturalId
     @NotNull
     @Size(min = 1, max = 100)
@@ -176,6 +182,14 @@ public class StoreConfigurationEntity implements Serializable {
 
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package org.repeid.models;
 
-import java.io.File;
-
 import javax.ejb.Local;
 
 import org.repeid.provider.Provider;
@@ -11,8 +9,10 @@ public interface StoredFileProvider extends Provider {
 
     StoredFileModel findById(String id);
 
-    StoredFileModel create(File file);
+    StoredFileModel upload(byte[] file, StoreConfigurationModel configuration);
 
-    boolean remove(String id);
+    byte[] download(String fileId);
+
+    boolean remove(StoredFileModel storedFile);
 
 }

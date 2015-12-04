@@ -36,16 +36,20 @@ public class PersonaNaturalManager {
         model.commit();
     }
 
-    public StoredFileModel setFirma(PersonaNaturalModel personaNatural, StoredFileProvider storedFileProvider,
-            byte[] bytes) {
-        // TODO Auto-generated method stub
-        return null;
+    public StoredFileModel setFoto(PersonaNaturalModel personaNatural, StoredFileProvider storedFileProvider,
+            byte[] file) {
+        StoredFileModel storedFileModel = storedFileProvider.upload(file);
+        personaNatural.setFoto(storedFileModel);
+        personaNatural.commit();
+        return storedFileModel;
     }
 
-    public void setFoto(PersonaNaturalModel personaNatural, StoredFileProvider storedFileProvider,
-            byte[] bytes) {
-        // TODO Auto-generated method stub
-
+    public StoredFileModel setFirma(PersonaNaturalModel personaNatural, StoredFileProvider storedFileProvider,
+            byte[] file) {
+        StoredFileModel storedFileModel = storedFileProvider.upload(file);
+        personaNatural.setFirma(storedFileModel);
+        personaNatural.commit();
+        return storedFileModel;
     }
 
 }

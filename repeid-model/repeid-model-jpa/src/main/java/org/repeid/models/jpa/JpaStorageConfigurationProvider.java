@@ -13,8 +13,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.repeid.models.ModelDuplicateException;
-import org.repeid.models.StorageConfigurationModel;
-import org.repeid.models.StorageConfigurationProvider;
+import org.repeid.models.StoreConfigurationModel;
+import org.repeid.models.StoreConfigurationProvider;
 import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 
 /**
@@ -23,10 +23,10 @@ import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 
 @Named
 @Stateless
-@Local(StorageConfigurationProvider.class)
+@Local(StoreConfigurationProvider.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class JpaStorageConfigurationProvider extends AbstractHibernateStorage
-        implements StorageConfigurationProvider {
+        implements StoreConfigurationProvider {
 
     @PersistenceContext
     private EntityManager em;
@@ -42,7 +42,7 @@ public class JpaStorageConfigurationProvider extends AbstractHibernateStorage
     }
 
     @Override
-    public StorageConfigurationModel create(String appKey, String denominacion) {
+    public StoreConfigurationModel create(String appKey, String denominacion) {
         if (findByDenominacion(denominacion) != null) {
             throw new ModelDuplicateException(
                     "StoreConfigurationEntity denominacion debe ser unico, se encontro otra entidad con denominacion:"
@@ -59,17 +59,17 @@ public class JpaStorageConfigurationProvider extends AbstractHibernateStorage
         storeConfigurationEntity.setDefault(false);
         storeConfigurationEntity.setToken(null);
         em.persist(storeConfigurationEntity);
-        return new StorageConfigurationAdapter(em, storeConfigurationEntity);
+        return new StoreConfigurationAdapter(em, storeConfigurationEntity);
     }
 
     @Override
-    public StorageConfigurationModel findById(String id) {
+    public StoreConfigurationModel findById(String id) {
         StoreConfigurationEntity entity = this.em.find(StoreConfigurationEntity.class, id);
-        return entity != null ? new StorageConfigurationAdapter(em, entity) : null;
+        return entity != null ? new StoreConfigurationAdapter(em, entity) : null;
     }
 
     @Override
-    public StorageConfigurationModel findByDenominacion(String denominacion) {
+    public StoreConfigurationModel findByDenominacion(String denominacion) {
         TypedQuery<StoreConfigurationEntity> query = em.createNamedQuery(
                 "StoreConfigurationEntity.findByDenominacion", StoreConfigurationEntity.class);
         query.setParameter("denominacion", denominacion);
@@ -80,12 +80,12 @@ public class JpaStorageConfigurationProvider extends AbstractHibernateStorage
             throw new IllegalStateException("Mas de un StoreConfigurationEntity con denominacion="
                     + denominacion + ", results=" + results);
         } else {
-            return new StorageConfigurationAdapter(em, results.get(0));
+            return new StoreConfigurationAdapter(em, results.get(0));
         }
     }
 
     @Override
-    public StorageConfigurationModel getDefaultStoreConfiguration() {
+    public StoreConfigurationModel getDefaultStoreConfiguration() {
         TypedQuery<StoreConfigurationEntity> query = em
                 .createNamedQuery("StoreConfigurationEntity.findByIsDefault", StoreConfigurationEntity.class);
         query.setParameter("isDefault", true);
@@ -96,12 +96,12 @@ public class JpaStorageConfigurationProvider extends AbstractHibernateStorage
             throw new IllegalStateException(
                     "Mas de un StoreConfigurationEntity con isDefault=" + true + ", results=" + results);
         } else {
-            return new StorageConfigurationAdapter(em, results.get(0));
+            return new StoreConfigurationAdapter(em, results.get(0));
         }
     }
 
     @Override
-    public boolean remove(StorageConfigurationModel storeConfiguration) {
+    public boolean remove(StoreConfigurationModel storeConfiguration) {
         StoreConfigurationEntity storeConfigurationEntity = em.find(StoreConfigurationEntity.class,
                 storeConfiguration.getId());
         if (storeConfigurationEntity == null) {
@@ -112,14 +112,14 @@ public class JpaStorageConfigurationProvider extends AbstractHibernateStorage
     }
 
     @Override
-    public List<StorageConfigurationModel> getAll() {
+    public List<StoreConfigurationModel> getAll() {
         TypedQuery<StoreConfigurationEntity> query = em.createNamedQuery("StoreConfigurationEntity.findAll",
                 StoreConfigurationEntity.class);
 
         List<StoreConfigurationEntity> entities = query.getResultList();
-        List<StorageConfigurationModel> models = new ArrayList<StorageConfigurationModel>();
+        List<StoreConfigurationModel> models = new ArrayList<StoreConfigurationModel>();
         for (StoreConfigurationEntity storeConfigurationEntity : entities) {
-            models.add(new StorageConfigurationAdapter(em, storeConfigurationEntity));
+            models.add(new StoreConfigurationAdapter(em, storeConfigurationEntity));
         }
         return models;
     }

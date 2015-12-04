@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-public class StorageConfigurationRepresentation implements Serializable {
+public class StoreConfigurationRepresentation implements Serializable {
 
     /**
      * 
@@ -15,6 +15,7 @@ public class StorageConfigurationRepresentation implements Serializable {
 
     private String id;
     private String denominacion;
+    private String provider;
     private String carpetaRaiz;
     private String carpetaFoto;
     private String carpetaFirma;
@@ -24,7 +25,7 @@ public class StorageConfigurationRepresentation implements Serializable {
     private String token;
     private boolean isDefault;
 
-    public StorageConfigurationRepresentation() {
+    public StoreConfigurationRepresentation() {
 
     }
 
@@ -106,6 +107,14 @@ public class StorageConfigurationRepresentation implements Serializable {
 
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
 }

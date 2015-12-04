@@ -1,9 +1,12 @@
 package org.repeid.models.jpa;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -21,6 +24,7 @@ import org.repeid.models.jpa.qualifiers.Dropbox;
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWriteMode;
 
 /**
@@ -38,14 +42,14 @@ public class JpaStoredFileDropboxProvider implements StoredFileProvider {
     @PersistenceContext
     private EntityManager em;
 
-    public JpaStoredFileDropboxProvider() {
-        // TODO Auto-generated constructor stub
+    public void sets(String clientIdentifier, String accessToken) {
+        DbxRequestConfig config = new DbxRequestConfig(clientIdentifier, Locale.getDefault().toString());
+        client = new DbxClient(config, accessToken);
     }
 
     @Override
     public void close() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -55,12 +59,14 @@ public class JpaStoredFileDropboxProvider implements StoredFileProvider {
     }
 
     @Override
-    public StoredFileModel create(File file) {
+    public StoredFileModel upload(byte[] file) {
+        File file1 = null;
+        InputStream myInputStream = new ByteArrayInputStream(file);
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(file);
+            // inputStream = new ByteArrayInputStream(file);
             DbxEntry.File uploadedFile = client.uploadFile("/magnum-opus.txt", DbxWriteMode.add(),
-                    file.length(), inputStream);
+                    file1.length(), inputStream);
 
             StoredFileEntity storedFileEntity = new StoredFileEntity();
             em.persist(storedFileEntity);
@@ -79,7 +85,12 @@ public class JpaStoredFileDropboxProvider implements StoredFileProvider {
     }
 
     @Override
-    public boolean remove(String id) {
+    public byte[] download(String fileId) {
+        return null;
+    }
+
+    @Override
+    public boolean remove(StoredFileModel storedFile) {
         // TODO Auto-generated method stub
         return false;
     }

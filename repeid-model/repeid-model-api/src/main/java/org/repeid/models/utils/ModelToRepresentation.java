@@ -3,10 +3,12 @@ package org.repeid.models.utils;
 import org.repeid.models.AccionistaModel;
 import org.repeid.models.PersonaJuridicaModel;
 import org.repeid.models.PersonaNaturalModel;
+import org.repeid.models.StoredFileModel;
 import org.repeid.models.TipoDocumentoModel;
 import org.repeid.representations.idm.AccionistaRepresentation;
 import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.representations.idm.StoredFileRepresentation;
 import org.repeid.representations.idm.TipoDocumentoRepresentation;
 
 public class ModelToRepresentation {
@@ -115,6 +117,17 @@ public class ModelToRepresentation {
                 .toRepresentation(model.getPersonaNatural());
         rep.setPersonaNatural(personaNaturalRepresentation);
 
+        return rep;
+    }
+
+    public static StoredFileRepresentation toRepresentation(StoredFileModel model) {
+        if (model == null)
+            return null;
+        StoredFileRepresentation rep = new StoredFileRepresentation();
+
+        rep.setId(model.getId());
+        rep.setFileId(model.getFileId());
+        rep.setUrl(model.getUrl());
         return rep;
     }
 

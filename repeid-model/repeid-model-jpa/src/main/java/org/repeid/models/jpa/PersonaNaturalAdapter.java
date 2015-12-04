@@ -10,6 +10,7 @@ import org.repeid.models.TipoDocumentoModel;
 import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 import org.repeid.models.jpa.entities.PersonaNaturalEntity;
+import org.repeid.models.jpa.entities.StoredFileEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -203,14 +204,42 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
     @Override
     public StoredFileModel getFoto() {
-        // TODO Auto-generated method stub
-        return null;
+        StoredFileEntity storedFileEntity = personaNaturalEntity.getFoto();
+        if (storedFileEntity != null) {
+            return new StoredFileAdapter(em, storedFileEntity);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public StoredFileModel getFirma() {
-        // TODO Auto-generated method stub
-        return null;
+        StoredFileEntity storedFileEntity = personaNaturalEntity.getFirma();
+        if (storedFileEntity != null) {
+            return new StoredFileAdapter(em, storedFileEntity);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void setFoto(StoredFileModel foto) {
+        if (foto != null) {
+            StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(foto, em);
+            personaNaturalEntity.setFoto(storedFileEntity);
+        } else {
+            personaNaturalEntity.setFoto(null);
+        }
+    }
+
+    @Override
+    public void setFirma(StoredFileModel firma) {
+        if (firma != null) {
+            StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(firma, em);
+            personaNaturalEntity.setFirma(storedFileEntity);
+        } else {
+            personaNaturalEntity.setFirma(null);
+        }
     }
 
     @Override
