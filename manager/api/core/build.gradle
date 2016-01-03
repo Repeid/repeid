@@ -1,0 +1,18 @@
+dependencies {
+	// Project Dependencies
+	compile project(':repeid-common:repeid-common-util')
+	compile project(':repeid-common:repeid-common-config')
+	//compile project(':repeid-common:repeid-common-plugin')
+	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
+	
+	provided ( libraries.cdi_api )
+	
+	// APIs
+	compile ( libraries.joda_time )
+	compile ( libraries.commons_lang )
+	compile ( libraries.log4j_api )
+	compile ( libraries.log4j_core )
+	compile ( libraries.jackson_core_asl )
+	compile ( libraries.jackson_mapper_asl )
+	compile ( libraries.mvel2 )
+}

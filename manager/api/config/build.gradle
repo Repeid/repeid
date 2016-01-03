@@ -1,0 +1,7 @@
+dependencies {
+	 // Third Party Dependencies
+	 compile ( libraries.commons_io )
+	 
+	 // Spec libs
+	 provided ( libraries.cdi_api )    
+}

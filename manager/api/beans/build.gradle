@@ -1,0 +1,9 @@
+dependencies {
+	// Project Dependencies
+    compile project(':repeid-common:repeid-common-util')
+
+    // Third Party Dependencies
+    provided ( libraries.hibernate_jpa )
+ 	provided ( libraries.hibernate_core )
+    provided ( libraries.jackson_mapper_asl )
+}

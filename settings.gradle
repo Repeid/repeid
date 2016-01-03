@@ -1,12 +1,41 @@
-rootProject.name = projectName
+include 'common'
+include 'common:auth'
+include 'common:util'
+include 'common:config'
+include 'common:servlet'
 
-include "$projectName-web"
-include "$projectName-core"
-include "$projectName-core-jaxrs"
-include "$projectName-services"
-include "$projectName-model:$projectName-model-api"
-include "$projectName-model:$projectName-model-jpa"
-include "$projectName-model:$projectName-model-mongo"
-include "$projectName-integration:$projectName-client"
-include "$projectName-testsuite:$projectName-testsuite-model"
-include "$projectName-testsuite:$projectName-testsuite-client"
+include 'manager'
+include 'manager:api'
+include 'manager:test'
+include 'manager:ui'
+
+include 'manager:api:core'
+include 'manager:api:beans'
+include 'manager:api:security'
+include 'manager:api:config'
+include 'manager:api:rest'
+include 'manager:api:rest-impl'
+include 'manager:api:model'
+include 'manager:api:jpa'
+include 'manager:api:mongo'
+
+project(':common').name = 'repeid-common'
+project(':common:auth').name = 'repeid-common-auth'
+project(':common:util').name = 'repeid-common-util'
+project(':common:config').name = 'repeid-common-config'
+project(':common:servlet').name = 'repeid-common-servlet'
+
+project(':manager').name = 'repeid-manager'
+project(':manager:api').name = 'repeid-manager-api'
+project(':manager:test').name = 'repeid-manager-test'
+project(':manager:ui').name = 'repeid-manager-ui'
+
+project(':manager:api:core').name = 'repeid-manager-api-core'
+project(':manager:api:beans').name = 'repeid-manager-api-beans'
+project(':manager:api:security').name = 'repeid-manager-api-security'
+project(':manager:api:config').name = 'repeid-manager-api-config'
+project(':manager:api:rest').name = 'repeid-manager-api-rest'
+project(':manager:api:rest-impl').name = 'repeid-manager-api-rest-impl'
+project(':manager:api:model').name = 'repeid-manager-api-model'
+project(':manager:api:jpa').name = 'repeid-manager-api-jpa'
+project(':manager:api:mongo').name = 'repeid-manager-api-mongo'

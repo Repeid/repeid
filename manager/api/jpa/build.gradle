@@ -1,0 +1,13 @@
+dependencies {
+	// Project Dependencies
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-model')
+    
+    // Third Party Dependencies
+	compile ( libraries.hibernate_entitymanager )
+	compile ( libraries.hibernate_validator )
+	compile ( libraries.javax_inject )
+	compile ( libraries.cdi_api )
+	compile ( libraries.dropbox_core_sdk )
+
+	provided ( libraries.jboss_ejb_api_3_2_spec )
+}

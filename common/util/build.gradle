@@ -1,0 +1,5 @@
+dependencies {
+    // Third Party Dependencies    
+    compile( libraries.commons_codec )
+    compile( libraries.commons_lang )
+}
