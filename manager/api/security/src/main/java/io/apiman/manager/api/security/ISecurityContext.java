@@ -15,9 +15,9 @@
  */
 package io.apiman.manager.api.security;
 
-import io.apiman.manager.api.beans.idm.PermissionType;
-
 import java.util.Set;
+
+import org.repeid.representations.idm.security.PermissionType;
 
 /**
  * The security context used by the REST API to determine whether the

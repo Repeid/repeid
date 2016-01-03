@@ -15,8 +15,6 @@
  */
 package io.apiman.manager.api.security.impl;
 
-import io.apiman.manager.api.beans.idm.PermissionBean;
-import io.apiman.manager.api.beans.idm.PermissionType;
 import io.apiman.manager.api.core.IStorageQuery;
 import io.apiman.manager.api.core.exceptions.StorageException;
 import io.apiman.manager.api.security.ISecurityContext;
@@ -27,6 +25,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.repeid.representations.idm.security.PermissionBean;
+import org.repeid.representations.idm.security.PermissionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,7 @@ public abstract class AbstractSecurityContext implements ISecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#hasPermission(io.apiman.manager.api.beans.idm.PermissionType,
+     * @see io.apiman.manager.api.security.ISecurityContext#hasPermission(org.repeid.representations.idm.security.PermissionType,
      *      java.lang.String)
      */
     @Override
@@ -63,7 +63,7 @@ public abstract class AbstractSecurityContext implements ISecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getPermittedOrganizations(io.apiman.manager.api.beans.idm.PermissionType)
+     * @see io.apiman.manager.api.security.ISecurityContext#getPermittedOrganizations(org.repeid.representations.idm.security.PermissionType)
      */
     @Override
     public Set<String> getPermittedOrganizations(PermissionType permission) {

@@ -7,8 +7,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.OAuth2Constants;
-
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
@@ -29,9 +27,9 @@ public class ErrorResponseException extends WebApplicationException {
     @Override
     public Response getResponse() {
         Map<String, String> e = new HashMap<String, String>();
-        e.put(OAuth2Constants.ERROR, error);
+        e.put("error", error);
         if (errorDescription != null) {
-            e.put(OAuth2Constants.ERROR_DESCRIPTION, errorDescription);
+            e.put("error_description", errorDescription);
         }
         return Response.status(status).entity(e).type(MediaType.APPLICATION_JSON_TYPE).build();
     }

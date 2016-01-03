@@ -15,15 +15,15 @@
  */
 package io.apiman.manager.api.security.impl;
 
-import io.apiman.manager.api.beans.idm.PermissionBean;
-import io.apiman.manager.api.beans.idm.PermissionType;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.repeid.representations.idm.security.PermissionBean;
+import org.repeid.representations.idm.security.PermissionType;
 
 /**
  * A class that optimizes the user permissions for querying.

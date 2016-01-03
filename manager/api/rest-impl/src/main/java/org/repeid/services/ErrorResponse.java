@@ -3,7 +3,7 @@ package org.repeid.services;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.representations.idm.ErrorRepresentation;
+import org.repeid.representations.idm.exceptions.ErrorRepresentation;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
