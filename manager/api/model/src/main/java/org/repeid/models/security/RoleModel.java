@@ -1,6 +1,7 @@
 package org.repeid.models.security;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.repeid.models.Model;
 
@@ -22,8 +23,10 @@ public interface RoleModel extends Model {
 
     boolean isAutoGrant();
 
+    void setAutoGrant(boolean autoGrant);
+
     PermissionType getPermissions();
 
-    void setPermissions(PermissionType permissions);
+    void setPermissions(Set<PermissionType> permissions);
 
 }

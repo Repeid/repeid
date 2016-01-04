@@ -23,6 +23,8 @@ public class SecurityManager {
 
     public void update(RoleModel model, RoleRepresentation rep) throws StorageException {
         model.setDescription(rep.getDescription());
+        model.setAutoGrant(rep.getAutoGrant());
+        model.setPermissions(rep.getPermissions());
         model.commit();
     }
 

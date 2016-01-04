@@ -34,7 +34,7 @@ import org.repeid.models.search.SearchCriteriaModel;
 import org.repeid.models.search.SearchResultsModel;
 import org.repeid.models.security.UserModel;
 import org.repeid.models.security.UserProvider;
-import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.models.utils.SecurityModelToRepresentation;
 import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.UserRepresentation;
@@ -70,7 +70,7 @@ public class UserResourceImpl implements IUserResource {
             if (user == null) {
                 throw ExceptionFactory.userNotFoundException(userId);
             }
-            return ModelToRepresentation.toRepresentation(user);
+            return SecurityModelToRepresentation.toRepresentation(user);
         } catch (StorageException e) {
             throw new SystemErrorException(e);
         }
@@ -115,7 +115,7 @@ public class UserResourceImpl implements IUserResource {
             SearchResultsRepresentation<UserRepresentation> rep = new SearchResultsRepresentation<>();
             List<UserRepresentation> items = new ArrayList<>();
             for (UserModel model : results.getModels()) {
-                items.add(ModelToRepresentation.toRepresentation(model));
+                items.add(SecurityModelToRepresentation.toRepresentation(model));
             }
             rep.setItems(items);
             rep.setTotalSize(results.getTotalSize());

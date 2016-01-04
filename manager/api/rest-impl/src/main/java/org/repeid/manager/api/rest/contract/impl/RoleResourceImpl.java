@@ -27,16 +27,21 @@ import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaExce
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleAlreadyExistsException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleNotFoundException;
+import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
+import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.rest.managers.SecurityManager;
+import org.repeid.models.search.SearchCriteriaModel;
+import org.repeid.models.search.SearchResultsModel;
 import org.repeid.models.security.RoleModel;
 import org.repeid.models.security.RoleProvider;
-import org.repeid.models.utils.ModelToRepresentation;
-import org.repeid.models.utils.RepresentationToModel;
+import org.repeid.models.utils.SecurityModelToRepresentation;
+import org.repeid.models.utils.SecurityRepresentationToModel;
 import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.RoleRepresentation;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
 import io.apiman.manager.api.security.ISecurityContext;
 
 /**
@@ -54,12 +59,12 @@ public class RoleResourceImpl implements IRoleResource {
     private SecurityManager securityManager;
 
     @Inject
-    private RepresentationToModel representationToModel;
+    private SecurityRepresentationToModel securityRepresentationToModel;
 
     @Inject
     private ISecurityContext securityContext;
 
-    private RoleModel getRoleModel(String roleId) {
+    private RoleModel getRoleModel(String roleId) throws StorageException {
         return roleProvider.findById(roleId);
     }
 
@@ -69,17 +74,25 @@ public class RoleResourceImpl implements IRoleResource {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
 
-        RoleModel role = representationToModel.createRole(rep, roleProvider);
-        return ModelToRepresentation.toRepresentation(role);
+        try {
+            RoleModel role = securityRepresentationToModel.createRole(rep, roleProvider);
+            return SecurityModelToRepresentation.toRepresentation(role);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
     @Override
     public RoleRepresentation get(String roleId) throws RoleNotFoundException, NotAuthorizedException {
-        RoleModel role = getRoleModel(roleId);
-        if (role == null) {
-            throw ExceptionFactory.roleNotFoundException(roleId);
+        try {
+            RoleModel role = getRoleModel(roleId);
+            if (role == null) {
+                throw ExceptionFactory.roleNotFoundException(roleId);
+            }
+            return SecurityModelToRepresentation.toRepresentation(role);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
         }
-        return ModelToRepresentation.toRepresentation(role);
     }
 
     @Override
@@ -88,36 +101,75 @@ public class RoleResourceImpl implements IRoleResource {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
 
-        RoleModel role = getRoleModel(roleId);
-        securityManager.update(role, rep);
+        try {
+            RoleModel role = getRoleModel(roleId);
+            securityManager.update(role, rep);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
     @Override
     public void delete(String roleId) throws RoleNotFoundException, NotAuthorizedException {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
-        RoleModel role = getRoleModel(roleId);
-        roleProvider.delete(role);
+
+        try {
+            RoleModel role = getRoleModel(roleId);
+            if (role == null) {
+                throw ExceptionFactory.roleNotFoundException(roleId);
+            }
+            @SuppressWarnings("unused")
+            boolean result = roleProvider.delete(role);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
-    /**
-     * @see org.repeid.manager.api.rest.contract.IRoleResource#list()
-     */
     @Override
     public List<RoleRepresentation> list() throws NotAuthorizedException {
-        List<RoleModel> roles = roleProvider.getAll();
-        List<RoleRepresentation> result = new ArrayList<>();
-        for (RoleModel role : roles) {
-            result.add(ModelToRepresentation.toRepresentation(role));
+        try {
+            List<RoleModel> roles = roleProvider.getAll();
+            List<RoleRepresentation> result = new ArrayList<>();
+            for (RoleModel role : roles) {
+                result.add(SecurityModelToRepresentation.toRepresentation(role));
+            }
+            return result;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
         }
-        return result;
     }
 
     @Override
     public SearchResultsRepresentation<RoleRepresentation> search(SearchCriteriaRepresentation criteria)
             throws InvalidSearchCriteriaException, NotAuthorizedException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            // Validate criteria
+            SearchCriteriaUtil.validateSearchCriteria(criteria);
+            SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
+
+            // extract filterText
+            String filterText = criteria.getFilterText();
+
+            // search
+            SearchResultsModel<RoleModel> results = null;
+            if (filterText == null || filterText.trim().isEmpty()) {
+                results = roleProvider.search(criteriaModel);
+            } else {
+                results = roleProvider.search(criteriaModel, filterText);
+            }
+
+            SearchResultsRepresentation<RoleRepresentation> rep = new SearchResultsRepresentation<>();
+            List<RoleRepresentation> items = new ArrayList<>();
+            for (RoleModel model : results.getModels()) {
+                items.add(SecurityModelToRepresentation.toRepresentation(model));
+            }
+            rep.setItems(items);
+            rep.setTotalSize(results.getTotalSize());
+            return rep;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
 }

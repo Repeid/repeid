@@ -16,16 +16,12 @@ import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 import org.repeid.models.enums.TipoEmpresa;
 import org.repeid.models.enums.TipoPersona;
-import org.repeid.models.security.RoleModel;
-import org.repeid.models.security.RoleProvider;
-import org.repeid.models.security.UserModel;
-import org.repeid.models.security.UserProvider;
 import org.repeid.representations.idm.AccionistaRepresentation;
 import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
 import org.repeid.representations.idm.TipoDocumentoRepresentation;
-import org.repeid.representations.idm.security.RoleRepresentation;
-import org.repeid.representations.idm.security.UserRepresentation;
+
+import io.apiman.manager.api.core.exceptions.StorageException;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -39,7 +35,8 @@ public class RepresentationToModel {
     }
 
     public PersonaNaturalModel createPersonaNatural(PersonaNaturalRepresentation rep,
-            TipoDocumentoModel tipoDocumentoModel, PersonaNaturalProvider personaNaturalProvider) {
+            TipoDocumentoModel tipoDocumentoModel, PersonaNaturalProvider personaNaturalProvider)
+                    throws StorageException {
 
         PersonaNaturalModel model = personaNaturalProvider.create(rep.getCodigoPais(), tipoDocumentoModel,
                 rep.getNumeroDocumento(), rep.getApellidoPaterno(), rep.getApellidoMaterno(),
@@ -61,7 +58,7 @@ public class RepresentationToModel {
 
     public PersonaJuridicaModel createPersonaJuridica(PersonaJuridicaRepresentation rep,
             TipoDocumentoModel tipoDocumentoModel, PersonaNaturalModel representanteLegal,
-            PersonaJuridicaProvider personaJuridicaProvider) {
+            PersonaJuridicaProvider personaJuridicaProvider) throws StorageException {
 
         PersonaJuridicaModel model = personaJuridicaProvider.create(representanteLegal, rep.getCodigoPais(),
                 tipoDocumentoModel, rep.getNumeroDocumento(), rep.getRazonSocial(),
@@ -91,13 +88,4 @@ public class RepresentationToModel {
         return model;
     }
 
-    public RoleModel createRole(RoleRepresentation rep, RoleProvider roleProvider) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public UserModel createUser(UserRepresentation rep, UserProvider userProvider) {
-        // TODO Auto-generated method stub
-        
-    }
 }
