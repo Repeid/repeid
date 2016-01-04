@@ -31,6 +31,7 @@ import org.repeid.representations.idm.security.UserPermissionsRepresentation;
  * 
  * @author eric.wittmann@redhat.com
  */
+
 @Path("permissions")
 public interface IPermissionsResource {
 

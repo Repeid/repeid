@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 
-import org.repeid.manager.api.rest.MaestroResource;
+import org.repeid.manager.api.rest.bussiness.MaestroResource;
 import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 import org.repeid.models.enums.TipoEmpresa;

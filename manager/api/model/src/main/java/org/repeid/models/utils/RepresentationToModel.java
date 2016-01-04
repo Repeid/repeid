@@ -16,10 +16,16 @@ import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 import org.repeid.models.enums.TipoEmpresa;
 import org.repeid.models.enums.TipoPersona;
+import org.repeid.models.security.RoleModel;
+import org.repeid.models.security.RoleProvider;
+import org.repeid.models.security.UserModel;
+import org.repeid.models.security.UserProvider;
 import org.repeid.representations.idm.AccionistaRepresentation;
 import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
 import org.repeid.representations.idm.TipoDocumentoRepresentation;
+import org.repeid.representations.idm.security.RoleRepresentation;
+import org.repeid.representations.idm.security.UserRepresentation;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -83,5 +89,15 @@ public class RepresentationToModel {
         AccionistaModel model = accionistaProvider.create(personaJuridica, personaNatural,
                 rep.getPorcentajeParticipacion());
         return model;
+    }
+
+    public RoleModel createRole(RoleRepresentation rep, RoleProvider roleProvider) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public UserModel createUser(UserRepresentation rep, UserProvider userProvider) {
+        // TODO Auto-generated method stub
+        
     }
 }

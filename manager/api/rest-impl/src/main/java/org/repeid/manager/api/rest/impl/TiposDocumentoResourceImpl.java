@@ -11,8 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.repeid.manager.api.rest.TipoDocumentoResource;
-import org.repeid.manager.api.rest.TiposDocumentoResource;
+import org.repeid.manager.api.rest.bussiness.TipoDocumentoResource;
+import org.repeid.manager.api.rest.bussiness.TiposDocumentoResource;
 import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.TipoDocumentoModel;
 import org.repeid.models.TipoDocumentoProvider;

@@ -6,8 +6,8 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.rest.AccionistasResource;
-import org.repeid.manager.api.rest.PersonaJuridicaResource;
+import org.repeid.manager.api.rest.bussiness.AccionistasResource;
+import org.repeid.manager.api.rest.bussiness.PersonaJuridicaResource;
 import org.repeid.manager.api.rest.managers.PersonaJuridicaManager;
 import org.repeid.models.PersonaJuridicaModel;
 import org.repeid.models.PersonaJuridicaProvider;

@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.repeid.manager.api.rest.PersonaNaturalResource;
+import org.repeid.manager.api.rest.bussiness.PersonaNaturalResource;
 import org.repeid.manager.api.rest.managers.PersonaNaturalManager;
 import org.repeid.models.PersonaNaturalModel;
 import org.repeid.models.PersonaNaturalProvider;

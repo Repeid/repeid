@@ -1,4 +1,4 @@
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.bussiness;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.representations.idm.PersonaJuridicaRepresentation;
+import org.repeid.representations.idm.TipoDocumentoRepresentation;
 import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 import org.repeid.representations.idm.search.SearchResultsRepresentation;
 
@@ -20,25 +20,23 @@ import org.repeid.representations.idm.search.SearchResultsRepresentation;
  * @author carlosthe19916@gmail.com
  */
 
-@Path("/personas/juridicas")
+@Path("tipoDocumentos")
 @Consumes(MediaType.APPLICATION_JSON)
-public interface PersonasJuridicasResource {
+public interface TiposDocumentoResource {
 
-    @Path("{idPersonaJuridica}")
-    public PersonaJuridicaResource personaJuridica(@PathParam("idPersonaJuridica") String idPersonaJuridica);
+    @Path("{idTipoDocumento}")
+    public TipoDocumentoResource tipoDocumento(@PathParam("idTipoDocumento") String idTipoDocumento);
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(PersonaJuridicaRepresentation rep);
+    public Response create(TipoDocumentoRepresentation rep);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PersonaJuridicaRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
-            @QueryParam("numeroDocumento") String numeroDocumento,
-            @QueryParam("razonSocial") String razonSocial,
-            @QueryParam("nombreComercial") String nombreComercial,
-            @QueryParam("filterText") String filterText, @QueryParam("first") Integer firstResult,
-            @QueryParam("max") Integer maxResults);
+    public List<TipoDocumentoRepresentation> search(@QueryParam("denominacion") String denominacion,
+            @QueryParam("abreviatura") String abreviatura, @QueryParam("tipoPersona") String tipoPersona,
+            @QueryParam("estado") Boolean estado, @QueryParam("filterText") String filterText,
+            @QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
 
     /**
      * Este endpoint provee una forma de buscar direccionesRegionales. Los
@@ -54,7 +52,7 @@ public interface PersonasJuridicasResource {
     @POST
     @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(
+    public SearchResultsRepresentation<TipoDocumentoRepresentation> search(
             SearchCriteriaRepresentation criteria);
 
 }

@@ -11,8 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.repeid.manager.api.rest.PersonaNaturalResource;
-import org.repeid.manager.api.rest.PersonasNaturalesResource;
+import org.repeid.manager.api.rest.bussiness.PersonaNaturalResource;
+import org.repeid.manager.api.rest.bussiness.PersonasNaturalesResource;
 import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.PersonaNaturalModel;
 import org.repeid.models.PersonaNaturalProvider;

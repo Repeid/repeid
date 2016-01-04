@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.bussiness;
 
 import java.util.List;
 
@@ -31,20 +31,20 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public interface MaestroResource {
 
-	@GET
-	@Path("tiposPersona")
-	public List<String> getAllTipoPersonas();
+    @GET
+    @Path("tiposPersona")
+    public List<String> getAllTipoPersonas();
 
-	@GET
-	@Path("estadosCiviles")
-	public List<String> getAllEstadosCiviles();
+    @GET
+    @Path("estadosCiviles")
+    public List<String> getAllEstadosCiviles();
 
-	@GET
-	@Path("sexos")
-	public List<String> getAllSexos();
+    @GET
+    @Path("sexos")
+    public List<String> getAllSexos();
 
-	@GET
-	@Path("tiposEmpresa")
-	public List<String> getAllTiposEmpresa();
+    @GET
+    @Path("tiposEmpresa")
+    public List<String> getAllTiposEmpresa();
 
 }

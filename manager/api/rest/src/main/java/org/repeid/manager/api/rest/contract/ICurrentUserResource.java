@@ -30,6 +30,7 @@ import org.repeid.representations.idm.security.UserRepresentation;
  * 
  * @author eric.wittmann@redhat.com
  */
+
 @Path("currentuser")
 public interface ICurrentUserResource {
 

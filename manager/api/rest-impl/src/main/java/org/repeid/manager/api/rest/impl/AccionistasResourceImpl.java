@@ -10,8 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.repeid.manager.api.rest.AccionistaResource;
-import org.repeid.manager.api.rest.AccionistasResource;
+import org.repeid.manager.api.rest.bussiness.AccionistaResource;
+import org.repeid.manager.api.rest.bussiness.AccionistasResource;
 import org.repeid.models.AccionistaModel;
 import org.repeid.models.AccionistaProvider;
 import org.repeid.models.PersonaJuridicaModel;

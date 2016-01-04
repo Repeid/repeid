@@ -16,26 +16,19 @@
 
 package org.repeid.manager.api.rest.contract.impl;
 
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.ICurrentUserResource;
-import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.representations.idm.security.CurrentUserBean;
-import org.repeid.representations.idm.security.PermissionBean;
-import org.repeid.representations.idm.security.UpdateUserBean;
-import org.repeid.representations.idm.security.UserBean;
+import org.repeid.manager.api.rest.managers.SecurityManager;
+import org.repeid.models.security.UserModel;
+import org.repeid.models.security.UserProvider;
+import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.models.utils.RepresentationToModel;
+import org.repeid.representations.idm.security.UserRepresentation;
 
-import io.apiman.manager.api.core.INewUserBootstrapper;
-import io.apiman.manager.api.core.IStorage;
-import io.apiman.manager.api.core.IStorageQuery;
-import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.core.logging.ApimanLogger;
-import io.apiman.manager.api.core.logging.IApimanLogger;
 import io.apiman.manager.api.security.ISecurityContext;
 
 /**
@@ -43,151 +36,48 @@ import io.apiman.manager.api.security.ISecurityContext;
  *
  * @author eric.wittmann@redhat.com
  */
-@ApplicationScoped
+@Stateless
 public class CurrentUserResourceImpl implements ICurrentUserResource {
 
     @Inject
-    private IStorage storage;
+    private UserProvider userProvider;
+
     @Inject
-    private IStorageQuery query;
+    private SecurityManager securityManager;
+
+    @Inject
+    private RepresentationToModel representationToModel;
+
     @Inject
     private ISecurityContext securityContext;
-    @Inject
-    @ApimanLogger(CurrentUserResourceImpl.class)
-    private IApimanLogger log;
-    @Inject
-    private INewUserBootstrapper userBootstrapper;
 
-    /**
-     * Constructor.
-     */
-    public CurrentUserResourceImpl() {
+    private UserModel getUserModel(String userId) {
+        return userProvider.findById(userId);
     }
 
-    /**
-     * @see org.repeid.manager.api.rest.contract.ICurrentUserResource#getInfo()
-     */
     @Override
-    public CurrentUserBean getInfo() {
+    public UserRepresentation getInfo() {
         String userId = securityContext.getCurrentUser();
 
-        try {
-            CurrentUserBean rval = new CurrentUserBean();
-            UserBean user;
-            storage.beginTx();
-            try {
-                user = storage.getUser(userId);
-            } finally {
-                storage.rollbackTx();
-            }
-            if (user == null) {
-                user = new UserBean();
-                user.setUsername(userId);
-                if (securityContext.getFullName() != null) {
-                    user.setFullName(securityContext.getFullName());
-                } else {
-                    user.setFullName(userId);
-                }
-                if (securityContext.getEmail() != null) {
-                    user.setEmail(securityContext.getEmail());
-                } else {
-                    user.setEmail(""); //$NON-NLS-1$
-                }
-                user.setJoinedOn(new Date());
-                storage.beginTx();
-                try {
-                    storage.createUser(user);
-                    userBootstrapper.bootstrapUser(user, storage);
-                    storage.commitTx();
-                } catch (StorageException e1) {
-                    storage.rollbackTx();
-                    throw new SystemErrorException(e1);
-                }
-                rval.initFromUser(user);
-                rval.setAdmin(securityContext.isAdmin());
-                rval.setPermissions(new HashSet<PermissionBean>());
-            } else {
-                rval.initFromUser(user);
-                Set<PermissionBean> permissions = query.getPermissions(userId);
-                rval.setPermissions(permissions);
-                rval.setAdmin(securityContext.isAdmin());
-            }
-
-            log.debug(String.format("Getting info for user %s", user.getUsername())); //$NON-NLS-1$
-            return rval;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
+        UserModel user = getUserModel(userId);
+        if (user == null) {
+            UserRepresentation rep = new UserRepresentation();
+            rep.setUsername(userId);
+            rep.setFullName(securityContext.getFullName());
+            rep.setEmail(securityContext.getEmail());
+            rep.setAdmin(securityContext.isAdmin());
+            rep.setPermissions(new HashSet<>());
+            user = representationToModel.createUser(rep, userProvider);
         }
+        return ModelToRepresentation.toRepresentation(user);
     }
 
-    /**
-     * @see org.repeid.manager.api.rest.contract.ICurrentUserResource#updateInfo(org.repeid.representations.idm.security.UpdateUserBean)
-     */
     @Override
-    public void updateInfo(UpdateUserBean info) {
-        try {
-            storage.beginTx();
-            UserBean user = storage.getUser(securityContext.getCurrentUser());
-            if (user == null) {
-                throw new StorageException("User not found: " + securityContext.getCurrentUser()); //$NON-NLS-1$
-            }
-            if (info.getEmail() != null) {
-                user.setEmail(info.getEmail());
-            }
-            if (info.getFullName() != null) {
-                user.setFullName(info.getFullName());
-            }
-            storage.updateUser(user);
-            storage.commitTx();
-            log.debug(String.format("Successfully updated user %s: %s", user.getUsername(), user)); //$NON-NLS-1$
-        } catch (StorageException e) {
-            storage.rollbackTx();
-            throw new SystemErrorException(e);
-        }
+    public void updateInfo(UserRepresentation rep) {
+        String userId = securityContext.getCurrentUser();
+
+        UserModel user = getUserModel(userId);
+        securityManager.update(user, rep);
     }
 
-    /**
-     * @return the query
-     */
-    public IStorageQuery getQuery() {
-        return query;
-    }
-
-    /**
-     * @param query
-     *            the query to set
-     */
-    public void setQuery(IStorageQuery query) {
-        this.query = query;
-    }
-
-    /**
-     * @return the securityContext
-     */
-    public ISecurityContext getSecurityContext() {
-        return securityContext;
-    }
-
-    /**
-     * @param securityContext
-     *            the securityContext to set
-     */
-    public void setSecurityContext(ISecurityContext securityContext) {
-        this.securityContext = securityContext;
-    }
-
-    /**
-     * @return the storage
-     */
-    public IStorage getStorage() {
-        return storage;
-    }
-
-    /**
-     * @param storage
-     *            the storage to set
-     */
-    public void setStorage(IStorage storage) {
-        this.storage = storage;
-    }
 }

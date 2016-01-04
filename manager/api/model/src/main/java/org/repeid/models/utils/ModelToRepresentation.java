@@ -5,12 +5,14 @@ import org.repeid.models.PersonaJuridicaModel;
 import org.repeid.models.PersonaNaturalModel;
 import org.repeid.models.StoredFileModel;
 import org.repeid.models.TipoDocumentoModel;
+import org.repeid.models.security.RoleModel;
 import org.repeid.models.security.UserModel;
 import org.repeid.representations.idm.AccionistaRepresentation;
 import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
 import org.repeid.representations.idm.StoredFileRepresentation;
 import org.repeid.representations.idm.TipoDocumentoRepresentation;
+import org.repeid.representations.idm.security.RoleRepresentation;
 import org.repeid.representations.idm.security.UserRepresentation;
 
 public class ModelToRepresentation {
@@ -144,6 +146,11 @@ public class ModelToRepresentation {
         rep.setAdmin(model.isAdmin());
         rep.setPermissions(permissions);
         return rep;
+    }
+
+    public static RoleRepresentation toRepresentation(RoleModel role) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

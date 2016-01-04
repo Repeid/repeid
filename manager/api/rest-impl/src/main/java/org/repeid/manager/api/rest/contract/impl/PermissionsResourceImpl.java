@@ -16,85 +16,52 @@
 
 package org.repeid.manager.api.rest.contract.impl;
 
-import io.apiman.manager.api.core.IStorageQuery;
-import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
-
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.IPermissionsResource;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
-import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
-import org.repeid.representations.idm.security.UserPermissionsBean;
+import org.repeid.representations.idm.security.UserPermissionsRepresentation;
+
+import io.apiman.manager.api.security.ISecurityContext;
 
 /**
  * Implementation of the Permissions API.
  * 
  * @author eric.wittmann@redhat.com
  */
-@ApplicationScoped
+@Stateless
 public class PermissionsResourceImpl implements IPermissionsResource {
-    
-    @Inject
-    IStorageQuery query;
+
     @Inject
     ISecurityContext securityContext;
-    
+
     /**
      * Constructor.
      */
     public PermissionsResourceImpl() {
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.IPermissionsResource#getPermissionsForUser(java.lang.String)
      */
     @Override
-    public UserPermissionsBean getPermissionsForUser(String userId) throws UserNotFoundException, NotAuthorizedException {
+    public UserPermissionsRepresentation getPermissionsForUser(String userId)
+            throws UserNotFoundException, NotAuthorizedException {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
 
-        try {
-            UserPermissionsBean bean = new UserPermissionsBean();
-            bean.setUserId(userId);
-            bean.setPermissions(query.getPermissions(userId));
-            return bean;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
+        return null;
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.IPermissionsResource#getPermissionsForCurrentUser()
      */
     @Override
-    public UserPermissionsBean getPermissionsForCurrentUser() throws UserNotFoundException {
-        try {
-            String currentUser = securityContext.getCurrentUser();
-            UserPermissionsBean bean = new UserPermissionsBean();
-            bean.setUserId(currentUser);
-            bean.setPermissions(query.getPermissions(currentUser));
-            return bean;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
+    public UserPermissionsRepresentation getPermissionsForCurrentUser() throws UserNotFoundException {
+        return null;
     }
 
-    /**
-     * @return the securityContext
-     */
-    public ISecurityContext getSecurityContext() {
-        return securityContext;
-    }
-
-    /**
-     * @param securityContext the securityContext to set
-     */
-    public void setSecurityContext(ISecurityContext securityContext) {
-        this.securityContext = securityContext;
-    }
-    
 }

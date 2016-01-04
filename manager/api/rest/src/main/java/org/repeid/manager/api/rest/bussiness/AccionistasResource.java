@@ -1,4 +1,4 @@
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.bussiness;
 
 import java.util.List;
 
@@ -20,15 +20,15 @@ import org.repeid.representations.idm.AccionistaRepresentation;
 @Consumes(MediaType.APPLICATION_JSON)
 public interface AccionistasResource {
 
-	@Path("{idAccionista}")
-	public AccionistaResource accionista(@PathParam("idAccionista") String idAccionista);
+    @Path("{idAccionista}")
+    public AccionistaResource accionista(@PathParam("idAccionista") String idAccionista);
 
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(AccionistaRepresentation rep);
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(AccionistaRepresentation rep);
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<AccionistaRepresentation> getAll();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<AccionistaRepresentation> getAll();
 
 }

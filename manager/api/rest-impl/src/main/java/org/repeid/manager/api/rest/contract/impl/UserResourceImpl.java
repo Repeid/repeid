@@ -20,13 +20,16 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.IUserResource;
+import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
-import org.repeid.manager.api.rest.managers.UserManager;
+import org.repeid.manager.api.rest.managers.SecurityManager;
 import org.repeid.models.security.UserModel;
 import org.repeid.models.security.UserProvider;
 import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.UserRepresentation;
 
 import io.apiman.manager.api.security.ISecurityContext;
@@ -43,7 +46,7 @@ public class UserResourceImpl implements IUserResource {
     private UserProvider userProvider;
 
     @Inject
-    private UserManager userManager;
+    private SecurityManager userManager;
 
     @Inject
     private ISecurityContext securityContext;
@@ -73,14 +76,10 @@ public class UserResourceImpl implements IUserResource {
         userManager.update(user, rep);
     }
 
-    /*@Override
-    public SearchResultsBean<UserBean> search(SearchCriteriaBean criteria)
+    @Override
+    public SearchResultsRepresentation<UserRepresentation> search(SearchCriteriaRepresentation criteria)
             throws InvalidSearchCriteriaException {
-        try {
-            return query.findUsers(criteria);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }*/
+        return null;
+    }
 
 }

@@ -1,4 +1,4 @@
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.bussiness;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;

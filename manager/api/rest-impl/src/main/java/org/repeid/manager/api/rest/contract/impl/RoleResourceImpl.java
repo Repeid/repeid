@@ -16,18 +16,10 @@
 
 package org.repeid.manager.api.rest.contract.impl;
 
-import io.apiman.manager.api.beans.BeanUtils;
-import io.apiman.manager.api.beans.search.SearchCriteriaBean;
-import io.apiman.manager.api.beans.search.SearchResultsBean;
-import io.apiman.manager.api.core.IStorage;
-import io.apiman.manager.api.core.IStorageQuery;
-import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
-
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.IRoleResource;
@@ -35,202 +27,97 @@ import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaExce
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleAlreadyExistsException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleNotFoundException;
-import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
-import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
-import org.repeid.representations.idm.security.NewRoleBean;
-import org.repeid.representations.idm.security.RoleBean;
-import org.repeid.representations.idm.security.UpdateRoleBean;
+import org.repeid.manager.api.rest.managers.SecurityManager;
+import org.repeid.models.security.RoleModel;
+import org.repeid.models.security.RoleProvider;
+import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.models.utils.RepresentationToModel;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
+import org.repeid.representations.idm.security.RoleRepresentation;
+
+import io.apiman.manager.api.security.ISecurityContext;
 
 /**
  * Implementation of the Role API.
  * 
  * @author eric.wittmann@redhat.com
  */
-@ApplicationScoped
+@Stateless
 public class RoleResourceImpl implements IRoleResource {
-    
+
     @Inject
-    IStorage storage;
+    private RoleProvider roleProvider;
+
     @Inject
-    IStorageQuery query;
+    private SecurityManager securityManager;
+
     @Inject
-    ISecurityContext securityContext;
-    
-    /**
-     * Constructor.
-     */
-    public RoleResourceImpl() {
+    private RepresentationToModel representationToModel;
+
+    @Inject
+    private ISecurityContext securityContext;
+
+    private RoleModel getRoleModel(String roleId) {
+        return roleProvider.findById(roleId);
     }
-    
-    /**
-     * @see org.repeid.manager.api.rest.contract.IRoleResource#create(org.repeid.representations.idm.security.NewRoleBean)
-     */
+
     @Override
-    public RoleBean create(NewRoleBean bean) throws RoleAlreadyExistsException, NotAuthorizedException {
+    public RoleRepresentation create(RoleRepresentation rep)
+            throws RoleAlreadyExistsException, NotAuthorizedException {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
 
-        RoleBean role = new RoleBean();
-        role.setAutoGrant(bean.getAutoGrant());
-        role.setCreatedBy(securityContext.getCurrentUser());
-        role.setCreatedOn(new Date());
-        role.setDescription(bean.getDescription());
-        role.setId(BeanUtils.idFromName(bean.getName()));
-        role.setName(bean.getName());
-        role.setPermissions(bean.getPermissions());
-        try {
-            getStorage().beginTx();
-            if (getStorage().getRole(role.getId()) != null) {
-                throw ExceptionFactory.roleAlreadyExistsException(role.getId());
-            }
-            getStorage().createRole(role);
-            getStorage().commitTx();
-            return role;
-        } catch (StorageException e) {
-            getStorage().rollbackTx();
-            throw new SystemErrorException(e);
-        }
+        RoleModel role = representationToModel.createRole(rep, roleProvider);
+        return ModelToRepresentation.toRepresentation(role);
     }
-    
-    /**
-     * @see org.repeid.manager.api.rest.contract.IRoleResource#get(java.lang.String)
-     */
+
     @Override
-    public RoleBean get(String roleId) throws RoleNotFoundException, NotAuthorizedException {
-        try {
-            getStorage().beginTx();
-            RoleBean role = getStorage().getRole(roleId);
-            if (role == null) {
-                throw ExceptionFactory.roleNotFoundException(roleId);
-            }
-            return role;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        } finally {
-            getStorage().rollbackTx();
+    public RoleRepresentation get(String roleId) throws RoleNotFoundException, NotAuthorizedException {
+        RoleModel role = getRoleModel(roleId);
+        if (role == null) {
+            throw ExceptionFactory.roleNotFoundException(roleId);
         }
+        return ModelToRepresentation.toRepresentation(role);
     }
-    
-    /**
-     * @see org.repeid.manager.api.rest.contract.IRoleResource#update(java.lang.String, org.repeid.representations.idm.security.UpdateRoleBean)
-     */
+
     @Override
-    public void update(String roleId, UpdateRoleBean bean) throws RoleNotFoundException, NotAuthorizedException {
+    public void update(String roleId, RoleRepresentation rep)
+            throws RoleNotFoundException, NotAuthorizedException {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
-        try {
-            getStorage().beginTx();
-            RoleBean role = getStorage().getRole(roleId);
-            if (role == null) {
-                throw ExceptionFactory.roleNotFoundException(roleId);
-            }
-            if (bean.getDescription() != null) {
-                role.setDescription(bean.getDescription());
-            }
-            if (bean.getAutoGrant() != null) {
-                role.setAutoGrant(bean.getAutoGrant());
-            }
-            if (bean.getName() != null) {
-                role.setName(bean.getName());
-            }
-            if (bean.getPermissions() != null) {
-                role.getPermissions().clear();
-                role.getPermissions().addAll(bean.getPermissions());
-            }
-            getStorage().updateRole(role);
-            getStorage().commitTx();
-        } catch (StorageException e) {
-            getStorage().rollbackTx();
-            throw new SystemErrorException(e);
-        }
+
+        RoleModel role = getRoleModel(roleId);
+        securityManager.update(role, rep);
     }
-    
-    /**
-     * @see org.repeid.manager.api.rest.contract.IRoleResource#delete(java.lang.String)
-     */
+
     @Override
     public void delete(String roleId) throws RoleNotFoundException, NotAuthorizedException {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
-        RoleBean bean = get(roleId);
-        try {
-            getStorage().beginTx();
-            getStorage().deleteRole(bean);
-            getStorage().commitTx();
-        } catch (StorageException e) {
-            getStorage().rollbackTx();
-            throw new SystemErrorException(e);
-        }
+        RoleModel role = getRoleModel(roleId);
+        roleProvider.delete(role);
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.IRoleResource#list()
      */
     @Override
-    public List<RoleBean> list() throws NotAuthorizedException {
-        try {
-            SearchCriteriaBean criteria = new SearchCriteriaBean();
-            criteria.setOrder("name", true); //$NON-NLS-1$
-            return getQuery().findRoles(criteria).getBeans();
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
+    public List<RoleRepresentation> list() throws NotAuthorizedException {
+        List<RoleModel> roles = roleProvider.getAll();
+        List<RoleRepresentation> result = new ArrayList<>();
+        for (RoleModel role : roles) {
+            result.add(ModelToRepresentation.toRepresentation(role));
         }
+        return result;
     }
-    
-    /**
-     * @see org.repeid.manager.api.rest.contract.IRoleResource#search(io.apiman.manager.api.beans.search.SearchCriteriaBean)
-     */
+
     @Override
-    public SearchResultsBean<RoleBean> search(SearchCriteriaBean criteria)
+    public SearchResultsRepresentation<RoleRepresentation> search(SearchCriteriaRepresentation criteria)
             throws InvalidSearchCriteriaException, NotAuthorizedException {
-        try {
-            SearchCriteriaUtil.validateSearchCriteria(criteria);
-            return getQuery().findRoles(criteria);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    /**
-     * @return the securityContext
-     */
-    public ISecurityContext getSecurityContext() {
-        return securityContext;
-    }
-
-    /**
-     * @param securityContext the securityContext to set
-     */
-    public void setSecurityContext(ISecurityContext securityContext) {
-        this.securityContext = securityContext;
-    }
-
-    /**
-     * @return the storage
-     */
-    public IStorage getStorage() {
-        return storage;
-    }
-
-    /**
-     * @param storage the storage to set
-     */
-    public void setStorage(IStorage storage) {
-        this.storage = storage;
-    }
-
-    /**
-     * @return the query
-     */
-    public IStorageQuery getQuery() {
-        return query;
-    }
-
-    /**
-     * @param query the query to set
-     */
-    public void setQuery(IStorageQuery query) {
-        this.query = query;
-    }
 }

@@ -6,7 +6,7 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.rest.TipoDocumentoResource;
+import org.repeid.manager.api.rest.bussiness.TipoDocumentoResource;
 import org.repeid.manager.api.rest.managers.TipoDocumentoManager;
 import org.repeid.models.TipoDocumentoModel;
 import org.repeid.models.TipoDocumentoProvider;

@@ -32,10 +32,9 @@ import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaExce
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleAlreadyExistsException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleNotFoundException;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.RoleRepresentation;
-
-import io.apiman.manager.api.beans.search.SearchCriteriaBean;
-import io.apiman.manager.api.beans.search.SearchResultsBean;
 
 /**
  * The Role API. Used to manage roles. Note: not used to manage users or user
@@ -160,7 +159,7 @@ public interface IRoleResource {
     @Path("search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsBean<RoleRepresentation> search(SearchCriteriaBean criteria)
+    public SearchResultsRepresentation<RoleRepresentation> search(SearchCriteriaRepresentation criteria)
             throws InvalidSearchCriteriaException, NotAuthorizedException;
 
 }

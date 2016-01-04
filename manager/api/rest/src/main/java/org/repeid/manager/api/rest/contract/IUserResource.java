@@ -28,10 +28,9 @@ import javax.ws.rs.core.MediaType;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.UserRepresentation;
-
-import io.apiman.manager.api.beans.search.SearchCriteriaBean;
-import io.apiman.manager.api.beans.search.SearchResultsBean;
 
 /**
  * The User API.
@@ -93,11 +92,11 @@ public interface IUserResource {
      * @throws InvalidSearchCriteriaException
      *             when provided criteria are invalid
      */
-    /*@POST
+    @POST
     @Path("search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsBean<UserRepresentation> search(SearchCriteriaBean criteria)
-            throws InvalidSearchCriteriaException;*/
+    public SearchResultsRepresentation<UserRepresentation> search(SearchCriteriaRepresentation criteria)
+            throws InvalidSearchCriteriaException;
 
 }
