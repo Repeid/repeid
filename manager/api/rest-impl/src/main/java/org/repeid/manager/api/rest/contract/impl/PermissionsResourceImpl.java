@@ -16,15 +16,22 @@
 
 package org.repeid.manager.api.rest.contract.impl;
 
+import java.util.Set;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.IPermissionsResource;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
+import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
+import org.repeid.models.security.UserModel;
+import org.repeid.models.security.UserProvider;
+import org.repeid.representations.idm.security.PermissionType;
 import org.repeid.representations.idm.security.UserPermissionsRepresentation;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
 import io.apiman.manager.api.security.ISecurityContext;
 
 /**
@@ -36,32 +43,54 @@ import io.apiman.manager.api.security.ISecurityContext;
 public class PermissionsResourceImpl implements IPermissionsResource {
 
     @Inject
-    ISecurityContext securityContext;
+    private UserProvider userProvider;
 
-    /**
-     * Constructor.
-     */
-    public PermissionsResourceImpl() {
+    @Inject
+    private ISecurityContext securityContext;
+
+    private UserModel getUserModel(String userId) throws StorageException {
+        return userProvider.findById(userId);
     }
 
-    /**
-     * @see org.repeid.manager.api.rest.contract.IPermissionsResource#getPermissionsForUser(java.lang.String)
-     */
     @Override
     public UserPermissionsRepresentation getPermissionsForUser(String userId)
             throws UserNotFoundException, NotAuthorizedException {
         if (!securityContext.isAdmin())
             throw ExceptionFactory.notAuthorizedException();
 
-        return null;
+        try {
+            UserModel user = getUserModel(userId);
+            if (user == null) {
+                throw ExceptionFactory.userNotFoundException(userId);
+            }
+            Set<PermissionType> permissions = userProvider.getPermissions(userId);
+
+            UserPermissionsRepresentation rep = new UserPermissionsRepresentation();
+            rep.setUserId(userId);
+            rep.setPermissions(permissions);
+            return rep;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
-    /**
-     * @see org.repeid.manager.api.rest.contract.IPermissionsResource#getPermissionsForCurrentUser()
-     */
     @Override
     public UserPermissionsRepresentation getPermissionsForCurrentUser() throws UserNotFoundException {
-        return null;
+        try {
+            String userId = securityContext.getCurrentUser();
+            UserModel user = getUserModel(userId);
+            if (user == null) {
+                throw ExceptionFactory.userNotFoundException(userId);
+            }
+            Set<PermissionType> permissions = userProvider.getPermissions(userId);
+
+            UserPermissionsRepresentation rep = new UserPermissionsRepresentation();
+            rep.setUserId(userId);
+            rep.setPermissions(permissions);
+            return rep;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
 }

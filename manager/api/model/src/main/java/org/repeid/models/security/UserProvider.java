@@ -1,10 +1,13 @@
 package org.repeid.models.security;
 
+import java.util.Set;
+
 import javax.ejb.Local;
 
 import org.repeid.models.search.SearchCriteriaModel;
 import org.repeid.models.search.SearchResultsModel;
 import org.repeid.provider.Provider;
+import org.repeid.representations.idm.security.PermissionType;
 
 import io.apiman.manager.api.core.exceptions.StorageException;
 
@@ -19,5 +22,7 @@ public interface UserProvider extends Provider {
 
     SearchResultsModel<UserModel> search(SearchCriteriaModel criteria, String filterText)
             throws StorageException;
+
+    Set<PermissionType> getPermissions(String userId) throws StorageException;
 
 }
