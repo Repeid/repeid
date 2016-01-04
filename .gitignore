@@ -27,6 +27,7 @@
 *.project
 *.settings
 /bin
+**/bin/**
 /subprojects/*/bin
 .DS_Store
 /performanceTest/lib
