@@ -11,6 +11,8 @@ import io.apiman.manager.api.core.exceptions.StorageException;
 @Local
 public interface UserProvider extends Provider {
 
+    UserModel create(String username, String fullName, String email) throws StorageException;
+
     UserModel findById(String id) throws StorageException;
 
     SearchResultsModel<UserModel> search(SearchCriteriaModel criteria) throws StorageException;

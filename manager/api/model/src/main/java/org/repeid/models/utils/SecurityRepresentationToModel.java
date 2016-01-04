@@ -21,8 +21,7 @@ public class SecurityRepresentationToModel {
         return provider.create(rep.getName(), rep.getDescription(), rep.getAutoGrant(), rep.getPermissions());
     }
 
-    public UserModel createUser(UserRepresentation rep, UserProvider userProvider) {
-        // TODO Auto-generated method stub
-        return null;
+    public UserModel createUser(UserRepresentation rep, UserProvider provider) throws StorageException {
+        return provider.create(rep.getUsername(), rep.getFullName(), rep.getEmail());
     }
 }

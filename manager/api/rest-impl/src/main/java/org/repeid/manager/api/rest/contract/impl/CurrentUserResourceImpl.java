@@ -22,13 +22,16 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.ICurrentUserResource;
+import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
+import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.SecurityManager;
 import org.repeid.models.security.UserModel;
 import org.repeid.models.security.UserProvider;
-import org.repeid.models.utils.ModelToRepresentation;
-import org.repeid.models.utils.RepresentationToModel;
+import org.repeid.models.utils.SecurityModelToRepresentation;
+import org.repeid.models.utils.SecurityRepresentationToModel;
 import org.repeid.representations.idm.security.UserRepresentation;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
 import io.apiman.manager.api.security.ISecurityContext;
 
 /**
@@ -46,38 +49,47 @@ public class CurrentUserResourceImpl implements ICurrentUserResource {
     private SecurityManager securityManager;
 
     @Inject
-    private RepresentationToModel representationToModel;
+    private SecurityRepresentationToModel securityRepresentationToModel;
 
     @Inject
     private ISecurityContext securityContext;
 
-    private UserModel getUserModel(String userId) {
+    private UserModel getUserModel(String userId) throws StorageException {
         return userProvider.findById(userId);
     }
 
     @Override
     public UserRepresentation getInfo() {
         String userId = securityContext.getCurrentUser();
-
-        UserModel user = getUserModel(userId);
-        if (user == null) {
-            UserRepresentation rep = new UserRepresentation();
-            rep.setUsername(userId);
-            rep.setFullName(securityContext.getFullName());
-            rep.setEmail(securityContext.getEmail());
-            rep.setAdmin(securityContext.isAdmin());
-            rep.setPermissions(new HashSet<>());
-            user = representationToModel.createUser(rep, userProvider);
+        try {
+            UserModel user = getUserModel(userId);
+            if (user == null) {
+                UserRepresentation rep = new UserRepresentation();
+                rep.setUsername(userId);
+                rep.setFullName(securityContext.getFullName());
+                rep.setEmail(securityContext.getEmail());
+                rep.setAdmin(securityContext.isAdmin());
+                rep.setPermissions(new HashSet<>());
+                user = securityRepresentationToModel.createUser(rep, userProvider);
+            }
+            return SecurityModelToRepresentation.toRepresentation(user);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
         }
-        return ModelToRepresentation.toRepresentation(user);
     }
 
     @Override
     public void updateInfo(UserRepresentation rep) {
         String userId = securityContext.getCurrentUser();
-
-        UserModel user = getUserModel(userId);
-        securityManager.update(user, rep);
+        try {
+            UserModel user = getUserModel(userId);
+            if (user == null) {
+                throw ExceptionFactory.userNotFoundException(userId);
+            }
+            securityManager.update(user, rep);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
 }
