@@ -15,15 +15,17 @@
  */
 package org.repeid.manager.api.rest.impl.util;
 
-import io.apiman.manager.api.beans.search.SearchCriteriaBean;
-import io.apiman.manager.api.beans.search.SearchCriteriaFilterBean;
-import io.apiman.manager.api.beans.search.SearchCriteriaFilterOperator;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.impl.i18n.Messages;
+import org.repeid.models.search.SearchCriteriaFilterOperator;
+import org.repeid.models.search.SearchCriteriaModel;
+import org.repeid.representations.idm.search.OrderByRepresentation;
+import org.repeid.representations.idm.search.PagingRepresentation;
+import org.repeid.representations.idm.search.SearchCriteriaFilterRepresentation;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 
 /**
  * Some utility methods related to searches and search criteria.
@@ -31,8 +33,9 @@ import org.repeid.manager.api.rest.impl.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public final class SearchCriteriaUtil {
-    
+
     public static final Set<SearchCriteriaFilterOperator> validOperators = new HashSet<>();
+
     static {
         validOperators.add(SearchCriteriaFilterOperator.eq);
         validOperators.add(SearchCriteriaFilterOperator.gt);
@@ -45,33 +48,69 @@ public final class SearchCriteriaUtil {
 
     /**
      * Validates that the search criteria bean is complete and makes sense.
-     * @param criteria the search criteria
-     * @throws InvalidSearchCriteriaException when the search criteria is not valid
+     * 
+     * @param criteria
+     *            the search criteria
+     * @throws InvalidSearchCriteriaException
+     *             when the search criteria is not valid
      */
-    public static final void validateSearchCriteria(SearchCriteriaBean criteria) throws InvalidSearchCriteriaException {
+    public static final void validateSearchCriteria(SearchCriteriaRepresentation criteria)
+            throws InvalidSearchCriteriaException {
         if (criteria.getPaging() != null) {
             if (criteria.getPaging().getPage() < 1) {
-                throw new InvalidSearchCriteriaException(Messages.i18n.format("SearchCriteriaUtil.MissingPage")); //$NON-NLS-1$
+                throw new InvalidSearchCriteriaException(
+                        Messages.i18n.format("SearchCriteriaUtil.MissingPage")); //$NON-NLS-1$
             }
             if (criteria.getPaging().getPageSize() < 1) {
-                throw new InvalidSearchCriteriaException(Messages.i18n.format("SearchCriteriaUtil.MissingPageSize")); //$NON-NLS-1$
+                throw new InvalidSearchCriteriaException(
+                        Messages.i18n.format("SearchCriteriaUtil.MissingPageSize")); //$NON-NLS-1$
             }
         }
         int count = 1;
-        for (SearchCriteriaFilterBean filter : criteria.getFilters()) {
+        for (SearchCriteriaFilterRepresentation filter : criteria.getFilters()) {
             if (filter.getName() == null || filter.getName().trim().length() == 0) {
-                throw new InvalidSearchCriteriaException(Messages.i18n.format("SearchCriteriaUtil.MissingSearchFilterName", count)); //$NON-NLS-1$
+                throw new InvalidSearchCriteriaException(
+                        Messages.i18n.format("SearchCriteriaUtil.MissingSearchFilterName", count)); //$NON-NLS-1$
             }
-            if (filter.getValue() == null || filter.getValue().trim().length() == 0) {
-                throw new InvalidSearchCriteriaException(Messages.i18n.format("SearchCriteriaUtil.MissingSearchFilterValue", count)); //$NON-NLS-1$
+            if (filter.getValue() == null) {
+                throw new InvalidSearchCriteriaException(
+                        Messages.i18n.format("SearchCriteriaUtil.MissingSearchFilterValue", count)); //$NON-NLS-1$
             }
             if (filter.getOperator() == null || !validOperators.contains(filter.getOperator())) {
-                throw new InvalidSearchCriteriaException(Messages.i18n.format("SearchCriteriaUtil.MissingSearchFilterOperator", count)); //$NON-NLS-1$
+                throw new InvalidSearchCriteriaException(
+                        Messages.i18n.format("SearchCriteriaUtil.MissingSearchFilterOperator", count)); //$NON-NLS-1$
             }
             count++;
         }
-        if (criteria.getOrderBy() != null && (criteria.getOrderBy().getName() == null || criteria.getOrderBy().getName().trim().length() == 0)) {
-            throw new InvalidSearchCriteriaException(Messages.i18n.format("SearchCriteriaUtil.MissingOrderByName")); //$NON-NLS-1$
+        if (criteria.getOrders() != null) {
+            throw new InvalidSearchCriteriaException(
+                    Messages.i18n.format("SearchCriteriaUtil.MissingOrderByName")); //$NON-NLS-1$
         }
     }
+
+    public static SearchCriteriaModel getSearchCriteriaModel(SearchCriteriaRepresentation criteria) {
+        SearchCriteriaModel criteriaModel = new SearchCriteriaModel();
+
+        // set filter and order
+        for (SearchCriteriaFilterRepresentation filter : criteria.getFilters()) {
+            criteriaModel.addFilter(filter.getName(), filter.getValue(),
+                    SearchCriteriaFilterOperator.valueOf(filter.getOperator().toString()));
+        }
+        for (OrderByRepresentation order : criteria.getOrders()) {
+            criteriaModel.addOrder(order.getName(), order.isAscending());
+        }
+
+        // set paging
+        PagingRepresentation paging = criteria.getPaging();
+        if (paging == null) {
+            paging = new PagingRepresentation();
+            paging.setPage(1);
+            paging.setPageSize(20);
+        }
+        criteriaModel.setPageSize(paging.getPageSize());
+        criteriaModel.setPage(paging.getPage());
+
+        return criteriaModel;
+    }
+
 }

@@ -16,15 +16,22 @@
 
 package org.repeid.manager.api.rest.contract.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.rest.contract.IUserResource;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
+import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
+import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.rest.managers.SecurityManager;
+import org.repeid.models.search.SearchCriteriaModel;
+import org.repeid.models.search.SearchResultsModel;
 import org.repeid.models.security.UserModel;
 import org.repeid.models.security.UserProvider;
 import org.repeid.models.utils.ModelToRepresentation;
@@ -32,6 +39,7 @@ import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.UserRepresentation;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
 import io.apiman.manager.api.security.ISecurityContext;
 
 /**
@@ -46,22 +54,26 @@ public class UserResourceImpl implements IUserResource {
     private UserProvider userProvider;
 
     @Inject
-    private SecurityManager userManager;
+    private SecurityManager securityManager;
 
     @Inject
     private ISecurityContext securityContext;
 
-    private UserModel getUserModel(String userId) {
+    private UserModel getUserModel(String userId) throws StorageException {
         return userProvider.findById(userId);
     }
 
     @Override
     public UserRepresentation get(String userId) throws UserNotFoundException {
-        UserModel user = getUserModel(userId);
-        if (user == null) {
-            throw ExceptionFactory.userNotFoundException(userId);
+        try {
+            UserModel user = getUserModel(userId);
+            if (user == null) {
+                throw ExceptionFactory.userNotFoundException(userId);
+            }
+            return ModelToRepresentation.toRepresentation(user);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
         }
-        return ModelToRepresentation.toRepresentation(user);
     }
 
     @Override
@@ -69,17 +81,48 @@ public class UserResourceImpl implements IUserResource {
             throws UserNotFoundException, NotAuthorizedException {
         if (!securityContext.isAdmin() && !securityContext.getCurrentUser().equals(userId))
             throw ExceptionFactory.notAuthorizedException();
-        UserModel user = getUserModel(userId);
-        if (user == null) {
-            throw ExceptionFactory.userNotFoundException(userId);
+
+        try {
+            UserModel user = getUserModel(userId);
+            if (user == null) {
+                throw ExceptionFactory.userNotFoundException(userId);
+            }
+            securityManager.update(user, rep);
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
         }
-        userManager.update(user, rep);
     }
 
     @Override
     public SearchResultsRepresentation<UserRepresentation> search(SearchCriteriaRepresentation criteria)
             throws InvalidSearchCriteriaException {
-        return null;
+        try {
+            // Validate criteria
+            SearchCriteriaUtil.validateSearchCriteria(criteria);
+            SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
+
+            // extract filterText
+            String filterText = criteria.getFilterText();
+
+            // search
+            SearchResultsModel<UserModel> results = null;
+            if (filterText == null || filterText.trim().isEmpty()) {
+                results = userProvider.search(criteriaModel);
+            } else {
+                results = userProvider.search(criteriaModel, filterText);
+            }
+
+            SearchResultsRepresentation<UserRepresentation> rep = new SearchResultsRepresentation<>();
+            List<UserRepresentation> items = new ArrayList<>();
+            for (UserModel model : results.getModels()) {
+                items.add(ModelToRepresentation.toRepresentation(model));
+            }
+            rep.setItems(items);
+            rep.setTotalSize(results.getTotalSize());
+            return rep;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
     }
 
 }

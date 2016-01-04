@@ -1,4 +1,4 @@
-package org.repeid.manager.api.rest.impl;
+package org.repeid.manager.api.rest.bussiness.impl;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
