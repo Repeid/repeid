@@ -34,7 +34,7 @@ public class KeycloakSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getRequestHeader(java.lang.String)
+     * @see org.repeid.manager.api.security.ISecurityContext#getRequestHeader(java.lang.String)
      */
     @Override
     public String getRequestHeader(String headerName) {
@@ -42,7 +42,7 @@ public class KeycloakSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getCurrentUser()
+     * @see org.repeid.manager.api.security.ISecurityContext#getCurrentUser()
      */
     @Override
     public String getCurrentUser() {
@@ -78,7 +78,7 @@ public class KeycloakSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#isAdmin()
+     * @see org.repeid.manager.api.security.ISecurityContext#isAdmin()
      */
     @Override
     public boolean isAdmin() {

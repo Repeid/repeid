@@ -12,6 +12,7 @@ import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.TipoDocumentoManager;
+import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.models.TipoDocumentoModel;
 import org.repeid.models.TipoDocumentoProvider;
 import org.repeid.models.utils.ModelToRepresentation;
@@ -19,7 +20,6 @@ import org.repeid.representations.idm.TipoDocumentoRepresentation;
 import org.repeid.representations.idm.security.PermissionType;
 
 import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
 
 @Stateless
 public class TipoDocumentoResourceImpl implements TipoDocumentoResource {

@@ -17,7 +17,6 @@
 package org.repeid.manager.api.rest.impl.mappers;
 
 import io.apiman.manager.api.beans.exceptions.ErrorBean;
-import io.apiman.manager.api.security.ISecurityContext;
 
 import java.io.PrintWriter;
 
@@ -31,6 +30,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.repeid.manager.api.rest.contract.exceptions.AbstractRestException;
+import org.repeid.manager.api.security.ISecurityContext;
 
 /**
  * Provider that maps an error.

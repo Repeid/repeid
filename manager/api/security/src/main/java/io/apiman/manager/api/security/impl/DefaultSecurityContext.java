@@ -36,7 +36,7 @@ public class DefaultSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getRequestHeader(java.lang.String)
+     * @see org.repeid.manager.api.security.ISecurityContext#getRequestHeader(java.lang.String)
      */
     @Override
     public String getRequestHeader(String headerName) {
@@ -44,7 +44,7 @@ public class DefaultSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getCurrentUser()
+     * @see org.repeid.manager.api.security.ISecurityContext#getCurrentUser()
      */
     @Override
     public String getCurrentUser() {
@@ -52,7 +52,7 @@ public class DefaultSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getEmail()
+     * @see org.repeid.manager.api.security.ISecurityContext#getEmail()
      */
     @Override
     public String getEmail() {
@@ -60,7 +60,7 @@ public class DefaultSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#getFullName()
+     * @see org.repeid.manager.api.security.ISecurityContext#getFullName()
      */
     @Override
     public String getFullName() {
@@ -68,7 +68,7 @@ public class DefaultSecurityContext extends AbstractSecurityContext {
     }
 
     /**
-     * @see io.apiman.manager.api.security.ISecurityContext#isAdmin()
+     * @see org.repeid.manager.api.security.ISecurityContext#isAdmin()
      */
     @Override
     public boolean isAdmin() {

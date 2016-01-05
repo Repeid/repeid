@@ -30,6 +30,7 @@ import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.rest.managers.SecurityManager;
+import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.models.search.SearchCriteriaModel;
 import org.repeid.models.search.SearchResultsModel;
 import org.repeid.models.security.UserModel;
@@ -40,7 +41,6 @@ import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.UserRepresentation;
 
 import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
 
 /**
  * Implementation of the User API.

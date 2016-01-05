@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.manager.api.security;
+package org.repeid.manager.api.security;
 
 import java.util.Set;
 

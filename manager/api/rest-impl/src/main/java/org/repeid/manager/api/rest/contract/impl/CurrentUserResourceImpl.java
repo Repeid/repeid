@@ -25,6 +25,7 @@ import org.repeid.manager.api.rest.contract.ICurrentUserResource;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.SecurityManager;
+import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.models.security.UserModel;
 import org.repeid.models.security.UserProvider;
 import org.repeid.models.utils.SecurityModelToRepresentation;
@@ -32,7 +33,6 @@ import org.repeid.models.utils.SecurityRepresentationToModel;
 import org.repeid.representations.idm.security.UserRepresentation;
 
 import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
 
 /**
  * Implementation of the Current User API.

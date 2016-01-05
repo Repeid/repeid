@@ -19,6 +19,7 @@ import org.repeid.manager.api.rest.contract.exceptions.PersonaJuridicaAlreadyExi
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
+import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.PersonaJuridicaModel;
 import org.repeid.models.PersonaJuridicaProvider;
@@ -37,7 +38,6 @@ import org.repeid.representations.idm.search.SearchResultsRepresentation;
 import org.repeid.representations.idm.security.PermissionType;
 
 import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
 
 @Stateless
 public class PersonasJuridicasResourceImpl implements PersonasJuridicasResource {

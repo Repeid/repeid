@@ -13,6 +13,7 @@ import org.repeid.manager.api.rest.contract.exceptions.PersonaNaturalNotFoundExc
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.PersonaNaturalManager;
+import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.models.PersonaNaturalModel;
 import org.repeid.models.PersonaNaturalProvider;
 import org.repeid.models.utils.ModelToRepresentation;
@@ -21,7 +22,6 @@ import org.repeid.representations.idm.StoredFileRepresentation;
 import org.repeid.representations.idm.security.PermissionType;
 
 import io.apiman.manager.api.core.exceptions.StorageException;
-import io.apiman.manager.api.security.ISecurityContext;
 
 @Stateless
 public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
