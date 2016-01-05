@@ -18,6 +18,9 @@ package org.repeid.manager.api.rest.impl.util;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleAlreadyExistsException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleNotFoundException;
+import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoAlreadyExistsException;
+import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoLockedException;
+import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoNotFoundException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.i18n.Messages;
 
@@ -28,46 +31,81 @@ import org.repeid.manager.api.rest.impl.i18n.Messages;
  */
 public final class ExceptionFactory {
 
-    /**
-     * Creates an exception from a username.
-     * 
-     * @param username
-     *            the username
-     * @return the exception
-     */
-    public static final UserNotFoundException userNotFoundException(String username) {
-        return new UserNotFoundException(Messages.i18n.format("UserNotFound", username)); //$NON-NLS-1$
-    }
+	/**
+	 * Creates an exception from an tipoDocumento id.
+	 * 
+	 * @param tipoDocumentoId
+	 *            the tipoDocumento id
+	 * @return the exception
+	 */
+	public static final TipoDocumentoAlreadyExistsException tipoDocumentoAlreadyExistsException(
+			String tipoDocumentoId) {
+		return new TipoDocumentoAlreadyExistsException(
+				Messages.i18n.format("TipoDocumentoAlreadyExists", tipoDocumentoId)); //$NON-NLS-1$
+	}
 
-    /**
-     * Creates a not authorized exception.
-     * 
-     * @return the exception
-     */
-    public static final NotAuthorizedException notAuthorizedException() {
-        return new NotAuthorizedException(Messages.i18n.format("AccessDenied")); //$NON-NLS-1$
-    }
+	/**
+	 * Creates an exception from a username.
+	 * 
+	 * @param username
+	 *            the username
+	 * @return the exception
+	 */
+	public static final TipoDocumentoNotFoundException tipoDocumentoNotFoundException(String tipoDocumentoId) {
+		return new TipoDocumentoNotFoundException(Messages.i18n.format("TipoDocumentoNotFound", tipoDocumentoId)); //$NON-NLS-1$
+	}
 
-    /**
-     * Creates an exception from an role id.
-     * 
-     * @param roleId
-     *            the role id
-     * @return the exception
-     */
-    public static final RoleAlreadyExistsException roleAlreadyExistsException(String roleId) {
-        return new RoleAlreadyExistsException(Messages.i18n.format("RoleAlreadyExists", roleId)); //$NON-NLS-1$
-    }
+	/**
+	 * Creates an exception from a username.
+	 * 
+	 * @param username
+	 *            the username
+	 * @return the exception
+	 */
+	public static final TipoDocumentoLockedException tipoDocumentoLockedException(String tipoDocumentoId) {
+		return new TipoDocumentoLockedException(Messages.i18n.format("TipoDocumentoLocked", tipoDocumentoId)); //$NON-NLS-1$
+	}
 
-    /**
-     * Creates an exception from a username.
-     * 
-     * @param roleId
-     *            the role id
-     * @return the exception
-     */
-    public static final RoleNotFoundException roleNotFoundException(String roleId) {
-        return new RoleNotFoundException(Messages.i18n.format("RoleNotFound", roleId)); //$NON-NLS-1$
-    }
+	/**
+	 * Creates an exception from a username.
+	 * 
+	 * @param username
+	 *            the username
+	 * @return the exception
+	 */
+	public static final UserNotFoundException userNotFoundException(String username) {
+		return new UserNotFoundException(Messages.i18n.format("UserNotFound", username)); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates a not authorized exception.
+	 * 
+	 * @return the exception
+	 */
+	public static final NotAuthorizedException notAuthorizedException() {
+		return new NotAuthorizedException(Messages.i18n.format("AccessDenied")); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates an exception from an role id.
+	 * 
+	 * @param roleId
+	 *            the role id
+	 * @return the exception
+	 */
+	public static final RoleAlreadyExistsException roleAlreadyExistsException(String roleId) {
+		return new RoleAlreadyExistsException(Messages.i18n.format("RoleAlreadyExists", roleId)); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates an exception from a username.
+	 * 
+	 * @param roleId
+	 *            the role id
+	 * @return the exception
+	 */
+	public static final RoleNotFoundException roleNotFoundException(String roleId) {
+		return new RoleNotFoundException(Messages.i18n.format("RoleNotFound", roleId)); //$NON-NLS-1$
+	}
 
 }

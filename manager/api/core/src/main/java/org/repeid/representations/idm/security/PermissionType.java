@@ -22,6 +22,8 @@ package org.repeid.representations.idm.security;
  */
 public enum PermissionType {
     
+	tipoDocumentoView,	tipoDocumentoEdit,	tipoDocumentoAdmin,
+	
     orgView,  orgEdit,  orgAdmin,
     svcView,  svcEdit,  svcAdmin,
     appView,  appEdit,  appAdmin,

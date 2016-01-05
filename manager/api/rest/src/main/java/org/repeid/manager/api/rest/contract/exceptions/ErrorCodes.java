@@ -43,7 +43,18 @@ public final class ErrorCodes {
 
     public static final String USER_NOT_FOUND_INFO          = null;
 
+    
+    //
+    // TipoDocumento API related
+    // 
+    public static final int TIPO_DOCUMENTO_NOT_FOUND        = 2001;
+    public static final int TIPO_DOCUMENTO_ALREADY_EXISTS   = 2002;
+    public static final int TIPO_DOCUMENTO_LOCKED   = 2003;
 
+    public static final String TIPO_DOCUMENTO_NOT_FOUND_INFO          = null;
+    public static final String TIPO_DOCUMENTO_ALREADY_EXISTS_INFO     = null;
+    public static final String TIPO_DOCUMENTO_LOCKED_INFO     = null;
+    
     //
     // Role API related
     //
