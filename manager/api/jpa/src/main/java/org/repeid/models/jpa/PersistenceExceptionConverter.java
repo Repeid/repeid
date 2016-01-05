@@ -9,8 +9,8 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.repeid.models.ModelDuplicateException;
-import org.repeid.models.ModelException;
+import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.exceptions.ModelException;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

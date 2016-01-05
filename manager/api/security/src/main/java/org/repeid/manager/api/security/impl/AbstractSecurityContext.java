@@ -19,14 +19,13 @@ import java.util.HashSet;
 
 import javax.inject.Inject;
 
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.model.security.IStorageQuery;
 import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.manager.api.security.i18n.Messages;
-import org.repeid.models.security.IStorageQuery;
-import org.repeid.representations.idm.security.PermissionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
 
 /**
  * Base class for security context implementations.
@@ -43,7 +42,7 @@ public abstract class AbstractSecurityContext implements ISecurityContext {
 	private IStorageQuery query;
 
 	/**
-	 * @see org.repeid.manager.api.security.ISecurityContext#hasPermission(org.repeid.representations.idm.security.PermissionType,
+	 * @see org.repeid.manager.api.security.ISecurityContext#hasPermission(org.repeid.manager.api.core.representations.idm.security.PermissionType,
 	 *      java.lang.String)
 	 */
 	@Override

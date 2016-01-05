@@ -11,10 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.manager.api.core.representations.idm.StoredFileRepresentation;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.PersonaNaturalNotFoundException;
-import org.repeid.representations.idm.PersonaNaturalRepresentation;
-import org.repeid.representations.idm.StoredFileRepresentation;
 
 /**
  * PersonaNatural API. Usado para administrar personaNaturales. Nota: Las

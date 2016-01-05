@@ -15,7 +15,7 @@
  */
 package org.repeid.manager.api.security;
 
-import org.repeid.representations.idm.security.PermissionType;
+import org.repeid.manager.api.core.representations.idm.security.PermissionType;
 
 /**
  * The security context used by the REST API to determine whether the current

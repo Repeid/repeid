@@ -28,13 +28,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.core.representations.idm.search.SearchResultsRepresentation;
+import org.repeid.manager.api.core.representations.idm.security.RoleRepresentation;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleAlreadyExistsException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleNotFoundException;
-import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
-import org.repeid.representations.idm.search.SearchResultsRepresentation;
-import org.repeid.representations.idm.security.RoleRepresentation;
 
 /**
  * The Role API. Used to manage roles. Note: not used to manage users or user

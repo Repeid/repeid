@@ -14,17 +14,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.repeid.models.ModelDuplicateException;
-import org.repeid.models.PersonaJuridicaModel;
-import org.repeid.models.PersonaJuridicaProvider;
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.enums.TipoEmpresa;
+import org.repeid.manager.api.model.PersonaJuridicaModel;
+import org.repeid.manager.api.model.PersonaJuridicaProvider;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.enums.TipoEmpresa;
+import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.search.SearchCriteriaModel;
+import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.models.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.models.jpa.entities.PersonaNaturalEntity;
 import org.repeid.models.jpa.entities.TipoDocumentoEntity;
-import org.repeid.models.search.SearchCriteriaModel;
-import org.repeid.models.search.SearchResultsModel;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

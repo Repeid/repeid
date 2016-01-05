@@ -12,10 +12,10 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.repeid.models.StoreConfigurationModel;
-import org.repeid.models.StoredFileModel;
-import org.repeid.models.StoredFileProvider;
-import org.repeid.models.enums.StoreFileProviderName;
+import org.repeid.manager.api.model.StoreConfigurationModel;
+import org.repeid.manager.api.model.StoredFileModel;
+import org.repeid.manager.api.model.StoredFileProvider;
+import org.repeid.manager.api.model.enums.StoreFileProviderName;
 import org.repeid.models.jpa.entities.FileEntity;
 import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 import org.repeid.models.jpa.entities.StoredFileEntity;

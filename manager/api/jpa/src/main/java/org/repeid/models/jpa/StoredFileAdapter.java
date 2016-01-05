@@ -2,8 +2,8 @@ package org.repeid.models.jpa;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.models.StoreConfigurationModel;
-import org.repeid.models.StoredFileModel;
+import org.repeid.manager.api.model.StoreConfigurationModel;
+import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 import org.repeid.models.jpa.entities.StoredFileEntity;
 

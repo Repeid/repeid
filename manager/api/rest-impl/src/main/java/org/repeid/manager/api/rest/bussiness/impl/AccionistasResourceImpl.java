@@ -9,10 +9,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.repeid.manager.api.core.representations.idm.AccionistaRepresentation;
 import org.repeid.manager.api.rest.bussiness.AccionistaResource;
 import org.repeid.manager.api.rest.bussiness.AccionistasResource;
 import org.repeid.manager.api.rest.bussiness.PersonasJuridicasResource;
-import org.repeid.representations.idm.AccionistaRepresentation;
 
 @Stateless
 public class AccionistasResourceImpl implements AccionistasResource {

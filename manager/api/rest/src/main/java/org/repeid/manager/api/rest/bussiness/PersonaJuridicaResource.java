@@ -9,9 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.repeid.manager.api.core.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.PersonaJuridicaNotFoundException;
-import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 
 /**
  * PersonaJuridica API. Usado para administrar personaJuridicas. Nota: Las

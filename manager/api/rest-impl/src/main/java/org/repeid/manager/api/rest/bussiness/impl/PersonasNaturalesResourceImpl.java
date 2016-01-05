@@ -11,6 +11,20 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.core.representations.idm.search.SearchResultsRepresentation;
+import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.PersonaNaturalProvider;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.TipoDocumentoProvider;
+import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.search.SearchCriteriaModel;
+import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.repeid.manager.api.model.utils.ModelToRepresentation;
+import org.repeid.manager.api.model.utils.RepresentationToModel;
 import org.repeid.manager.api.rest.bussiness.PersonaNaturalResource;
 import org.repeid.manager.api.rest.bussiness.PersonasNaturalesResource;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
@@ -20,21 +34,6 @@ import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.security.ISecurityContext;
-import org.repeid.models.ModelDuplicateException;
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.PersonaNaturalProvider;
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.TipoDocumentoProvider;
-import org.repeid.models.search.SearchCriteriaModel;
-import org.repeid.models.search.SearchResultsModel;
-import org.repeid.models.utils.ModelToRepresentation;
-import org.repeid.models.utils.RepresentationToModel;
-import org.repeid.representations.idm.PersonaNaturalRepresentation;
-import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
-import org.repeid.representations.idm.search.SearchResultsRepresentation;
-import org.repeid.representations.idm.security.PermissionType;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
 
 @Stateless
 public class PersonasNaturalesResourceImpl implements PersonasNaturalesResource {

@@ -12,9 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.repeid.models.ModelDuplicateException;
-import org.repeid.models.StoreConfigurationModel;
-import org.repeid.models.StoreConfigurationProvider;
+import org.repeid.manager.api.model.StoreConfigurationModel;
+import org.repeid.manager.api.model.StoreConfigurationProvider;
+import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 
 /**

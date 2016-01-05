@@ -2,8 +2,8 @@ package org.repeid.models.jpa;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.enums.TipoPersona;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.models.jpa.entities.TipoDocumentoEntity;
 
 /**

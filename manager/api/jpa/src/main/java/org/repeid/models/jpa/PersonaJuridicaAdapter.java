@@ -7,11 +7,11 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.models.AccionistaModel;
-import org.repeid.models.PersonaJuridicaModel;
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.enums.TipoEmpresa;
+import org.repeid.manager.api.model.AccionistaModel;
+import org.repeid.manager.api.model.PersonaJuridicaModel;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.models.jpa.entities.AccionistaEntity;
 import org.repeid.models.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.models.jpa.entities.PersonaNaturalEntity;

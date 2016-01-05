@@ -4,12 +4,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import org.repeid.models.security.RoleModel;
-import org.repeid.models.security.UserModel;
-import org.repeid.representations.idm.security.RoleRepresentation;
-import org.repeid.representations.idm.security.UserRepresentation;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.security.RoleRepresentation;
+import org.repeid.manager.api.core.representations.idm.security.UserRepresentation;
+import org.repeid.manager.api.model.security.RoleModel;
+import org.repeid.manager.api.model.security.UserModel;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

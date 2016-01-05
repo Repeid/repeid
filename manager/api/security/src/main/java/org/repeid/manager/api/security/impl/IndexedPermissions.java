@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.repeid.representations.idm.security.PermissionType;
+import org.repeid.manager.api.core.representations.idm.security.PermissionType;
 
 /**
  * A class that optimizes the user permissions for querying.

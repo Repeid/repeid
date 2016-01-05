@@ -21,18 +21,17 @@ import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.core.representations.idm.security.UserPermissionsRepresentation;
+import org.repeid.manager.api.model.security.UserModel;
+import org.repeid.manager.api.model.security.UserProvider;
 import org.repeid.manager.api.rest.contract.IPermissionsResource;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.security.ISecurityContext;
-import org.repeid.models.security.UserModel;
-import org.repeid.models.security.UserProvider;
-import org.repeid.representations.idm.security.PermissionType;
-import org.repeid.representations.idm.security.UserPermissionsRepresentation;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
 
 /**
  * Implementation of the Permissions API.

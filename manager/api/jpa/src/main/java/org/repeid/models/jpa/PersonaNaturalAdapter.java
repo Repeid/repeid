@@ -4,11 +4,11 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.models.StoredFileModel;
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.enums.EstadoCivil;
-import org.repeid.models.enums.Sexo;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.StoredFileModel;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.enums.EstadoCivil;
+import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.models.jpa.entities.PersonaNaturalEntity;
 import org.repeid.models.jpa.entities.StoredFileEntity;
 

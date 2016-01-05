@@ -6,6 +6,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.manager.api.core.representations.idm.StoredFileRepresentation;
+import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.PersonaNaturalProvider;
+import org.repeid.manager.api.model.utils.ModelToRepresentation;
 import org.repeid.manager.api.rest.bussiness.PersonaNaturalResource;
 import org.repeid.manager.api.rest.bussiness.PersonasNaturalesResource;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
@@ -14,14 +21,6 @@ import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.PersonaNaturalManager;
 import org.repeid.manager.api.security.ISecurityContext;
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.PersonaNaturalProvider;
-import org.repeid.models.utils.ModelToRepresentation;
-import org.repeid.representations.idm.PersonaNaturalRepresentation;
-import org.repeid.representations.idm.StoredFileRepresentation;
-import org.repeid.representations.idm.security.PermissionType;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
 
 @Stateless
 public class PersonaNaturalResourceImpl implements PersonaNaturalResource {

@@ -4,11 +4,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.enums.TipoPersona;
-import org.repeid.representations.idm.TipoDocumentoRepresentation;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.TipoDocumentoRepresentation;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.enums.TipoPersona;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

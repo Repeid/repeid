@@ -5,16 +5,15 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import org.repeid.models.PersonaJuridicaModel;
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.PersonaNaturalProvider;
-import org.repeid.models.TipoDocumentoModel;
-import org.repeid.models.TipoDocumentoProvider;
-import org.repeid.models.enums.TipoEmpresa;
-import org.repeid.representations.idm.PersonaJuridicaRepresentation;
-import org.repeid.representations.idm.PersonaNaturalRepresentation;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.PersonaJuridicaRepresentation;
+import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.manager.api.model.PersonaJuridicaModel;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.PersonaNaturalProvider;
+import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.TipoDocumentoProvider;
+import org.repeid.manager.api.model.enums.TipoEmpresa;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

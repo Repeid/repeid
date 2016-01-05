@@ -4,15 +4,14 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import org.repeid.models.PersonaNaturalModel;
-import org.repeid.models.StoreConfigurationModel;
-import org.repeid.models.StoredFileModel;
-import org.repeid.models.StoredFileProvider;
-import org.repeid.models.enums.EstadoCivil;
-import org.repeid.models.enums.Sexo;
-import org.repeid.representations.idm.PersonaNaturalRepresentation;
-
-import io.apiman.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.StoreConfigurationModel;
+import org.repeid.manager.api.model.StoredFileModel;
+import org.repeid.manager.api.model.StoredFileProvider;
+import org.repeid.manager.api.model.enums.EstadoCivil;
+import org.repeid.manager.api.model.enums.Sexo;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

@@ -18,14 +18,14 @@ package org.repeid.manager.api.rest.impl.util;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.repeid.manager.api.core.representations.idm.search.OrderByRepresentation;
+import org.repeid.manager.api.core.representations.idm.search.PagingRepresentation;
+import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaFilterRepresentation;
+import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.model.search.SearchCriteriaFilterOperator;
+import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.impl.i18n.Messages;
-import org.repeid.models.search.SearchCriteriaFilterOperator;
-import org.repeid.models.search.SearchCriteriaModel;
-import org.repeid.representations.idm.search.OrderByRepresentation;
-import org.repeid.representations.idm.search.PagingRepresentation;
-import org.repeid.representations.idm.search.SearchCriteriaFilterRepresentation;
-import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 
 /**
  * Some utility methods related to searches and search criteria.
