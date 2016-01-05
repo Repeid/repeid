@@ -14,6 +14,8 @@ import org.repeid.models.enums.TipoEmpresa;
 import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
+
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class PersonaJuridicaManager {
@@ -24,7 +26,8 @@ public class PersonaJuridicaManager {
     @Inject
     private PersonaNaturalProvider personaNaturalProvider;
 
-    public void update(PersonaJuridicaModel model, PersonaJuridicaRepresentation rep) {
+    public void update(PersonaJuridicaModel model, PersonaJuridicaRepresentation rep)
+            throws StorageException {
         model.setCodigoPais(rep.getCodigoPais());
         model.setRazonSocial(rep.getRazonSocial());
         model.setFechaConstitucion(rep.getFechaConstitucion());

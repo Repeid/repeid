@@ -12,11 +12,13 @@ import org.repeid.models.enums.EstadoCivil;
 import org.repeid.models.enums.Sexo;
 import org.repeid.representations.idm.PersonaNaturalRepresentation;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
+
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class PersonaNaturalManager {
 
-	public void update(PersonaNaturalModel model, PersonaNaturalRepresentation representation) {
+	public void update(PersonaNaturalModel model, PersonaNaturalRepresentation representation) throws StorageException {
 		model.setCodigoPais(representation.getCodigoPais());
 		model.setApellidoPaterno(representation.getApellidoPaterno());
 		model.setApellidoMaterno(representation.getApellidoMaterno());
@@ -38,7 +40,7 @@ public class PersonaNaturalManager {
 	}
 
 	public StoredFileModel setFoto(PersonaNaturalModel personaNatural, StoreConfigurationModel config, byte[] bytes,
-			StoredFileProvider storedFileProvider) {
+			StoredFileProvider storedFileProvider) throws StorageException {
 		StoredFileModel storedFileModel = storedFileProvider.create(bytes, config);
 		personaNatural.setFoto(storedFileModel);
 		personaNatural.commit();
@@ -46,7 +48,7 @@ public class PersonaNaturalManager {
 	}
 
 	public StoredFileModel setFirma(PersonaNaturalModel personaNatural, StoreConfigurationModel config, byte[] bytes,
-			StoredFileProvider storedFileProvider) {
+ StoredFileProvider storedFileProvider) throws StorageException {
 		StoredFileModel storedFileModel = storedFileProvider.create(bytes, config);
 		personaNatural.setFirma(storedFileModel);
 		personaNatural.commit();

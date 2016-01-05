@@ -11,34 +11,39 @@ import org.repeid.models.search.SearchCriteriaModel;
 import org.repeid.models.search.SearchResultsModel;
 import org.repeid.provider.Provider;
 
+import io.apiman.manager.api.core.exceptions.StorageException;
+
 @Local
 public interface PersonaJuridicaProvider extends Provider {
 
-    PersonaJuridicaModel findById(String id);
+    PersonaJuridicaModel findById(String id) throws StorageException;
 
-    PersonaJuridicaModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento);
+    PersonaJuridicaModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento)
+            throws StorageException;
 
     PersonaJuridicaModel create(PersonaNaturalModel representanteLegal, String codigoPais,
             TipoDocumentoModel tipoDocumentoModel, String numeroDocumento, String razonSocial,
-            Date fechaConstitucion, TipoEmpresa tipoEmpresa, boolean finLucro);
+            Date fechaConstitucion, TipoEmpresa tipoEmpresa, boolean finLucro) throws StorageException;
 
-    boolean remove(PersonaJuridicaModel personaJuridicaModel);
+    boolean remove(PersonaJuridicaModel personaJuridicaModel) throws StorageException;
 
-    List<PersonaJuridicaModel> getAll();
+    List<PersonaJuridicaModel> getAll() throws StorageException;
 
-    List<PersonaJuridicaModel> getAll(int firstResult, int maxResults);
+    List<PersonaJuridicaModel> getAll(int firstResult, int maxResults) throws StorageException;
 
-    List<PersonaJuridicaModel> search(String filterText);
+    List<PersonaJuridicaModel> search(String filterText) throws StorageException;
 
-    List<PersonaJuridicaModel> search(String filterText, int firstResult, int maxResults);
+    List<PersonaJuridicaModel> search(String filterText, int firstResult, int maxResults)
+            throws StorageException;
 
-    List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes);
+    List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes) throws StorageException;
 
     List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes, int firstResult,
-            int maxResults);
+            int maxResults) throws StorageException;
 
-    SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria);
+    SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria) throws StorageException;
 
-    SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria, String filterText);
+    SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria, String filterText)
+            throws StorageException;
 
 }

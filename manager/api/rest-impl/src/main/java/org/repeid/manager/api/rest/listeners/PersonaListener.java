@@ -1,4 +1,4 @@
-package org.repeid.services.listeners;
+package org.repeid.manager.api.rest.listeners;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

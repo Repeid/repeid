@@ -1,4 +1,4 @@
-package org.repeid.services.filters;
+package org.repeid.manager.api.rest.filters;
 
 import java.io.IOException;
 

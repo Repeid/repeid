@@ -7,12 +7,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import org.repeid.manager.api.rest.bussiness.AccionistaResource;
-import org.repeid.manager.api.rest.managers.AccionistaManager;
 import org.repeid.models.AccionistaModel;
 import org.repeid.models.AccionistaProvider;
 import org.repeid.models.utils.ModelToRepresentation;
 import org.repeid.representations.idm.AccionistaRepresentation;
-import org.repeid.services.ErrorResponse;
 
 @Stateless
 public class AccionistaResourceImpl implements AccionistaResource {
@@ -23,8 +21,8 @@ public class AccionistaResourceImpl implements AccionistaResource {
 	@Inject
 	private AccionistaProvider accionistaProvider;
 
-	@Inject
-	private AccionistaManager accionistaManager;
+	//@Inject
+	//private AccionistaManager accionistaManager;
 
 	private AccionistaModel getAccionistaModel() {
 		return accionistaProvider.findById(idAccionista);
@@ -42,12 +40,12 @@ public class AccionistaResourceImpl implements AccionistaResource {
 
 	@Override
 	public void update(AccionistaRepresentation rep) {
-		accionistaManager.update(getAccionistaModel(), rep);
+		//accionistaManager.update(getAccionistaModel(), rep);
 	}
 
 	@Override
 	public Response remove() {
-		AccionistaModel accionistaModel = getAccionistaModel();
+		/*AccionistaModel accionistaModel = getAccionistaModel();
 		if (accionistaModel == null) {
 			throw new NotFoundException("Accionista no encontrado");
 		}
@@ -56,7 +54,8 @@ public class AccionistaResourceImpl implements AccionistaResource {
 			return Response.noContent().build();
 		} else {
 			return ErrorResponse.error("Accionista no pudo ser eliminado", Response.Status.BAD_REQUEST);
-		}
+		}*/
+	    return null;
 	}
 
 }

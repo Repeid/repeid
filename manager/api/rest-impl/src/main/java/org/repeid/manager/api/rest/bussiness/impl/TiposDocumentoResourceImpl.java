@@ -13,7 +13,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.repeid.manager.api.rest.bussiness.TipoDocumentoResource;
 import org.repeid.manager.api.rest.bussiness.TiposDocumentoResource;
+import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
+import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
+import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoAlreadyExistsException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.models.ModelDuplicateException;
@@ -34,122 +37,130 @@ import io.apiman.manager.api.security.ISecurityContext;
 @Stateless
 public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 
-	@Inject
-	private TipoDocumentoProvider tipoDocumentoProvider;
+    @Inject
+    private TipoDocumentoProvider tipoDocumentoProvider;
 
-	@Inject
-	private RepresentationToModel representationToModel;
+    @Inject
+    private RepresentationToModel representationToModel;
 
-	@Inject
-	private TipoDocumentoResource tipoDocumentoResource;
+    @Inject
+    private TipoDocumentoResource tipoDocumentoResource;
 
-	@Inject
-	private ISecurityContext iSecurityContext;
+    @Inject
+    private ISecurityContext iSecurityContext;
 
-	@Context
-	private UriInfo uriInfo;
+    @Context
+    private UriInfo uriInfo;
 
-	@Override
-	public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
-		return tipoDocumentoResource;
-	}
+    @Override
+    public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
+        return tipoDocumentoResource;
+    }
 
-	@Override
-	public Response create(TipoDocumentoRepresentation rep) {
-		if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoEdit))
-			throw ExceptionFactory.notAuthorizedException();
+    @Override
+    public Response create(TipoDocumentoRepresentation rep)
+            throws TipoDocumentoAlreadyExistsException, NotAuthorizedException {
 
-		try {
-			// Check duplicated abreviatura
-			if (tipoDocumentoProvider.findByAbreviatura(rep.getAbreviatura()) != null) {
-				throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-			}
-			try {
-				TipoDocumentoModel model = representationToModel.createTipoDocumento(rep, tipoDocumentoProvider);
-				return Response.created(uriInfo.getAbsolutePathBuilder().path(model.getId()).build())
-						.header("Access-Control-Expose-Headers", "Location")
-						.entity(ModelToRepresentation.toRepresentation(model)).build();
-			} catch (ModelDuplicateException e) {
-				throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-			}
-		} catch (StorageException e) {
-			throw new SystemErrorException(e);
-		}
-	}
+        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoAdmin))
+            throw ExceptionFactory.notAuthorizedException();
 
-	@Override
-	public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion, String tipoPersona,
-			Boolean estado, String filterText, Integer firstResult, Integer maxResults) {
-		if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
-			throw ExceptionFactory.notAuthorizedException();
+        try {
+            // Check duplicated abreviatura
+            if (tipoDocumentoProvider.findByAbreviatura(rep.getAbreviatura()) != null) {
+                throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
+            }
+            try {
+                TipoDocumentoModel model = representationToModel.createTipoDocumento(rep,
+                        tipoDocumentoProvider);
+                return Response.created(uriInfo.getAbsolutePathBuilder().path(model.getId()).build())
+                        .header("Access-Control-Expose-Headers", "Location")
+                        .entity(ModelToRepresentation.toRepresentation(model)).build();
+            } catch (ModelDuplicateException e) {
+                throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
+            }
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
+    }
 
-		try {
-			firstResult = firstResult != null ? firstResult : -1;
-			maxResults = maxResults != null ? maxResults : -1;
+    @Override
+    public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion,
+            String tipoPersona, Boolean estado, String filterText, Integer firstResult, Integer maxResults)
+                    throws NotAuthorizedException {
 
-			List<TipoDocumentoModel> models;
-			if (filterText != null) {
-				models = tipoDocumentoProvider.search(filterText.trim(), firstResult, maxResults);
-			} else if (denominacion != null || abreviatura != null || tipoPersona != null || estado != null) {
-				Map<String, Object> attributes = new HashMap<String, Object>();
-				if (abreviatura != null) {
-					attributes.put(TipoDocumentoModel.ABREVIATURA, abreviatura);
-				}
-				if (denominacion != null) {
-					attributes.put(TipoDocumentoModel.DENOMINACION, denominacion);
-				}
-				if (tipoPersona != null) {
-					attributes.put(TipoDocumentoModel.TIPO_PERSONA, tipoPersona);
-				}
-				if (estado != null) {
-					attributes.put(TipoDocumentoModel.ESTADO, estado);
-				}
-				models = tipoDocumentoProvider.searchByAttributes(attributes, firstResult, maxResults);
-			} else {
-				models = tipoDocumentoProvider.getAll(firstResult, maxResults);
-			}
+        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
+            throw ExceptionFactory.notAuthorizedException();
 
-			List<TipoDocumentoRepresentation> results = new ArrayList<>();
-			for (TipoDocumentoModel model : models) {
-				results.add(ModelToRepresentation.toRepresentation(model));
-			}
-			return results;
-		} catch (StorageException e) {
-			throw new SystemErrorException(e);
-		}
-	}
+        try {
+            firstResult = firstResult != null ? firstResult : -1;
+            maxResults = maxResults != null ? maxResults : -1;
 
-	@Override
-	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria) {
-		if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
-			throw ExceptionFactory.notAuthorizedException();
+            List<TipoDocumentoModel> models;
+            if (filterText != null) {
+                models = tipoDocumentoProvider.search(filterText.trim(), firstResult, maxResults);
+            } else if (denominacion != null || abreviatura != null || tipoPersona != null || estado != null) {
+                Map<String, Object> attributes = new HashMap<String, Object>();
+                if (abreviatura != null) {
+                    attributes.put(TipoDocumentoModel.ABREVIATURA, abreviatura);
+                }
+                if (denominacion != null) {
+                    attributes.put(TipoDocumentoModel.DENOMINACION, denominacion);
+                }
+                if (tipoPersona != null) {
+                    attributes.put(TipoDocumentoModel.TIPO_PERSONA, tipoPersona);
+                }
+                if (estado != null) {
+                    attributes.put(TipoDocumentoModel.ESTADO, estado);
+                }
+                models = tipoDocumentoProvider.searchByAttributes(attributes, firstResult, maxResults);
+            } else {
+                models = tipoDocumentoProvider.getAll(firstResult, maxResults);
+            }
 
-		try {
-			SearchCriteriaUtil.validateSearchCriteria(criteria);
-			SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
+            List<TipoDocumentoRepresentation> results = new ArrayList<>();
+            for (TipoDocumentoModel model : models) {
+                results.add(ModelToRepresentation.toRepresentation(model));
+            }
+            return results;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
+    }
 
-			// extract filterText
-			String filterText = criteria.getFilterText();
+    @Override
+    public SearchResultsRepresentation<TipoDocumentoRepresentation> search(
+            SearchCriteriaRepresentation criteria)
+                    throws InvalidSearchCriteriaException, NotAuthorizedException {
 
-			// search
-			SearchResultsModel<TipoDocumentoModel> models = null;
-			if (filterText == null) {
-				models = tipoDocumentoProvider.search(criteriaModel);
-			} else {
-				models = tipoDocumentoProvider.search(criteriaModel, filterText);
-			}
+        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
+            throw ExceptionFactory.notAuthorizedException();
 
-			SearchResultsRepresentation<TipoDocumentoRepresentation> result = new SearchResultsRepresentation<>();
-			List<TipoDocumentoRepresentation> items = new ArrayList<>();
-			for (TipoDocumentoModel model : models.getModels()) {
-				items.add(ModelToRepresentation.toRepresentation(model));
-			}
-			result.setItems(items);
-			result.setTotalSize(models.getTotalSize());
-			return result;
-		} catch (StorageException e) {
-			throw new SystemErrorException(e);
-		}
-	}
+        try {
+            SearchCriteriaUtil.validateSearchCriteria(criteria);
+            SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
+
+            // extract filterText
+            String filterText = criteria.getFilterText();
+
+            // search
+            SearchResultsModel<TipoDocumentoModel> models = null;
+            if (filterText == null) {
+                models = tipoDocumentoProvider.search(criteriaModel);
+            } else {
+                models = tipoDocumentoProvider.search(criteriaModel, filterText);
+            }
+
+            SearchResultsRepresentation<TipoDocumentoRepresentation> result = new SearchResultsRepresentation<>();
+            List<TipoDocumentoRepresentation> items = new ArrayList<>();
+            for (TipoDocumentoModel model : models.getModels()) {
+                items.add(ModelToRepresentation.toRepresentation(model));
+            }
+            result.setItems(items);
+            result.setTotalSize(models.getTotalSize());
+            return result;
+        } catch (StorageException e) {
+            throw new SystemErrorException(e);
+        }
+    }
 
 }
