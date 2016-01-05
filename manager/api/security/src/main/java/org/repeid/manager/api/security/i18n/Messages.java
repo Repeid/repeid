@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.manager.api.security.i18n;
+package org.repeid.manager.api.security.i18n;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

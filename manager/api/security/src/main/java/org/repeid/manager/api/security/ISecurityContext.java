@@ -15,8 +15,6 @@
  */
 package org.repeid.manager.api.security;
 
-import java.util.Set;
-
 import org.repeid.representations.idm.security.PermissionType;
 
 /**
@@ -59,19 +57,7 @@ public interface ISecurityContext {
 	 *            the org id
 	 * @return true if has permission, else false
 	 */
-	public boolean hasPermission(PermissionType permission, String organizationId);
-
 	public boolean hasPermission(PermissionType permission);
-
-	/**
-	 * Returns the set of organizations for which the current user is allowed to
-	 * perform a given action.
-	 * 
-	 * @param permission
-	 *            the permission type
-	 * @return set of permitted organizations
-	 */
-	public Set<String> getPermittedOrganizations(PermissionType permission);
 
 	/**
 	 * Gets a request header from the current in-scope request.
