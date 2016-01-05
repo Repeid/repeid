@@ -50,11 +50,8 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 	private UriInfo uriInfo;
 
 	@Override
-	public TipoDocumentoResource tipoDocumento(String documento) {
+	public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
 		return tipoDocumentoResource;
-	}
-
-	public void imprimir(String cadena1, String... cadena2) {
 	}
 
 	@Override
