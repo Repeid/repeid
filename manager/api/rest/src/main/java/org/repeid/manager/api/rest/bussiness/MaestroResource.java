@@ -31,20 +31,52 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public interface MaestroResource {
 
-    @GET
-    @Path("tiposPersona")
-    public List<String> getAllTipoPersonas();
+	/**
+	 * Este endpoint retorna todos los tipos de persona soportados por repeid.
+	 * 
+	 * @summary Get all TipoPersona
+	 * 
+	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
+	 * @return Los tipos de persona soportados por repeid.
+	 */
+	@GET
+	@Path("tiposPersona")
+	public List<String> getAllTipoPersonas();
 
-    @GET
-    @Path("estadosCiviles")
-    public List<String> getAllEstadosCiviles();
+	/**
+	 * Este endpoint retorna todos los estados civiles soportados por repeid.
+	 * 
+	 * @summary Get all EstadoCivil
+	 * 
+	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
+	 * @return Los estado civiles soportados por repeid.
+	 */
+	@GET
+	@Path("estadosCiviles")
+	public List<String> getAllEstadosCiviles();
 
-    @GET
-    @Path("sexos")
-    public List<String> getAllSexos();
+	/**
+	 * Este endpoint retorna todos los sexos soportados por repeid.
+	 * 
+	 * @summary Get all Sexo
+	 * 
+	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
+	 * @return Los sexos soportados por repeid.
+	 */
+	@GET
+	@Path("sexos")
+	public List<String> getAllSexos();
 
-    @GET
-    @Path("tiposEmpresa")
-    public List<String> getAllTiposEmpresa();
+	/**
+	 * Este endpoint retorna todos los tipos de empresa soportados por repeid.
+	 * 
+	 * @summary Get all TipoEmpresa
+	 * 
+	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
+	 * @return Los tipos de empresa soportados por repeid.
+	 */
+	@GET
+	@Path("tiposEmpresa")
+	public List<String> getAllTiposEmpresa();
 
 }

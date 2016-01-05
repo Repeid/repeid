@@ -81,11 +81,11 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 	}
 
 	@Override
-	public List<TipoDocumentoRepresentation> search(String denominacion, String abreviatura, String tipoPersona,
+	public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion, String tipoPersona,
 			Boolean estado, String filterText, Integer firstResult, Integer maxResults) {
 		if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
 			throw ExceptionFactory.notAuthorizedException();
-		
+
 		try {
 			firstResult = firstResult != null ? firstResult : -1;
 			maxResults = maxResults != null ? maxResults : -1;
@@ -95,11 +95,11 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 				models = tipoDocumentoProvider.search(filterText.trim(), firstResult, maxResults);
 			} else if (denominacion != null || abreviatura != null || tipoPersona != null || estado != null) {
 				Map<String, Object> attributes = new HashMap<String, Object>();
-				if (denominacion != null) {
-					attributes.put(TipoDocumentoModel.DENOMINACION, denominacion);
-				}
 				if (abreviatura != null) {
 					attributes.put(TipoDocumentoModel.ABREVIATURA, abreviatura);
+				}
+				if (denominacion != null) {
+					attributes.put(TipoDocumentoModel.DENOMINACION, denominacion);
 				}
 				if (tipoPersona != null) {
 					attributes.put(TipoDocumentoModel.TIPO_PERSONA, tipoPersona);
@@ -126,7 +126,7 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria) {
 		if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
 			throw ExceptionFactory.notAuthorizedException();
-		
+
 		try {
 			SearchCriteriaUtil.validateSearchCriteria(criteria);
 			SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);

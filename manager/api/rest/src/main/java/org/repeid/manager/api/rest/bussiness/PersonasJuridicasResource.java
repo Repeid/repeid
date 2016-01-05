@@ -12,6 +12,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
+import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
+import org.repeid.manager.api.rest.contract.exceptions.PersonaJuridicaAlreadyExistsException;
 import org.repeid.representations.idm.PersonaJuridicaRepresentation;
 import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
 import org.repeid.representations.idm.search.SearchResultsRepresentation;
@@ -24,37 +27,90 @@ import org.repeid.representations.idm.search.SearchResultsRepresentation;
 @Consumes(MediaType.APPLICATION_JSON)
 public interface PersonasJuridicasResource {
 
-    @Path("{idPersonaJuridica}")
-    public PersonaJuridicaResource personaJuridica(@PathParam("idPersonaJuridica") String idPersonaJuridica);
+	public static final String PERSONA_JURIDICA_ID = "personaJuridicaId";
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response create(PersonaJuridicaRepresentation rep);
+	/**
+	 * @param personaJuridicaId
+	 *            El ID de la PersonaJuridica.
+	 */
+	@Path("{" + PERSONA_JURIDICA_ID + "}")
+	public PersonaJuridicaResource personaJuridica(@PathParam(PERSONA_JURIDICA_ID) String personaJuridicaId);
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PersonaJuridicaRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
-            @QueryParam("numeroDocumento") String numeroDocumento,
-            @QueryParam("razonSocial") String razonSocial,
-            @QueryParam("nombreComercial") String nombreComercial,
-            @QueryParam("filterText") String filterText, @QueryParam("first") Integer firstResult,
-            @QueryParam("max") Integer maxResults);
+	/**
+	 * Use este endpoint para crear una nueva personaJuridica. Una
+	 * PersonaJuridica representa una persona con razon social.
+	 * 
+	 * @summary Create PersonaJuridica
+	 * @servicetag admin
+	 * @param rep
+	 *            La nueva PersonaJuridica.
+	 * @statuscode 200 Si la personaJuridica fue creada satisfactoriamente.
+	 * @return La informacion completa de la personaJuridica creada.
+	 * @throws PersonaJuridicaAlreadyExistsException
+	 *             cuando la personaJuridica ya existe.
+	 * @throws NotAuthorizedException
+	 *             cuando no esta autorizado para invocar este metodo.
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response create(PersonaJuridicaRepresentation rep)
+			throws PersonaJuridicaAlreadyExistsException, NotAuthorizedException;
 
-    /**
-     * Este endpoint provee una forma de buscar direccionesRegionales. Los
-     * criterios de busqueda estan definidos por los parametros enviados.
-     * 
-     * @summary Search for DireccionesRegionales
-     * @param criteria
-     *            Criterio de busqueda.
-     * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
-     * @return Los resultados de la busqueda (una pagina de
-     *         direccionesRegionales).
-     */
-    @POST
-    @Path("search")
-    @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(
-            SearchCriteriaRepresentation criteria);
+	/**
+	 * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
+	 * de busqueda estan definidos por los parametros enviados.
+	 * 
+	 * @summary Search for PersonaJuridica
+	 * 
+	 * @param tipoDocumento
+	 *            TipoDocumento de personaJuridica.
+	 * @param numeroDocumento
+	 *            NumeroDocumento de personaJuridica.
+	 * @param razonSocial
+	 *            RazonSocial de personaJuridica.
+	 * @param nombreComercial
+	 *            NombreComercial de personaJuridica.
+	 * @param nombres
+	 *            Nombres de personaJuridica.
+	 * @param filterText
+	 *            FilterText representa el patron de busqueda.
+	 * @param first
+	 *            First representa el primer elemento del resutado de busqueda.
+	 * @param max
+	 *            Max representa el numero maximo de elementos del resutado de
+	 *            busqueda.
+	 * 
+	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
+	 * @return Los resultados de la busqueda (una pagina de personaJuridicas).
+	 * @throws NotAuthorizedException
+	 *             cuando no esta autorizado para invocar este metodo.
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<PersonaJuridicaRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
+			@QueryParam("numeroDocumento") String numeroDocumento, @QueryParam("razonSocial") String razonSocial,
+			@QueryParam("nombreComercial") String nombreComercial, @QueryParam("filterText") String filterText,
+			@QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults)
+					throws NotAuthorizedException;
+
+	/**
+	 * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
+	 * de busqueda estan definidos por los parametros enviados.
+	 * 
+	 * @summary Search for PersonaJuridica
+	 * @param criteria
+	 *            Criterio de busqueda.
+	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
+	 * @return Los resultados de la busqueda (una pagina de personaJuridicas).
+	 * @throws InvalidSearchCriteriaException
+	 *             cuando el criterio de busqueda no es valido.
+	 * @throws NotAuthorizedException
+	 *             cuando no esta autorizado para invocar este metodo.
+	 */
+	@POST
+	@Path("search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(SearchCriteriaRepresentation criteria)
+			throws InvalidSearchCriteriaException, NotAuthorizedException;
 
 }
