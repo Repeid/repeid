@@ -1,13 +1,13 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
 
+import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.models.jpa.entities.AccionistaEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

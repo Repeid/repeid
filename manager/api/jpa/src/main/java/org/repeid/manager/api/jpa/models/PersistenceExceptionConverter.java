@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

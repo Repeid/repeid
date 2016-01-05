@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,14 +7,14 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import org.repeid.manager.api.jpa.entities.AccionistaEntity;
+import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
+import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
-import org.repeid.models.jpa.entities.AccionistaEntity;
-import org.repeid.models.jpa.entities.PersonaJuridicaEntity;
-import org.repeid.models.jpa.entities.PersonaNaturalEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

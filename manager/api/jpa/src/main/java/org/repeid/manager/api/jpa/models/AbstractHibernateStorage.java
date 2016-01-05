@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.util.ArrayList;
 import java.util.List;

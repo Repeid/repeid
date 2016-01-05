@@ -1,4 +1,4 @@
-package org.repeid.models.jpa.entities;
+package org.repeid.manager.api.jpa.entities;
 
 import java.io.Serializable;
 import java.util.Date;

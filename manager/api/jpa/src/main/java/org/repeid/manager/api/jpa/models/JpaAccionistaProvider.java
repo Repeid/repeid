@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,14 +14,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.repeid.manager.api.jpa.entities.AccionistaEntity;
+import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
+import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.AccionistaProvider;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.models.jpa.entities.AccionistaEntity;
-import org.repeid.models.jpa.entities.PersonaJuridicaEntity;
-import org.repeid.models.jpa.entities.PersonaNaturalEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

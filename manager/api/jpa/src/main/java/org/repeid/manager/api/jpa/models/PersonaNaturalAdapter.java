@@ -1,16 +1,16 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.util.Date;
 
 import javax.persistence.EntityManager;
 
+import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
+import org.repeid.manager.api.jpa.entities.StoredFileEntity;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
-import org.repeid.models.jpa.entities.PersonaNaturalEntity;
-import org.repeid.models.jpa.entities.StoredFileEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

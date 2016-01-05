@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.models.jpa.entities.StoreConfigurationEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

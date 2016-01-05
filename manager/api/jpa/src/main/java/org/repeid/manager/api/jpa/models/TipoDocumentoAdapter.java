@@ -1,10 +1,10 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import javax.persistence.EntityManager;
 
+import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
-import org.repeid.models.jpa.entities.TipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

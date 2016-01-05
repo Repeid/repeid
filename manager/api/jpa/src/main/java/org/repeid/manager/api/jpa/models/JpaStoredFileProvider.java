@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -12,13 +12,13 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.repeid.manager.api.jpa.entities.FileEntity;
+import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
+import org.repeid.manager.api.jpa.entities.StoredFileEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
 import org.repeid.manager.api.model.enums.StoreFileProviderName;
-import org.repeid.models.jpa.entities.FileEntity;
-import org.repeid.models.jpa.entities.StoreConfigurationEntity;
-import org.repeid.models.jpa.entities.StoredFileEntity;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;

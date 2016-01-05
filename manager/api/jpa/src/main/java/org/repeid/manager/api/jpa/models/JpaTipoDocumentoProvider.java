@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +13,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
+import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
+import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
-import org.repeid.models.jpa.entities.PersonaJuridicaEntity;
-import org.repeid.models.jpa.entities.PersonaNaturalEntity;
-import org.repeid.models.jpa.entities.TipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

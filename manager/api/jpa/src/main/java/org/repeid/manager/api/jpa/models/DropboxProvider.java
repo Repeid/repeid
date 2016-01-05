@@ -1,4 +1,4 @@
-package org.repeid.models.jpa;
+package org.repeid.manager.api.jpa.models;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
