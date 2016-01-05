@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import org.repeid.models.Model;
-
-import io.apiman.manager.api.beans.idm.PermissionType;
+import org.repeid.representations.idm.security.PermissionType;
 
 public interface RoleModel extends Model {
 

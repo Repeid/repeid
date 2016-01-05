@@ -16,8 +16,6 @@
 
 package org.repeid.manager.api.rest.impl.mappers;
 
-import io.apiman.manager.api.beans.exceptions.ErrorBean;
-
 import java.io.PrintWriter;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -29,6 +27,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.io.output.StringBuilderWriter;
+import org.repeid.manager.api.beans.exceptions.ErrorBean;
 import org.repeid.manager.api.rest.contract.exceptions.AbstractRestException;
 import org.repeid.manager.api.security.ISecurityContext;
 

@@ -3,8 +3,6 @@ package org.repeid.representations.idm.security;
 import java.util.Date;
 import java.util.Set;
 
-import io.apiman.manager.api.beans.idm.PermissionType;
-
 public class RoleRepresentation {
 
     private String id;
