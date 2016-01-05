@@ -15,9 +15,8 @@
  */
 package org.repeid.common.config;
 
-import io.apiman.common.util.AesEncrypter;
-
 import org.apache.commons.lang.text.StrLookup;
+import org.repeid.common.util.AesEncrypter;
 
 /**
  * Allows users to AesEncrypt their properties in apiman.properties.

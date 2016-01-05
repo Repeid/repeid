@@ -15,7 +15,7 @@
  */
 package org.repeid.manager.api.rest.impl.i18n;
 
-import io.apiman.common.util.AbstractMessages;
+import org.repeid.common.util.AbstractMessages;
 
 /**
  * I18N Messages

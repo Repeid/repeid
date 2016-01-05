@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.common.util;
+package org.repeid.common.util;
 
 /**
  * Some simple string utils. Useful in places where we want to avoid pulling in large dependencies for small

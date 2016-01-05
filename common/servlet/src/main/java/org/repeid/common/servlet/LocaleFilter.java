@@ -15,8 +15,6 @@
  */
 package org.repeid.common.servlet;
 
-import io.apiman.common.util.AbstractMessages;
-
 import java.io.IOException;
 import java.util.Locale;
 
@@ -26,6 +24,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
+import org.repeid.common.util.AbstractMessages;
 
 /**
  * A simple servlet filter that sets the user's locale on the i18n

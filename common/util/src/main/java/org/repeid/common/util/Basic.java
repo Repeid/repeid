@@ -13,28 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.common.util;
+package org.repeid.common.util;
 
-import org.apache.commons.lang.text.StrLookup;
+import org.apache.commons.codec.binary.Base64;
 
-/**
- * A simple string lookup class that supports system properties and environment
- * variables.
- *
- * @author eric.wittmann@redhat.com
- */
-public class ApimanStrLookup extends StrLookup {
+@SuppressWarnings("nls")
+public class Basic {
 
-    /**
-     * @see org.apache.commons.lang.text.StrLookup#lookup(java.lang.String)
-     */
-    @Override
-    public String lookup(String key) {
-        String replacement = System.getProperty(key);
-        if (replacement == null) {
-            System.getenv(key);
-        }
-        return replacement;
+    public static String encode(String username, String password) {
+        String up = username + ':' + password;
+        StringBuilder builder = new StringBuilder();
+        builder.append("BASIC ");
+        builder.append(Base64.encodeBase64String(up.getBytes()));
+        return builder.toString();
     }
-
 }
