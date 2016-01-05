@@ -51,13 +51,14 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
     @Override
     public PersonaNaturalRepresentation toRepresentation()
             throws PersonaNaturalNotFoundException, NotAuthorizedException {
+
         if (!iSecurityContext.hasPermission(PermissionType.personaView))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
             PersonaNaturalModel personaNatural = getPersonaNaturalModel();
             if (personaNatural == null) {
-                throw ExceptionFactory.personaNaturalNotFoundException(null);
+                throw ExceptionFactory.personaNaturalNotFoundException(personaNaturalId);
             }
             return ModelToRepresentation.toRepresentation(personaNatural);
         } catch (StorageException e) {
@@ -68,13 +69,14 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
     @Override
     public void update(PersonaNaturalRepresentation rep)
             throws PersonaNaturalNotFoundException, NotAuthorizedException {
+
         if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoEdit))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
             PersonaNaturalModel personaNatural = getPersonaNaturalModel();
             if (personaNatural == null) {
-                throw ExceptionFactory.personaNaturalNotFoundException(null);
+                throw ExceptionFactory.personaNaturalNotFoundException(personaNaturalId);
             }
             personaNaturalManager.update(personaNatural, rep);
         } catch (StorageException e) {
@@ -170,13 +172,14 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
 
     @Override
     public Response remove() throws PersonaNaturalNotFoundException, NotAuthorizedException {
+
         if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoAdmin))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
             PersonaNaturalModel personaNatural = getPersonaNaturalModel();
             if (personaNatural == null) {
-                throw ExceptionFactory.personaNaturalNotFoundException(null);
+                throw ExceptionFactory.personaNaturalNotFoundException(personaNaturalId);
             }
 
             boolean removed = personaNaturalProvider.remove(personaNatural);

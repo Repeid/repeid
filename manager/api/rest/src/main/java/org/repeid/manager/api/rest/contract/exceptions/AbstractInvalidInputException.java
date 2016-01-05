@@ -33,20 +33,24 @@ public abstract class AbstractInvalidInputException extends AbstractUserExceptio
 
     /**
      * Constructor.
-     * @param message the exception message
+     * 
+     * @param message
+     *            the exception message
      */
     public AbstractInvalidInputException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
-     * @param cause the exception cause the exception cause
+     * 
+     * @param cause
+     *            the exception cause the exception cause
      */
     public AbstractInvalidInputException(Throwable cause) {
         super(cause);
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getHttpCode()
      */

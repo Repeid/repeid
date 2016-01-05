@@ -16,7 +16,7 @@
 package org.repeid.manager.api.rest.contract.exceptions;
 
 /**
- * Thrown when the search criteria is not valid (when invoking any of the 
+ * Thrown when the search criteria is not valid (when invoking any of the
  * various search methods).
  *
  * @author eric.wittmann@redhat.com
@@ -24,16 +24,17 @@ package org.repeid.manager.api.rest.contract.exceptions;
 public class InvalidSearchCriteriaException extends AbstractInvalidInputException {
 
     private static final long serialVersionUID = -166126446625739289L;
-    
+
     /**
      * Constructor.
      * 
-     * @param message the exception message
+     * @param message
+     *            the exception message
      */
     public InvalidSearchCriteriaException(String message) {
         super(message);
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
      */
@@ -41,7 +42,7 @@ public class InvalidSearchCriteriaException extends AbstractInvalidInputExceptio
     public int getErrorCode() {
         return ErrorCodes.SEARCH_CRITERIA_INVALID;
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
      */

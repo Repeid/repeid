@@ -23,38 +23,38 @@ package org.repeid.manager.api.rest.contract.exceptions;
  */
 public class PersonaNaturalNotFoundException extends AbstractNotFoundException {
 
-	private static final long serialVersionUID = -5416700206708610404L;
+    private static final long serialVersionUID = -5416700206708610404L;
 
-	/**
-	 * Constructor.
-	 */
-	public PersonaNaturalNotFoundException() {
-	}
+    /**
+     * Constructor.
+     */
+    public PersonaNaturalNotFoundException() {
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param message
-	 *            the exception message
-	 */
-	public PersonaNaturalNotFoundException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     * 
+     * @param message
+     *            the exception message
+     */
+    public PersonaNaturalNotFoundException(String message) {
+        super(message);
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
-	 */
-	@Override
-	public int getErrorCode() {
-		return ErrorCodes.PERSONA_NATURAL_NOT_FOUND;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
+     */
+    @Override
+    public int getErrorCode() {
+        return ErrorCodes.PERSONA_NATURAL_NOT_FOUND;
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
-	 */
-	@Override
-	public String getMoreInfoUrl() {
-		return ErrorCodes.PERSONA_NATURAL_NOT_FOUND_INFO;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
+     */
+    @Override
+    public String getMoreInfoUrl() {
+        return ErrorCodes.PERSONA_NATURAL_NOT_FOUND_INFO;
+    }
 
 }

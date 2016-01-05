@@ -16,8 +16,6 @@
 
 package org.repeid.manager.api.rest.contract.exceptions;
 
-
-
 /**
  * Thrown when a request is sent for a user who does not exist.
  *
@@ -26,21 +24,23 @@ package org.repeid.manager.api.rest.contract.exceptions;
 public class UserNotFoundException extends AbstractNotFoundException {
 
     private static final long serialVersionUID = 8937297365588151067L;
-    
+
     /**
      * Constructor.
      */
     public UserNotFoundException() {
     }
-    
+
     /**
      * Constructor.
-     * @param message the exception message
+     * 
+     * @param message
+     *            the exception message
      */
     public UserNotFoundException(String message) {
         super(message);
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
      */
@@ -48,7 +48,7 @@ public class UserNotFoundException extends AbstractNotFoundException {
     public int getErrorCode() {
         return ErrorCodes.USER_NOT_FOUND;
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
      */

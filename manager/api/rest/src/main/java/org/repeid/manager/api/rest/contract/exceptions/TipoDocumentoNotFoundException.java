@@ -23,38 +23,38 @@ package org.repeid.manager.api.rest.contract.exceptions;
  */
 public class TipoDocumentoNotFoundException extends AbstractNotFoundException {
 
-	private static final long serialVersionUID = -5416700206708610404L;
+    private static final long serialVersionUID = -5416700206708610404L;
 
-	/**
-	 * Constructor.
-	 */
-	public TipoDocumentoNotFoundException() {
-	}
+    /**
+     * Constructor.
+     */
+    public TipoDocumentoNotFoundException() {
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param message
-	 *            the exception message
-	 */
-	public TipoDocumentoNotFoundException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     * 
+     * @param message
+     *            the exception message
+     */
+    public TipoDocumentoNotFoundException(String message) {
+        super(message);
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
-	 */
-	@Override
-	public int getErrorCode() {
-		return ErrorCodes.TIPO_DOCUMENTO_NOT_FOUND;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
+     */
+    @Override
+    public int getErrorCode() {
+        return ErrorCodes.TIPO_DOCUMENTO_NOT_FOUND;
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
-	 */
-	@Override
-	public String getMoreInfoUrl() {
-		return ErrorCodes.TIPO_DOCUMENTO_NOT_FOUND_INFO;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
+     */
+    @Override
+    public String getMoreInfoUrl() {
+        return ErrorCodes.TIPO_DOCUMENTO_NOT_FOUND_INFO;
+    }
 
 }

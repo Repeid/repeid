@@ -53,7 +53,7 @@ public class PersonaJuridicaResourceImpl implements PersonaJuridicaResource {
         try {
             PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
             if (personaJuridica == null) {
-                throw ExceptionFactory.personaJuridicaNotFoundException(null);
+                throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
             }
             return ModelToRepresentation.toRepresentation(personaJuridica);
         } catch (StorageException e) {
@@ -70,7 +70,7 @@ public class PersonaJuridicaResourceImpl implements PersonaJuridicaResource {
         try {
             PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
             if (personaJuridica == null) {
-                throw ExceptionFactory.personaJuridicaNotFoundException(null);
+                throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
             }
             personaJuridicaManager.update(personaJuridica, rep);
         } catch (StorageException e) {
@@ -86,14 +86,14 @@ public class PersonaJuridicaResourceImpl implements PersonaJuridicaResource {
         try {
             PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
             if (personaJuridica == null) {
-                throw ExceptionFactory.personaJuridicaNotFoundException(null);
+                throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
             }
 
             boolean removed = personaJuridicaProvider.remove(personaJuridica);
             if (removed) {
                 return Response.noContent().build();
             } else {
-                throw ExceptionFactory.personaJuridicaLockedException(null);
+                throw ExceptionFactory.personaJuridicaLockedException(personaJuridicaId);
             }
         } catch (StorageException e) {
             throw new SystemErrorException(e);

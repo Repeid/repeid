@@ -23,38 +23,38 @@ package org.repeid.manager.api.rest.contract.exceptions;
  */
 public class PersonaJuridicaNotFoundException extends AbstractNotFoundException {
 
-	private static final long serialVersionUID = -5416700206708610404L;
+    private static final long serialVersionUID = -5416700206708610404L;
 
-	/**
-	 * Constructor.
-	 */
-	public PersonaJuridicaNotFoundException() {
-	}
+    /**
+     * Constructor.
+     */
+    public PersonaJuridicaNotFoundException() {
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param message
-	 *            the exception message
-	 */
-	public PersonaJuridicaNotFoundException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     * 
+     * @param message
+     *            the exception message
+     */
+    public PersonaJuridicaNotFoundException(String message) {
+        super(message);
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
-	 */
-	@Override
-	public int getErrorCode() {
-		return ErrorCodes.PERSONA_JURIDICA_NOT_FOUND;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
+     */
+    @Override
+    public int getErrorCode() {
+        return ErrorCodes.PERSONA_JURIDICA_NOT_FOUND;
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
-	 */
-	@Override
-	public String getMoreInfoUrl() {
-		return ErrorCodes.PERSONA_JURIDICA_NOT_FOUND_INFO;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
+     */
+    @Override
+    public String getMoreInfoUrl() {
+        return ErrorCodes.PERSONA_JURIDICA_NOT_FOUND_INFO;
+    }
 
 }

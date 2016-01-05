@@ -82,7 +82,8 @@ public class PersonasJuridicasResourceImpl implements PersonasJuridicasResource 
             // Check duplicated tipo y numero de documento
             if (personaJuridicaProvider.findByTipoNumeroDocumento(tipoDocumentoPersonaJuridica,
                     rep.getNumeroDocumento()) != null) {
-                throw ExceptionFactory.personaJuridicaAlreadyExistsException(null);
+                throw ExceptionFactory.personaJuridicaAlreadyExistsException(
+                        rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
             }
 
             PersonaNaturalRepresentation representanteRep = rep.getRepresentanteLegal();
@@ -98,7 +99,8 @@ public class PersonasJuridicasResourceImpl implements PersonasJuridicasResource 
                         .header("Access-Control-Expose-Headers", "Location")
                         .entity(ModelToRepresentation.toRepresentation(personaJuridica)).build();
             } catch (ModelDuplicateException e) {
-                throw ExceptionFactory.personaJuridicaAlreadyExistsException(null);
+                throw ExceptionFactory.personaJuridicaAlreadyExistsException(
+                        rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
             }
         } catch (StorageException e) {
             throw new SystemErrorException(e);

@@ -17,12 +17,12 @@
 package org.repeid.manager.api.rest.contract.exceptions;
 
 /**
- * Base class for "already exists" exceptions.
+ * Base class for "locked entity" exceptions.
  *
  * @author eric.wittmann@redhat.com
  */
 public abstract class AbstractLockedException extends AbstractUserException {
-    
+
     private static final long serialVersionUID = 1345772129352225376L;
 
     /**
@@ -33,18 +33,20 @@ public abstract class AbstractLockedException extends AbstractUserException {
 
     /**
      * Constructor.
-     * @param message the message
+     * 
+     * @param message
+     *            the message
      */
     public AbstractLockedException(String message) {
         super(message);
     }
-    
+
     /**
      * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getHttpCode()
      */
     @Override
     public final int getHttpCode() {
-        return ErrorCodes.HTTP_STATUS_CODE_ALREADY_EXISTS;
+        return ErrorCodes.HTTP_STATUS_CODE_LOCKED;
     }
 
 }

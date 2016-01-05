@@ -23,38 +23,38 @@ package org.repeid.manager.api.rest.contract.exceptions;
  */
 public class TipoDocumentoAlreadyExistsException extends AbstractAlreadyExistsException {
 
-	private static final long serialVersionUID = -688580326437962778L;
+    private static final long serialVersionUID = -688580326437962778L;
 
-	/**
-	 * Constructor.
-	 */
-	public TipoDocumentoAlreadyExistsException() {
-	}
+    /**
+     * Constructor.
+     */
+    public TipoDocumentoAlreadyExistsException() {
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param message
-	 *            the exception message
-	 */
-	public TipoDocumentoAlreadyExistsException(String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     * 
+     * @param message
+     *            the exception message
+     */
+    public TipoDocumentoAlreadyExistsException(String message) {
+        super(message);
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
-	 */
-	@Override
-	public int getErrorCode() {
-		return ErrorCodes.TIPO_DOCUMENTO_ALREADY_EXISTS;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getErrorCode()
+     */
+    @Override
+    public int getErrorCode() {
+        return ErrorCodes.TIPO_DOCUMENTO_ALREADY_EXISTS;
+    }
 
-	/**
-	 * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
-	 */
-	@Override
-	public String getMoreInfoUrl() {
-		return ErrorCodes.TIPO_DOCUMENTO_ALREADY_EXISTS_INFO;
-	}
+    /**
+     * @see org.repeid.manager.api.rest.contract.exceptions.AbstractRestException#getMoreInfoUrl()
+     */
+    @Override
+    public String getMoreInfoUrl() {
+        return ErrorCodes.TIPO_DOCUMENTO_ALREADY_EXISTS_INFO;
+    }
 
 }

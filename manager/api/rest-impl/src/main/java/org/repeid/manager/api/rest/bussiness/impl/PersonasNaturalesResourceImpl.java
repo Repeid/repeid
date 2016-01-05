@@ -76,7 +76,8 @@ public class PersonasNaturalesResourceImpl implements PersonasNaturalesResource 
             // Check duplicated tipo y numero de documento
             if (personaNaturalProvider.findByTipoNumeroDocumento(tipoDocumento,
                     rep.getNumeroDocumento()) != null) {
-                throw ExceptionFactory.personaNaturalAlreadyExistsException(null);
+                throw ExceptionFactory.personaNaturalAlreadyExistsException(
+                        rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
             }
 
             try {
@@ -86,7 +87,7 @@ public class PersonasNaturalesResourceImpl implements PersonasNaturalesResource 
                         .header("Access-Control-Expose-Headers", "Location")
                         .entity(ModelToRepresentation.toRepresentation(personaNatural)).build();
             } catch (ModelDuplicateException e) {
-                throw ExceptionFactory.personaNaturalAlreadyExistsException(null);
+                throw ExceptionFactory.personaNaturalAlreadyExistsException(rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
             }
         } catch (StorageException e) {
             throw new SystemErrorException(e);

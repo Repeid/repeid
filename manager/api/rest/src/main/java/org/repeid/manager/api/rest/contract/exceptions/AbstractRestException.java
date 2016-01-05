@@ -16,7 +16,6 @@
 
 package org.repeid.manager.api.rest.contract.exceptions;
 
-
 /**
  * Base class for all APIMan errors coming out of the REST layer.
  *
@@ -25,27 +24,31 @@ package org.repeid.manager.api.rest.contract.exceptions;
 public abstract class AbstractRestException extends RuntimeException {
 
     private static final long serialVersionUID = -2406210413693314452L;
-    
+
     // The stacktrace is only set on the client/UI side
     private transient String serverStack;
-    
+
     /**
      * Constructor.
      */
     public AbstractRestException() {
     }
-    
+
     /**
      * Constructor.
-     * @param message the exception message
+     * 
+     * @param message
+     *            the exception message
      */
     public AbstractRestException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
-     * @param cause the exception cause
+     * 
+     * @param cause
+     *            the exception cause
      */
     public AbstractRestException(Throwable cause) {
         super(cause);
@@ -53,8 +56,11 @@ public abstract class AbstractRestException extends RuntimeException {
 
     /**
      * Constructor.
-     * @param message the exception message
-     * @param cause the exception cause
+     * 
+     * @param message
+     *            the exception message
+     * @param cause
+     *            the exception cause
      */
     public AbstractRestException(String message, Throwable cause) {
         super(message, cause);
@@ -68,7 +74,8 @@ public abstract class AbstractRestException extends RuntimeException {
     }
 
     /**
-     * @param stacktrace the stacktrace to set
+     * @param stacktrace
+     *            the stacktrace to set
      */
     public void setServerStack(String stacktrace) {
         this.serverStack = stacktrace;

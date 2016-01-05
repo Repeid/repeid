@@ -17,8 +17,8 @@
 package org.repeid.manager.api.rest.contract.exceptions;
 
 /**
- * Base class for all system exceptions.  A system exception is one that happens
- * because something went wrong on the server.  Examples might include an error
+ * Base class for all system exceptions. A system exception is one that happens
+ * because something went wrong on the server. Examples might include an error
  * connecting to a backend storage system, running out of memory, etc.
  *
  * @author eric.wittmann@redhat.com
@@ -35,15 +35,19 @@ public abstract class AbstractSystemException extends AbstractRestException {
 
     /**
      * Constructor.
-     * @param message the exception message
+     * 
+     * @param message
+     *            the exception message
      */
     public AbstractSystemException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
-     * @param cause the exception cause
+     * 
+     * @param cause
+     *            the exception cause
      */
     public AbstractSystemException(Throwable cause) {
         super(cause);
