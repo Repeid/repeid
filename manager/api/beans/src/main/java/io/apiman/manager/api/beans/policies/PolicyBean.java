@@ -15,8 +15,6 @@
  */
 package io.apiman.manager.api.beans.policies;
 
-import io.apiman.common.util.crypt.CurrentDataEncrypter;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,6 +37,7 @@ import javax.persistence.Transient;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Type;
+import org.repeid.common.util.crypt.CurrentDataEncrypter;
 
 /**
  * A Policy is the primary unit of work for the runtime engine, which is

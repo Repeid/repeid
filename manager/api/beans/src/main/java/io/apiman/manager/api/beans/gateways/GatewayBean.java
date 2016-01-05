@@ -15,8 +15,6 @@
  */
 package io.apiman.manager.api.beans.gateways;
 
-import io.apiman.common.util.crypt.CurrentDataEncrypter;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -35,6 +33,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Type;
+import org.repeid.common.util.crypt.CurrentDataEncrypter;
 
 /**
  * Models a single gateway configured by an admin.  When publishing services,
