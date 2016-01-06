@@ -29,181 +29,180 @@ import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 @Entity
 @Table(name = "PERSONA_JURIDICA")
 @NamedQueries(value = {
-        @NamedQuery(name = "PersonaJuridicaEntity.findAll", query = "SELECT p FROM PersonaJuridicaEntity p"),
-        @NamedQuery(name = "PersonaJuridicaEntity.findByTipoDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
-        @NamedQuery(name = "PersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
-        @NamedQuery(name = "PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
-        @NamedQuery(name = "PersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM PersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
+		@NamedQuery(name = "PersonaJuridicaEntity.findAll", query = "SELECT p FROM PersonaJuridicaEntity p"),
+		@NamedQuery(name = "PersonaJuridicaEntity.findByTipoDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
+		@NamedQuery(name = "PersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
+		@NamedQuery(name = "PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
+		@NamedQuery(name = "PersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM PersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
 public class PersonaJuridicaEntity extends PersonaEntity implements Serializable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "ID")
-    private String id;
+	@Id
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "id")
+	private String id;
 
-    @NotNull
-    @Size(min = 1, max = 70)
-    @NotBlank
-    @Column(name = "RAZON_SOCIAL")
-    private String razonSocial;
+	@NotNull
+	@Size(min = 1, max = 70)
+	@NotBlank
+	@Column(name = "razon_social")
+	private String razonSocial;
 
-    @Size(min = 0, max = 50)
-    @Column(name = "NOMBRE_COMERCIAL")
-    private String nombreComercial;
+	@Size(min = 0, max = 50)
+	@Column(name = "nombre_comercial")
+	private String nombreComercial;
 
-    @NotNull
-    @Past
-    @Temporal(TemporalType.DATE)
-    @Column(name = "FECHA_CONSTITUCION")
-    private Date fechaConstitucion;
+	@NotNull
+	@Past
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_constitucion")
+	private Date fechaConstitucion;
 
-    @Size(min = 0, max = 70)
-    @Column(name = "ACTIVIDAD_PRINCIPAL")
-    private String actividadPrincipal;
+	@Size(min = 0, max = 70)
+	@Column(name = "actividad_principal")
+	private String actividadPrincipal;
 
-    @NotNull
-    @Size(min = 0, max = 50)
-    @Column(name = "TIPO_EMPRESA")
-    private String tipoEmpresa;
+	@NotNull
+	@Size(min = 0, max = 50)
+	@Column(name = "tipo_empresa")
+	private String tipoEmpresa;
 
-    @NotNull
-    @Type(type = "org.hibernate.type.TrueFalseType")
-    @Column(name = "FIN_LUCRO")
-    private boolean finLucro;
+	@NotNull
+	@Type(type = "org.hibernate.type.TrueFalseType")
+	@Column(name = "fin_lucro")
+	private boolean finLucro;
 
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "REPRESENTANTE_LEGAL", foreignKey = @ForeignKey )
-    private PersonaNaturalEntity representanteLegal;
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "representante_legal_id", foreignKey = @ForeignKey )
+	private PersonaNaturalEntity representanteLegal;
 
-    @OneToMany(mappedBy = "personaJuridica", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
-            CascadeType.REMOVE })
-    private Set<AccionistaEntity> accionistas = new HashSet<AccionistaEntity>(0);
+	@OneToMany(mappedBy = "personaJuridica", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
+			CascadeType.REMOVE })
+	private Set<AccionistaEntity> accionistas = new HashSet<AccionistaEntity>(0);
 
-    public PersonaJuridicaEntity() {
-        super();
-    }
+	public PersonaJuridicaEntity() {
+		super();
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getRazonSocial() {
-        return razonSocial;
-    }
+	public String getRazonSocial() {
+		return razonSocial;
+	}
 
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
-    }
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
+	}
 
-    public String getNombreComercial() {
-        return nombreComercial;
-    }
+	public String getNombreComercial() {
+		return nombreComercial;
+	}
 
-    public void setNombreComercial(String nombreComercial) {
-        this.nombreComercial = nombreComercial;
-    }
+	public void setNombreComercial(String nombreComercial) {
+		this.nombreComercial = nombreComercial;
+	}
 
-    public Date getFechaConstitucion() {
-        return fechaConstitucion;
-    }
+	public Date getFechaConstitucion() {
+		return fechaConstitucion;
+	}
 
-    public void setFechaConstitucion(Date fechaConstitucion) {
-        this.fechaConstitucion = fechaConstitucion;
-    }
+	public void setFechaConstitucion(Date fechaConstitucion) {
+		this.fechaConstitucion = fechaConstitucion;
+	}
 
-    public String getActividadPrincipal() {
-        return actividadPrincipal;
-    }
+	public String getActividadPrincipal() {
+		return actividadPrincipal;
+	}
 
-    public void setActividadPrincipal(String actividadPrincipal) {
-        this.actividadPrincipal = actividadPrincipal;
-    }
+	public void setActividadPrincipal(String actividadPrincipal) {
+		this.actividadPrincipal = actividadPrincipal;
+	}
 
-    public String getTipoEmpresa() {
-        return tipoEmpresa;
-    }
+	public String getTipoEmpresa() {
+		return tipoEmpresa;
+	}
 
-    public void setTipoEmpresa(String tipoEmpresa) {
-        this.tipoEmpresa = tipoEmpresa;
-    }
+	public void setTipoEmpresa(String tipoEmpresa) {
+		this.tipoEmpresa = tipoEmpresa;
+	}
 
-    public boolean isFinLucro() {
-        return finLucro;
-    }
+	public boolean isFinLucro() {
+		return finLucro;
+	}
 
-    public void setFinLucro(boolean finLucro) {
-        this.finLucro = finLucro;
-    }
+	public void setFinLucro(boolean finLucro) {
+		this.finLucro = finLucro;
+	}
 
-    public PersonaNaturalEntity getRepresentanteLegal() {
-        return representanteLegal;
-    }
+	public PersonaNaturalEntity getRepresentanteLegal() {
+		return representanteLegal;
+	}
 
-    public void setRepresentanteLegal(PersonaNaturalEntity representanteLegal) {
-        this.representanteLegal = representanteLegal;
-    }
+	public void setRepresentanteLegal(PersonaNaturalEntity representanteLegal) {
+		this.representanteLegal = representanteLegal;
+	}
 
-    public Set<AccionistaEntity> getAccionistas() {
-        return accionistas;
-    }
+	public Set<AccionistaEntity> getAccionistas() {
+		return accionistas;
+	}
 
-    public void setAccionistas(Set<AccionistaEntity> accionistas) {
-        this.accionistas = accionistas;
-    }
+	public void setAccionistas(Set<AccionistaEntity> accionistas) {
+		this.accionistas = accionistas;
+	}
 
-    @Override
-    public String toString() {
-        return "(PersonaJuridicaEntity id=" + this.id + " tipoDocumento="
-                + this.tipoDocumento.getAbreviatura() + " numeroDocumento" + this.numeroDocumento
-                + " razonSocial=" + this.razonSocial + ")";
-    }
+	@Override
+	public String toString() {
+		return "(PersonaJuridicaEntity id=" + this.id + " tipoDocumento=" + this.tipoDocumento.getAbreviatura()
+				+ " numeroDocumento" + this.numeroDocumento + " razonSocial=" + this.razonSocial + ")";
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((numeroDocumento == null) ? 0 : numeroDocumento.hashCode());
-        result = prime * result + ((tipoDocumento == null) ? 0 : tipoDocumento.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((numeroDocumento == null) ? 0 : numeroDocumento.hashCode());
+		result = prime * result + ((tipoDocumento == null) ? 0 : tipoDocumento.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof PersonaJuridicaEntity))
-            return false;
-        PersonaJuridicaEntity other = (PersonaJuridicaEntity) obj;
-        if (numeroDocumento == null) {
-            if (other.numeroDocumento != null)
-                return false;
-        } else if (!numeroDocumento.equals(other.numeroDocumento))
-            return false;
-        if (tipoDocumento == null) {
-            if (other.tipoDocumento != null)
-                return false;
-        } else if (!tipoDocumento.equals(other.tipoDocumento))
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof PersonaJuridicaEntity))
+			return false;
+		PersonaJuridicaEntity other = (PersonaJuridicaEntity) obj;
+		if (numeroDocumento == null) {
+			if (other.numeroDocumento != null)
+				return false;
+		} else if (!numeroDocumento.equals(other.numeroDocumento))
+			return false;
+		if (tipoDocumento == null) {
+			if (other.tipoDocumento != null)
+				return false;
+		} else if (!tipoDocumento.equals(other.tipoDocumento))
+			return false;
+		return true;
+	}
 
 }
