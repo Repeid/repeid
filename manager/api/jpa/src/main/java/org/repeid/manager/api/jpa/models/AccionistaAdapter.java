@@ -10,18 +10,13 @@ import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 public class AccionistaAdapter implements AccionistaModel {
 
-    /**
-	 * 
-	 */
-    private static final long serialVersionUID = 1L;
-
     private AccionistaEntity accionistaEntity;
-    private transient EntityManager em;
+    private EntityManager em;
 
     public AccionistaAdapter(EntityManager em, AccionistaEntity accionistaEntity) {
         this.em = em;

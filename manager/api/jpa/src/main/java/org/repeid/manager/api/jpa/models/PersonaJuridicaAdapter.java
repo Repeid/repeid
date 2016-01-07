@@ -17,18 +17,13 @@ import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     protected PersonaJuridicaEntity personaJuridicaEntity;
-    protected transient EntityManager em;
+    protected EntityManager em;
 
     public PersonaJuridicaAdapter(EntityManager em, PersonaJuridicaEntity personaJuridicaEntity) {
         this.em = em;

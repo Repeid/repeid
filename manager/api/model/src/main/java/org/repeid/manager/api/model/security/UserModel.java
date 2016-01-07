@@ -6,6 +6,8 @@ import org.repeid.manager.api.model.Model;
 
 public interface UserModel extends Model {
 
+    String getId();
+
     String getUsername();
 
     String getFullName();

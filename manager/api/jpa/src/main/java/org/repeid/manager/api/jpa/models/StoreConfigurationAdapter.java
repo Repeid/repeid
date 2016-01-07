@@ -7,12 +7,10 @@ import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.enums.StoreFileProviderName;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 public class StoreConfigurationAdapter implements StoreConfigurationModel {
-
-    private static final long serialVersionUID = 1L;
 
     private StoreConfigurationEntity storeConfigurationEntity;
     private EntityManager em;

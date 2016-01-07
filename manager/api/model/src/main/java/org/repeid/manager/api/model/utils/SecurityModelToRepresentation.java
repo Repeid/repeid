@@ -30,7 +30,7 @@ public class SecurityModelToRepresentation {
 		rep.setName(model.getName());
 		rep.setAutoGrant(model.isAutoGrant());
 		rep.setCreatedBy(model.getCreatedBy());
-		rep.setCreatedOn(model.getCreatedon());
+		rep.setCreatedOn(model.getCreatedOn());
 		rep.setDescription(model.getDescription());
 		rep.setPermissions(model.getPermissions());
 

@@ -8,12 +8,10 @@ import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 public class StoredFileAdapter implements StoredFileModel {
-
-    private static final long serialVersionUID = 1L;
 
     private StoredFileEntity fileStoreEntity;
     private EntityManager em;

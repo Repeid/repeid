@@ -16,8 +16,9 @@ import org.repeid.manager.api.model.security.UserProvider;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SecurityRepresentationToModel {
 
-	public RoleModel createRole(RoleRepresentation rep, RoleProvider provider) throws StorageException {
-		return provider.create(rep.getName(), rep.getDescription(), rep.getAutoGrant(), rep.getPermissions());
+	public RoleModel createRole(RoleRepresentation rep, RoleProvider provider, String createdBy) throws StorageException {
+        return provider.create(rep.getName(), rep.getDescription(), rep.getAutoGrant(), rep.getPermissions(),
+                createdBy);
 	}
 
 	public UserModel createUser(UserRepresentation rep, UserProvider provider) throws StorageException {

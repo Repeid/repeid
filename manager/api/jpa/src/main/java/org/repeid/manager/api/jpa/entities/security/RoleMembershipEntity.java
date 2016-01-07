@@ -20,10 +20,18 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * A single, qualified, role granted to the user. Roles in the system might
@@ -36,114 +44,74 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "memberships", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "user_id", "role_id", "org_id" }) })
+        @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+@NamedQueries(value = {
+        @NamedQuery(name = "RoleMembershipEntity.findAll", query = "SELECT r FROM RoleMembershipEntity r"),
+        @NamedQuery(name = "RoleMembershipEntity.findByUserId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.user u WHERE u.id = :userId"),
+        @NamedQuery(name = "RoleMembershipEntity.findByRoleId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.role rr WHERE rr.id = :roleId")})
 public class RoleMembershipEntity implements Serializable {
 
     private static final long serialVersionUID = 7798709783947356888L;
 
-    public static final RoleMembershipEntity create(String userId, String roleId, String organizationId) {
-        RoleMembershipEntity bean = new RoleMembershipEntity();
-        bean.setUserId(userId);
-        bean.setRoleId(roleId);
-        bean.setOrganizationId(organizationId);
-        return bean;
-    }
-
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "id")
+    private String id;
 
-    @Column(name = "user_id")
-    private String userId;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey , name = "user_id")
+    private UserEntity user;
 
-    @Column(name = "role_id")
-    private String roleId;
-
-    @Column(name = "org_id")
-    private String organizationId;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey , name = "role_id")
+    private RoleEntity role;
 
     @Column(name = "created_on")
     private Date createdOn;
 
-    /**
-     * Constructor.
-     */
-    public RoleMembershipEntity() {
+    public String getId() {
+        return id;
     }
 
-    /**
-     * @return the userId
-     */
-    public String getUserId() {
-        return userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    /**
-     * @param userId
-     *            the userId to set
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    /**
-     * @return the roleId
-     */
-    public String getRoleId() {
-        return roleId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
-    /**
-     * @param roleId
-     *            the roleId to set
-     */
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public RoleEntity getRole() {
+        return role;
     }
 
-    /**
-     * @return the organizationId
-     */
-    public String getOrganizationId() {
-        return organizationId;
+    public void setRole(RoleEntity role) {
+        this.role = role;
     }
 
-    /**
-     * @param organizationId
-     *            the organizationId to set
-     */
-    public void setOrganizationId(String organizationId) {
-        this.organizationId = organizationId;
-    }
-
-    /**
-     * @return the createdOn
-     */
     public Date getCreatedOn() {
         return createdOn;
     }
 
-    /**
-     * @param createdOn
-     *            the createdOn to set
-     */
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
 
-    /**
-     * @return the id
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
      */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     *            the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    @SuppressWarnings("nls")
+    public String toString() {
+        return "RoleMembershipEntity [id=" + id + ", userId=" + user.getId() + ", roleId=" + role.getId()
+                + ", createdOn=" + createdOn + "]";
     }
 
     /**
@@ -176,17 +144,4 @@ public class RoleMembershipEntity implements Serializable {
             return false;
         return true;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    @SuppressWarnings("nls")
-    public String toString() {
-        return "RoleMembershipEntity [id=" + id + ", userId=" + userId + ", roleId=" + roleId
-                + ", organizationId=" + organizationId + ", createdOn=" + createdOn + "]";
-    }
-
 }

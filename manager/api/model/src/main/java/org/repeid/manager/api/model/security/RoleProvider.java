@@ -5,19 +5,24 @@ import java.util.Set;
 
 import org.repeid.manager.api.core.exceptions.StorageException;
 import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
-public interface RoleProvider {
+public interface RoleProvider extends Provider {
 
-    RoleModel create(String name, String description, boolean autogrant, Set<PermissionType> set)
-            throws StorageException;
+    RoleModel create(String name, String description, boolean autogrant, Set<PermissionType> set,
+            String createdBy) throws StorageException;
 
     RoleModel findById(String rolId) throws StorageException;
 
-    boolean delete(RoleModel rol) throws StorageException;
+    RoleModel findByName(String rolName) throws StorageException;
+
+    boolean remove(RoleModel rol) throws StorageException;
 
     List<RoleModel> getAll() throws StorageException;
+
+    List<RoleModel> getAll(int firstResult, int maxResults);
 
     SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria) throws StorageException;
 

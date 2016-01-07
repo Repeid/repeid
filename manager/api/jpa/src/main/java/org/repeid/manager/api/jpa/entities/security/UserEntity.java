@@ -21,9 +21,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Models a single user.
@@ -32,11 +37,18 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "users")
+@NamedQueries(value = {
+        @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u"),
+        @NamedQuery(name = "UserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username") })
 public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 865765107251347714L;
 
     @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    private String id;
+
     @Column(updatable = false, nullable = false)
     private String username;
 
@@ -57,6 +69,14 @@ public class UserEntity implements Serializable {
      * Constructor.
      */
     public UserEntity() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -142,10 +162,10 @@ public class UserEntity implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         UserEntity other = (UserEntity) obj;
-        if (username == null) {
-            if (other.username != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!username.equals(other.username))
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }
@@ -173,8 +193,8 @@ public class UserEntity implements Serializable {
     @Override
     @SuppressWarnings("nls")
     public String toString() {
-        return "UserEntity [username=" + username + ", fullName=" + fullName + ", email=" + email
-                + ", joinedOn=" + joinedOn + ", admin=" + admin + "]";
+        return "UserEntity [id=" + id + ", username=" + username + ", fullName=" + fullName + ", email="
+                + email + ", joinedOn=" + joinedOn + ", admin=" + admin + "]";
     }
 
 }

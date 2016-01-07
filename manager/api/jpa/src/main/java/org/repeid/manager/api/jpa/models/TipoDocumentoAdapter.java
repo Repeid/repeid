@@ -7,15 +7,13 @@ import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 public class TipoDocumentoAdapter implements TipoDocumentoModel {
 
-    private static final long serialVersionUID = 1L;
-
     private TipoDocumentoEntity tipoDocumentoEntity;
-    private transient EntityManager em;
+    private EntityManager em;
 
     public TipoDocumentoAdapter(EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
         this.em = em;
@@ -26,7 +24,7 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
         if (model instanceof TipoDocumentoAdapter) {
             return ((TipoDocumentoAdapter) model).getTipoDocumentEntity();
         }
-        return em.getReference(TipoDocumentoEntity.class, model.getAbreviatura());
+        return em.getReference(TipoDocumentoEntity.class, model.getId());
     }
 
     public TipoDocumentoEntity getTipoDocumentEntity() {
@@ -71,12 +69,16 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
     @Override
     public TipoPersona getTipoPersona() {
         String tipoPersona = tipoDocumentoEntity.getTipoPersona();
-        return TipoPersona.valueOf(tipoPersona);
+        return tipoPersona != null ? TipoPersona.valueOf(tipoPersona) : null;
     }
 
     @Override
     public void setTipoPersona(TipoPersona tipoPersona) {
-        tipoDocumentoEntity.setTipoPersona(tipoPersona.toString());
+        if (tipoPersona != null) {
+            tipoDocumentoEntity.setTipoPersona(tipoPersona.toString());
+        } else {
+            tipoDocumentoEntity.setTipoPersona(null);
+        }
     }
 
     @Override

@@ -74,7 +74,8 @@ public class RoleResourceImpl implements IRoleResource {
             throw ExceptionFactory.notAuthorizedException();
 
         try {
-            RoleModel role = securityRepresentationToModel.createRole(rep, roleProvider);
+            RoleModel role = securityRepresentationToModel.createRole(rep, roleProvider,
+                    securityContext.getCurrentUser());
             return SecurityModelToRepresentation.toRepresentation(role);
         } catch (StorageException e) {
             throw new SystemErrorException(e);
@@ -119,7 +120,7 @@ public class RoleResourceImpl implements IRoleResource {
                 throw ExceptionFactory.roleNotFoundException(roleId);
             }
             @SuppressWarnings("unused")
-            boolean result = roleProvider.delete(role);
+            boolean result = roleProvider.remove(role);
         } catch (StorageException e) {
             throw new SystemErrorException(e);
         }

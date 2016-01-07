@@ -9,5 +9,8 @@ dependencies {
 	compile ( libraries.cdi_api )
 	compile ( libraries.dropbox_core_sdk )
 
+	compile ( libraries.slf4j_api )
+	compile ( libraries.slf4j_log4j )
+	
 	provided ( libraries.jboss_ejb_api_3_2_spec )
 }

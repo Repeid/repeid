@@ -12,12 +12,15 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.repeid.manager.api.core.exceptions.StorageException;
 import org.repeid.manager.api.model.search.OrderByModel;
 import org.repeid.manager.api.model.search.PagingModel;
 import org.repeid.manager.api.model.search.SearchCriteriaFilterModel;
 import org.repeid.manager.api.model.search.SearchCriteriaFilterOperator;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A base class that Hibernate storage impls can extend.
@@ -25,6 +28,8 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public abstract class AbstractHibernateStorage {
+
+    private static Logger logger = LoggerFactory.getLogger(AbstractHibernateStorage.class);
 
     /**
      * Constructor.
@@ -38,6 +43,107 @@ public abstract class AbstractHibernateStorage {
     protected Session getSession() {
         return getEntityManager().unwrap(Session.class);
     }
+
+    /**
+     * @param bean
+     *            the bean to create
+     * @throws StorageException
+     *             if a storage problem occurs while storing a bean
+     */
+    public <T> void create(T bean) throws StorageException {
+        if (bean == null) {
+            return;
+        }
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.persist(bean);
+        } catch (Throwable t) {
+            logger.error(t.getMessage(), t);
+            throw new StorageException(t);
+        }
+    }
+
+    /**
+     * @param bean
+     *            the bean to update
+     * @throws StorageException
+     *             if a storage problem occurs while storing a bean
+     */
+    public <T> void update(T bean) throws StorageException {
+        EntityManager entityManager = getEntityManager();
+        try {
+            if (!entityManager.contains(bean)) {
+                entityManager.merge(bean);
+            }
+        } catch (Throwable t) {
+            logger.error(t.getMessage(), t);
+            throw new StorageException(t);
+        }
+    }
+
+    /**
+     * Delete using bean
+     *
+     * @param bean
+     *            the bean to delete
+     * @throws StorageException
+     *             if a storage problem occurs while storing a bean
+     */
+    public <T> void delete(T bean) throws StorageException {
+        EntityManager entityManager = getEntityManager();
+        try {
+            entityManager.remove(bean);
+        } catch (Throwable t) {
+            logger.error(t.getMessage(), t);
+            throw new StorageException(t);
+        }
+    }
+
+    /**
+     * Get object of type T
+     *
+     * @param id
+     *            identity key
+     * @param type
+     *            class of type T
+     * @return Instance of type T
+     * @throws StorageException
+     *             if a storage problem occurs while storing a bean
+     */
+    public <T> T get(Long id, Class<T> type) throws StorageException {
+        T rval = null;
+        EntityManager entityManager = getEntityManager();
+        try {
+            rval = entityManager.find(type, id);
+        } catch (Throwable t) {
+            logger.error(t.getMessage(), t);
+            throw new StorageException(t);
+        }
+        return rval;
+    }
+
+    /**
+     * Get object of type T
+     *
+     * @param id
+     *            identity key
+     * @param type
+     *            class of type T
+     * @return Instance of type T
+     * @throws StorageException
+     *             if a storage problem occurs while storing a bean
+     */
+    public <T> T get(String id, Class<T> type) throws StorageException {
+        T rval = null;
+        EntityManager entityManager = getEntityManager();
+        try {
+            rval = entityManager.find(type, id);
+        } catch (Throwable t) {
+            logger.error(t.getMessage(), t);
+            throw new StorageException(t);
+        }
+        return rval;
+    }    
 
     protected <T> SearchResultsModel<T> findFullText(SearchCriteriaModel criteria, Class<T> type,
             String filterText, String... field) {

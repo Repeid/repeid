@@ -1,5 +1,6 @@
 package org.repeid.manager.api.model.security;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Local;
@@ -17,11 +18,19 @@ public interface UserProvider extends Provider {
 
     UserModel findById(String id) throws StorageException;
 
+    UserModel findByUsername(String username) throws StorageException;
+
+    boolean remove(UserModel user);
+
+    Set<PermissionType> getPermissions(String userId) throws StorageException;
+
+    List<UserModel> getAll();
+
+    List<UserModel> getAll(int firstResult, int maxResults);
+
     SearchResultsModel<UserModel> search(SearchCriteriaModel criteria) throws StorageException;
 
     SearchResultsModel<UserModel> search(SearchCriteriaModel criteria, String filterText)
             throws StorageException;
-
-    Set<PermissionType> getPermissions(String userId) throws StorageException;
 
 }
