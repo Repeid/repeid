@@ -15,14 +15,14 @@
  */
 package io.apiman.manager.api.war;
 
-import io.apiman.manager.api.core.config.ApiManagerConfig;
-import io.apiman.manager.api.jpa.IJpaProperties;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
+
+import io.apiman.manager.api.core.config.ApiManagerConfig;
+import io.apiman.manager.api.jpa.IJpaProperties;
 
 /**
  * Configuration object for the API Manager.

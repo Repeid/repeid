@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.manager.api.war.wildfly8;
+package io.apiman.manager.api.jpa;
+
+import java.util.Map;
 
 /**
- * A wildfly 8 version of the plugin registry.  This subclass exists in order
- * to properly configure the data directory that should be used.  In this case
- * the data directory is $WILDFLY/standalone/data/apiman/plugins
+ * Interface for accessing JPA/hibernate properties.  Must be provided by the
+ * platform.
  *
  * @author eric.wittmann@redhat.com
  */
-public class Wildfly8PluginRegistry {
-	
-}
+public interface IJpaProperties {
 
+    /**
+     * @return all configured hibernate properties
+     */
+    Map<String, String> getAllHibernateProperties();
+
+}
