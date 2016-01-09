@@ -18,6 +18,10 @@ include 'manager:api:rest-impl'
 include 'manager:api:model'
 include 'manager:api:jpa'
 include 'manager:api:mongo'
+include 'manager:api:war'
+include 'manager:api:war:wildfly8'
+
+include 'manager:test:api'
 
 project(':common').name = 'repeid-common'
 project(':common:auth').name = 'repeid-common-auth'
@@ -39,3 +43,7 @@ project(':manager:api:rest-impl').name = 'repeid-manager-api-rest-impl'
 project(':manager:api:model').name = 'repeid-manager-api-model'
 project(':manager:api:jpa').name = 'repeid-manager-api-jpa'
 project(':manager:api:mongo').name = 'repeid-manager-api-mongo'
+project(':manager:api:war').name = 'repeid-manager-api-war'
+project(':manager:api:war:wildfly8').name = 'repeid-manager-api-war-wildfly8'
+
+project(':manager:test:api').name = 'repeid-manager-test-api'
