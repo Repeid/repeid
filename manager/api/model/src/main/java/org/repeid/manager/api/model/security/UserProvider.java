@@ -5,8 +5,8 @@ import java.util.Set;
 
 import javax.ejb.Local;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;

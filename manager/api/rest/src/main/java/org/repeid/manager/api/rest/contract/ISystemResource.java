@@ -21,7 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.repeid.manager.api.core.representations.idm.system.SystemStatusRepresentation;
+import org.repeid.manager.api.beans.representations.system.SystemStatusRepresentation;
 
 /**
  * A simple System API.

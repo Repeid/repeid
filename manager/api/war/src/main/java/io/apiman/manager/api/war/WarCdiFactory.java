@@ -18,6 +18,7 @@ package io.apiman.manager.api.war;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
 import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.manager.api.security.impl.DefaultSecurityContext;
@@ -34,7 +35,7 @@ public class WarCdiFactory {
 	@Produces
 	@ApplicationScoped
 	public static ISecurityContext provideSecurityContext(WarApiManagerConfig config,
-			@New DefaultSecurityContext defaultSC, @New KeycloakSecurityContext keycloakSC) {
+			@Inject DefaultSecurityContext defaultSC, @New KeycloakSecurityContext keycloakSC) {
 		if ("default".equals(config.getSecurityContextType())) { //$NON-NLS-1$
 			return defaultSC;
 		} else if ("keycloak".equals(config.getSecurityContextType())) { //$NON-NLS-1$

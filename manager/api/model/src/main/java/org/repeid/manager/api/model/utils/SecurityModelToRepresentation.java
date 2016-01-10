@@ -1,7 +1,7 @@
 package org.repeid.manager.api.model.utils;
 
-import org.repeid.manager.api.core.representations.idm.security.RoleRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.UserRepresentation;
+import org.repeid.manager.api.beans.representations.security.RoleRepresentation;
+import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.UserModel;
 

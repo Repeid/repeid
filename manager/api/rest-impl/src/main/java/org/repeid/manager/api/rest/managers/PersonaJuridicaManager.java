@@ -5,9 +5,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.PersonaJuridicaRepresentation;
-import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.PersonaNaturalProvider;

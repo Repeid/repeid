@@ -3,7 +3,7 @@ package org.repeid.manager.api.model.security;
 import java.util.Date;
 import java.util.Set;
 
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.Model;
 
 public interface RoleModel extends Model {

@@ -32,7 +32,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 
 /**
  * A role definition. The definition of the role determines whether the role is

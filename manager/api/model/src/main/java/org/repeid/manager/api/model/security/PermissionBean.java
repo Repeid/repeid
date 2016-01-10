@@ -2,7 +2,7 @@ package org.repeid.manager.api.model.security;
 
 import java.io.Serializable;
 
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 
 /**
  * Models a single qualified permission assigned to a user. All permissions are

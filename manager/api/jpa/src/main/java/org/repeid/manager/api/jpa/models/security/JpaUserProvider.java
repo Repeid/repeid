@@ -15,8 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
 import org.repeid.manager.api.jpa.models.AbstractHibernateStorage;
@@ -62,7 +62,7 @@ public class JpaUserProvider extends AbstractHibernateStorage implements UserPro
         userEntity.setEmail(email);
         userEntity.setJoinedOn(Calendar.getInstance().getTime());
         getEntityManager().persist(userEntity);
-        return new UserAdapter(em, userEntity);
+        return new UserAdapter(getEntityManager(), userEntity);
     }
 
     @Override

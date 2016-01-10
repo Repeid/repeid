@@ -5,9 +5,9 @@ import javax.inject.Inject;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.TipoDocumentoRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;

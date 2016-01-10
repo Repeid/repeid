@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.ejb.Local;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;

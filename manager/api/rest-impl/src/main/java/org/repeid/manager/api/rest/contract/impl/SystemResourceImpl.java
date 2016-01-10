@@ -18,7 +18,7 @@ package org.repeid.manager.api.rest.contract.impl;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import org.repeid.manager.api.core.representations.idm.system.SystemStatusRepresentation;
+import org.repeid.manager.api.beans.representations.system.SystemStatusRepresentation;
 import org.repeid.manager.api.rest.contract.ISystemResource;
 
 /**

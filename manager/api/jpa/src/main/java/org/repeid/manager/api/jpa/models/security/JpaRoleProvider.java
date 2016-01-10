@@ -14,8 +14,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.entities.security.RoleEntity;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
 import org.repeid.manager.api.jpa.models.AbstractHibernateStorage;
@@ -64,7 +64,7 @@ public class JpaRoleProvider extends AbstractHibernateStorage implements RolePro
         roleEntity.setCreatedOn(Calendar.getInstance().getTime());
         roleEntity.setCreatedBy(createdBy);
         getEntityManager().persist(roleEntity);
-        return new RoleAdapter(em, roleEntity);
+        return new RoleAdapter(getEntityManager(), roleEntity);
     }
 
     @Override

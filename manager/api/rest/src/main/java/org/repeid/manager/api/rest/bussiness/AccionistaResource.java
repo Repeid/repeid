@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.core.representations.idm.AccionistaRepresentation;
+import org.repeid.manager.api.beans.representations.AccionistaRepresentation;
 
 /**
  * @author carlosthe19916@gmail.com

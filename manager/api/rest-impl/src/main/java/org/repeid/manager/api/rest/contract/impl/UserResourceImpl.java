@@ -22,10 +22,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.core.representations.idm.search.SearchResultsRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.UserRepresentation;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
+import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.UserModel;

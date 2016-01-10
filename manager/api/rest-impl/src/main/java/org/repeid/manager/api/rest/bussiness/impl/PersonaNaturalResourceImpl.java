@@ -6,10 +6,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
-import org.repeid.manager.api.core.representations.idm.StoredFileRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
+import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;

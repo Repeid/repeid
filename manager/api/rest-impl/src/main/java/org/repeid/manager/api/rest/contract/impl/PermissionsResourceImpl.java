@@ -21,9 +21,9 @@ import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
-import org.repeid.manager.api.core.representations.idm.security.UserPermissionsRepresentation;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
+import org.repeid.manager.api.beans.representations.security.UserPermissionsRepresentation;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.security.UserProvider;
 import org.repeid.manager.api.rest.contract.IPermissionsResource;

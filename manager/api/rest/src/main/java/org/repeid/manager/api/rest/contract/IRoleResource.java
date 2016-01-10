@@ -28,9 +28,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.core.representations.idm.search.SearchResultsRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.RoleRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
+import org.repeid.manager.api.beans.representations.security.RoleRepresentation;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.RoleAlreadyExistsException;

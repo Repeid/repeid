@@ -23,7 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.repeid.manager.api.core.representations.idm.security.UserRepresentation;
+import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 
 /**
  * The Current User API. Returns information about the authenticated user.

@@ -22,7 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.repeid.manager.api.core.representations.idm.security.UserPermissionsRepresentation;
+import org.repeid.manager.api.beans.representations.security.UserPermissionsRepresentation;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.UserNotFoundException;
 

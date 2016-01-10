@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.entities.security.RoleEntity;
 import org.repeid.manager.api.model.security.RoleModel;
 

@@ -21,8 +21,8 @@ import java.util.HashSet;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.security.UserRepresentation;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.security.UserProvider;
 import org.repeid.manager.api.model.utils.SecurityModelToRepresentation;

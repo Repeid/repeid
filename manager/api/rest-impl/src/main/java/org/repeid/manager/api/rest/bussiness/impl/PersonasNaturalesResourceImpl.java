@@ -11,11 +11,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
-import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.core.representations.idm.search.SearchResultsRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.PermissionType;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
+import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;

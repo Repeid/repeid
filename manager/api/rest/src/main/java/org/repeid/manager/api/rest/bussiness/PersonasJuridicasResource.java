@@ -12,9 +12,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.core.representations.idm.PersonaJuridicaRepresentation;
-import org.repeid.manager.api.core.representations.idm.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.core.representations.idm.search.SearchResultsRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
+import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
 import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
 import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.PersonaJuridicaAlreadyExistsException;

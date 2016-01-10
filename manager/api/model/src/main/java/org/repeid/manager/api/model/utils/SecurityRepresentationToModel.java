@@ -4,9 +4,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import org.repeid.manager.api.core.exceptions.StorageException;
-import org.repeid.manager.api.core.representations.idm.security.RoleRepresentation;
-import org.repeid.manager.api.core.representations.idm.security.UserRepresentation;
+import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.beans.representations.security.RoleRepresentation;
+import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.RoleProvider;
 import org.repeid.manager.api.model.security.UserModel;

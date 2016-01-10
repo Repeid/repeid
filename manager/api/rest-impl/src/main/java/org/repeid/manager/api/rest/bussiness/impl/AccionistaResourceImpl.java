@@ -6,7 +6,7 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.core.representations.idm.AccionistaRepresentation;
+import org.repeid.manager.api.beans.representations.AccionistaRepresentation;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.AccionistaProvider;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;

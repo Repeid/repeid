@@ -1,10 +1,10 @@
 package org.repeid.manager.api.model.utils;
 
-import org.repeid.manager.api.core.representations.idm.AccionistaRepresentation;
-import org.repeid.manager.api.core.representations.idm.PersonaJuridicaRepresentation;
-import org.repeid.manager.api.core.representations.idm.PersonaNaturalRepresentation;
-import org.repeid.manager.api.core.representations.idm.StoredFileRepresentation;
-import org.repeid.manager.api.core.representations.idm.TipoDocumentoRepresentation;
+import org.repeid.manager.api.beans.representations.AccionistaRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
+import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
+import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;

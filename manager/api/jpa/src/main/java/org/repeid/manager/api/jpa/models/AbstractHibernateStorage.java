@@ -12,7 +12,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.repeid.manager.api.core.exceptions.StorageException;
+import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.model.search.OrderByModel;
 import org.repeid.manager.api.model.search.PagingModel;
 import org.repeid.manager.api.model.search.SearchCriteriaFilterModel;
