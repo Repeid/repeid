@@ -28,11 +28,15 @@ import javax.persistence.EntityManagerFactory;
  */
 public interface IEntityManagerFactoryAccessor {
 
-    /**
-     * @return gets the {@link EntityManagerFactory}
-     */
-    public EntityManagerFactory getEntityManagerFactory();
+	public String getId();
 
-    public Map<String, String> getOperationalInfo();
+	/**
+	 * @return gets the {@link EntityManagerFactory}
+	 */
+	public EntityManagerFactory getEntityManagerFactory();
+
+	public void close();
+
+	public Map<String, String> getOperationalInfo();
 
 }

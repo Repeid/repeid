@@ -41,103 +41,154 @@ import org.slf4j.LoggerFactory;
  */
 public class EntityManagerFactoryAccessor implements IEntityManagerFactoryAccessor {
 
-    @Inject
-    private IJpaProperties jpaProperties;
+	@Inject
+	private IJpaProperties jpaProperties;
 
-    private final static Logger logger = LoggerFactory.getLogger(EntityManagerFactoryAccessor.class);
-    // private volatile EntityManagerFactory emf;
-    private EntityManagerFactory emf;
-    private Map<String, String> operationalInfo;
+	private final static Logger logger = LoggerFactory.getLogger(EntityManagerFactoryAccessor.class);
+	private EntityManagerFactory emf;
+	private Map<String, String> operationalInfo;
 
-    /**
-     * Constructor.
-     */
-    public EntityManagerFactoryAccessor() {
-    }
+	/**
+	 * Constructor.
+	 */
+	public EntityManagerFactoryAccessor() {
+		lazyInit();
+	}
 
-    @PostConstruct
-    public void postConstruct() {
-        Map<String, String> properties = new HashMap<>();
+	@Override
+	public void close() {
+		if (emf != null) {
+			emf.close();
+		}
+	}
 
-        // Get properties from apiman.properties
-        Map<String, String> cp = jpaProperties.getAllHibernateProperties();
-        if (cp != null) {
-            properties.putAll(cp);
-        }
+	@Override
+	public String getId() {
+		return "default";
+	}
+	
+	public void lazyInit() {
+		logger.debug("Initializing JPA connections");
 
-        // Get two specific properties from the System (for backward
-        // compatibility only)
-        String s = properties.get("hibernate.hbm2ddl.auto"); //$NON-NLS-1$
-        if (s == null) {
-            s = "validate"; //$NON-NLS-1$
-        }
-        String autoValue = System.getProperty("apiman.hibernate.hbm2ddl.auto", s); //$NON-NLS-1$
-        s = properties.get("hibernate.dialect"); //$NON-NLS-1$
-        if (s == null) {
-            s = "org.hibernate.dialect.H2Dialect"; //$NON-NLS-1$
-        }
-        String dialect = System.getProperty("apiman.hibernate.dialect", s); //$NON-NLS-1$
-        properties.put("hibernate.hbm2ddl.auto", autoValue); //$NON-NLS-1$
-        properties.put("hibernate.dialect", dialect); //$NON-NLS-1$
+		Map<String, String> properties = new HashMap<>();
 
-        // First try using standard JPA to load the persistence unit. If that
-        // fails, then
-        // try using hibernate directly in a couple ways (depends on hibernate
-        // version and
-        // platform we're running on).
-        try {
-            emf = Persistence.createEntityManagerFactory("apiman-manager-api-jpa", properties); //$NON-NLS-1$
-        } catch (Throwable t1) {
-            try {
-                emf = new HibernatePersistenceProvider().createEntityManagerFactory("apiman-manager-api-jpa", //$NON-NLS-1$
-                        properties);
-            } catch (Throwable t2) {
-                throw t2;
-            }
-        }
-    }
+		// Get properties from apiman.properties
+		Map<String, String> cp = jpaProperties.getAllHibernateProperties();
+		if (cp != null) {
+			properties.putAll(cp);
+		}
 
-    /**
-     * @see io.apiman.manager.api.jpa.IEntityManagerFactoryAccessor#getEntityManagerFactory()
-     */
-    @Override
-    public EntityManagerFactory getEntityManagerFactory() {
-        return emf;
-    }
+		Connection connection = null;
 
-    protected void prepareOperationalInfo(Connection connection) {
-        try {
-            operationalInfo = new LinkedHashMap<>();
-            DatabaseMetaData md = connection.getMetaData();
-            operationalInfo.put("databaseUrl", md.getURL());
-            operationalInfo.put("databaseUser", md.getUserName());
-            operationalInfo.put("databaseProduct",
-                    md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
-            operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
-        } catch (SQLException e) {
-            logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
-        }
-    }
+		// Persistence-unit name
+		String unitName = "repeid-default";
 
-    private Connection getConnection() {
-        Map<String, String> cp = jpaProperties.getAllHibernateProperties();
-        try {
-            String dataSourceLookup = cp.get("dataSource");
-            if (dataSourceLookup != null) {
-                DataSource dataSource = (DataSource) new InitialContext().lookup(dataSourceLookup);
-                return dataSource.getConnection();
-            } else {
-                Class.forName(cp.get("driver"));
-                return DriverManager.getConnection(cp.get("url"), cp.get("user"), cp.get("password"));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to connect to database", e);
-        }
-    }
+		// Specify if schema should be updated or validated. Valid values are
+		// "update" and "validate" ("update is default)
+		String databaseSchema = properties.get("databaseSchema");
 
-    @Override
-    public Map<String, String> getOperationalInfo() {
-        return operationalInfo;
-    }
+		// JNDI name of the dataSource
+		String dataSource = properties.get("dataSource");
+
+		if (dataSource != null) {
+			if (properties.getBoolean("jta", false)) {
+				properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
+			} else {
+				properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
+			}
+		} else {
+			properties.put(AvailableSettings.JDBC_URL, config.get("url"));
+			properties.put(AvailableSettings.JDBC_DRIVER, config.get("driver"));
+
+			String user = config.get("user");
+			if (user != null) {
+				properties.put(AvailableSettings.JDBC_USER, user);
+			}
+			String password = config.get("password");
+			if (password != null) {
+				properties.put(AvailableSettings.JDBC_PASSWORD, password);
+			}
+		}
+
+		String driverDialect = properties.get("driverDialect");
+		if (driverDialect != null && driverDialect.length() > 0) {
+			properties.put("hibernate.dialect", driverDialect);
+		}
+
+		// Get two specific properties from the System (for backward
+		// compatibility only)
+		String s = properties.get("hibernate.hbm2ddl.auto"); //$NON-NLS-1$
+		if (s == null) {
+			s = "validate"; //$NON-NLS-1$
+		}
+		String autoValue = System.getProperty("apiman.hibernate.hbm2ddl.auto", s); //$NON-NLS-1$
+		s = properties.get("hibernate.dialect"); //$NON-NLS-1$
+		if (s == null) {
+			s = "org.hibernate.dialect.H2Dialect"; //$NON-NLS-1$
+		}
+		String dialect = System.getProperty("apiman.hibernate.dialect", s); //$NON-NLS-1$
+		properties.put("hibernate.hbm2ddl.auto", autoValue); //$NON-NLS-1$
+		properties.put("hibernate.dialect", dialect); //$NON-NLS-1$
+
+		// First try using standard JPA to load the persistence unit. If that
+		// fails, then
+		// try using hibernate directly in a couple ways (depends on hibernate
+		// version and
+		// platform we're running on).
+		try {
+			logger.trace("Creating EntityManagerFactory");
+			emf = Persistence.createEntityManagerFactory(unitName, properties);
+			logger.trace("EntityManagerFactory created");
+		} catch (Throwable t1) {
+			try {
+				emf = new HibernatePersistenceProvider().createEntityManagerFactory(unitName, // $NON-NLS-1$
+						properties);
+			} catch (Throwable t2) {
+				throw t2;
+			}
+		}
+	}
+
+	/**
+	 * @see io.apiman.manager.api.jpa.IEntityManagerFactoryAccessor#getEntityManagerFactory()
+	 */
+	@Override
+	public EntityManagerFactory getEntityManagerFactory() {
+		return emf;
+	}
+
+	protected void prepareOperationalInfo(Connection connection) {
+		try {
+			operationalInfo = new LinkedHashMap<>();
+			DatabaseMetaData md = connection.getMetaData();
+			operationalInfo.put("databaseUrl", md.getURL());
+			operationalInfo.put("databaseUser", md.getUserName());
+			operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
+			operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
+		} catch (SQLException e) {
+			logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
+		}
+	}
+
+	private Connection getConnection() {
+		Map<String, String> cp = jpaProperties.getAllHibernateProperties();
+		try {
+			String dataSourceLookup = cp.get("dataSource");
+			if (dataSourceLookup != null) {
+				DataSource dataSource = (DataSource) new InitialContext().lookup(dataSourceLookup);
+				return dataSource.getConnection();
+			} else {
+				Class.forName(cp.get("driver"));
+				return DriverManager.getConnection(cp.get("url"), cp.get("user"), cp.get("password"));
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to connect to database", e);
+		}
+	}
+
+	@Override
+	public Map<String, String> getOperationalInfo() {
+		return operationalInfo;
+	}
 
 }
