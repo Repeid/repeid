@@ -22,6 +22,7 @@ include 'manager:api:war'
 include 'manager:api:war:wildfly8'
 
 include 'manager:test:api'
+include 'manager:test:api:model'
 
 project(':common').name = 'repeid-common'
 project(':common:auth').name = 'repeid-common-auth'
@@ -47,3 +48,4 @@ project(':manager:api:war').name = 'repeid-manager-api-war'
 project(':manager:api:war:wildfly8').name = 'repeid-manager-api-war-wildfly8'
 
 project(':manager:test:api').name = 'repeid-manager-test-api'
+project(':manager:test:api:model').name = 'repeid-manager-test-api-model'

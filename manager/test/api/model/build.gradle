@@ -1,0 +1,9 @@
+dependencies {
+	// Project Dependencies
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-model')
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-jpa')
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-mongo')
+    
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-war')
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-war:repeid-manager-api-war-wildfly8')
+}
