@@ -1,9 +1,17 @@
-package org.repeid.manager.api.jpa.models;
+package io.apiman.manager.api.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.LockTimeoutException;
+import javax.persistence.PersistenceException;
+import javax.persistence.PessimisticLockException;
+import javax.persistence.QueryTimeoutException;
+import javax.persistence.TransactionRequiredException;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -27,18 +35,23 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public abstract class AbstractHibernateStorage {
+public abstract class AbstractStorage {
 
-    private static Logger logger = LoggerFactory.getLogger(AbstractHibernateStorage.class);
+    private static Logger logger = LoggerFactory.getLogger(AbstractStorage.class);
+
+    @Inject
+    private IEntityManagerFactoryAccessor emfAccessor;
 
     /**
      * Constructor.
      */
-    public AbstractHibernateStorage() {
+    public AbstractStorage() {
 
     }
 
-    protected abstract EntityManager getEntityManager();
+    protected EntityManager getEntityManager() {
+        return emfAccessor.getEntityManagerFactory().createEntityManager();
+    }
 
     protected Session getSession() {
         return getEntityManager().unwrap(Session.class);
@@ -57,6 +70,14 @@ public abstract class AbstractHibernateStorage {
         EntityManager entityManager = getEntityManager();
         try {
             entityManager.persist(bean);
+        } catch (EntityExistsException e) {
+            throw new StorageException(e);
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (TransactionRequiredException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
             throw new StorageException(t);
@@ -143,7 +164,34 @@ public abstract class AbstractHibernateStorage {
             throw new StorageException(t);
         }
         return rval;
-    }    
+    }
+
+    public <T> List<T> executeTypedQuery(TypedQuery<T> typedQuery) throws StorageException {
+        try {
+            return typedQuery.getResultList();
+        } catch (IllegalStateException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (QueryTimeoutException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (TransactionRequiredException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (PessimisticLockException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (LockTimeoutException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (PersistenceException e) {
+            logger.error(e.getMessage(), e);
+            throw new StorageException(e);
+        } catch (Throwable t) {
+            logger.error(t.getMessage(), t);
+            throw new StorageException(t);
+        }
+    }
 
     protected <T> SearchResultsModel<T> findFullText(SearchCriteriaModel criteria, Class<T> type,
             String filterText, String... field) {
@@ -301,5 +349,13 @@ public abstract class AbstractHibernateStorage {
                 }
             }
         }
+    }
+
+    public IEntityManagerFactoryAccessor getEmfAccessor() {
+        return emfAccessor;
+    }
+
+    public void setEmfAccessor(IEntityManagerFactoryAccessor emfAccessor) {
+        this.emfAccessor = emfAccessor;
     }
 }

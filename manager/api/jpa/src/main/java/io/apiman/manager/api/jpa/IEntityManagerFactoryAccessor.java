@@ -13,20 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.manager.test;
+package io.apiman.manager.api.jpa;
 
-import io.apiman.manager.test.junit.ManagerRestTestPlan;
-import io.apiman.manager.test.junit.ManagerRestTester;
+import java.util.Map;
 
-import org.junit.runner.RunWith;
+import javax.persistence.EntityManagerFactory;
 
 /**
- * Runs the "searching" test plan.
- *
+ * Simple interface used to access the entity manager factory. This can be
+ * provided in any number of ways based on runtime platform and other relevant
+ * options.
+ * 
  * @author eric.wittmann@redhat.com
  */
-@RunWith(ManagerRestTester.class)
-@ManagerRestTestPlan("test-plans/idm-testPlan.xml")
-public class IdmTest {
+public interface IEntityManagerFactoryAccessor {
+
+    /**
+     * @return gets the {@link EntityManagerFactory}
+     */
+    public EntityManagerFactory getEntityManagerFactory();
+
+    public Map<String, String> getOperationalInfo();
 
 }

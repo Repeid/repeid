@@ -8,9 +8,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -24,28 +23,23 @@ import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
+import io.apiman.manager.api.jpa.AbstractStorage;
+
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
 @Named
 @Stateless
+@Alternative
 @Local(TipoDocumentoProvider.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implements TipoDocumentoProvider {
+public class JpaTipoDocumentoProvider extends AbstractStorage implements TipoDocumentoProvider {
 
     private static final String ABREVIATURA = "abreviatura";
     private static final String DENOMINACION = "denominacion";
     private static final String TIPO_PERSONA = "tipoPersona";
     private static final String ESTADO = "estado";
-
-    @PersistenceContext
-    private EntityManager em;
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.em;
-    }
 
     @Override
     public void close() {
@@ -67,16 +61,16 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
         tipoDocumentoEntity.setCantidadCaracteres(cantidadCaracteres);
         tipoDocumentoEntity.setTipoPersona(tipoPersona.toString());
         tipoDocumentoEntity.setEstado(true);
-        getEntityManager().persist(tipoDocumentoEntity);
+        create(tipoDocumentoEntity);
         return new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity);
     }
 
     @Override
-    public TipoDocumentoModel findByAbreviatura(String abreviatura) {
+    public TipoDocumentoModel findByAbreviatura(String abreviatura) throws StorageException {
         TypedQuery<TipoDocumentoEntity> query = getEntityManager()
                 .createNamedQuery("TipoDocumentoEntity.findByAbreviatura", TipoDocumentoEntity.class);
         query.setParameter("abreviatura", abreviatura);
-        List<TipoDocumentoEntity> results = query.getResultList();
+        List<TipoDocumentoEntity> results = executeTypedQuery(query);
         if (results.isEmpty()) {
             return null;
         } else if (results.size() > 1) {
@@ -88,19 +82,18 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
     }
 
     @Override
-    public TipoDocumentoModel findById(String id) {
-        TipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(TipoDocumentoEntity.class, id);
-        return tipoDocumentoEntity != null ? new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity)
-                : null;
+    public TipoDocumentoModel findById(String id) throws StorageException {
+        TipoDocumentoEntity entity = get(id, TipoDocumentoEntity.class);
+        return entity != null ? new TipoDocumentoAdapter(getEntityManager(), entity) : null;
     }
 
     @Override
-    public boolean remove(TipoDocumentoModel tipoDocumentoModel) {
+    public boolean remove(TipoDocumentoModel tipoDocumentoModel) throws StorageException {
         TypedQuery<PersonaNaturalEntity> query1 = getEntityManager()
                 .createNamedQuery("PersonaNaturalEntity.findByTipoDocumento", PersonaNaturalEntity.class);
         query1.setParameter("tipoDocumento", tipoDocumentoModel.getAbreviatura());
         query1.setMaxResults(1);
-        if (!query1.getResultList().isEmpty()) {
+        if (!executeTypedQuery(query1).isEmpty()) {
             return false;
         }
 
@@ -108,26 +101,25 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
                 .createNamedQuery("PersonaJuridicaEntity.findByTipoDocumento", PersonaJuridicaEntity.class);
         query2.setParameter("tipoDocumento", tipoDocumentoModel.getAbreviatura());
         query2.setMaxResults(1);
-        if (!query2.getResultList().isEmpty()) {
+        if (!executeTypedQuery(query2).isEmpty()) {
             return false;
         }
 
-        TipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(TipoDocumentoEntity.class,
-                tipoDocumentoModel.getId());
+        TipoDocumentoEntity tipoDocumentoEntity = get(tipoDocumentoModel.getId(), TipoDocumentoEntity.class);
         if (tipoDocumentoEntity == null) {
             return false;
         }
-        getEntityManager().remove(tipoDocumentoEntity);
+        delete(tipoDocumentoEntity);
         return true;
     }
 
     @Override
-    public List<TipoDocumentoModel> getAll() {
+    public List<TipoDocumentoModel> getAll() throws StorageException {
         return getAll(-1, -1);
     }
 
     @Override
-    public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) {
+    public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) throws StorageException {
         TypedQuery<TipoDocumentoEntity> query = getEntityManager()
                 .createNamedQuery("TipoDocumentoEntity.findAll", TipoDocumentoEntity.class);
         if (firstResult != -1) {
@@ -145,12 +137,13 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
     }
 
     @Override
-    public List<TipoDocumentoModel> search(String filterText) {
+    public List<TipoDocumentoModel> search(String filterText) throws StorageException {
         return search(filterText, -1, -1);
     }
 
     @Override
-    public List<TipoDocumentoModel> search(String filterText, int firstResult, int maxResults) {
+    public List<TipoDocumentoModel> search(String filterText, int firstResult, int maxResults)
+            throws StorageException {
         TypedQuery<TipoDocumentoEntity> query = getEntityManager()
                 .createNamedQuery("TipoDocumentoEntity.findByFilterText", TipoDocumentoEntity.class);
         query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
@@ -160,7 +153,7 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
         if (maxResults != -1) {
             query.setMaxResults(maxResults);
         }
-        List<TipoDocumentoEntity> entities = query.getResultList();
+        List<TipoDocumentoEntity> entities = executeTypedQuery(query);
         List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
         for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
             models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
@@ -170,13 +163,14 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
     }
 
     @Override
-    public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes) {
+    public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes)
+            throws StorageException {
         return searchByAttributes(attributes, -1, -1);
     }
 
     @Override
     public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes, int firstResult,
-            int maxResults) {
+            int maxResults) throws StorageException {
         StringBuilder builder = new StringBuilder("SELECT t FROM TipoDocumentoEntity");
         for (Map.Entry<String, Object> entry : attributes.entrySet()) {
             String attribute = null;
@@ -248,7 +242,8 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
     }
 
     @Override
-    public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria) {
+    public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria)
+            throws StorageException {
         SearchResultsModel<TipoDocumentoEntity> entityResult = find(criteria, TipoDocumentoEntity.class);
 
         SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
@@ -262,7 +257,8 @@ public class JpaTipoDocumentoProvider extends AbstractHibernateStorage implement
     }
 
     @Override
-    public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria, String filterText) {
+    public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria, String filterText)
+            throws StorageException {
         SearchResultsModel<TipoDocumentoEntity> entityResult = findFullText(criteria,
                 TipoDocumentoEntity.class, filterText, "abreviatura", "denominacion");
 

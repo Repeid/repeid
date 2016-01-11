@@ -19,12 +19,13 @@ import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
-import org.repeid.manager.api.jpa.models.AbstractHibernateStorage;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.security.UserProvider;
+
+import io.apiman.manager.api.jpa.AbstractStorage;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -34,7 +35,7 @@ import org.repeid.manager.api.model.security.UserProvider;
 @Stateless
 @Local(UserProvider.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaUserProvider extends AbstractHibernateStorage implements UserProvider {
+public class JpaUserProvider extends AbstractStorage implements UserProvider {
 
     @PersistenceContext
     private EntityManager em;

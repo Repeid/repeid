@@ -18,12 +18,13 @@ import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.entities.security.RoleEntity;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
-import org.repeid.manager.api.jpa.models.AbstractHibernateStorage;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.RoleProvider;
+
+import io.apiman.manager.api.jpa.AbstractStorage;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -33,7 +34,7 @@ import org.repeid.manager.api.model.security.RoleProvider;
 @Stateless
 @Local(RoleProvider.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaRoleProvider extends AbstractHibernateStorage implements RoleProvider {
+public class JpaRoleProvider extends AbstractStorage implements RoleProvider {
 
     @PersistenceContext
     private EntityManager em;
