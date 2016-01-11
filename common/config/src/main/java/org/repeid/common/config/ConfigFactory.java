@@ -34,7 +34,7 @@ public class ConfigFactory {
     public static final CompositeConfiguration createConfig() {
         CompositeConfiguration compositeConfiguration = new CompositeConfiguration();
         compositeConfiguration.addConfiguration(new SystemPropertiesConfiguration());
-        compositeConfiguration.addConfiguration(ConfigFileConfiguration.create("apiman.properties")); //$NON-NLS-1$
+        compositeConfiguration.addConfiguration(ConfigFileConfiguration.create("repeid.properties")); //$NON-NLS-1$
         return compositeConfiguration;
     }
 

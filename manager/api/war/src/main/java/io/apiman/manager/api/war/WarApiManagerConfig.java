@@ -32,27 +32,27 @@ import io.apiman.manager.api.jpa.IJpaProperties;
 @ApplicationScoped
 public class WarApiManagerConfig extends ApiManagerConfig implements IJpaProperties {
 
-    /**
-     * Constructor.
-     */
-    public WarApiManagerConfig() {
-    }
+	/**
+	 * Constructor.
+	 */
+	public WarApiManagerConfig() {
+	}
 
-    /**
-     * @see io.apiman.manager.api.jpa.IJpaProperties#getAllHibernateProperties()
-     */
-    @Override
-    public Map<String, String> getAllHibernateProperties() {
-        Map<String, String> rval = new HashMap<>();
-        Iterator<String> keys = getConfig().getKeys();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            if (key.startsWith("apiman.hibernate.")) { //$NON-NLS-1$
-                String value = getConfig().getString(key);
-                key = key.substring("apiman.".length()); //$NON-NLS-1$
-                rval.put(key, value);
-            }
-        }
-        return rval;
-    }
+	/**
+	 * @see io.apiman.manager.api.jpa.IJpaProperties#getAllHibernateProperties()
+	 */
+	@Override
+	public Map<String, String> getAllHibernateProperties() {
+		Map<String, String> rval = new HashMap<>();
+		Iterator<String> keys = getConfig().getKeys();
+		while (keys.hasNext()) {
+			String key = keys.next();
+			if (key.startsWith("repeid.hibernate.")) { //$NON-NLS-1$
+				String value = getConfig().getString(key);
+				key = key.substring("repeid.".length()); //$NON-NLS-1$
+				rval.put(key, value);
+			}
+		}
+		return rval;
+	}
 }
