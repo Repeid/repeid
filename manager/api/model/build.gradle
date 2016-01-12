@@ -4,5 +4,7 @@ dependencies {
     compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
     
     // Third Party Dependencies
-	provided ( libraries.jboss_ejb_api_3_2_spec )
+    compile ( libraries.cdi_api )
+    
+	provided ( libraries.jboss_ejb_api_3_2_spec )	
 }

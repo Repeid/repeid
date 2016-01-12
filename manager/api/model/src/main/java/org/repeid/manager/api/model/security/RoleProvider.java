@@ -11,22 +11,21 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 
 public interface RoleProvider extends Provider {
 
-    RoleModel create(String name, String description, boolean autogrant, Set<PermissionType> set,
-            String createdBy) throws StorageException;
+	RoleModel create(String name, String description, boolean autogrant, Set<PermissionType> set, String createdBy)
+			throws StorageException;
 
-    RoleModel findById(String rolId) throws StorageException;
+	RoleModel findById(String rolId) throws StorageException;
 
-    RoleModel findByName(String rolName) throws StorageException;
+	RoleModel findByName(String rolName) throws StorageException;
 
-    boolean remove(RoleModel rol) throws StorageException;
+	boolean remove(RoleModel rol) throws StorageException;
 
-    List<RoleModel> getAll() throws StorageException;
+	List<RoleModel> getAll() throws StorageException;
 
-    List<RoleModel> getAll(int firstResult, int maxResults);
+	List<RoleModel> getAll(int firstResult, int maxResults);
 
-    SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria) throws StorageException;
+	SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria) throws StorageException;
 
-    SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria, String filterText)
-            throws StorageException;
+	SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria, String filterText) throws StorageException;
 
 }

@@ -6,7 +6,7 @@ dependencies {
 	compile ( libraries.javax_ws_rs_api )
 	compile ( libraries.hibernate_validator )
 	
-	provided( libraries.jboss_servlet )
+	provided ( libraries.jboss_servlet )
 	provided ( libraries.resteasy_jaxrs )
 	provided ( libraries.resteasy_multipart_provider )
 }

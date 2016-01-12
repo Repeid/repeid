@@ -8,9 +8,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.jpa.JpaRepeidTransaction;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
@@ -21,8 +23,6 @@ import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
-import io.apiman.manager.api.jpa.AbstractStorage;
-
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
@@ -30,12 +30,15 @@ import io.apiman.manager.api.jpa.AbstractStorage;
 @Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaTipoDocumentoProvider extends AbstractStorage implements TipoDocumentoProvider {
+public class JpaTipoDocumentoProvider implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";
 	private static final String DENOMINACION = "denominacion";
 	private static final String TIPO_PERSONA = "tipoPersona";
 	private static final String ESTADO = "estado";
+
+	@Inject
+	private JpaRepeidTransaction tx;
 
 	@Override
 	public void close() {

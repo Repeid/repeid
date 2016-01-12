@@ -1,26 +1,26 @@
-package io.apiman.manager.api.jpa;
+package org.repeid.manager.api.jpa;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
+@Stateless
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
-	private final EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 
-	public DefaultJpaConnectionProvider(EntityManager em) {
-		this.em = em;
+	@Override
+	public void close() {
+		em.close();
 	}
 
 	@Override
 	public EntityManager getEntityManager() {
 		return em;
-	}
-
-	@Override
-	public void close() {
-		em.close();
 	}
 
 }

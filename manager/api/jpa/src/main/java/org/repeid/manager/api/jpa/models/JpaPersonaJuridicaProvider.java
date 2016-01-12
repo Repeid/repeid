@@ -11,6 +11,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
+import org.repeid.manager.api.jpa.AbstractStorage;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
@@ -22,8 +23,6 @@ import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
-
-import io.apiman.manager.api.jpa.AbstractStorage;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

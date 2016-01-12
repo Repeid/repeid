@@ -8,42 +8,42 @@ import org.repeid.manager.api.model.enums.StoreFileProviderName;
 
 public interface StoreConfigurationModel extends Model {
 
-    String getId();
+	String getId();
 
-    StoreFileProviderName getProviderName();
+	StoreFileProviderName getProviderName();
 
-    String getDenominacion();
+	String getDenominacion();
 
-    String getCarpetaRaiz();
+	String getCarpetaRaiz();
 
-    void setCarpetaRaiz(String carpetaRaiz);
+	void setCarpetaRaiz(String carpetaRaiz);
 
-    String getCarpetaFoto();
+	String getCarpetaFoto();
 
-    void setCarpetaFoto(String carpetaFoto);
+	void setCarpetaFoto(String carpetaFoto);
 
-    String getCarpetaFirma();
+	String getCarpetaFirma();
 
-    void setCarpetaFirma(String carpetaFirma);
+	void setCarpetaFirma(String carpetaFirma);
 
-    String getCarpetaTemporal();
+	String getCarpetaTemporal();
 
-    void setCarpetaTemporal(String carpetaTemporal);
+	void setCarpetaTemporal(String carpetaTemporal);
 
-    String getAppKey();
+	String getAppKey();
 
-    void setAppKey(String appKey);
+	void setAppKey(String appKey);
 
-    String getAppSecret();
+	String getAppSecret();
 
-    void setAppSecret(String appSecret);
+	void setAppSecret(String appSecret);
 
-    String getToken();
+	String getToken();
 
-    void setToken(String token);
+	void setToken(String token);
 
-    boolean isDefault();
+	boolean isDefault();
 
-    void setDefault(boolean isDefault);
+	void setDefault(boolean isDefault);
 
 }

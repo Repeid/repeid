@@ -6,16 +6,16 @@ package org.repeid.manager.api.model;
 
 public interface StoredFileModel extends Model {
 
-    String getId();
+	String getId();
 
-    String getFileId();
+	String getFileId();
 
-    void setFileId(String fileId);
+	void setFileId(String fileId);
 
-    String getUrl();
+	String getUrl();
 
-    void setUrl(String url);
+	void setUrl(String url);
 
-    StoreConfigurationModel getStoreConfiguration();
+	StoreConfigurationModel getStoreConfiguration();
 
 }

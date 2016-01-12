@@ -22,11 +22,11 @@ import org.repeid.common.config.CryptLookup;
 import org.repeid.common.config.EnvLookup;
 import org.repeid.common.config.SystemPropertiesConfiguration;
 import org.repeid.common.config.VaultLookup;
+import org.repeid.manager.api.jpa.IJpaProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.apiman.manager.api.core.config.ApiManagerConfig;
-import io.apiman.manager.api.jpa.IJpaProperties;
 import io.apiman.manager.api.war.WarApiManagerConfig;
 
 @RunWith(Arquillian.class)

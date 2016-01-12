@@ -8,24 +8,24 @@ import org.repeid.manager.api.model.Model;
 
 public interface RoleModel extends Model {
 
-    String getId();
+	String getId();
 
-    String getName();
+	String getName();
 
-    String getDescription();
+	String getDescription();
 
-    void setDescription(String description);
+	void setDescription(String description);
 
-    String getCreatedBy();
+	String getCreatedBy();
 
-    Date getCreatedOn();
+	Date getCreatedOn();
 
-    boolean isAutoGrant();
+	boolean isAutoGrant();
 
-    void setAutoGrant(boolean autoGrant);
+	void setAutoGrant(boolean autoGrant);
 
-    Set<PermissionType> getPermissions();
+	Set<PermissionType> getPermissions();
 
-    void setPermissions(Set<PermissionType> permissions);
+	void setPermissions(Set<PermissionType> permissions);
 
 }

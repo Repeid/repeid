@@ -1,4 +1,4 @@
-package io.apiman.manager.api.jpa;
+package org.repeid.manager.api.jpa;
 
 import javax.persistence.EntityManager;
 

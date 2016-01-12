@@ -6,20 +6,20 @@ import org.repeid.manager.api.model.Model;
 
 public interface UserModel extends Model {
 
-    String getId();
+	String getId();
 
-    String getUsername();
+	String getUsername();
 
-    String getFullName();
+	String getFullName();
 
-    void setFullName(String fullName);
+	void setFullName(String fullName);
 
-    String getEmail();
+	String getEmail();
 
-    void setEmail(String email);
+	void setEmail(String email);
 
-    Date getJoinedOn();
+	Date getJoinedOn();
 
-    boolean isAdmin();
+	boolean isAdmin();
 
 }

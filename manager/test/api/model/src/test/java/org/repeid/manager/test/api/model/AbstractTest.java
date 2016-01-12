@@ -11,6 +11,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.runner.RunWith;
 import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.repeid.manager.api.jpa.AbstractStorage;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.jpa.models.JpaTipoDocumentoProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
@@ -21,7 +22,6 @@ import org.repeid.manager.api.model.search.SearchCriteriaFilterModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.apiman.manager.api.jpa.AbstractStorage;
 import io.apiman.manager.api.war.WarApiManagerConfig;
 
 @RunWith(Arquillian.class)
