@@ -5,6 +5,6 @@ package org.repeid.manager.api.model.provider;
  */
 public interface Provider {
 
-    public void close();
+	public void close();
 
 }

@@ -7,72 +7,72 @@ import org.repeid.manager.api.model.enums.TipoEmpresa;
 
 public interface PersonaJuridicaModel extends Model {
 
-    String RAZON_SOCIAL = "razonSocial";
-    String NOMBRE_COMERCIAL = "nombreComercial";
-    String NUMERO_DOCUMENTO = "numeroDocumento";
+	String RAZON_SOCIAL = "razonSocial";
+	String NOMBRE_COMERCIAL = "nombreComercial";
+	String NUMERO_DOCUMENTO = "numeroDocumento";
 
-    String getId();
+	String getId();
 
-    PersonaNaturalModel getRepresentanteLegal();
+	PersonaNaturalModel getRepresentanteLegal();
 
-    void setRepresentanteLegal(PersonaNaturalModel representanteLegal);
+	void setRepresentanteLegal(PersonaNaturalModel representanteLegal);
 
-    List<AccionistaModel> getAccionistas();
+	List<AccionistaModel> getAccionistas();
 
-    String getCodigoPais();
+	String getCodigoPais();
 
-    void setCodigoPais(String codigoPais);
+	void setCodigoPais(String codigoPais);
 
-    TipoDocumentoModel getTipoDocumento();
+	TipoDocumentoModel getTipoDocumento();
 
-    String getNumeroDocumento();
+	String getNumeroDocumento();
 
-    String getRazonSocial();
+	String getRazonSocial();
 
-    void setRazonSocial(String razonSocial);
+	void setRazonSocial(String razonSocial);
 
-    String getNombreComercial();
+	String getNombreComercial();
 
-    void setNombreComercial(String nombreComercial);
+	void setNombreComercial(String nombreComercial);
 
-    Date getFechaConstitucion();
+	Date getFechaConstitucion();
 
-    void setFechaConstitucion(Date fechaConstitucion);
+	void setFechaConstitucion(Date fechaConstitucion);
 
-    String getActividadPrincipal();
+	String getActividadPrincipal();
 
-    void setActividadPrincipal(String actividadPrincipal);
+	void setActividadPrincipal(String actividadPrincipal);
 
-    TipoEmpresa getTipoEmpresa();
+	TipoEmpresa getTipoEmpresa();
 
-    void setTipoEmpresa(TipoEmpresa tipoEmpresa);
+	void setTipoEmpresa(TipoEmpresa tipoEmpresa);
 
-    boolean isFinLucro();
+	boolean isFinLucro();
 
-    void setFinLucro(boolean finLucro);
+	void setFinLucro(boolean finLucro);
 
-    String getUbigeo();
+	String getUbigeo();
 
-    void setUbigeo(String ubigeo);
+	void setUbigeo(String ubigeo);
 
-    String getDireccion();
+	String getDireccion();
 
-    void setDireccion(String direccion);
+	void setDireccion(String direccion);
 
-    String getReferencia();
+	String getReferencia();
 
-    void setReferencia(String referencia);
+	void setReferencia(String referencia);
 
-    String getTelefono();
+	String getTelefono();
 
-    void setTelefono(String telefono);
+	void setTelefono(String telefono);
 
-    String getCelular();
+	String getCelular();
 
-    void setCelular(String celular);
+	void setCelular(String celular);
 
-    String getEmail();
+	String getEmail();
 
-    void setEmail(String email);
+	void setEmail(String email);
 
 }

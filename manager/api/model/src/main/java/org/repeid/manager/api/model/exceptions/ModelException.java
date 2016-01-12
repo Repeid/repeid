@@ -5,35 +5,35 @@ package org.repeid.manager.api.model.exceptions;
  */
 public class ModelException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private transient Object[] parameters;
+	private transient Object[] parameters;
 
-    public ModelException() {
-    }
+	public ModelException() {
+	}
 
-    public ModelException(String message) {
-        super(message);
-    }
+	public ModelException(String message) {
+		super(message);
+	}
 
-    public ModelException(String message, Object... parameters) {
-        super(message);
-        this.parameters = parameters;
-    }
+	public ModelException(String message, Object... parameters) {
+		super(message);
+		this.parameters = parameters;
+	}
 
-    public ModelException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public ModelException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    public ModelException(Throwable cause) {
-        super(cause);
-    }
+	public ModelException(Throwable cause) {
+		super(cause);
+	}
 
-    public Object[] getParameters() {
-        return parameters;
-    }
+	public Object[] getParameters() {
+		return parameters;
+	}
 
-    public void setParameters(Object[] parameters) {
-        this.parameters = parameters;
-    }
+	public void setParameters(Object[] parameters) {
+		this.parameters = parameters;
+	}
 }

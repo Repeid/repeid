@@ -2,8 +2,6 @@ package org.repeid.manager.api.model.security;
 
 import java.util.Set;
 
-import javax.ejb.Local;
-
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 
@@ -13,7 +11,6 @@ import org.repeid.manager.api.beans.representations.security.PermissionType;
  * @author eric.wittmann@redhat.com
  */
 
-@Local
 public interface IStorageQuery {
 
 	/**

@@ -5,32 +5,32 @@ package org.repeid.manager.api.model.exceptions;
  */
 public class ModelDuplicateException extends ModelException {
 
-    private static final long serialVersionUID = 1L;
-    
-    private String duplicateFieldName;
+	private static final long serialVersionUID = 1L;
 
-    public ModelDuplicateException() {
-    }
+	private String duplicateFieldName;
 
-    public ModelDuplicateException(String message) {
-        super(message);
-    }
+	public ModelDuplicateException() {
+	}
 
-    public ModelDuplicateException(String message, String duplicateFieldName) {
-        super(message);
-        this.duplicateFieldName = duplicateFieldName;
-    }
+	public ModelDuplicateException(String message) {
+		super(message);
+	}
 
-    public ModelDuplicateException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public ModelDuplicateException(String message, String duplicateFieldName) {
+		super(message);
+		this.duplicateFieldName = duplicateFieldName;
+	}
 
-    public ModelDuplicateException(Throwable cause) {
-        super(cause);
-    }
+	public ModelDuplicateException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    public String getDuplicateFieldName() {
-        return duplicateFieldName;
-    }
-    
+	public ModelDuplicateException(Throwable cause) {
+		super(cause);
+	}
+
+	public String getDuplicateFieldName() {
+		return duplicateFieldName;
+	}
+
 }

@@ -5,20 +5,20 @@ package org.repeid.manager.api.model.exceptions;
  */
 public class ModelReadOnlyException extends ModelException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public ModelReadOnlyException() {
-    }
+	public ModelReadOnlyException() {
+	}
 
-    public ModelReadOnlyException(String message) {
-        super(message);
-    }
+	public ModelReadOnlyException(String message) {
+		super(message);
+	}
 
-    public ModelReadOnlyException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public ModelReadOnlyException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    public ModelReadOnlyException(Throwable cause) {
-        super(cause);
-    }
+	public ModelReadOnlyException(Throwable cause) {
+		super(cause);
+	}
 }
