@@ -1,6 +1,5 @@
 package org.repeid.manager.api.jpa;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
@@ -14,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  * @version $Revision: 1 $
  */
-@Stateless
+
 public class JpaRepeidTransaction implements RepeidTransaction {
 
 	private static Logger logger = LoggerFactory.getLogger(JpaRepeidTransaction.class);
