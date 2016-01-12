@@ -11,7 +11,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
-import org.repeid.manager.api.jpa.AbstractStorage;
+import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
@@ -31,7 +31,7 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 @Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaPersonaJuridicaProvider extends AbstractStorage implements PersonaJuridicaProvider {
+public class JpaPersonaJuridicaProvider extends AbstractJpaStorage implements PersonaJuridicaProvider {
 
 	private final static String RAZON_SOCIAL = "razonSocial";
 	private final static String NOMBRE_COMERCIAL = "nombreComercial";

@@ -9,7 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
-import org.repeid.manager.api.jpa.AbstractStorage;
+import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
@@ -22,7 +22,7 @@ import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 @Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaStorageConfigurationProvider extends AbstractStorage implements StoreConfigurationProvider {
+public class JpaStorageConfigurationProvider extends AbstractJpaStorage implements StoreConfigurationProvider {
 
 	@Override
 	public void close() {

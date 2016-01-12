@@ -11,7 +11,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.runner.RunWith;
 import org.repeid.manager.api.beans.exceptions.StorageException;
-import org.repeid.manager.api.jpa.AbstractStorage;
+import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.jpa.models.JpaTipoDocumentoProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
@@ -49,7 +49,7 @@ public abstract class AbstractTest {
                 .addPackage(SearchCriteriaFilterModel.class.getPackage())
 
                 /** model-jpa **/
-                .addPackage(AbstractStorage.class.getPackage())
+                .addPackage(AbstractJpaStorage.class.getPackage())
                 .addPackage(JpaTipoDocumentoProvider.class.getPackage())
                 .addPackage(TipoDocumentoEntity.class.getPackage())
 

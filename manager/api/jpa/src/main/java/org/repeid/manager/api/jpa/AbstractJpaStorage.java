@@ -35,34 +35,21 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public class AbstractStorage {
-
-	private static Logger logger = LoggerFactory.getLogger(AbstractStorage.class);
+public class AbstractJpaStorage {
 
 	@Inject
-	private JpaConnectionProvider jpaConnectionProvider;
+	private JpaConnectionProvider connectionProvider;
 
-	/**
-	 * Constructor.
-	 */
-	public AbstractStorage() {
-
-	}
+	private static Logger logger = LoggerFactory.getLogger(AbstractJpaStorage.class);
 
 	public EntityManager getEntityManager() {
-		return jpaConnectionProvider.getEntityManager();
+		return connectionProvider.getEntityManager();
 	}
 
 	public Session getSession() {
 		return getEntityManager().unwrap(Session.class);
 	}
 
-	/**
-	 * @param bean
-	 *            the bean to create
-	 * @throws StorageException
-	 *             if a storage problem occurs while storing a bean
-	 */
 	public <T> void create(T bean) throws StorageException {
 		if (bean == null) {
 			return;
@@ -84,12 +71,6 @@ public class AbstractStorage {
 		}
 	}
 
-	/**
-	 * @param bean
-	 *            the bean to update
-	 * @throws StorageException
-	 *             if a storage problem occurs while storing a bean
-	 */
 	public <T> void update(T bean) throws StorageException {
 		EntityManager entityManager = getEntityManager();
 		try {
@@ -102,14 +83,6 @@ public class AbstractStorage {
 		}
 	}
 
-	/**
-	 * Delete using bean
-	 *
-	 * @param bean
-	 *            the bean to delete
-	 * @throws StorageException
-	 *             if a storage problem occurs while storing a bean
-	 */
 	public <T> void delete(T bean) throws StorageException {
 		EntityManager entityManager = getEntityManager();
 		try {
@@ -120,17 +93,6 @@ public class AbstractStorage {
 		}
 	}
 
-	/**
-	 * Get object of type T
-	 *
-	 * @param id
-	 *            identity key
-	 * @param type
-	 *            class of type T
-	 * @return Instance of type T
-	 * @throws StorageException
-	 *             if a storage problem occurs while storing a bean
-	 */
 	public <T> T get(Long id, Class<T> type) throws StorageException {
 		T rval = null;
 		EntityManager entityManager = getEntityManager();
@@ -143,17 +105,6 @@ public class AbstractStorage {
 		return rval;
 	}
 
-	/**
-	 * Get object of type T
-	 *
-	 * @param id
-	 *            identity key
-	 * @param type
-	 *            class of type T
-	 * @return Instance of type T
-	 * @throws StorageException
-	 *             if a storage problem occurs while storing a bean
-	 */
 	public <T> T get(String id, Class<T> type) throws StorageException {
 		T rval = null;
 		EntityManager entityManager = getEntityManager();

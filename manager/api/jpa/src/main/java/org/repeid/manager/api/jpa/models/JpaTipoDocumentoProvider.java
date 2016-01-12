@@ -8,11 +8,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
-import org.repeid.manager.api.jpa.JpaRepeidTransaction;
+import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
@@ -30,15 +29,12 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 @Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaTipoDocumentoProvider implements TipoDocumentoProvider {
+public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";
 	private static final String DENOMINACION = "denominacion";
 	private static final String TIPO_PERSONA = "tipoPersona";
 	private static final String ESTADO = "estado";
-
-	@Inject
-	private JpaRepeidTransaction tx;
 
 	@Override
 	public void close() {
@@ -60,7 +56,7 @@ public class JpaTipoDocumentoProvider implements TipoDocumentoProvider {
 		tipoDocumentoEntity.setCantidadCaracteres(cantidadCaracteres);
 		tipoDocumentoEntity.setTipoPersona(tipoPersona.toString());
 		tipoDocumentoEntity.setEstado(true);
-		create(tipoDocumentoEntity);
+		super.create(tipoDocumentoEntity);
 		return new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity);
 	}
 
@@ -256,7 +252,7 @@ public class JpaTipoDocumentoProvider implements TipoDocumentoProvider {
 	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria, String filterText)
 			throws StorageException {
 		SearchResultsModel<TipoDocumentoEntity> entityResult = findFullText(criteria, TipoDocumentoEntity.class,
-				filterText, "abreviatura", "denominacion");
+				filterText, ABREVIATURA, DENOMINACION);
 
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();

@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Bill Burke</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  * @version $Revision: 1 $
  */
 @Stateless
@@ -20,10 +20,6 @@ public class JpaRepeidTransaction implements RepeidTransaction {
 	private static Logger logger = LoggerFactory.getLogger(JpaRepeidTransaction.class);
 
 	protected EntityManager em;
-
-	public JpaRepeidTransaction(EntityManager em) {
-		this.em = em;
-	}
 
 	@Override
 	public void beginTx() throws StorageException {

@@ -11,7 +11,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
-import org.repeid.manager.api.jpa.AbstractStorage;
+import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
@@ -28,7 +28,7 @@ import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 @Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaAccionistaProvider extends AbstractStorage implements AccionistaProvider {
+public class JpaAccionistaProvider extends AbstractJpaStorage implements AccionistaProvider {
 
 	@Override
 	public void close() {
