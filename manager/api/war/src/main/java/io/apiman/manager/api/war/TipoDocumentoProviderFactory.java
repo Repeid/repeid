@@ -4,8 +4,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 
-import org.repeid.manager.api.jpa.models.JpaTipoDocumentoProvider;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
+import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
 import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
 
 import io.apiman.manager.api.core.config.Config;
@@ -15,7 +15,7 @@ public interface TipoDocumentoProviderFactory {
 
 	@Produces
 	public static TipoDocumentoProvider provideTipoDocumentoProvider(Config.Scope config,
-			@New JpaTipoDocumentoProvider jpaProvider, @New MongoTipoDocumentoProvider mongoProvider) {
+			@New MongoTipoDocumentoProvider jpaProvider, @New MongoTipoDocumentoProvider mongoProvider) {
 		if (config.get("provider").equalsIgnoreCase("jpa")) {
 			return jpaProvider;
 		} else if (config.get("provider").equalsIgnoreCase("mongo")) {

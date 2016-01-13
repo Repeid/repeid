@@ -11,14 +11,14 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.runner.RunWith;
 import org.repeid.manager.api.beans.exceptions.StorageException;
-import org.repeid.manager.api.jpa.AbstractJpaStorage;
-import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
-import org.repeid.manager.api.jpa.models.JpaTipoDocumentoProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaFilterModel;
+import org.repeid.manager.api.mongo.AbstractMongoStorage;
+import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,8 +49,8 @@ public abstract class AbstractTest {
                 .addPackage(SearchCriteriaFilterModel.class.getPackage())
 
                 /** model-jpa **/
-                .addPackage(AbstractJpaStorage.class.getPackage())
-                .addPackage(JpaTipoDocumentoProvider.class.getPackage())
+                .addPackage(AbstractMongoStorage.class.getPackage())
+                .addPackage(MongoTipoDocumentoProvider.class.getPackage())
                 .addPackage(TipoDocumentoEntity.class.getPackage())
 
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")

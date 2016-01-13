@@ -3,12 +3,10 @@ package org.repeid.manager.api.mongo.models;
 import java.util.Locale;
 import java.util.UUID;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Default;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -28,9 +26,7 @@ import com.dropbox.core.DbxRequestConfig;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Default
-@Named
 @Stateless
-@Local(StoredFileProvider.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class MongoStoredFileProvider implements StoredFileProvider {
 

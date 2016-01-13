@@ -21,7 +21,7 @@ import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import org.repeid.manager.api.jpa.IJpaProperties;
+import org.repeid.manager.api.mongo.IJpaProperties;
 
 import io.apiman.manager.api.core.config.ApiManagerConfig;
 

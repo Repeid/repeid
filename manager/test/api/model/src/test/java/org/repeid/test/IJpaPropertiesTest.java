@@ -22,7 +22,7 @@ import org.repeid.common.config.CryptLookup;
 import org.repeid.common.config.EnvLookup;
 import org.repeid.common.config.SystemPropertiesConfiguration;
 import org.repeid.common.config.VaultLookup;
-import org.repeid.manager.api.jpa.IJpaProperties;
+import org.repeid.manager.api.mongo.IJpaProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
