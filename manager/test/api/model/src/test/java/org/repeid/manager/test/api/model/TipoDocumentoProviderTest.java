@@ -10,10 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.UsingDataSet;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
@@ -22,8 +19,6 @@ import org.repeid.manager.api.model.search.SearchCriteriaFilterOperator;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
-@RunWith(Arquillian.class)
-@UsingDataSet("empty.xml")
 public class TipoDocumentoProviderTest extends AbstractTest {
 
     @Inject

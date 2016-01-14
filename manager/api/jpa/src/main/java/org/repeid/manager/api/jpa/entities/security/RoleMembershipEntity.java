@@ -25,9 +25,9 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -43,8 +43,7 @@ import org.hibernate.annotations.GenericGenerator;
  * @author eric.wittmann@redhat.com
  */
 @Entity
-@Table(name = "memberships", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+@Table(name = "memberships", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
 @NamedQueries(value = {
         @NamedQuery(name = "RoleMembershipEntity.findAll", query = "SELECT r FROM RoleMembershipEntity r"),
         @NamedQuery(name = "RoleMembershipEntity.findByUserId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.user u WHERE u.id = :userId"),
@@ -59,11 +58,11 @@ public class RoleMembershipEntity implements Serializable {
     @Column(name = "id")
     private String id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey , name = "user_id")
     private UserEntity user;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey , name = "role_id")
     private RoleEntity role;
 

@@ -79,7 +79,7 @@ public class PersonaJuridicaResourceImpl implements PersonaJuridicaResource {
 
     @Override
     public Response remove() throws PersonaJuridicaNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoAdmin))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
             throw ExceptionFactory.notAuthorizedException();
 
         try {

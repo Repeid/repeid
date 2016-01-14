@@ -60,7 +60,7 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
     public Response create(TipoDocumentoRepresentation rep)
             throws TipoDocumentoAlreadyExistsException, NotAuthorizedException {
 
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoAdmin))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -87,7 +87,7 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
             String tipoPersona, Boolean estado, String filterText, Integer firstResult, Integer maxResults)
                     throws NotAuthorizedException {
 
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoView))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -131,7 +131,7 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
             SearchCriteriaRepresentation criteria)
                     throws InvalidSearchCriteriaException, NotAuthorizedException {
 
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoView))
             throw ExceptionFactory.notAuthorizedException();
 
         try {

@@ -42,7 +42,7 @@ public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
     @Override
     public TipoDocumentoRepresentation toRepresentation()
             throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoView))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoView))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -59,7 +59,7 @@ public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
     @Override
     public void update(TipoDocumentoRepresentation rep)
             throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoEdit))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -75,7 +75,7 @@ public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
 
     @Override
     public void enable() throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoEdit))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -91,7 +91,7 @@ public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
 
     @Override
     public void disable() throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoEdit))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -107,7 +107,7 @@ public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
 
     @Override
     public Response remove() throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoAdmin))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
             throw ExceptionFactory.notAuthorizedException();
 
         try {

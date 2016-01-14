@@ -69,7 +69,7 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
     public void update(PersonaNaturalRepresentation rep)
             throws PersonaNaturalNotFoundException, NotAuthorizedException {
 
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoEdit))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
             throw ExceptionFactory.notAuthorizedException();
 
         try {
@@ -172,7 +172,7 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
     @Override
     public Response remove() throws PersonaNaturalNotFoundException, NotAuthorizedException {
 
-        if (!iSecurityContext.hasPermission(PermissionType.tipoDocumentoAdmin))
+        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
             throw ExceptionFactory.notAuthorizedException();
 
         try {

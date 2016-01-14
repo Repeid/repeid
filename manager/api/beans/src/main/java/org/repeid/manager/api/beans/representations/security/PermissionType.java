@@ -22,12 +22,7 @@ package org.repeid.manager.api.beans.representations.security;
  */
 public enum PermissionType {
     
-	tipoDocumentoView,	tipoDocumentoEdit,	tipoDocumentoAdmin,
-	personaView, personaEdit,  personaAdmin,
-	
-    orgView,  orgEdit,  orgAdmin,
-    svcView,  svcEdit,  svcAdmin,
-    appView,  appEdit,  appAdmin,
-    planView, planEdit, planAdmin
+	documentoView, documentoEdit,  documentoAdmin,
+	personaView,   personaEdit,    personaAdmin
     
 }

@@ -16,12 +16,6 @@
 package io.apiman.manager.api.war;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.New;
-import javax.enterprise.inject.Produces;
-
-import org.repeid.manager.api.security.ISecurityContext;
-import org.repeid.manager.api.security.impl.DefaultSecurityContext;
-import org.repeid.manager.api.security.impl.KeycloakSecurityContext;
 
 /**
  * Attempt to create producer methods for CDI beans.
@@ -31,7 +25,7 @@ import org.repeid.manager.api.security.impl.KeycloakSecurityContext;
 @ApplicationScoped
 public class WarCdiFactory {	
 
-	@Produces
+	/*@Produces
 	@ApplicationScoped
 	public static ISecurityContext provideSecurityContext(WarApiManagerConfig config,
 	        @New DefaultSecurityContext defaultSC, @New KeycloakSecurityContext keycloakSC) {
@@ -43,5 +37,5 @@ public class WarCdiFactory {
 			throw new RuntimeException("Unknown security context type: " + config.getSecurityContextType()); //$NON-NLS-1$
 		}
 	}
-	
+	*/
 }

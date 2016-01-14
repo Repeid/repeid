@@ -43,7 +43,8 @@ import org.repeid.manager.api.beans.representations.security.PermissionType;
  */
 @Entity
 @Table(name = "roles")
-@NamedQueries(value = { @NamedQuery(name = "RoleEntity.findAll", query = "SELECT r FROM RoleEntity r"),
+@NamedQueries(value = { 
+        @NamedQuery(name = "RoleEntity.findAll", query = "SELECT r FROM RoleEntity r"),
         @NamedQuery(name = "RoleEntity.findByName", query = "SELECT r FROM RoleEntity r WHERE r.name = :name") })
 public class RoleEntity implements Serializable {
 

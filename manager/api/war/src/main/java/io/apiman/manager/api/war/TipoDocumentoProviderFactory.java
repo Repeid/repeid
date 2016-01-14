@@ -6,7 +6,6 @@ import javax.enterprise.inject.Produces;
 
 import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
-import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
 
 import io.apiman.manager.api.core.config.Config;
 
