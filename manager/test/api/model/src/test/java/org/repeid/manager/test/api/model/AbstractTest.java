@@ -15,10 +15,10 @@ import org.jboss.shrinkwrap.descriptor.api.beans10.BeansDescriptor;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 import org.junit.runner.RunWith;
+
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
-import org.repeid.manager.api.jpa.DefaultJpaConnectionProvider;
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
 import org.repeid.manager.api.jpa.models.JpaAccionistaProvider;
 import org.repeid.manager.api.jpa.models.JpaPersonaJuridicaProvider;
@@ -34,6 +34,7 @@ import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.system.RepeidTransaction;
 import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,15 +78,12 @@ public abstract class AbstractTest {
                 .addPackage(UserEntity.class.getPackage())                
                 .addPackage(JpaUserProvider.class.getPackage())
                 
-
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml")
                 
                 .addAsManifestResource(
                         new StringAsset(beansXml.getOrCreateAlternatives()
-                                .clazz(DefaultJpaConnectionProvider.class.getName())
-                                
                                 .clazz(JpaTipoDocumentoProvider.class.getName())
                                 .clazz(JpaPersonaNaturalProvider.class.getName())
                                 .clazz(JpaPersonaJuridicaProvider.class.getName())
