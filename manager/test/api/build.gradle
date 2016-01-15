@@ -5,7 +5,8 @@ subprojects {
     	testCompile 'org.arquillian.container:arquillian-container-chameleon:1.0.0.Alpha6'
     	
     	testCompile 'org.hamcrest:hamcrest-all:1.3'
-    	testCompile 'com.jayway.restassured:rest-assured:2.6.0'    	
+    	testCompile 'com.jayway.restassured:rest-assured:2.6.0'
+    	testCompile 'org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-javaee:2.0.0-alpha-8'
     	testCompile 'org.jboss.arquillian.extension:arquillian-persistence-api:1.0.0.Alpha7'
     	testCompile 'org.jboss.arquillian.extension:arquillian-persistence-impl:1.0.0.Alpha6'  
 	}
