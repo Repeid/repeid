@@ -1,12 +1,19 @@
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply from: "./libraries.gradle"
 
 buildscript {
     repositories {
+    	maven { url "http://nexus.qmino.com/content/repositories/miredot" }
+        maven { url "http://nexus.qmino.com/content/repositories/miredot-snapshots" }
+        maven { url "https://plugins.gradle.org/m2/"}
         mavenCentral()
         jcenter()
     }
 
     dependencies {
+    	classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
+        classpath "com.qmino:miredot-plugin:1.6.2"
         classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.0.3'
     }
 }
@@ -15,7 +22,45 @@ allprojects {
     apply plugin: "eclipse"
 }
 
+
+ext {
+    expectedGradleVersion = '2.7'
+    repeidTargetVersion = '1.0.0-SNAPSHOT'
+
+    osgiExportVersion = repeidTargetVersion.replaceAll( '-SNAPSHOT', '.SNAPSHOT' )
+}
+
+idea {
+    project {
+		jdkName = '1.6'
+		languageLevel = '1.6'
+
+		vcs = 'Git'
+    }
+    module {
+        name = "repeid"
+    }
+}
+
+/*
+ * Repeid, Personalized registry identification
+ *
+ * License: GNU Lesser General Public License (LGPL), version 2.1 or later.
+ * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+ */
+// Used in MANIFEST.MF for OSGi Bundles
+def osgiDescription() {
+	return "A module of the Hibernate O/RM project"
+}
+
 subprojects { subProject ->
+	apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    
+    defaultTasks 'build'
+    
+    
+    
     apply plugin: "java"
     apply plugin: 'nebula.provided-base'
 
