@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 @UsingDataSet("empty.xml")
 public abstract class AbstractTest {
 
-    protected Logger log = LoggerFactory.getLogger(TipoDocumentoProviderTest.class);
+    protected Logger log = LoggerFactory.getLogger(AbstractTest.class);
 
     @Deployment
     public static WebArchive createDeployment() {
