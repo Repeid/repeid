@@ -116,7 +116,7 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 
 	@Override
 	public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) throws StorageException {
-		TypedQuery<MongoTipoDocumentoEntity> query = getEntityManager().createNamedQuery("TipoDocumentoEntity.findAll",
+		TypedQuery<MongoTipoDocumentoEntity> query = getEntityManager().createNamedQuery("MongoTipoDocumentoEntity.findAll",
 				MongoTipoDocumentoEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);

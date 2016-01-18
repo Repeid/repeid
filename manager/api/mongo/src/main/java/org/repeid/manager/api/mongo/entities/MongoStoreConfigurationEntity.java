@@ -24,9 +24,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "STORE_CONFIGURATION")
 @NamedQueries(value = {
-		@NamedQuery(name = "MongoStoreConfigurationEntity.findAll", query = "SELECT s FROM StoreConfigurationEntity s"),
-		@NamedQuery(name = "MongoStoreConfigurationEntity.findByIsDefault", query = "SELECT s FROM StoreConfigurationEntity s WHERE s.isDefault =:isDefault"),
-		@NamedQuery(name = "MongoStoreConfigurationEntity.findByDenominacion", query = "SELECT s FROM StoreConfigurationEntity s WHERE s.denominacion = :denominacion") })
+		@NamedQuery(name = "MongoStoreConfigurationEntity.findAll", query = "SELECT s FROM MongoStoreConfigurationEntity s"),
+		@NamedQuery(name = "MongoStoreConfigurationEntity.findByIsDefault", query = "SELECT s FROM MongoStoreConfigurationEntity s WHERE s.isDefault =:isDefault"),
+		@NamedQuery(name = "MongoStoreConfigurationEntity.findByDenominacion", query = "SELECT s FROM MongoStoreConfigurationEntity s WHERE s.denominacion = :denominacion") })
 public class MongoStoreConfigurationEntity implements Serializable {
 
 	/**

@@ -35,11 +35,11 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "PERSONA_JURIDICA")
 @NamedQueries(value = {
-		@NamedQuery(name = "MongoPersonaJuridicaEntity.findAll", query = "SELECT p FROM PersonaJuridicaEntity p"),
-		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByTipoDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
-		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
-		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
-		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM PersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findAll", query = "SELECT p FROM MongoPersonaJuridicaEntity p"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByTipoDocumento", query = "SELECT p FROM MongoPersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM MongoPersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM MongoPersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM MongoPersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
 public class MongoPersonaJuridicaEntity extends MongoPersonaEntity implements Serializable {
 
 	/**

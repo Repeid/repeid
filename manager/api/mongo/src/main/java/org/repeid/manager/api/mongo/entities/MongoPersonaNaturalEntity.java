@@ -30,10 +30,10 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "PERSONA_NATURAL")
 @NamedQueries(value = {
-		@NamedQuery(name = "MongoPersonaNaturalEntity.findAll", query = "SELECT p FROM PersonaNaturalEntity p"),
-		@NamedQuery(name = "MongoPersonaNaturalEntity.findByTipoDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
-		@NamedQuery(name = "MongoPersonaNaturalEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
-		@NamedQuery(name = "MongoPersonaNaturalEntity.findByFilterText", query = "SELECT p FROM PersonaNaturalEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.apellidoPaterno) LIKE :filterText OR LOWER(p.apellidoMaterno) LIKE :filterText OR LOWER(p.nombres) LIKE :filterText") })
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findAll", query = "SELECT p FROM MongoPersonaNaturalEntity p"),
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findByTipoDocumento", query = "SELECT p FROM MongoPersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findByTipoNumeroDocumento", query = "SELECT p FROM MongoPersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findByFilterText", query = "SELECT p FROM MongoPersonaNaturalEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.apellidoPaterno) LIKE :filterText OR LOWER(p.apellidoMaterno) LIKE :filterText OR LOWER(p.nombres) LIKE :filterText") })
 public class MongoPersonaNaturalEntity extends MongoPersonaEntity implements Serializable {
 
 	/**
