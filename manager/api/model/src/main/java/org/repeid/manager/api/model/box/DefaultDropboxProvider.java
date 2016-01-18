@@ -22,8 +22,10 @@ public class DefaultDropboxProvider implements DropboxProvider {
 	@Override
 	public DbxEntry.File upload(DbxClient dbxClient, byte[] file) {
 		// File storage
-		// DbxEntry.File fileEntity = dbxClient.uploadFile(targetPath,
-		// writeMode, numBytes, writer);
+		/*
+		 * dbxClient. DbxEntry.File fileEntity =
+		 * dbxClient.uploadFile(targetPath, writeMode, numBytes, writer);
+		 */
 		return null;
 	}
 
