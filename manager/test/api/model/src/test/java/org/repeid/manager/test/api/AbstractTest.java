@@ -18,6 +18,7 @@ import org.repeid.manager.api.jpa.entities.security.UserEntity;
 import org.repeid.manager.api.jpa.models.JpaTipoDocumentoProvider;
 import org.repeid.manager.api.jpa.models.security.JpaUserProvider;
 import org.repeid.manager.api.model.Model;
+import org.repeid.manager.api.model.box.DropboxProvider;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.provider.Provider;
@@ -40,9 +41,13 @@ public abstract class AbstractTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        File[] dependencies = Maven.resolver().resolve("org.slf4j:slf4j-simple:1.7.10").withoutTransitivity()
-                .asFile();
-        
+    	File[] dependencies = new File[5];    
+    	dependencies[0] = Maven.resolver().resolve("org.slf4j:slf4j-simple:1.7.10").withoutTransitivity().asSingleFile();
+    	dependencies[1] = Maven.resolver().resolve("com.dropbox.core:dropbox-core-sdk:1.8.2").withoutTransitivity().asSingleFile();
+    	dependencies[2] = Maven.resolver().resolve("com.google.apis:google-api-services-drive:v2-rev173-1.20.0").withoutTransitivity().asSingleFile();
+    	dependencies[3] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-java6:1.20.0").withoutTransitivity().asSingleFile();
+    	dependencies[4] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-jetty:1.20.0").withoutTransitivity().asSingleFile();    	
+    	
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
                 
                 .addClass(AbstractTest.class)
@@ -62,7 +67,9 @@ public abstract class AbstractTest {
                 .addPackage(UserModel.class.getPackage())
                 .addPackage(RepeidTransaction.class.getPackage())
                 
-                .addPackage(TipoPersona.class.getPackage())                
+                .addPackage(TipoPersona.class.getPackage())
+                
+                .addPackage(DropboxProvider.class.getPackage())
 
                 /** model-jpa **/
                 .addPackage(AbstractJpaStorage.class.getPackage())
@@ -87,7 +94,7 @@ public abstract class AbstractTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml");
 
-        war.addAsLibraries(dependencies);
+		war.addAsLibraries( dependencies );
 
         return war;
     }    

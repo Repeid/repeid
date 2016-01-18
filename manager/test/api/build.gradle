@@ -8,7 +8,7 @@ subprojects {
 		testCompile ( libraries.rest_assured )
 		testCompile ( libraries.shrinkwrap_descriptors_impl_javaee )
 		testCompile ( libraries.arquillian_persistence_api )
-		testCompile ( libraries.arquillian_persistence_impl )
+		testCompile ( libraries.arquillian_persistence_impl )			
 	}
 }
 
