@@ -1,5 +1,4 @@
 apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply from: "./libraries.gradle"
 
 buildscript {
@@ -22,59 +21,154 @@ allprojects {
     apply plugin: "eclipse"
 }
 
-
 ext {
     expectedGradleVersion = '2.7'
     repeidTargetVersion = '1.0.0-SNAPSHOT'
-
-    osgiExportVersion = repeidTargetVersion.replaceAll( '-SNAPSHOT', '.SNAPSHOT' )
-}
-
-idea {
-    project {
-		jdkName = '1.6'
-		languageLevel = '1.6'
-
-		vcs = 'Git'
+    javaTarget = {
+    	version = '1.8'
     }
-    module {
-        name = "repeid"
-    }
-}
-
-/*
- * Repeid, Personalized registry identification
- *
- * License: GNU Lesser General Public License (LGPL), version 2.1 or later.
- * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
- */
-// Used in MANIFEST.MF for OSGi Bundles
-def osgiDescription() {
-	return "A module of the Hibernate O/RM project"
 }
 
 subprojects { subProject ->
-	apply plugin: 'idea'
     apply plugin: 'eclipse'
     
     defaultTasks 'build'
     
+    group = 'org.repeid'
+    version = rootProject.repeidTargetVersion  
     
-    
-    apply plugin: "java"
-    apply plugin: 'nebula.provided-base'
+    if ( subProject.name.startsWith( 'release' ) || subProject.name.startsWith( 'documentation' ) ) {
+		return;
+	}
+	
+	// everything below here in the closure applies to java projects
+	apply plugin: 'java'
+	apply plugin: 'maven-publish'
+
+	apply plugin: 'findbugs'
+	apply plugin: 'checkstyle'
+	apply plugin: 'build-dashboard'
+	apply plugin: 'project-report'	
+	
+	apply plugin: 'nebula.provided-base'  
 
     repositories {
         mavenCentral()
-    }
+    }     
 
-    dependencies {
-        //compile 'javax:javaee-api:7.0'
-        testCompile ( libraries.junit )
-    }
+    // appropriately inject the common dependencies into each sub-project
+	dependencies {
+		testCompile( libraries.junit )
 
+		// 6.6 gave me some NPE problems from within checkstyle...
+		checkstyle 'com.puppycrawl.tools:checkstyle:6.14.1'				
+	}	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	task compile
+	compile.dependsOn compileJava, processResources, compileTestJava, processTestResources	
+	
+	test {
+		systemProperties['repeid.test.validatefailureexpected'] = true
+		systemProperties += System.properties.findAll { it.key.startsWith( "repeid.") }
+	}
+	
+	processTestResources.doLast( {
+		copy {
+			from( sourceSets.test.java.srcDirs ) {
+				include '**/*.properties'
+				include '**/*.xml'
+			}
+			into sourceSets.test.output.classesDir
+		}
+	} )	
+	
+	eclipse {
+		jdt {			
+			sourceCompatibility = '1.8'
+			targetCompatibility = '1.8'
+		}
+	}
+	
+	// eclipseClasspath will not add sources to classpath unless the dirs actually exist.
+	// TODO: Eclipse's annotation processor handling is also fairly stupid (and completely lacks in the
+	// Gradle plugin).  For now, just compile first in order to get the logging classes.
+	eclipseClasspath.dependsOn compile
+	
+	// Report configs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	checkstyle {
+		sourceSets = [ subProject.sourceSets.main ]
+		configFile = rootProject.file( 'tools/config/checkstyle/checkstyle.xml' )
+		showViolations = false
+	}
+	// exclude generated java sources - by explicitly setting the base source dir
+	checkstyleMain.source = 'src/main/java'
+	
+	findbugs {
+		sourceSets = [ subProject.sourceSets.main, subProject.sourceSets.test ]
+		ignoreFailures = true
+		toolVersion = '3.0.1'
+		// for now we need to set this to low so that FindBugs will actually report the DM_CONVERT_CASE warning we care about
+		reportLevel = 'low'
+		// remove all low level bug warnings except DM_CONVERT_CASE
+		//excludeFilterConfig=resources.text.fromString(excludeAllLowLevelBugsExcept('DM_CONVERT_CASE'))
+	}	
+	
+	// because cfg package is a mess mainly from annotation stuff
+	checkstyleMain.exclude '**/org/repeid/cfg/**'
+	checkstyleMain.exclude '**/org/repeid/cfg/*'
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				from components.java
+
+				artifact( sourcesJar ) {
+					classifier 'sources'
+				}
+			}
+			// http://issues.gradle.org/browse/GRADLE-2966
+			// Once ^^ is resolved:
+			//		1) Move hibernate-testing module into hibernate-core tests
+			//		2) Define a second publication on hibernate-core for publishing the testing jar
+			// We could kind of do this now, but it would just be the jar.  Every module would still need
+			// to duplicate the testing dependencies.  Well, on second thought, we could centralize the
+			// testing dependencies here within the subprojects block
+		}
+	}
+
+	model {
+		tasks.generatePomFileForMavenJavaPublication {
+			destination = file( "$subProject.buildDir/generated-pom.xml" )
+		}
+	}
+
+	task sourcesJar(type: Jar, dependsOn: compileJava) {
+		from sourceSets.main.allSource
+		classifier = 'sources'
+	}
 }
 
+task release(type: Task, dependsOn: 'release:release')
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.7'
+    gradleVersion = expectedGradleVersion
+}
+
+def excludeAllLowLevelBugsExcept(String[] bugTypes){
+	def writer = new StringWriter()
+	def xml = new groovy.xml.MarkupBuilder(writer);
+	xml.FindBugsFilter {
+		Match {
+			Confidence( value: '3' )
+			bugTypes.each { bug ->
+				Not {
+					Bug( pattern: "${bug}" )
+				}
+			}
+		}
+	}
+	return writer.toString(  )
 }
