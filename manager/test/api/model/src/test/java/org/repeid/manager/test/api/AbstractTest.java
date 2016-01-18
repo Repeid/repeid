@@ -24,6 +24,9 @@ import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.system.RepeidTransaction;
+import org.repeid.manager.api.mongo.AbstractMongoStorage;
+import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
+import org.repeid.manager.api.mongo.models.security.MongoUserProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +71,16 @@ public abstract class AbstractTest {
                 .addPackage(UserEntity.class.getPackage())                
                 .addPackage(JpaUserProvider.class.getPackage())
                 
+                /** model-jpa **/
+                .addPackage(AbstractMongoStorage.class.getPackage())
+                
+                .addPackage(org.repeid.manager.api.mongo.entities.TipoDocumentoEntity.class.getPackage())
+                .addPackage(MongoTipoDocumentoProvider.class.getPackage())
+                
+                .addPackage(org.repeid.manager.api.mongo.entities.security.UserEntity.class.getPackage())                
+                .addPackage(MongoUserProvider.class.getPackage())
+                
+                /**Config**/
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml");
