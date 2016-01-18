@@ -6,8 +6,7 @@ dependencies {
 	compile ( libraries.hibernate_entitymanager )
 	compile ( libraries.hibernate_validator )
 	compile ( libraries.javax_inject )
-	compile ( libraries.cdi_api )
-	compile ( libraries.dropbox_core_sdk )
+	compile ( libraries.cdi_api )	
 
 	compile ( libraries.slf4j_api )
 	compile ( libraries.slf4j_log4j )

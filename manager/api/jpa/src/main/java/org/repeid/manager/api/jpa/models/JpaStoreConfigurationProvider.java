@@ -6,7 +6,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
@@ -14,15 +13,17 @@ import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaStorageConfigurationProvider extends AbstractJpaStorage implements StoreConfigurationProvider {
+@ProviderFactory(ProviderType.JPA)
+public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements StoreConfigurationProvider {
 
 	@Override
 	public void close() {

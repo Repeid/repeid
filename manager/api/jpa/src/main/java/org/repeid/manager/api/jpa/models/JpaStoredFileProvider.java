@@ -6,17 +6,22 @@ import java.util.UUID;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.FileEntity;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
+import org.repeid.manager.api.model.box.DropboxProvider;
+import org.repeid.manager.api.model.box.GoogleDriveProvider;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
@@ -25,13 +30,17 @@ import com.dropbox.core.DbxRequestConfig;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Default
+
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class JpaStoredFileProvider implements StoredFileProvider {
+@ProviderFactory(ProviderType.JPA)
+public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredFileProvider {
 
-	@PersistenceContext
-	private EntityManager em;
+	@Inject
+	private DropboxProvider dropboxProvider;
+
+	@Inject
+	private GoogleDriveProvider googleDriveProvider;
 
 	@Override
 	public void close() {
@@ -40,8 +49,8 @@ public class JpaStoredFileProvider implements StoredFileProvider {
 
 	@Override
 	public StoredFileModel findById(String id) {
-		StoredFileEntity storedFileEntity = this.em.find(StoredFileEntity.class, id);
-		return storedFileEntity != null ? new StoredFileAdapter(em, storedFileEntity) : null;
+		StoredFileEntity storedFileEntity = getEntityManager().find(StoredFileEntity.class, id);
+		return storedFileEntity != null ? new StoredFileAdapter(getEntityManager(), storedFileEntity) : null;
 	}
 
 	@Override
@@ -63,11 +72,11 @@ public class JpaStoredFileProvider implements StoredFileProvider {
 		// File storage
 		FileEntity fileEntity = new FileEntity();
 		fileEntity.setFile(file);
-		em.persist(fileEntity);
+		getEntityManager().persist(fileEntity);
 
 		// Store configuration entity
 		StoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
-				.toStoreConfigurationEntity(configuration, em);
+				.toStoreConfigurationEntity(configuration, getEntityManager());
 
 		// Create StoreFileEntity
 		StoredFileEntity storedFileEntity = new StoredFileEntity();
@@ -75,20 +84,19 @@ public class JpaStoredFileProvider implements StoredFileProvider {
 		storedFileEntity.setUrl(UUID.randomUUID().toString());
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);
 
-		em.persist(storedFileEntity);
-		return new StoredFileAdapter(em, storedFileEntity);
+		getEntityManager().persist(storedFileEntity);
+		return new StoredFileAdapter(getEntityManager(), storedFileEntity);
 	}
 
 	private StoredFileModel createDropboxFile(byte[] file, StoreConfigurationModel configuration) {
 		// File storage
 		DbxRequestConfig config = new DbxRequestConfig(configuration.getAppKey(), Locale.getDefault().toString());
 		DbxClient dbxClient = new DbxClient(config, configuration.getToken());
-		DropboxProvider dropboxProvider = new DropboxProvider(dbxClient);
-		DbxEntry.File fileEntity = dropboxProvider.upload(file);
+		DbxEntry.File fileEntity = dropboxProvider.upload(dbxClient, file);
 
 		// Store configuration entity
 		StoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
-				.toStoreConfigurationEntity(configuration, em);
+				.toStoreConfigurationEntity(configuration, getEntityManager());
 
 		// Create StoreFileEntity
 		StoredFileEntity storedFileEntity = new StoredFileEntity();
@@ -96,8 +104,8 @@ public class JpaStoredFileProvider implements StoredFileProvider {
 		storedFileEntity.setUrl(fileEntity.path);
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);
 
-		em.persist(storedFileEntity);
-		return new StoredFileAdapter(em, storedFileEntity);
+		getEntityManager().persist(storedFileEntity);
+		return new StoredFileAdapter(getEntityManager(), storedFileEntity);
 	}
 
 	private StoredFileModel createGoogleDriveFile(byte[] file, StoreConfigurationModel configuration) {
