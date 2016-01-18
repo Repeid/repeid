@@ -45,7 +45,7 @@ public class CdiFactoryTest {
         } else if (PROVIDER.equals(ProviderType.MONGO)) {
             return mongo;
         } else {
-            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+            throw new RuntimeException("Provider type desconocido");
         }
     }
 
@@ -58,7 +58,7 @@ public class CdiFactoryTest {
         } else if (PROVIDER.equals(ProviderType.MONGO)) {
             return mongo;
         } else {
-            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+            throw new RuntimeException("Provider type desconocido");
         }
     }
 
@@ -71,7 +71,7 @@ public class CdiFactoryTest {
         } else if (PROVIDER.equals(ProviderType.MONGO)) {
             return mongo;
         } else {
-            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+            throw new RuntimeException("Provider type desconocido");
         }
     }
 
@@ -83,7 +83,7 @@ public class CdiFactoryTest {
         } else if (PROVIDER.equals(ProviderType.MONGO)) {
             return mongo;
         } else {
-            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+            throw new RuntimeException("Provider type desconocido");
         }
     }
 
