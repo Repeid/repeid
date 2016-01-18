@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -19,6 +18,8 @@ import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
@@ -26,9 +27,9 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
-@Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@ProviderFactory(type = ProviderType.JPA)
 public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";
