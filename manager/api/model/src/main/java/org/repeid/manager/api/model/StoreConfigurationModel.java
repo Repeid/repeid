@@ -1,6 +1,6 @@
 package org.repeid.manager.api.model;
 
-import org.repeid.manager.api.model.enums.StoreFileProviderName;
+import org.repeid.manager.api.model.enums.StoreConfigurationType;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -10,7 +10,7 @@ public interface StoreConfigurationModel extends Model {
 
 	String getId();
 
-	StoreFileProviderName getProviderName();
+	StoreConfigurationType getProviderName();
 
 	String getDenominacion();
 

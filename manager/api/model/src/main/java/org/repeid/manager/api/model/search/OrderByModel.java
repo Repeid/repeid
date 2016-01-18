@@ -20,7 +20,7 @@ import java.io.Serializable;
 /**
  * Models order-by for a search.
  *
- * @author eric.wittmann@redhat.com
+ * @author carlosthe19916@gmail.com
  */
 public class OrderByModel implements Serializable {
 

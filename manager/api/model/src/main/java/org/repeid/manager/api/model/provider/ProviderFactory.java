@@ -14,5 +14,7 @@ import javax.inject.Qualifier;
 @Retention(RUNTIME)
 @Target({ METHOD, FIELD, TYPE, PARAMETER })
 public @interface ProviderFactory {
-    ProviderType value();
+
+	ProviderType value();
+
 }

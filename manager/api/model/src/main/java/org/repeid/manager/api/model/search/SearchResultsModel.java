@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Models a set of beans returned as a result of a search.
  *
- * @author eric.wittmann@redhat.com
+ * @author carlosthe19916@gmail.com
  * @param <T>
  *            the bean type
  */

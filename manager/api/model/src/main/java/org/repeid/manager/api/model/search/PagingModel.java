@@ -22,7 +22,7 @@ import java.io.Serializable;
  * beans. In these cases the criteria might match a large number of beans, and
  * we only want to return a certain number of them.
  *
- * @author eric.wittmann@redhat.com
+ * @author carlosthe19916@gmail.com
  */
 public class PagingModel implements Serializable {
 

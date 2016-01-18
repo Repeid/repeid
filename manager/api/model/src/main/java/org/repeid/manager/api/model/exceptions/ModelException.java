@@ -1,7 +1,7 @@
 package org.repeid.manager.api.model.exceptions;
 
 /**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 public class ModelException extends RuntimeException {
 

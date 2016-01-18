@@ -19,7 +19,7 @@ package org.repeid.manager.api.model.search;
  * The operator to use for a single search criteria filter. Typically we use eq,
  * but other operators are occassionally useful as well.
  *
- * @author eric.wittmann@redhat.com
+ * @author carlosthe19916@gmail.com
  */
 public enum SearchCriteriaFilterOperator {
 

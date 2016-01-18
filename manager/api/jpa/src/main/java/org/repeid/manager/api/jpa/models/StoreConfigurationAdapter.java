@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
-import org.repeid.manager.api.model.enums.StoreFileProviderName;
+import org.repeid.manager.api.model.enums.StoreConfigurationType;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -43,8 +43,8 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
     }
 
     @Override
-    public StoreFileProviderName getProviderName() {
-        return StoreFileProviderName.valueOf(storeConfigurationEntity.getProviderName());
+    public StoreConfigurationType getProviderName() {
+        return StoreConfigurationType.valueOf(storeConfigurationEntity.getProviderName());
     }
 
     @Override

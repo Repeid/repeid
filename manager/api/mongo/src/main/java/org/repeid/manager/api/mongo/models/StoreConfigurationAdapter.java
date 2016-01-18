@@ -3,7 +3,7 @@ package org.repeid.manager.api.mongo.models;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.model.StoreConfigurationModel;
-import org.repeid.manager.api.model.enums.StoreFileProviderName;
+import org.repeid.manager.api.model.enums.StoreConfigurationType;
 import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
 
 /**
@@ -42,8 +42,8 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
 	}
 
 	@Override
-	public StoreFileProviderName getProviderName() {
-		return StoreFileProviderName.valueOf(storeConfigurationEntity.getProviderName());
+	public StoreConfigurationType getProviderName() {
+		return StoreConfigurationType.valueOf(storeConfigurationEntity.getProviderName());
 	}
 
 	@Override

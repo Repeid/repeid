@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Generic search criteria used when searching for beans.
  *
- * @author eric.wittmann@redhat.com
+ * @author carlosthe19916@gmail.com
  */
 public class SearchCriteriaModel implements Serializable {
 

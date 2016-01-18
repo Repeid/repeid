@@ -16,7 +16,7 @@ import org.repeid.manager.api.jpa.entities.StoredFileEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
-import org.repeid.manager.api.model.enums.StoreFileProviderName;
+import org.repeid.manager.api.model.enums.StoreConfigurationType;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
@@ -46,7 +46,7 @@ public class JpaStoredFileProvider implements StoredFileProvider {
 
 	@Override
 	public StoredFileModel create(byte[] file, StoreConfigurationModel configuration) {
-		StoreFileProviderName provider = configuration.getProviderName();
+		StoreConfigurationType provider = configuration.getProviderName();
 		switch (provider) {
 		case localhost:
 			return createLocalFile(file, configuration);

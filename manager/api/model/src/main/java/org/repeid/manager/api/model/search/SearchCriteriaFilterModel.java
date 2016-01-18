@@ -21,7 +21,7 @@ import java.io.Serializable;
  * Represents a single filter or search criteria. This is used when searching
  * for beans.
  *
- * @author eric.wittmann@redhat.com
+ * @author carlosthe19916@gmail.com
  */
 public class SearchCriteriaFilterModel implements Serializable {
 
