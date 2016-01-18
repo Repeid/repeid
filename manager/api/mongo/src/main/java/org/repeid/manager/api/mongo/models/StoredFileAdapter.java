@@ -4,8 +4,8 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
-import org.repeid.manager.api.mongo.entities.StoreConfigurationEntity;
-import org.repeid.manager.api.mongo.entities.StoredFileEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoredFileEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -13,22 +13,22 @@ import org.repeid.manager.api.mongo.entities.StoredFileEntity;
 
 public class StoredFileAdapter implements StoredFileModel {
 
-	private StoredFileEntity fileStoreEntity;
+	private MongoStoredFileEntity fileStoreEntity;
 	private EntityManager em;
 
-	public StoredFileAdapter(EntityManager em, StoredFileEntity storedFileEntity) {
+	public StoredFileAdapter(EntityManager em, MongoStoredFileEntity storedFileEntity) {
 		this.em = em;
 		this.fileStoreEntity = storedFileEntity;
 	}
 
-	public static StoredFileEntity toStoredFileEntity(StoredFileModel model, EntityManager em) {
+	public static MongoStoredFileEntity toStoredFileEntity(StoredFileModel model, EntityManager em) {
 		if (model instanceof StoredFileAdapter) {
 			return ((StoredFileAdapter) model).getStoredFileEntity();
 		}
-		return em.getReference(StoredFileEntity.class, model.getId());
+		return em.getReference(MongoStoredFileEntity.class, model.getId());
 	}
 
-	public StoredFileEntity getStoredFileEntity() {
+	public MongoStoredFileEntity getStoredFileEntity() {
 		return fileStoreEntity;
 	}
 
@@ -64,7 +64,7 @@ public class StoredFileAdapter implements StoredFileModel {
 
 	@Override
 	public StoreConfigurationModel getStoreConfiguration() {
-		StoreConfigurationEntity storeConfigurationEntity = fileStoreEntity.getStoreConfiguration();
+		MongoStoreConfigurationEntity storeConfigurationEntity = fileStoreEntity.getStoreConfiguration();
 		return new StoreConfigurationAdapter(em, storeConfigurationEntity);
 	}
 

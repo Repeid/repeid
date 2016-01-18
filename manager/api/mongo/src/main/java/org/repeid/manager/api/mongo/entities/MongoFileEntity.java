@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "FILE")
-public class FileEntity implements Serializable {
+public class MongoFileEntity implements Serializable {
 
 	/**
 	 * 
@@ -66,7 +66,7 @@ public class FileEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FileEntity other = (FileEntity) obj;
+		MongoFileEntity other = (MongoFileEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

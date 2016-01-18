@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.security.RoleModel;
-import org.repeid.manager.api.mongo.entities.security.RoleEntity;
+import org.repeid.manager.api.mongo.entities.security.MongoRoleEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -15,22 +15,22 @@ import org.repeid.manager.api.mongo.entities.security.RoleEntity;
 
 public class RoleAdapter implements RoleModel {
 
-	private RoleEntity roleEntity;
+	private MongoRoleEntity roleEntity;
 	private EntityManager em;
 
-	public RoleAdapter(EntityManager em, RoleEntity roleEntity) {
+	public RoleAdapter(EntityManager em, MongoRoleEntity roleEntity) {
 		this.em = em;
 		this.roleEntity = roleEntity;
 	}
 
-	public static RoleEntity toRoleEntity(RoleModel model, EntityManager em) {
+	public static MongoRoleEntity toRoleEntity(RoleModel model, EntityManager em) {
 		if (model instanceof RoleAdapter) {
 			return ((RoleAdapter) model).getRoleEntity();
 		}
-		return em.getReference(RoleEntity.class, model.getId());
+		return em.getReference(MongoRoleEntity.class, model.getId());
 	}
 
-	public RoleEntity getRoleEntity() {
+	public MongoRoleEntity getRoleEntity() {
 		return roleEntity;
 	}
 

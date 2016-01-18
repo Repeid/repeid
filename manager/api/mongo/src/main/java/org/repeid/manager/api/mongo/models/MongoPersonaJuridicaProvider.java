@@ -21,9 +21,9 @@ import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.PersonaJuridicaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
-import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity;
+import org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -53,12 +53,12 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 							+ tipoDocumentoModel + "y numeroDocumento=" + numeroDocumento);
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(TipoDocumentoEntity.class,
+		MongoTipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(MongoTipoDocumentoEntity.class,
 				tipoDocumentoModel.getId());
-		PersonaNaturalEntity personaNaturalEntity = getEntityManager().find(PersonaNaturalEntity.class,
+		MongoPersonaNaturalEntity personaNaturalEntity = getEntityManager().find(MongoPersonaNaturalEntity.class,
 				representanteLegal.getId());
 
-		PersonaJuridicaEntity personaJuridicaEntity = new PersonaJuridicaEntity();
+		MongoPersonaJuridicaEntity personaJuridicaEntity = new MongoPersonaJuridicaEntity();
 		personaJuridicaEntity.setRepresentanteLegal(personaNaturalEntity);
 		personaJuridicaEntity.setCodigoPais(codigoPais);
 		personaJuridicaEntity.setTipoDocumento(tipoDocumentoEntity);
@@ -74,7 +74,7 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 
 	@Override
 	public boolean remove(PersonaJuridicaModel personaJuridicaModel) {
-		PersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(PersonaJuridicaEntity.class,
+		MongoPersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(MongoPersonaJuridicaEntity.class,
 				personaJuridicaModel.getId());
 		if (personaJuridicaEntity == null) {
 			return false;
@@ -85,18 +85,18 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 
 	@Override
 	public PersonaJuridicaModel findById(String id) {
-		PersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(PersonaJuridicaEntity.class, id);
+		MongoPersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(MongoPersonaJuridicaEntity.class, id);
 		return personaJuridicaEntity != null ? new PersonaJuridicaAdapter(getEntityManager(), personaJuridicaEntity)
 				: null;
 	}
 
 	@Override
 	public PersonaJuridicaModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento) {
-		TypedQuery<PersonaJuridicaEntity> query = getEntityManager()
-				.createNamedQuery("PersonaJuridicaEntity.findByTipoNumeroDocumento", PersonaJuridicaEntity.class);
+		TypedQuery<MongoPersonaJuridicaEntity> query = getEntityManager()
+				.createNamedQuery("MongoPersonaJuridicaEntity.findByTipoNumeroDocumento", MongoPersonaJuridicaEntity.class);
 		query.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query.setParameter("numeroDocumento", numeroDocumento);
-		List<PersonaJuridicaEntity> results = query.getResultList();
+		List<MongoPersonaJuridicaEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -114,17 +114,17 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 
 	@Override
 	public List<PersonaJuridicaModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<PersonaJuridicaEntity> query = getEntityManager().createNamedQuery("PersonaJuridicaEntity.findAll",
-				PersonaJuridicaEntity.class);
+		TypedQuery<MongoPersonaJuridicaEntity> query = getEntityManager().createNamedQuery("MongoPersonaJuridicaEntity.findAll",
+				MongoPersonaJuridicaEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
 		}
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<PersonaJuridicaEntity> entities = query.getResultList();
+		List<MongoPersonaJuridicaEntity> entities = query.getResultList();
 		List<PersonaJuridicaModel> models = new ArrayList<PersonaJuridicaModel>();
-		for (PersonaJuridicaEntity personaJuridicaEntity : entities) {
+		for (MongoPersonaJuridicaEntity personaJuridicaEntity : entities) {
 			models.add(new PersonaJuridicaAdapter(getEntityManager(), personaJuridicaEntity));
 		}
 		return models;
@@ -137,8 +137,8 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 
 	@Override
 	public List<PersonaJuridicaModel> search(String filterText, int firstResult, int maxResults) {
-		TypedQuery<PersonaJuridicaEntity> query = getEntityManager()
-				.createNamedQuery("PersonaJuridicaEntity.findByFilterText", PersonaJuridicaEntity.class);
+		TypedQuery<MongoPersonaJuridicaEntity> query = getEntityManager()
+				.createNamedQuery("MongoPersonaJuridicaEntity.findByFilterText", MongoPersonaJuridicaEntity.class);
 		query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -146,9 +146,9 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<PersonaJuridicaEntity> entities = query.getResultList();
+		List<MongoPersonaJuridicaEntity> entities = query.getResultList();
 		List<PersonaJuridicaModel> models = new ArrayList<PersonaJuridicaModel>();
-		for (PersonaJuridicaEntity personaJuridicaEntity : entities) {
+		for (MongoPersonaJuridicaEntity personaJuridicaEntity : entities) {
 			models.add(new PersonaJuridicaAdapter(getEntityManager(), personaJuridicaEntity));
 		}
 		return models;
@@ -162,7 +162,7 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 	@Override
 	public List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes, int firstResult,
 			int maxResults) {
-		StringBuilder builder = new StringBuilder("SELECT p FROM PersonaJuridicaEntity");
+		StringBuilder builder = new StringBuilder("SELECT p FROM MongoPersonaJuridicaEntity");
 		for (Map.Entry<String, String> entry : attributes.entrySet()) {
 			String attribute = null;
 			String parameterName = null;
@@ -184,7 +184,7 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 		}
 		builder.append(" order by p.razonSocial");
 		String q = builder.toString();
-		TypedQuery<PersonaJuridicaEntity> query = getEntityManager().createQuery(q, PersonaJuridicaEntity.class);
+		TypedQuery<MongoPersonaJuridicaEntity> query = getEntityManager().createQuery(q, MongoPersonaJuridicaEntity.class);
 		for (Map.Entry<String, String> entry : attributes.entrySet()) {
 			String parameterName = null;
 			if (entry.getKey().equals(PersonaJuridicaModel.RAZON_SOCIAL)) {
@@ -206,20 +206,20 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<PersonaJuridicaEntity> results = query.getResultList();
+		List<MongoPersonaJuridicaEntity> results = query.getResultList();
 		List<PersonaJuridicaModel> personaNaturales = new ArrayList<PersonaJuridicaModel>();
-		for (PersonaJuridicaEntity entity : results)
+		for (MongoPersonaJuridicaEntity entity : results)
 			personaNaturales.add(new PersonaJuridicaAdapter(getEntityManager(), entity));
 		return personaNaturales;
 	}
 
 	@Override
 	public SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria) {
-		SearchResultsModel<PersonaJuridicaEntity> entityResult = find(criteria, PersonaJuridicaEntity.class);
+		SearchResultsModel<MongoPersonaJuridicaEntity> entityResult = find(criteria, MongoPersonaJuridicaEntity.class);
 
 		SearchResultsModel<PersonaJuridicaModel> modelResult = new SearchResultsModel<>();
 		List<PersonaJuridicaModel> list = new ArrayList<>();
-		for (PersonaJuridicaEntity entity : entityResult.getModels()) {
+		for (MongoPersonaJuridicaEntity entity : entityResult.getModels()) {
 			list.add(new PersonaJuridicaAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
@@ -229,12 +229,12 @@ public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implement
 
 	@Override
 	public SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria, String filterText) {
-		SearchResultsModel<PersonaJuridicaEntity> entityResult = findFullText(criteria, PersonaJuridicaEntity.class,
+		SearchResultsModel<MongoPersonaJuridicaEntity> entityResult = findFullText(criteria, MongoPersonaJuridicaEntity.class,
 				filterText, "numeroDocumento", "razonSocial");
 
 		SearchResultsModel<PersonaJuridicaModel> modelResult = new SearchResultsModel<>();
 		List<PersonaJuridicaModel> list = new ArrayList<>();
-		for (PersonaJuridicaEntity entity : entityResult.getModels()) {
+		for (MongoPersonaJuridicaEntity entity : entityResult.getModels()) {
 			list.add(new PersonaJuridicaAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());

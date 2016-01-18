@@ -9,8 +9,8 @@ import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
-import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
-import org.repeid.manager.api.mongo.entities.StoredFileEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoredFileEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -18,23 +18,23 @@ import org.repeid.manager.api.mongo.entities.StoredFileEntity;
 
 public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
-    private PersonaNaturalEntity personaNaturalEntity;
+    private MongoPersonaNaturalEntity personaNaturalEntity;
     private EntityManager em;
 
-    public PersonaNaturalAdapter(EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
+    public PersonaNaturalAdapter(EntityManager em, MongoPersonaNaturalEntity personaNaturalEntity) {
         this.em = em;
         this.personaNaturalEntity = personaNaturalEntity;
     }
 
-    public PersonaNaturalEntity getPersonaNaturalEntity() {
+    public MongoPersonaNaturalEntity getPersonaNaturalEntity() {
         return this.personaNaturalEntity;
     }
 
-    public static PersonaNaturalEntity toPersonaNaturalEntity(PersonaNaturalModel model, EntityManager em) {
+    public static MongoPersonaNaturalEntity toPersonaNaturalEntity(PersonaNaturalModel model, EntityManager em) {
         if (model instanceof PersonaNaturalAdapter) {
             return ((PersonaNaturalAdapter) model).getPersonaNaturalEntity();
         }
-        return em.getReference(PersonaNaturalEntity.class, model.getId());
+        return em.getReference(MongoPersonaNaturalEntity.class, model.getId());
     }
 
     @Override
@@ -209,7 +209,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
     @Override
     public StoredFileModel getFoto() {
-        StoredFileEntity storedFileEntity = personaNaturalEntity.getFoto();
+        MongoStoredFileEntity storedFileEntity = personaNaturalEntity.getFoto();
         if (storedFileEntity != null) {
             return new StoredFileAdapter(em, storedFileEntity);
         } else {
@@ -219,7 +219,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
     @Override
     public StoredFileModel getFirma() {
-        StoredFileEntity storedFileEntity = personaNaturalEntity.getFirma();
+        MongoStoredFileEntity storedFileEntity = personaNaturalEntity.getFirma();
         if (storedFileEntity != null) {
             return new StoredFileAdapter(em, storedFileEntity);
         } else {
@@ -230,7 +230,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
     @Override
     public void setFoto(StoredFileModel foto) {
         if (foto != null) {
-            StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(foto, em);
+            MongoStoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(foto, em);
             personaNaturalEntity.setFoto(storedFileEntity);
         } else {
             personaNaturalEntity.setFoto(null);
@@ -240,7 +240,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
     @Override
     public void setFirma(StoredFileModel firma) {
         if (firma != null) {
-            StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(firma, em);
+            MongoStoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(firma, em);
             personaNaturalEntity.setFirma(storedFileEntity);
         } else {
             personaNaturalEntity.setFirma(null);

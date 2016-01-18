@@ -22,7 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "STORED_FILE")
-public class StoredFileEntity implements Serializable {
+public class MongoStoredFileEntity implements Serializable {
 
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class StoredFileEntity implements Serializable {
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_configuration_id", foreignKey = @ForeignKey )
-	private StoreConfigurationEntity storeConfiguration;
+	private MongoStoreConfigurationEntity storeConfiguration;
 
 	@Size(min = 0)
 	@Column(name = "url")
@@ -72,11 +72,11 @@ public class StoredFileEntity implements Serializable {
 		this.url = url;
 	}
 
-	public StoreConfigurationEntity getStoreConfiguration() {
+	public MongoStoreConfigurationEntity getStoreConfiguration() {
 		return storeConfiguration;
 	}
 
-	public void setStoreConfiguration(StoreConfigurationEntity storeConfiguration) {
+	public void setStoreConfiguration(MongoStoreConfigurationEntity storeConfiguration) {
 		this.storeConfiguration = storeConfiguration;
 	}
 
@@ -96,7 +96,7 @@ public class StoredFileEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StoredFileEntity other = (StoredFileEntity) obj;
+		MongoStoredFileEntity other = (MongoStoredFileEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

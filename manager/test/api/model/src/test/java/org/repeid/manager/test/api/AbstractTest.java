@@ -25,6 +25,8 @@ import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.system.RepeidTransaction;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
+import org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity;
+import org.repeid.manager.api.mongo.entities.security.MongoUserEntity;
 import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
 import org.repeid.manager.api.mongo.models.security.MongoUserProvider;
 import org.slf4j.Logger;
@@ -74,10 +76,10 @@ public abstract class AbstractTest {
                 /** model-jpa **/
                 .addPackage(AbstractMongoStorage.class.getPackage())
                 
-                .addPackage(org.repeid.manager.api.mongo.entities.TipoDocumentoEntity.class.getPackage())
+                .addPackage(MongoTipoDocumentoEntity.class.getPackage())
                 .addPackage(MongoTipoDocumentoProvider.class.getPackage())
                 
-                .addPackage(org.repeid.manager.api.mongo.entities.security.UserEntity.class.getPackage())                
+                .addPackage(MongoUserEntity.class.getPackage())                
                 .addPackage(MongoUserProvider.class.getPackage())
                 
                 /**Config**/

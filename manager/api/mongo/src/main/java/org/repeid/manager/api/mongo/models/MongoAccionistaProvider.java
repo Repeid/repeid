@@ -18,9 +18,9 @@ import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.provider.ProviderFactory;
 import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.AccionistaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaJuridicaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
+import org.repeid.manager.api.mongo.entities.MongoAccionistaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -45,12 +45,12 @@ public class MongoAccionistaProvider extends AbstractMongoStorage implements Acc
 							+ personaJuridica + "y personaNatural=" + personaNatural);
 		}
 
-		PersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(PersonaJuridicaEntity.class,
+		MongoPersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(MongoPersonaJuridicaEntity.class,
 				personaJuridica.getId());
-		PersonaNaturalEntity personaNaturalEntity = getEntityManager().find(PersonaNaturalEntity.class,
+		MongoPersonaNaturalEntity personaNaturalEntity = getEntityManager().find(MongoPersonaNaturalEntity.class,
 				personaNatural.getId());
 
-		AccionistaEntity accionistaEntity = new AccionistaEntity();
+		MongoAccionistaEntity accionistaEntity = new MongoAccionistaEntity();
 		accionistaEntity.setPersonaNatural(personaNaturalEntity);
 		accionistaEntity.setPersonaJuridica(personaJuridicaEntity);
 		accionistaEntity.setPorcentajeParticipacion(porcentaje);
@@ -60,18 +60,18 @@ public class MongoAccionistaProvider extends AbstractMongoStorage implements Acc
 
 	@Override
 	public AccionistaModel findById(String id) {
-		AccionistaEntity accionistaEntity = getEntityManager().find(AccionistaEntity.class, id);
+		MongoAccionistaEntity accionistaEntity = getEntityManager().find(MongoAccionistaEntity.class, id);
 		return accionistaEntity != null ? new AccionistaAdapter(getEntityManager(), accionistaEntity) : null;
 	}
 
 	@Override
 	public AccionistaModel findByPersonaJuridicaNatural(PersonaJuridicaModel personaJuridica,
 			PersonaNaturalModel personaNatural) {
-		TypedQuery<AccionistaEntity> query = getEntityManager()
-				.createNamedQuery("AccionistaEntity.findByIdPersonaJuridicaNatural", AccionistaEntity.class);
+		TypedQuery<MongoAccionistaEntity> query = getEntityManager()
+				.createNamedQuery("MongoAccionistaEntity.findByIdPersonaJuridicaNatural", MongoAccionistaEntity.class);
 		query.setParameter("idPersonaJuridica", personaJuridica.getId());
 		query.setParameter("idPersonaNatural", personaNatural.getId());
-		List<AccionistaEntity> results = query.getResultList();
+		List<MongoAccionistaEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -84,7 +84,7 @@ public class MongoAccionistaProvider extends AbstractMongoStorage implements Acc
 
 	@Override
 	public boolean remove(AccionistaModel accionistaModel) {
-		AccionistaEntity accionistaEntity = getEntityManager().find(AccionistaEntity.class, accionistaModel.getId());
+		MongoAccionistaEntity accionistaEntity = getEntityManager().find(MongoAccionistaEntity.class, accionistaModel.getId());
 		if (accionistaEntity == null)
 			return false;
 		getEntityManager().remove(accionistaEntity);
@@ -93,12 +93,12 @@ public class MongoAccionistaProvider extends AbstractMongoStorage implements Acc
 
 	@Override
 	public List<AccionistaModel> getAll(PersonaJuridicaModel personaJuridicaModel) {
-		PersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(PersonaJuridicaEntity.class,
+		MongoPersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(MongoPersonaJuridicaEntity.class,
 				personaJuridicaModel.getId());
 
-		Set<AccionistaEntity> entities = personaJuridicaEntity.getAccionistas();
+		Set<MongoAccionistaEntity> entities = personaJuridicaEntity.getAccionistas();
 		List<AccionistaModel> models = new ArrayList<AccionistaModel>();
-		for (AccionistaEntity accionistaEntity : entities) {
+		for (MongoAccionistaEntity accionistaEntity : entities) {
 			models.add(new AccionistaAdapter(getEntityManager(), accionistaEntity));
 		}
 

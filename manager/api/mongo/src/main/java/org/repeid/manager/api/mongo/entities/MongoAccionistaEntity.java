@@ -28,10 +28,10 @@ import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "ACCIONISTA")
-@NamedQueries(value = { @NamedQuery(name = "AccionistaEntity.findAll", query = "SELECT a FROM AccionistaEntity a"),
-		@NamedQuery(name = "AccionistaEntity.findByIdPersonaNatural", query = "SELECT a FROM AccionistaEntity a INNER JOIN a.personaNatural p WHERE p.id = :idPersonaNatural"),
-		@NamedQuery(name = "AccionistaEntity.findByIdPersonaJuridicaNatural", query = "SELECT a FROM AccionistaEntity a INNER JOIN a.personaJuridica pj INNER JOIN a.personaNatural pn WHERE pj.id = :idPersonaJuridica AND pn.id = :idPersonaNatural") })
-public class AccionistaEntity implements java.io.Serializable {
+@NamedQueries(value = { @NamedQuery(name = "MongoAccionistaEntity.findAll", query = "SELECT a FROM AccionistaEntity a"),
+		@NamedQuery(name = "MongoAccionistaEntity.findByIdPersonaNatural", query = "SELECT a FROM AccionistaEntity a INNER JOIN a.personaNatural p WHERE p.id = :idPersonaNatural"),
+		@NamedQuery(name = "MongoAccionistaEntity.findByIdPersonaJuridicaNatural", query = "SELECT a FROM AccionistaEntity a INNER JOIN a.personaJuridica pj INNER JOIN a.personaNatural pn WHERE pj.id = :idPersonaJuridica AND pn.id = :idPersonaNatural") })
+public class MongoAccionistaEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,13 +45,13 @@ public class AccionistaEntity implements java.io.Serializable {
 	@NaturalId
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "persona_natural_id", foreignKey = @ForeignKey )
-	private PersonaNaturalEntity personaNatural;
+	private MongoPersonaNaturalEntity personaNatural;
 
 	@NotNull
 	@NaturalId
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "persona_juridica_id", foreignKey = @ForeignKey )
-	private PersonaJuridicaEntity personaJuridica;
+	private MongoPersonaJuridicaEntity personaJuridica;
 
 	@NotNull
 	@Min(value = 1)
@@ -63,7 +63,7 @@ public class AccionistaEntity implements java.io.Serializable {
 	@Version
 	private Integer optlk;
 
-	public AccionistaEntity() {
+	public MongoAccionistaEntity() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -75,19 +75,19 @@ public class AccionistaEntity implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public PersonaNaturalEntity getPersonaNatural() {
+	public MongoPersonaNaturalEntity getPersonaNatural() {
 		return personaNatural;
 	}
 
-	public void setPersonaNatural(PersonaNaturalEntity personaNatural) {
+	public void setPersonaNatural(MongoPersonaNaturalEntity personaNatural) {
 		this.personaNatural = personaNatural;
 	}
 
-	public PersonaJuridicaEntity getPersonaJuridica() {
+	public MongoPersonaJuridicaEntity getPersonaJuridica() {
 		return personaJuridica;
 	}
 
-	public void setPersonaJuridica(PersonaJuridicaEntity personaJuridica) {
+	public void setPersonaJuridica(MongoPersonaJuridicaEntity personaJuridica) {
 		this.personaJuridica = personaJuridica;
 	}
 
@@ -129,7 +129,7 @@ public class AccionistaEntity implements java.io.Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AccionistaEntity other = (AccionistaEntity) obj;
+		MongoAccionistaEntity other = (MongoAccionistaEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

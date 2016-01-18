@@ -19,9 +19,9 @@ import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.PersonaJuridicaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
-import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity;
+import org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -47,11 +47,11 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 			TipoPersona tipoPersona) throws StorageException {
 		if (findByAbreviatura(abreviatura) != null) {
 			throw new ModelDuplicateException(
-					"TipoDocumentoEntity abreviatura debe ser unico, se encontro otra entidad con abreviatura:"
+					"MongoTipoDocumentoEntity abreviatura debe ser unico, se encontro otra entidad con abreviatura:"
 							+ abreviatura);
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = new TipoDocumentoEntity();
+		MongoTipoDocumentoEntity tipoDocumentoEntity = new MongoTipoDocumentoEntity();
 		tipoDocumentoEntity.setAbreviatura(abreviatura);
 		tipoDocumentoEntity.setDenominacion(denominacion);
 		tipoDocumentoEntity.setCantidadCaracteres(cantidadCaracteres);
@@ -63,10 +63,10 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 
 	@Override
 	public TipoDocumentoModel findByAbreviatura(String abreviatura) throws StorageException {
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager()
-				.createNamedQuery("TipoDocumentoEntity.findByAbreviatura", TipoDocumentoEntity.class);
+		TypedQuery<MongoTipoDocumentoEntity> query = getEntityManager()
+				.createNamedQuery("MongoTipoDocumentoEntity.findByAbreviatura", MongoTipoDocumentoEntity.class);
 		query.setParameter("abreviatura", abreviatura);
-		List<TipoDocumentoEntity> results = executeTypedQuery(query);
+		List<MongoTipoDocumentoEntity> results = executeTypedQuery(query);
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -79,29 +79,29 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 
 	@Override
 	public TipoDocumentoModel findById(String id) throws StorageException {
-		TipoDocumentoEntity entity = get(id, TipoDocumentoEntity.class);
+		MongoTipoDocumentoEntity entity = get(id, MongoTipoDocumentoEntity.class);
 		return entity != null ? new TipoDocumentoAdapter(getEntityManager(), entity) : null;
 	}
 
 	@Override
 	public boolean remove(TipoDocumentoModel tipoDocumentoModel) throws StorageException {
-		TypedQuery<PersonaNaturalEntity> query1 = getEntityManager()
-				.createNamedQuery("PersonaNaturalEntity.findByTipoDocumento", PersonaNaturalEntity.class);
+		TypedQuery<MongoPersonaNaturalEntity> query1 = getEntityManager()
+				.createNamedQuery("MongoPersonaNaturalEntity.findByTipoDocumento", MongoPersonaNaturalEntity.class);
 		query1.setParameter("tipoDocumento", tipoDocumentoModel.getAbreviatura());
 		query1.setMaxResults(1);
 		if (!executeTypedQuery(query1).isEmpty()) {
 			return false;
 		}
 
-		TypedQuery<PersonaJuridicaEntity> query2 = getEntityManager()
-				.createNamedQuery("PersonaJuridicaEntity.findByTipoDocumento", PersonaJuridicaEntity.class);
+		TypedQuery<MongoPersonaJuridicaEntity> query2 = getEntityManager()
+				.createNamedQuery("MongoPersonaJuridicaEntity.findByTipoDocumento", MongoPersonaJuridicaEntity.class);
 		query2.setParameter("tipoDocumento", tipoDocumentoModel.getAbreviatura());
 		query2.setMaxResults(1);
 		if (!executeTypedQuery(query2).isEmpty()) {
 			return false;
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = get(tipoDocumentoModel.getId(), TipoDocumentoEntity.class);
+		MongoTipoDocumentoEntity tipoDocumentoEntity = get(tipoDocumentoModel.getId(), MongoTipoDocumentoEntity.class);
 		if (tipoDocumentoEntity == null) {
 			return false;
 		}
@@ -116,17 +116,17 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 
 	@Override
 	public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) throws StorageException {
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager().createNamedQuery("TipoDocumentoEntity.findAll",
-				TipoDocumentoEntity.class);
+		TypedQuery<MongoTipoDocumentoEntity> query = getEntityManager().createNamedQuery("TipoDocumentoEntity.findAll",
+				MongoTipoDocumentoEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
 		}
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<TipoDocumentoEntity> entities = query.getResultList();
+		List<MongoTipoDocumentoEntity> entities = query.getResultList();
 		List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
-		for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
+		for (MongoTipoDocumentoEntity tipoDocumentoEntity : entities) {
 			models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
 		}
 		return models;
@@ -139,8 +139,8 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 
 	@Override
 	public List<TipoDocumentoModel> search(String filterText, int firstResult, int maxResults) throws StorageException {
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager()
-				.createNamedQuery("TipoDocumentoEntity.findByFilterText", TipoDocumentoEntity.class);
+		TypedQuery<MongoTipoDocumentoEntity> query = getEntityManager()
+				.createNamedQuery("MongoTipoDocumentoEntity.findByFilterText", MongoTipoDocumentoEntity.class);
 		query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -148,9 +148,9 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<TipoDocumentoEntity> entities = executeTypedQuery(query);
+		List<MongoTipoDocumentoEntity> entities = executeTypedQuery(query);
 		List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
-		for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
+		for (MongoTipoDocumentoEntity tipoDocumentoEntity : entities) {
 			models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
 		}
 
@@ -165,7 +165,7 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 	@Override
 	public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes, int firstResult, int maxResults)
 			throws StorageException {
-		StringBuilder builder = new StringBuilder("SELECT t FROM TipoDocumentoEntity");
+		StringBuilder builder = new StringBuilder("SELECT t FROM MongoTipoDocumentoEntity");
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attribute = null;
 			String parameterName = null;
@@ -198,7 +198,7 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 		}
 		builder.append(" order by t.abreviatura");
 		String q = builder.toString();
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager().createQuery(q, TipoDocumentoEntity.class);
+		TypedQuery<MongoTipoDocumentoEntity> query = getEntityManager().createQuery(q, MongoTipoDocumentoEntity.class);
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String parameterName = null;
 			if (entry.getKey().equals(TipoDocumentoModel.ABREVIATURA)) {
@@ -228,20 +228,20 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<TipoDocumentoEntity> results = query.getResultList();
+		List<MongoTipoDocumentoEntity> results = query.getResultList();
 		List<TipoDocumentoModel> tipoDocumentos = new ArrayList<TipoDocumentoModel>();
-		for (TipoDocumentoEntity entity : results)
+		for (MongoTipoDocumentoEntity entity : results)
 			tipoDocumentos.add(new TipoDocumentoAdapter(getEntityManager(), entity));
 		return tipoDocumentos;
 	}
 
 	@Override
 	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria) throws StorageException {
-		SearchResultsModel<TipoDocumentoEntity> entityResult = find(criteria, TipoDocumentoEntity.class);
+		SearchResultsModel<MongoTipoDocumentoEntity> entityResult = find(criteria, MongoTipoDocumentoEntity.class);
 
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();
-		for (TipoDocumentoEntity entity : entityResult.getModels()) {
+		for (MongoTipoDocumentoEntity entity : entityResult.getModels()) {
 			list.add(new TipoDocumentoAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
@@ -252,12 +252,12 @@ public class MongoTipoDocumentoProvider extends AbstractMongoStorage implements 
 	@Override
 	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria, String filterText)
 			throws StorageException {
-		SearchResultsModel<TipoDocumentoEntity> entityResult = findFullText(criteria, TipoDocumentoEntity.class,
+		SearchResultsModel<MongoTipoDocumentoEntity> entityResult = findFullText(criteria, MongoTipoDocumentoEntity.class,
 				filterText, ABREVIATURA, DENOMINACION);
 
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();
-		for (TipoDocumentoEntity entity : entityResult.getModels()) {
+		for (MongoTipoDocumentoEntity entity : entityResult.getModels()) {
 			list.add(new TipoDocumentoAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());

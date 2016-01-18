@@ -24,10 +24,10 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "STORE_CONFIGURATION")
 @NamedQueries(value = {
-		@NamedQuery(name = "StoreConfigurationEntity.findAll", query = "SELECT s FROM StoreConfigurationEntity s"),
-		@NamedQuery(name = "StoreConfigurationEntity.findByIsDefault", query = "SELECT s FROM StoreConfigurationEntity s WHERE s.isDefault =:isDefault"),
-		@NamedQuery(name = "StoreConfigurationEntity.findByDenominacion", query = "SELECT s FROM StoreConfigurationEntity s WHERE s.denominacion = :denominacion") })
-public class StoreConfigurationEntity implements Serializable {
+		@NamedQuery(name = "MongoStoreConfigurationEntity.findAll", query = "SELECT s FROM StoreConfigurationEntity s"),
+		@NamedQuery(name = "MongoStoreConfigurationEntity.findByIsDefault", query = "SELECT s FROM StoreConfigurationEntity s WHERE s.isDefault =:isDefault"),
+		@NamedQuery(name = "MongoStoreConfigurationEntity.findByDenominacion", query = "SELECT s FROM StoreConfigurationEntity s WHERE s.denominacion = :denominacion") })
+public class MongoStoreConfigurationEntity implements Serializable {
 
 	/**
 	 * 
@@ -98,7 +98,7 @@ public class StoreConfigurationEntity implements Serializable {
 	@Column(name = "is_default")
 	private boolean isDefault;
 
-	public StoreConfigurationEntity() {
+	public MongoStoreConfigurationEntity() {
 
 	}
 
@@ -206,7 +206,7 @@ public class StoreConfigurationEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StoreConfigurationEntity other = (StoreConfigurationEntity) obj;
+		MongoStoreConfigurationEntity other = (MongoStoreConfigurationEntity) obj;
 		if (denominacion == null) {
 			if (other.denominacion != null)
 				return false;

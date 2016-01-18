@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.manager.api.mongo.entities.AccionistaEntity;
+import org.repeid.manager.api.mongo.entities.MongoAccionistaEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -15,15 +15,15 @@ import org.repeid.manager.api.mongo.entities.AccionistaEntity;
 
 public class AccionistaAdapter implements AccionistaModel {
 
-	private AccionistaEntity accionistaEntity;
+	private MongoAccionistaEntity accionistaEntity;
 	private EntityManager em;
 
-	public AccionistaAdapter(EntityManager em, AccionistaEntity accionistaEntity) {
+	public AccionistaAdapter(EntityManager em, MongoAccionistaEntity accionistaEntity) {
 		this.em = em;
 		this.accionistaEntity = accionistaEntity;
 	}
 
-	public AccionistaEntity getAccionistaEntity() {
+	public MongoAccionistaEntity getAccionistaEntity() {
 		return accionistaEntity;
 	}
 
@@ -52,11 +52,11 @@ public class AccionistaAdapter implements AccionistaModel {
 		accionistaEntity.setPorcentajeParticipacion(porcentajeParticipacion);
 	}
 
-	public static AccionistaEntity toAccionistaEntity(AccionistaModel model, EntityManager em) {
+	public static MongoAccionistaEntity toAccionistaEntity(AccionistaModel model, EntityManager em) {
 		if (model instanceof AccionistaAdapter) {
 			return ((AccionistaAdapter) model).getAccionistaEntity();
 		}
-		return em.getReference(AccionistaEntity.class, model.getId());
+		return em.getReference(MongoAccionistaEntity.class, model.getId());
 	}
 
 	@Override

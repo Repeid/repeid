@@ -14,9 +14,9 @@ import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
 import org.repeid.manager.api.model.enums.StoreFileProviderName;
-import org.repeid.manager.api.mongo.entities.FileEntity;
-import org.repeid.manager.api.mongo.entities.StoreConfigurationEntity;
-import org.repeid.manager.api.mongo.entities.StoredFileEntity;
+import org.repeid.manager.api.mongo.entities.MongoFileEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoredFileEntity;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
@@ -40,7 +40,7 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 
 	@Override
 	public StoredFileModel findById(String id) {
-		StoredFileEntity storedFileEntity = this.em.find(StoredFileEntity.class, id);
+		MongoStoredFileEntity storedFileEntity = this.em.find(MongoStoredFileEntity.class, id);
 		return storedFileEntity != null ? new StoredFileAdapter(em, storedFileEntity) : null;
 	}
 
@@ -61,16 +61,16 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 
 	private StoredFileModel createLocalFile(byte[] file, StoreConfigurationModel configuration) {
 		// File storage
-		FileEntity fileEntity = new FileEntity();
+		MongoFileEntity fileEntity = new MongoFileEntity();
 		fileEntity.setFile(file);
 		em.persist(fileEntity);
 
 		// Store configuration entity
-		StoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
+		MongoStoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
 				.toStoreConfigurationEntity(configuration, em);
 
 		// Create StoreFileEntity
-		StoredFileEntity storedFileEntity = new StoredFileEntity();
+		MongoStoredFileEntity storedFileEntity = new MongoStoredFileEntity();
 		storedFileEntity.setFileId(UUID.randomUUID().toString());
 		storedFileEntity.setUrl(UUID.randomUUID().toString());
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);
@@ -87,11 +87,11 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 		DbxEntry.File fileEntity = dropboxProvider.upload(file);
 
 		// Store configuration entity
-		StoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
+		MongoStoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
 				.toStoreConfigurationEntity(configuration, em);
 
 		// Create StoreFileEntity
-		StoredFileEntity storedFileEntity = new StoredFileEntity();
+		MongoStoredFileEntity storedFileEntity = new MongoStoredFileEntity();
 		storedFileEntity.setFileId(fileEntity.name);
 		storedFileEntity.setUrl(fileEntity.path);
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);

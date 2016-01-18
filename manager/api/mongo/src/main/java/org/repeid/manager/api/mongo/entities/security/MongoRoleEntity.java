@@ -43,9 +43,10 @@ import org.repeid.manager.api.beans.representations.security.PermissionType;
  */
 @Entity
 @Table(name = "roles")
-@NamedQueries(value = { @NamedQuery(name = "RoleEntity.findAll", query = "SELECT r FROM RoleEntity r"),
-        @NamedQuery(name = "RoleEntity.findByName", query = "SELECT r FROM RoleEntity r WHERE r.name = :name") })
-public class RoleEntity implements Serializable {
+@NamedQueries(value = { 
+        @NamedQuery(name = "MongoRoleEntity.findAll", query = "SELECT r FROM RoleEntity r"),
+        @NamedQuery(name = "MongoRoleEntity.findByName", query = "SELECT r FROM RoleEntity r WHERE r.name = :name") })
+public class MongoRoleEntity implements Serializable {
 
     private static final long serialVersionUID = -646534082583069712L;
 
@@ -77,7 +78,7 @@ public class RoleEntity implements Serializable {
     /**
      * Constructor.
      */
-    public RoleEntity() {
+    public MongoRoleEntity() {
     }
 
     /**
@@ -147,7 +148,7 @@ public class RoleEntity implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        RoleEntity other = (RoleEntity) obj;
+        MongoRoleEntity other = (MongoRoleEntity) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

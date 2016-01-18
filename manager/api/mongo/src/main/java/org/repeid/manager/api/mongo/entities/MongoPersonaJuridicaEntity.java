@@ -35,12 +35,12 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "PERSONA_JURIDICA")
 @NamedQueries(value = {
-		@NamedQuery(name = "PersonaJuridicaEntity.findAll", query = "SELECT p FROM PersonaJuridicaEntity p"),
-		@NamedQuery(name = "PersonaJuridicaEntity.findByTipoDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
-		@NamedQuery(name = "PersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
-		@NamedQuery(name = "PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
-		@NamedQuery(name = "PersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM PersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
-public class PersonaJuridicaEntity extends PersonaEntity implements Serializable {
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findAll", query = "SELECT p FROM PersonaJuridicaEntity p"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByTipoDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
+		@NamedQuery(name = "MongoPersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM PersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
+public class MongoPersonaJuridicaEntity extends MongoPersonaEntity implements Serializable {
 
 	/**
 	 * 
@@ -86,13 +86,13 @@ public class PersonaJuridicaEntity extends PersonaEntity implements Serializable
 	@NotNull
 	@OneToOne
 	@JoinColumn(name = "representante_legal_id", foreignKey = @ForeignKey )
-	private PersonaNaturalEntity representanteLegal;
+	private MongoPersonaNaturalEntity representanteLegal;
 
 	@OneToMany(mappedBy = "personaJuridica", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
 			CascadeType.REMOVE })
-	private Set<AccionistaEntity> accionistas = new HashSet<AccionistaEntity>(0);
+	private Set<MongoAccionistaEntity> accionistas = new HashSet<MongoAccionistaEntity>(0);
 
-	public PersonaJuridicaEntity() {
+	public MongoPersonaJuridicaEntity() {
 		super();
 	}
 
@@ -152,19 +152,19 @@ public class PersonaJuridicaEntity extends PersonaEntity implements Serializable
 		this.finLucro = finLucro;
 	}
 
-	public PersonaNaturalEntity getRepresentanteLegal() {
+	public MongoPersonaNaturalEntity getRepresentanteLegal() {
 		return representanteLegal;
 	}
 
-	public void setRepresentanteLegal(PersonaNaturalEntity representanteLegal) {
+	public void setRepresentanteLegal(MongoPersonaNaturalEntity representanteLegal) {
 		this.representanteLegal = representanteLegal;
 	}
 
-	public Set<AccionistaEntity> getAccionistas() {
+	public Set<MongoAccionistaEntity> getAccionistas() {
 		return accionistas;
 	}
 
-	public void setAccionistas(Set<AccionistaEntity> accionistas) {
+	public void setAccionistas(Set<MongoAccionistaEntity> accionistas) {
 		this.accionistas = accionistas;
 	}
 
@@ -189,9 +189,9 @@ public class PersonaJuridicaEntity extends PersonaEntity implements Serializable
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof PersonaJuridicaEntity))
+		if (!(obj instanceof MongoPersonaJuridicaEntity))
 			return false;
-		PersonaJuridicaEntity other = (PersonaJuridicaEntity) obj;
+		MongoPersonaJuridicaEntity other = (MongoPersonaJuridicaEntity) obj;
 		if (numeroDocumento == null) {
 			if (other.numeroDocumento != null)
 				return false;

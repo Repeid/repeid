@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 
 @MappedSuperclass
-public abstract class PersonaEntity implements Serializable {
+public abstract class MongoPersonaEntity implements Serializable {
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public abstract class PersonaEntity implements Serializable {
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tipo_documento_id", foreignKey = @ForeignKey )
-	protected TipoDocumentoEntity tipoDocumento;
+	protected MongoTipoDocumentoEntity tipoDocumento;
 
 	@NotNull
 	@Size(min = 1, max = 20)
@@ -72,20 +72,20 @@ public abstract class PersonaEntity implements Serializable {
 	@Version
 	protected Integer optlk;
 
-	public PersonaEntity() {
+	public MongoPersonaEntity() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PersonaEntity(TipoDocumentoEntity tipoDocumento, String numeroDocumento) {
+	public MongoPersonaEntity(MongoTipoDocumentoEntity tipoDocumento, String numeroDocumento) {
 		this.tipoDocumento = tipoDocumento;
 		this.numeroDocumento = numeroDocumento;
 	}
 
-	public TipoDocumentoEntity getTipoDocumento() {
+	public MongoTipoDocumentoEntity getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(TipoDocumentoEntity tipoDocumento) {
+	public void setTipoDocumento(MongoTipoDocumentoEntity tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
 
@@ -182,9 +182,9 @@ public abstract class PersonaEntity implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof PersonaEntity))
+		if (!(obj instanceof MongoPersonaEntity))
 			return false;
-		PersonaEntity other = (PersonaEntity) obj;
+		MongoPersonaEntity other = (MongoPersonaEntity) obj;
 		if (numeroDocumento == null) {
 			if (other.numeroDocumento != null)
 				return false;

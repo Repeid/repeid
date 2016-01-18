@@ -13,7 +13,7 @@ import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.StoreConfigurationEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -37,7 +37,7 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 							+ denominacion);
 		}
 
-		StoreConfigurationEntity storeConfigurationEntity = new StoreConfigurationEntity();
+		MongoStoreConfigurationEntity storeConfigurationEntity = new MongoStoreConfigurationEntity();
 		storeConfigurationEntity.setAppKey(appKey);
 		storeConfigurationEntity.setDenominacion(denominacion);
 		storeConfigurationEntity.setCarpetaFirma("firma");
@@ -52,16 +52,16 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 
 	@Override
 	public StoreConfigurationModel findById(String id) {
-		StoreConfigurationEntity entity = this.getEntityManager().find(StoreConfigurationEntity.class, id);
+		MongoStoreConfigurationEntity entity = this.getEntityManager().find(MongoStoreConfigurationEntity.class, id);
 		return entity != null ? new StoreConfigurationAdapter(getEntityManager(), entity) : null;
 	}
 
 	@Override
 	public StoreConfigurationModel findByDenominacion(String denominacion) {
-		TypedQuery<StoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("StoreConfigurationEntity.findByDenominacion", StoreConfigurationEntity.class);
+		TypedQuery<MongoStoreConfigurationEntity> query = getEntityManager()
+				.createNamedQuery("MongoStoreConfigurationEntity.findByDenominacion", MongoStoreConfigurationEntity.class);
 		query.setParameter("denominacion", denominacion);
-		List<StoreConfigurationEntity> results = query.getResultList();
+		List<MongoStoreConfigurationEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -74,10 +74,10 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 
 	@Override
 	public StoreConfigurationModel getDefaultStoreConfiguration() {
-		TypedQuery<StoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("StoreConfigurationEntity.findByIsDefault", StoreConfigurationEntity.class);
+		TypedQuery<MongoStoreConfigurationEntity> query = getEntityManager()
+				.createNamedQuery("MongoStoreConfigurationEntity.findByIsDefault", MongoStoreConfigurationEntity.class);
 		query.setParameter("isDefault", true);
-		List<StoreConfigurationEntity> results = query.getResultList();
+		List<MongoStoreConfigurationEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -90,7 +90,7 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 
 	@Override
 	public boolean remove(StoreConfigurationModel storeConfiguration) {
-		StoreConfigurationEntity storeConfigurationEntity = getEntityManager().find(StoreConfigurationEntity.class,
+		MongoStoreConfigurationEntity storeConfigurationEntity = getEntityManager().find(MongoStoreConfigurationEntity.class,
 				storeConfiguration.getId());
 		if (storeConfigurationEntity == null) {
 			return false;
@@ -101,12 +101,12 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 
 	@Override
 	public List<StoreConfigurationModel> getAll() {
-		TypedQuery<StoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("StoreConfigurationEntity.findAll", StoreConfigurationEntity.class);
+		TypedQuery<MongoStoreConfigurationEntity> query = getEntityManager()
+				.createNamedQuery("MongoStoreConfigurationEntity.findAll", MongoStoreConfigurationEntity.class);
 
-		List<StoreConfigurationEntity> entities = query.getResultList();
+		List<MongoStoreConfigurationEntity> entities = query.getResultList();
 		List<StoreConfigurationModel> models = new ArrayList<StoreConfigurationModel>();
-		for (StoreConfigurationEntity storeConfigurationEntity : entities) {
+		for (MongoStoreConfigurationEntity storeConfigurationEntity : entities) {
 			models.add(new StoreConfigurationAdapter(getEntityManager(), storeConfigurationEntity));
 		}
 		return models;

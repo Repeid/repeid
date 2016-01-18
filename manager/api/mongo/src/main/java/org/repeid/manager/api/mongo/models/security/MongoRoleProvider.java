@@ -8,27 +8,28 @@ import java.util.Set;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.RoleProvider;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.security.RoleEntity;
-import org.repeid.manager.api.mongo.entities.security.RoleMembershipEntity;
+import org.repeid.manager.api.mongo.entities.security.MongoRoleEntity;
+import org.repeid.manager.api.mongo.entities.security.MongoRoleMembershipEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 
-@Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@ProviderFactory(ProviderType.MONGO)
 public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvider {
 
 	@Override
@@ -44,7 +45,7 @@ public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvi
 					"RoleEntity name debe ser unico, se encontro otra entidad con name:" + name);
 		}
 
-		RoleEntity roleEntity = new RoleEntity();
+		MongoRoleEntity roleEntity = new MongoRoleEntity();
 		roleEntity.setName(name);
 		roleEntity.setDescription(description);
 		roleEntity.setAutoGrant(autoGrant);
@@ -57,15 +58,15 @@ public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvi
 
 	@Override
 	public RoleModel findById(String id) throws StorageException {
-		RoleEntity roleEntity = getEntityManager().find(RoleEntity.class, id);
+		MongoRoleEntity roleEntity = getEntityManager().find(MongoRoleEntity.class, id);
 		return roleEntity != null ? new RoleAdapter(getEntityManager(), roleEntity) : null;
 	}
 
 	@Override
 	public RoleModel findByName(String rolName) throws StorageException {
-		TypedQuery<RoleEntity> query = getEntityManager().createNamedQuery("RoleEntity.findByName", RoleEntity.class);
+		TypedQuery<MongoRoleEntity> query = getEntityManager().createNamedQuery("RoleEntity.findByName", MongoRoleEntity.class);
 		query.setParameter("name", rolName);
-		List<RoleEntity> results = query.getResultList();
+		List<MongoRoleEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -77,15 +78,15 @@ public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvi
 
 	@Override
 	public boolean remove(RoleModel role) {
-		RoleEntity roleEntity = getEntityManager().find(RoleEntity.class, role.getId());
+		MongoRoleEntity roleEntity = getEntityManager().find(MongoRoleEntity.class, role.getId());
 
-		TypedQuery<RoleMembershipEntity> query = getEntityManager()
-				.createNamedQuery("RoleMembershipEntity.findByRoleId", RoleMembershipEntity.class);
+		TypedQuery<MongoRoleMembershipEntity> query = getEntityManager()
+				.createNamedQuery("RoleMembershipEntity.findByRoleId", MongoRoleMembershipEntity.class);
 		query.setParameter("roleId", role.getId());
-		List<RoleMembershipEntity> roleMemberships = query.getResultList();
+		List<MongoRoleMembershipEntity> roleMemberships = query.getResultList();
 
 		getEntityManager().remove(roleEntity);
-		for (RoleMembershipEntity roleMembership : roleMemberships) {
+		for (MongoRoleMembershipEntity roleMembership : roleMemberships) {
 			getEntityManager().remove(roleMembership.getUser());
 			getEntityManager().remove(roleMembership);
 		}
@@ -99,16 +100,16 @@ public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvi
 
 	@Override
 	public List<RoleModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<RoleEntity> query = getEntityManager().createNamedQuery("RoleEntity.findAll", RoleEntity.class);
+		TypedQuery<MongoRoleEntity> query = getEntityManager().createNamedQuery("RoleEntity.findAll", MongoRoleEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
 		}
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<RoleEntity> entities = query.getResultList();
+		List<MongoRoleEntity> entities = query.getResultList();
 		List<RoleModel> models = new ArrayList<>();
-		for (RoleEntity entity : entities) {
+		for (MongoRoleEntity entity : entities) {
 			models.add(new RoleAdapter(getEntityManager(), entity));
 		}
 		return models;
@@ -188,11 +189,11 @@ public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvi
 
 	@Override
 	public SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria) {
-		SearchResultsModel<RoleEntity> entityResult = find(criteria, RoleEntity.class);
+		SearchResultsModel<MongoRoleEntity> entityResult = find(criteria, MongoRoleEntity.class);
 
 		SearchResultsModel<RoleModel> modelResult = new SearchResultsModel<>();
 		List<RoleModel> list = new ArrayList<>();
-		for (RoleEntity entity : entityResult.getModels()) {
+		for (MongoRoleEntity entity : entityResult.getModels()) {
 			list.add(new RoleAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
@@ -202,11 +203,11 @@ public class MongoRoleProvider extends AbstractMongoStorage implements RoleProvi
 
 	@Override
 	public SearchResultsModel<RoleModel> search(SearchCriteriaModel criteria, String filterText) {
-		SearchResultsModel<RoleEntity> entityResult = findFullText(criteria, RoleEntity.class, filterText, "name");
+		SearchResultsModel<MongoRoleEntity> entityResult = findFullText(criteria, MongoRoleEntity.class, filterText, "name");
 
 		SearchResultsModel<RoleModel> modelResult = new SearchResultsModel<>();
 		List<RoleModel> list = new ArrayList<>();
-		for (RoleEntity entity : entityResult.getModels()) {
+		for (MongoRoleEntity entity : entityResult.getModels()) {
 			list.add(new RoleAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());

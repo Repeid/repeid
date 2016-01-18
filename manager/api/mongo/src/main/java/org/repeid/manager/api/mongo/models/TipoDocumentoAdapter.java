@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
-import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -12,22 +12,22 @@ import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
 
 public class TipoDocumentoAdapter implements TipoDocumentoModel {
 
-	private TipoDocumentoEntity tipoDocumentoEntity;
+	private MongoTipoDocumentoEntity tipoDocumentoEntity;
 	private EntityManager em;
 
-	public TipoDocumentoAdapter(EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
+	public TipoDocumentoAdapter(EntityManager em, MongoTipoDocumentoEntity tipoDocumentoEntity) {
 		this.em = em;
 		this.tipoDocumentoEntity = tipoDocumentoEntity;
 	}
 
-	public static TipoDocumentoEntity toTipoDocumentoEntity(TipoDocumentoModel model, EntityManager em) {
+	public static MongoTipoDocumentoEntity toTipoDocumentoEntity(TipoDocumentoModel model, EntityManager em) {
 		if (model instanceof TipoDocumentoAdapter) {
 			return ((TipoDocumentoAdapter) model).getTipoDocumentEntity();
 		}
-		return em.getReference(TipoDocumentoEntity.class, model.getId());
+		return em.getReference(MongoTipoDocumentoEntity.class, model.getId());
 	}
 
-	public TipoDocumentoEntity getTipoDocumentEntity() {
+	public MongoTipoDocumentoEntity getTipoDocumentEntity() {
 		return tipoDocumentoEntity;
 	}
 

@@ -25,9 +25,9 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -43,13 +43,12 @@ import org.hibernate.annotations.GenericGenerator;
  * @author eric.wittmann@redhat.com
  */
 @Entity
-@Table(name = "memberships", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+@Table(name = "memberships", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
 @NamedQueries(value = {
-        @NamedQuery(name = "RoleMembershipEntity.findAll", query = "SELECT r FROM RoleMembershipEntity r"),
-        @NamedQuery(name = "RoleMembershipEntity.findByUserId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.user u WHERE u.id = :userId"),
-        @NamedQuery(name = "RoleMembershipEntity.findByRoleId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.role rr WHERE rr.id = :roleId")})
-public class RoleMembershipEntity implements Serializable {
+        @NamedQuery(name = "MongoRoleMembershipEntity.findAll", query = "SELECT r FROM RoleMembershipEntity r"),
+        @NamedQuery(name = "MongoRoleMembershipEntity.findByUserId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.user u WHERE u.id = :userId"),
+        @NamedQuery(name = "MongoRoleMembershipEntity.findByRoleId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.role rr WHERE rr.id = :roleId")})
+public class MongoRoleMembershipEntity implements Serializable {
 
     private static final long serialVersionUID = 7798709783947356888L;
 
@@ -59,13 +58,13 @@ public class RoleMembershipEntity implements Serializable {
     @Column(name = "id")
     private String id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey , name = "user_id")
-    private UserEntity user;
+    private MongoUserEntity user;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey , name = "role_id")
-    private RoleEntity role;
+    private MongoRoleEntity role;
 
     @Column(name = "created_on")
     private Date createdOn;
@@ -78,19 +77,19 @@ public class RoleMembershipEntity implements Serializable {
         this.id = id;
     }
 
-    public UserEntity getUser() {
+    public MongoUserEntity getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(MongoUserEntity user) {
         this.user = user;
     }
 
-    public RoleEntity getRole() {
+    public MongoRoleEntity getRole() {
         return role;
     }
 
-    public void setRole(RoleEntity role) {
+    public void setRole(MongoRoleEntity role) {
         this.role = role;
     }
 
@@ -136,7 +135,7 @@ public class RoleMembershipEntity implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        RoleMembershipEntity other = (RoleMembershipEntity) obj;
+        MongoRoleMembershipEntity other = (MongoRoleMembershipEntity) obj;
         if (getId() == null) {
             if (other.getId() != null)
                 return false;

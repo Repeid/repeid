@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.enums.StoreFileProviderName;
-import org.repeid.manager.api.mongo.entities.StoreConfigurationEntity;
+import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -12,22 +12,22 @@ import org.repeid.manager.api.mongo.entities.StoreConfigurationEntity;
 
 public class StoreConfigurationAdapter implements StoreConfigurationModel {
 
-	private StoreConfigurationEntity storeConfigurationEntity;
+	private MongoStoreConfigurationEntity storeConfigurationEntity;
 	private EntityManager em;
 
-	public StoreConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
+	public StoreConfigurationAdapter(EntityManager em, MongoStoreConfigurationEntity storeConfigurationEntity) {
 		this.em = em;
 		this.storeConfigurationEntity = storeConfigurationEntity;
 	}
 
-	public static StoreConfigurationEntity toStoreConfigurationEntity(StoreConfigurationModel model, EntityManager em) {
+	public static MongoStoreConfigurationEntity toStoreConfigurationEntity(StoreConfigurationModel model, EntityManager em) {
 		if (model instanceof StoreConfigurationAdapter) {
 			return ((StoreConfigurationAdapter) model).getStoreConfigurationEntity();
 		}
-		return em.getReference(StoreConfigurationEntity.class, model.getId());
+		return em.getReference(MongoStoreConfigurationEntity.class, model.getId());
 	}
 
-	public StoreConfigurationEntity getStoreConfigurationEntity() {
+	public MongoStoreConfigurationEntity getStoreConfigurationEntity() {
 		return storeConfigurationEntity;
 	}
 

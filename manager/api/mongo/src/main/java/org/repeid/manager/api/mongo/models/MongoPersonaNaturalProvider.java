@@ -20,10 +20,10 @@ import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.AccionistaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaJuridicaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
-import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.mongo.entities.MongoAccionistaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity;
+import org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -53,10 +53,10 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 							+ tipoDocumentoModel + "y numeroDocumento=" + numeroDocumento);
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(TipoDocumentoEntity.class,
+		MongoTipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(MongoTipoDocumentoEntity.class,
 				tipoDocumentoModel.getId());
 
-		PersonaNaturalEntity personaNaturalEntity = new PersonaNaturalEntity();
+		MongoPersonaNaturalEntity personaNaturalEntity = new MongoPersonaNaturalEntity();
 		personaNaturalEntity.setCodigoPais(codigoPais);
 		personaNaturalEntity.setTipoDocumento(tipoDocumentoEntity);
 		personaNaturalEntity.setNumeroDocumento(numeroDocumento);
@@ -71,23 +71,23 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 
 	@Override
 	public boolean remove(PersonaNaturalModel personaNaturalModel) {
-		TypedQuery<AccionistaEntity> query1 = getEntityManager()
-				.createNamedQuery("AccionistaEntity.findByIdPersonaNatural", AccionistaEntity.class);
+		TypedQuery<MongoAccionistaEntity> query1 = getEntityManager()
+				.createNamedQuery("MongoAccionistaEntity.findByIdPersonaNatural", MongoAccionistaEntity.class);
 		query1.setParameter("idPersonaNatural", personaNaturalModel.getId());
 		query1.setMaxResults(1);
 		if (!query1.getResultList().isEmpty()) {
 			return false;
 		}
 
-		TypedQuery<PersonaJuridicaEntity> query2 = getEntityManager().createNamedQuery(
-				"PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", PersonaJuridicaEntity.class);
+		TypedQuery<MongoPersonaJuridicaEntity> query2 = getEntityManager().createNamedQuery(
+				"MongoPersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", MongoPersonaJuridicaEntity.class);
 		query2.setParameter("idPersonaNaturalRepresentanteLegal", personaNaturalModel.getId());
 		query2.setMaxResults(1);
 		if (!query2.getResultList().isEmpty()) {
 			return false;
 		}
 
-		PersonaNaturalEntity personaNaturalEntity = getEntityManager().find(PersonaNaturalEntity.class,
+		MongoPersonaNaturalEntity personaNaturalEntity = getEntityManager().find(MongoPersonaNaturalEntity.class,
 				personaNaturalModel.getId());
 		if (personaNaturalEntity == null) {
 			return false;
@@ -98,18 +98,18 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 
 	@Override
 	public PersonaNaturalModel findById(String id) {
-		PersonaNaturalEntity personaNaturalEntity = this.getEntityManager().find(PersonaNaturalEntity.class, id);
+		MongoPersonaNaturalEntity personaNaturalEntity = this.getEntityManager().find(MongoPersonaNaturalEntity.class, id);
 		return personaNaturalEntity != null ? new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity)
 				: null;
 	}
 
 	@Override
 	public PersonaNaturalModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento) {
-		TypedQuery<PersonaNaturalEntity> query = getEntityManager()
-				.createNamedQuery("PersonaNaturalEntity.findByTipoNumeroDocumento", PersonaNaturalEntity.class);
+		TypedQuery<MongoPersonaNaturalEntity> query = getEntityManager()
+				.createNamedQuery("MongoPersonaNaturalEntity.findByTipoNumeroDocumento", MongoPersonaNaturalEntity.class);
 		query.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query.setParameter("numeroDocumento", numeroDocumento);
-		List<PersonaNaturalEntity> results = query.getResultList();
+		List<MongoPersonaNaturalEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
@@ -127,17 +127,17 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 
 	@Override
 	public List<PersonaNaturalModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<PersonaNaturalEntity> query = getEntityManager().createNamedQuery("PersonaNaturalEntity.findAll",
-				PersonaNaturalEntity.class);
+		TypedQuery<MongoPersonaNaturalEntity> query = getEntityManager().createNamedQuery("MongoPersonaNaturalEntity.findAll",
+				MongoPersonaNaturalEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
 		}
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<PersonaNaturalEntity> entities = query.getResultList();
+		List<MongoPersonaNaturalEntity> entities = query.getResultList();
 		List<PersonaNaturalModel> result = new ArrayList<PersonaNaturalModel>();
-		for (PersonaNaturalEntity personaNaturalEntity : entities) {
+		for (MongoPersonaNaturalEntity personaNaturalEntity : entities) {
 			result.add(new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity));
 		}
 		return result;
@@ -150,8 +150,8 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 
 	@Override
 	public List<PersonaNaturalModel> search(String filterText, int firstResult, int maxResults) {
-		TypedQuery<PersonaNaturalEntity> query = getEntityManager()
-				.createNamedQuery("PersonaNaturalEntity.findByFilterText", PersonaNaturalEntity.class);
+		TypedQuery<MongoPersonaNaturalEntity> query = getEntityManager()
+				.createNamedQuery("MongoPersonaNaturalEntity.findByFilterText", MongoPersonaNaturalEntity.class);
 		query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -159,9 +159,9 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<PersonaNaturalEntity> entities = query.getResultList();
+		List<MongoPersonaNaturalEntity> entities = query.getResultList();
 		List<PersonaNaturalModel> models = new ArrayList<PersonaNaturalModel>();
-		for (PersonaNaturalEntity personaNaturalEntity : entities) {
+		for (MongoPersonaNaturalEntity personaNaturalEntity : entities) {
 			models.add(new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity));
 		}
 		return models;
@@ -175,7 +175,7 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 	@Override
 	public List<PersonaNaturalModel> searchByAttributes(Map<String, String> attributes, int firstResult,
 			int maxResults) {
-		StringBuilder builder = new StringBuilder("SELECT p FROM PersonaNaturalEntity");
+		StringBuilder builder = new StringBuilder("SELECT p FROM MongoPersonaNaturalEntity");
 		for (Map.Entry<String, String> entry : attributes.entrySet()) {
 			String attribute = null;
 			String parameterName = null;
@@ -200,7 +200,7 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 		}
 		builder.append(" order by p.apellidoPaterno, p.apellidoMaterno, p.nombres");
 		String q = builder.toString();
-		TypedQuery<PersonaNaturalEntity> query = getEntityManager().createQuery(q, PersonaNaturalEntity.class);
+		TypedQuery<MongoPersonaNaturalEntity> query = getEntityManager().createQuery(q, MongoPersonaNaturalEntity.class);
 		for (Map.Entry<String, String> entry : attributes.entrySet()) {
 			String parameterName = null;
 			if (entry.getKey().equals(PersonaNaturalModel.APELLIDO_PATERNO)) {
@@ -224,20 +224,20 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<PersonaNaturalEntity> results = query.getResultList();
+		List<MongoPersonaNaturalEntity> results = query.getResultList();
 		List<PersonaNaturalModel> personaNaturales = new ArrayList<PersonaNaturalModel>();
-		for (PersonaNaturalEntity entity : results)
+		for (MongoPersonaNaturalEntity entity : results)
 			personaNaturales.add(new PersonaNaturalAdapter(getEntityManager(), entity));
 		return personaNaturales;
 	}
 
 	@Override
 	public SearchResultsModel<PersonaNaturalModel> search(SearchCriteriaModel criteria) {
-		SearchResultsModel<PersonaNaturalEntity> entityResult = find(criteria, PersonaNaturalEntity.class);
+		SearchResultsModel<MongoPersonaNaturalEntity> entityResult = find(criteria, MongoPersonaNaturalEntity.class);
 
 		SearchResultsModel<PersonaNaturalModel> modelResult = new SearchResultsModel<>();
 		List<PersonaNaturalModel> list = new ArrayList<>();
-		for (PersonaNaturalEntity entity : entityResult.getModels()) {
+		for (MongoPersonaNaturalEntity entity : entityResult.getModels()) {
 			list.add(new PersonaNaturalAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
@@ -247,12 +247,12 @@ public class MongoPersonaNaturalProvider extends AbstractMongoStorage implements
 
 	@Override
 	public SearchResultsModel<PersonaNaturalModel> search(SearchCriteriaModel criteria, String filterText) {
-		SearchResultsModel<PersonaNaturalEntity> entityResult = findFullText(criteria, PersonaNaturalEntity.class,
+		SearchResultsModel<MongoPersonaNaturalEntity> entityResult = findFullText(criteria, MongoPersonaNaturalEntity.class,
 				filterText, "numeroDocumento", "apellidoPaterno", "apellidoMaterno", "nombres");
 
 		SearchResultsModel<PersonaNaturalModel> modelResult = new SearchResultsModel<>();
 		List<PersonaNaturalModel> list = new ArrayList<>();
-		for (PersonaNaturalEntity entity : entityResult.getModels()) {
+		for (MongoPersonaNaturalEntity entity : entityResult.getModels()) {
 			list.add(new PersonaNaturalAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());

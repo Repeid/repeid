@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.model.security.UserModel;
-import org.repeid.manager.api.mongo.entities.security.UserEntity;
+import org.repeid.manager.api.mongo.entities.security.MongoUserEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -13,22 +13,22 @@ import org.repeid.manager.api.mongo.entities.security.UserEntity;
 
 public class UserAdapter implements UserModel {
 
-	private UserEntity userEntity;
+	private MongoUserEntity userEntity;
 	private EntityManager em;
 
-	public UserAdapter(EntityManager em, UserEntity userEntity) {
+	public UserAdapter(EntityManager em, MongoUserEntity userEntity) {
 		this.em = em;
 		this.userEntity = userEntity;
 	}
 
-	public static UserEntity toUserEntity(UserModel model, EntityManager em) {
+	public static MongoUserEntity toUserEntity(UserModel model, EntityManager em) {
 		if (model instanceof UserAdapter) {
 			return ((UserAdapter) model).getUserEntity();
 		}
-		return em.getReference(UserEntity.class, model.getId());
+		return em.getReference(MongoUserEntity.class, model.getId());
 	}
 
-	public UserEntity getUserEntity() {
+	public MongoUserEntity getUserEntity() {
 		return userEntity;
 	}
 

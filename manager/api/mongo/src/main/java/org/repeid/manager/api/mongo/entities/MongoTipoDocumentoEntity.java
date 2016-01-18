@@ -27,10 +27,10 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "TIPO_DOCUMENTO")
 @NamedQueries(value = {
-		@NamedQuery(name = "TipoDocumentoEntity.findAll", query = "SELECT t FROM TipoDocumentoEntity t"),
-		@NamedQuery(name = "TipoDocumentoEntity.findByAbreviatura", query = "SELECT t FROM TipoDocumentoEntity t WHERE t.abreviatura = :abreviatura"),
-		@NamedQuery(name = "TipoDocumentoEntity.findByFilterText", query = "SELECT t FROM TipoDocumentoEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText)") })
-public class TipoDocumentoEntity implements Serializable {
+		@NamedQuery(name = "MongoTipoDocumentoEntity.findAll", query = "SELECT t FROM TipoDocumentoEntity t"),
+		@NamedQuery(name = "MongoTipoDocumentoEntity.findByAbreviatura", query = "SELECT t FROM TipoDocumentoEntity t WHERE t.abreviatura = :abreviatura"),
+		@NamedQuery(name = "MongoTipoDocumentoEntity.findByFilterText", query = "SELECT t FROM TipoDocumentoEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText)") })
+public class MongoTipoDocumentoEntity implements Serializable {
 
 	/**
 	 * 
@@ -148,9 +148,9 @@ public class TipoDocumentoEntity implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof TipoDocumentoEntity))
+		if (!(obj instanceof MongoTipoDocumentoEntity))
 			return false;
-		TipoDocumentoEntity other = (TipoDocumentoEntity) obj;
+		MongoTipoDocumentoEntity other = (MongoTipoDocumentoEntity) obj;
 		if (abreviatura == null) {
 			if (other.abreviatura != null)
 				return false;

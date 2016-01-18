@@ -30,11 +30,11 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "PERSONA_NATURAL")
 @NamedQueries(value = {
-		@NamedQuery(name = "PersonaNaturalEntity.findAll", query = "SELECT p FROM PersonaNaturalEntity p"),
-		@NamedQuery(name = "PersonaNaturalEntity.findByTipoDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
-		@NamedQuery(name = "PersonaNaturalEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
-		@NamedQuery(name = "PersonaNaturalEntity.findByFilterText", query = "SELECT p FROM PersonaNaturalEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.apellidoPaterno) LIKE :filterText OR LOWER(p.apellidoMaterno) LIKE :filterText OR LOWER(p.nombres) LIKE :filterText") })
-public class PersonaNaturalEntity extends PersonaEntity implements Serializable {
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findAll", query = "SELECT p FROM PersonaNaturalEntity p"),
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findByTipoDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
+		@NamedQuery(name = "MongoPersonaNaturalEntity.findByFilterText", query = "SELECT p FROM PersonaNaturalEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.apellidoPaterno) LIKE :filterText OR LOWER(p.apellidoMaterno) LIKE :filterText OR LOWER(p.nombres) LIKE :filterText") })
+public class MongoPersonaNaturalEntity extends MongoPersonaEntity implements Serializable {
 
 	/**
 	 * 
@@ -86,22 +86,22 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "stored_file_foto_id", foreignKey = @ForeignKey )
-	private StoredFileEntity foto;
+	private MongoStoredFileEntity foto;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "stored_file_firma_id", foreignKey = @ForeignKey )
-	private StoredFileEntity firma;
+	private MongoStoredFileEntity firma;
 
-	public PersonaNaturalEntity() {
+	public MongoPersonaNaturalEntity() {
 		super();
 	}
 
-	public PersonaNaturalEntity(String id) {
+	public MongoPersonaNaturalEntity(String id) {
 		super();
 		this.id = id;
 	}
 
-	public PersonaNaturalEntity(TipoDocumentoEntity tipoDocumento, String numeroDocumento) {
+	public MongoPersonaNaturalEntity(MongoTipoDocumentoEntity tipoDocumento, String numeroDocumento) {
 		super(tipoDocumento, numeroDocumento);
 	}
 
@@ -169,19 +169,19 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
 		this.ocupacion = ocupacion;
 	}
 
-	public StoredFileEntity getFoto() {
+	public MongoStoredFileEntity getFoto() {
 		return foto;
 	}
 
-	public void setFoto(StoredFileEntity foto) {
+	public void setFoto(MongoStoredFileEntity foto) {
 		this.foto = foto;
 	}
 
-	public StoredFileEntity getFirma() {
+	public MongoStoredFileEntity getFirma() {
 		return firma;
 	}
 
-	public void setFirma(StoredFileEntity firma) {
+	public void setFirma(MongoStoredFileEntity firma) {
 		this.firma = firma;
 	}
 
@@ -207,9 +207,9 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof PersonaNaturalEntity))
+		if (!(obj instanceof MongoPersonaNaturalEntity))
 			return false;
-		PersonaNaturalEntity other = (PersonaNaturalEntity) obj;
+		MongoPersonaNaturalEntity other = (MongoPersonaNaturalEntity) obj;
 		if (numeroDocumento == null) {
 			if (other.numeroDocumento != null)
 				return false;

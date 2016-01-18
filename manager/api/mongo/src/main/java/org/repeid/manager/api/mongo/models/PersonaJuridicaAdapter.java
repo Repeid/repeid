@@ -12,9 +12,9 @@ import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
-import org.repeid.manager.api.mongo.entities.AccionistaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaJuridicaEntity;
-import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
+import org.repeid.manager.api.mongo.entities.MongoAccionistaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity;
+import org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
@@ -22,15 +22,15 @@ import org.repeid.manager.api.mongo.entities.PersonaNaturalEntity;
 
 public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
-	protected PersonaJuridicaEntity personaJuridicaEntity;
+	protected MongoPersonaJuridicaEntity personaJuridicaEntity;
 	protected EntityManager em;
 
-	public PersonaJuridicaAdapter(EntityManager em, PersonaJuridicaEntity personaJuridicaEntity) {
+	public PersonaJuridicaAdapter(EntityManager em, MongoPersonaJuridicaEntity personaJuridicaEntity) {
 		this.em = em;
 		this.personaJuridicaEntity = personaJuridicaEntity;
 	}
 
-	public PersonaJuridicaEntity getPersonaJuridicaEntity() {
+	public MongoPersonaJuridicaEntity getPersonaJuridicaEntity() {
 		return personaJuridicaEntity;
 	}
 
@@ -46,16 +46,16 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
 	@Override
 	public void setRepresentanteLegal(PersonaNaturalModel representanteLegal) {
-		PersonaNaturalEntity personaNaturalEntity = PersonaNaturalAdapter.toPersonaNaturalEntity(representanteLegal,
+		MongoPersonaNaturalEntity personaNaturalEntity = PersonaNaturalAdapter.toPersonaNaturalEntity(representanteLegal,
 				em);
 		personaJuridicaEntity.setRepresentanteLegal(personaNaturalEntity);
 	}
 
 	@Override
 	public List<AccionistaModel> getAccionistas() {
-		Set<AccionistaEntity> list = personaJuridicaEntity.getAccionistas();
+		Set<MongoAccionistaEntity> list = personaJuridicaEntity.getAccionistas();
 		List<AccionistaModel> result = new ArrayList<AccionistaModel>();
-		for (AccionistaEntity entity : list) {
+		for (MongoAccionistaEntity entity : list) {
 			result.add(new AccionistaAdapter(em, entity));
 		}
 		return result;
@@ -206,11 +206,11 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 		personaJuridicaEntity.setEmail(email);
 	}
 
-	public static PersonaJuridicaEntity toPersonaJuridicaEntity(PersonaJuridicaModel model, EntityManager em) {
+	public static MongoPersonaJuridicaEntity toPersonaJuridicaEntity(PersonaJuridicaModel model, EntityManager em) {
 		if (model instanceof PersonaJuridicaAdapter) {
 			return ((PersonaJuridicaAdapter) model).getPersonaJuridicaEntity();
 		}
-		return em.getReference(PersonaJuridicaEntity.class, model.getId());
+		return em.getReference(MongoPersonaJuridicaEntity.class, model.getId());
 	}
 
 	@Override

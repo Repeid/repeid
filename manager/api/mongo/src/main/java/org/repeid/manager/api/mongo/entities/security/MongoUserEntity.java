@@ -38,9 +38,9 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "users")
 @NamedQueries(value = {
-        @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u"),
-        @NamedQuery(name = "UserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username") })
-public class UserEntity implements Serializable {
+        @NamedQuery(name = "MongoUserEntity.findAll", query = "SELECT u FROM UserEntity u"),
+        @NamedQuery(name = "MongoUserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username") })
+public class MongoUserEntity implements Serializable {
 
     private static final long serialVersionUID = 865765107251347714L;
 
@@ -68,7 +68,7 @@ public class UserEntity implements Serializable {
     /**
      * Constructor.
      */
-    public UserEntity() {
+    public MongoUserEntity() {
     }
 
     public String getId() {
@@ -161,7 +161,7 @@ public class UserEntity implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UserEntity other = (UserEntity) obj;
+        MongoUserEntity other = (MongoUserEntity) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
