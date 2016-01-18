@@ -1,10 +1,15 @@
 package org.repeid.manager.api.model.box;
 
+import java.util.Locale;
+
 import javax.ejb.Stateless;
+
+import org.repeid.manager.api.model.StoreConfigurationModel;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxEntry.File;
+import com.dropbox.core.DbxRequestConfig;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -17,6 +22,12 @@ public class DefaultDropboxProvider implements DropboxProvider {
 	public void close() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public DbxClient getDropBoxClient(StoreConfigurationModel storeConfiguration) {
+		DbxRequestConfig config = new DbxRequestConfig("Repeid", Locale.getDefault().toString());
+		return new DbxClient(config, storeConfiguration.getToken());
 	}
 
 	@Override

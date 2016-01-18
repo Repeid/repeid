@@ -7,6 +7,10 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 
+import org.repeid.manager.api.model.StoreConfigurationModel;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
@@ -23,6 +27,11 @@ public class DefaultGoogleDriveProvider implements GoogleDriveProvider {
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Credential getGoogleDriveService(StoreConfigurationModel storeConfiguration) {
+		return new GoogleCredential().setAccessToken(storeConfiguration.getToken());
 	}
 
 	public String upload(Drive service, java.io.File UPLOAD_FILE, String title, String mimeType, String description,

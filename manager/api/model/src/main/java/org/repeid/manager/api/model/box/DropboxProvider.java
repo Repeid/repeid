@@ -1,5 +1,6 @@
 package org.repeid.manager.api.model.box;
 
+import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.provider.Provider;
 
 import com.dropbox.core.DbxClient;
@@ -11,8 +12,10 @@ import com.dropbox.core.DbxEntry;
 
 public interface DropboxProvider extends Provider {
 
-	public DbxEntry.File upload(DbxClient dbxClient, byte[] file);
+	DbxClient getDropBoxClient(StoreConfigurationModel storeConfiguration);
 
-	public DbxEntry.File download(DbxClient dbxClient, String fileId);
+	DbxEntry.File upload(DbxClient dbxClient, byte[] file);
+
+	DbxEntry.File download(DbxClient dbxClient, String fileId);
 
 }
