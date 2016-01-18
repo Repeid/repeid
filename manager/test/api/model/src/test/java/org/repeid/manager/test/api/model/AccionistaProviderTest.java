@@ -24,6 +24,7 @@ import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.manager.api.model.enums.TipoPersona;
+import org.repeid.manager.test.api.AbstractTest;
 
 public class AccionistaProviderTest extends AbstractTest {
 

@@ -18,6 +18,7 @@ import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.search.SearchCriteriaFilterOperator;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.repeid.manager.test.api.AbstractTest;
 
 public class TipoDocumentoProviderTest extends AbstractTest {
 
