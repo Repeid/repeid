@@ -15,6 +15,7 @@
  */
 package org.repeid.manager.test.api;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
 import org.repeid.manager.api.model.AccionistaProvider;
@@ -30,34 +31,60 @@ import org.repeid.manager.api.model.provider.ProviderType;
  * @author eric.wittmann@redhat.com
  */
 
+@ApplicationScoped
 public class CdiFactoryTest {
 
+    public static ProviderType PROVIDER = ProviderType.JPA;
+
     @Produces
-    public static TipoDocumentoProvider getTipoDocumentoProvider(
-            @ProviderFactory(type = ProviderType.JPA) TipoDocumentoProvider jpa,
-            @ProviderFactory(type = ProviderType.MONGO) TipoDocumentoProvider mongo) {
-        return jpa;
+    public TipoDocumentoProvider getTipoDocumentoProvider(
+            @ProviderFactory(ProviderType.JPA) TipoDocumentoProvider jpa,
+            @ProviderFactory(ProviderType.MONGO) TipoDocumentoProvider mongo) {
+        if (PROVIDER.equals(ProviderType.JPA)) {
+            return jpa;
+        } else if (PROVIDER.equals(ProviderType.MONGO)) {
+            return mongo;
+        } else {
+            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+        }
     }
 
     @Produces
-    public static PersonaNaturalProvider getPersonaNaturalProvider(
-            @ProviderFactory(type = ProviderType.JPA) PersonaNaturalProvider jpa,
-            @ProviderFactory(type = ProviderType.MONGO) PersonaNaturalProvider mongo) {
-        return jpa;
+    public PersonaNaturalProvider getPersonaNaturalProvider(
+            @ProviderFactory(ProviderType.JPA) PersonaNaturalProvider jpa,
+            @ProviderFactory(ProviderType.MONGO) PersonaNaturalProvider mongo) {
+        if (PROVIDER.equals(ProviderType.JPA)) {
+            return jpa;
+        } else if (PROVIDER.equals(ProviderType.MONGO)) {
+            return mongo;
+        } else {
+            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+        }
     }
 
     @Produces
-    public static PersonaJuridicaProvider getPersonaJuridicaProvider(
-            @ProviderFactory(type = ProviderType.JPA) PersonaJuridicaProvider jpa,
-            @ProviderFactory(type = ProviderType.MONGO) PersonaJuridicaProvider mongo) {
-        return jpa;
+    public PersonaJuridicaProvider getPersonaJuridicaProvider(
+            @ProviderFactory(ProviderType.JPA) PersonaJuridicaProvider jpa,
+            @ProviderFactory(ProviderType.MONGO) PersonaJuridicaProvider mongo) {
+        if (PROVIDER.equals(ProviderType.JPA)) {
+            return jpa;
+        } else if (PROVIDER.equals(ProviderType.MONGO)) {
+            return mongo;
+        } else {
+            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+        }
     }
 
     @Produces
-    public static AccionistaProvider getAccionistaProvider(
-            @ProviderFactory(type = ProviderType.JPA) AccionistaProvider jpa,
-            @ProviderFactory(type = ProviderType.MONGO) AccionistaProvider mongo) {
-        return jpa;
+    public AccionistaProvider getAccionistaProvider(@ProviderFactory(ProviderType.JPA) AccionistaProvider jpa,
+            @ProviderFactory(ProviderType.MONGO) AccionistaProvider mongo) {
+        if (PROVIDER.equals(ProviderType.JPA)) {
+            return jpa;
+        } else if (PROVIDER.equals(ProviderType.MONGO)) {
+            return mongo;
+        } else {
+            throw new RuntimeException("Provider type desconocido"); //$NON-NLS-1$
+        }
     }
 
 }

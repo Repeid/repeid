@@ -29,7 +29,7 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(type = ProviderType.JPA)
+@ProviderFactory(ProviderType.JPA)
 public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";

@@ -28,7 +28,7 @@ import org.repeid.manager.api.model.provider.ProviderType;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(type = ProviderType.JPA)
+@ProviderFactory(ProviderType.JPA)
 public class JpaAccionistaProvider extends AbstractJpaStorage implements AccionistaProvider {
 
 	@Override

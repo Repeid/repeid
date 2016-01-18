@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.model.PersonaJuridicaModel;
@@ -17,6 +16,8 @@ import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
@@ -28,9 +29,9 @@ import org.repeid.manager.api.mongo.entities.TipoDocumentoEntity;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@ProviderFactory(ProviderType.MONGO)
 public class MongoPersonaJuridicaProvider extends AbstractMongoStorage implements PersonaJuridicaProvider {
 
 	private final static String RAZON_SOCIAL = "razonSocial";

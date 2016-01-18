@@ -31,7 +31,7 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(type = ProviderType.JPA)
+@ProviderFactory(ProviderType.JPA)
 public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements PersonaNaturalProvider {
 
 	private static final String APELLIDO_PATERNO = "apellidoPaterno";

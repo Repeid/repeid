@@ -31,7 +31,7 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(type = ProviderType.JPA)
+@ProviderFactory(ProviderType.JPA)
 public class JpaPersonaJuridicaProvider extends AbstractJpaStorage implements PersonaJuridicaProvider {
 
 	private final static String RAZON_SOCIAL = "razonSocial";
