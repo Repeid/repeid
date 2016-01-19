@@ -28,6 +28,9 @@ import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class ModelToRepresentation {
 
 	public static TipoDocumentoRepresentation toRepresentation(TipoDocumentoModel model) {

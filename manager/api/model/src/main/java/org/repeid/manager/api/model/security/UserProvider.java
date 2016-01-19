@@ -26,6 +26,9 @@ import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface UserProvider extends Provider {
 
 	UserModel create(String username, String fullName, String email) throws StorageException;

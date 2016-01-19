@@ -22,6 +22,9 @@ import java.util.List;
 
 import org.repeid.manager.api.model.provider.Provider;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface AccionistaProvider extends Provider {
 
 	AccionistaModel create(PersonaJuridicaModel personaJuridica, PersonaNaturalModel personaNatural,

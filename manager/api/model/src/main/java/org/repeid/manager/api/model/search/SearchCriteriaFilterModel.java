@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Represents a single filter or search criteria. This is used when searching
  * for beans.
  *
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class SearchCriteriaFilterModel implements Serializable {
 

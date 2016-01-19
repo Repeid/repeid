@@ -27,6 +27,9 @@ import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface PersonaJuridicaProvider extends Provider {
 
 	PersonaJuridicaModel findById(String id) throws StorageException;

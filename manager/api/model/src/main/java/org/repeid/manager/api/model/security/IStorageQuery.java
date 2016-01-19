@@ -25,7 +25,7 @@ import org.repeid.manager.api.beans.representations.security.PermissionType;
 /**
  * Specific querying of the storage layer.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
 public interface IStorageQuery {

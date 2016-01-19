@@ -26,6 +26,9 @@ import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface RoleProvider extends Provider {
 
 	RoleModel create(String name, String description, boolean autogrant, Set<PermissionType> set, String createdBy)

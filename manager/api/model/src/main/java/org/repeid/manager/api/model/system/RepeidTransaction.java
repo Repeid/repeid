@@ -20,7 +20,7 @@ package org.repeid.manager.api.model.system;
 import org.repeid.manager.api.beans.exceptions.StorageException;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  * @version $Revision: 1 $
  */
 public interface RepeidTransaction {

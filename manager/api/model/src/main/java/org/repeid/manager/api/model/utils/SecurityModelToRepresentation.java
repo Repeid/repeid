@@ -22,6 +22,9 @@ import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.UserModel;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class SecurityModelToRepresentation {
 
 	public static UserRepresentation toRepresentation(UserModel model) {

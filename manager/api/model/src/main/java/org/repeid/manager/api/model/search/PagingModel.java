@@ -24,7 +24,7 @@ import java.io.Serializable;
  * beans. In these cases the criteria might match a large number of beans, and
  * we only want to return a certain number of them.
  *
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class PagingModel implements Serializable {
 

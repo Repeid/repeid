@@ -23,6 +23,9 @@ import java.util.Set;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.Model;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface RoleModel extends Model {
 
 	String getId();

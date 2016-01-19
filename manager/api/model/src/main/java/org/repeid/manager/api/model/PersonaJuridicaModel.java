@@ -22,6 +22,9 @@ import java.util.List;
 
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface PersonaJuridicaModel extends Model {
 
 	String RAZON_SOCIAL = "razonSocial";

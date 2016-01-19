@@ -19,6 +19,9 @@ package org.repeid.manager.api.model;
 
 import org.repeid.manager.api.model.enums.TipoPersona;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface TipoDocumentoModel extends Model {
 
 	String ABREVIATURA = "abreviatura";

@@ -29,6 +29,9 @@ import org.repeid.manager.api.model.security.RoleProvider;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.security.UserProvider;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SecurityRepresentationToModel {

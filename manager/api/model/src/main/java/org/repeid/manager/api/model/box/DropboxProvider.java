@@ -26,7 +26,6 @@ import com.dropbox.core.DbxEntry;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 public interface DropboxProvider extends Provider {
 
 	DbxClient getDropBoxClient(StoreConfigurationModel storeConfiguration);

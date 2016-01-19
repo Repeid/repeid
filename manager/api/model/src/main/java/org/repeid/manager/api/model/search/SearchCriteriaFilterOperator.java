@@ -21,7 +21,7 @@ package org.repeid.manager.api.model.search;
  * The operator to use for a single search criteria filter. Typically we use eq,
  * but other operators are occassionally useful as well.
  *
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public enum SearchCriteriaFilterOperator {
 

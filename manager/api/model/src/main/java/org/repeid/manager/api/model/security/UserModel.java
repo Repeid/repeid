@@ -21,6 +21,9 @@ import java.util.Date;
 
 import org.repeid.manager.api.model.Model;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface UserModel extends Model {
 
 	String getId();

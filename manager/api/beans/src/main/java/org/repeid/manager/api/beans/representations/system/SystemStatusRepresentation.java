@@ -17,6 +17,9 @@
  *******************************************************************************/
 package org.repeid.manager.api.beans.representations.system;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class SystemStatusRepresentation {
 
     private String id;

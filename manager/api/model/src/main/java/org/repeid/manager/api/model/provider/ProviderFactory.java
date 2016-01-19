@@ -27,6 +27,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 @Qualifier
 @Retention(RUNTIME)
 @Target({ METHOD, FIELD, TYPE, PARAMETER })

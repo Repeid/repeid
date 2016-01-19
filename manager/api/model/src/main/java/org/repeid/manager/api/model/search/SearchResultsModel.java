@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Models a set of beans returned as a result of a search.
  *
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  * @param <T>
  *            the bean type
  */

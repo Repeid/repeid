@@ -17,6 +17,9 @@
  *******************************************************************************/
 package org.repeid.manager.api.model.enums;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public enum Sexo {
 
 	/**

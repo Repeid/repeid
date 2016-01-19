@@ -23,7 +23,7 @@ import java.util.Map;
  * Marker interface for {@link ProviderFactory} of Provider which wants to show
  * some info on "Server Info" page in Admin console.
  * 
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public interface ServerInfoAwareProviderFactory {
 

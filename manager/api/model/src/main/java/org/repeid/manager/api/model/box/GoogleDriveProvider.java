@@ -29,7 +29,6 @@ import com.google.api.services.drive.Drive;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 public interface GoogleDriveProvider extends Provider {
 
 	Credential getGoogleDriveService(StoreConfigurationModel storeConfiguration);

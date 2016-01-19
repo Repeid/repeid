@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Generic search criteria used when searching for beans.
  *
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class SearchCriteriaModel implements Serializable {
 

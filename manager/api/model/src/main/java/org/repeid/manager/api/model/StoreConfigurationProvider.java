@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.repeid.manager.api.model.provider.Provider;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public interface StoreConfigurationProvider extends Provider {
 
 	StoreConfigurationModel findById(String id);

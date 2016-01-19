@@ -18,7 +18,7 @@
 package org.repeid.manager.api.model.provider;
 
 /**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public interface Provider {
 

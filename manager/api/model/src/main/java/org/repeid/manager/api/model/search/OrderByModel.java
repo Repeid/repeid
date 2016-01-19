@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Models order-by for a search.
  *
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class OrderByModel implements Serializable {
 

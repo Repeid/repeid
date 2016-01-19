@@ -31,7 +31,6 @@ import com.dropbox.core.DbxRequestConfig;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Stateless
 public class DefaultDropboxProvider implements DropboxProvider {
 
