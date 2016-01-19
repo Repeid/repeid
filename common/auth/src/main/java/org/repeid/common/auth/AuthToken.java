@@ -26,87 +26,92 @@ import java.util.Set;
  * @author eric.wittmann@redhat.com
  */
 public class AuthToken {
-    
-    private Date issuedOn;
-    private Date expiresOn;
-    private String principal;
-    private Set<String> roles;
-    private String signature;
-    
-    /**
-     * Constructor.
-     */
-    public AuthToken() {
-    }
 
-    /**
-     * @return the issuedOn
-     */
-    public Date getIssuedOn() {
-        return issuedOn;
-    }
+	private Date issuedOn;
+	private Date expiresOn;
+	private String principal;
+	private Set<String> roles;
+	private String signature;
 
-    /**
-     * @param issuedOn the issuedOn to set
-     */
-    public void setIssuedOn(Date issuedOn) {
-        this.issuedOn = issuedOn;
-    }
+	/**
+	 * Constructor.
+	 */
+	public AuthToken() {
+	}
 
-    /**
-     * @return the expiresOn
-     */
-    public Date getExpiresOn() {
-        return expiresOn;
-    }
+	/**
+	 * @return the issuedOn
+	 */
+	public Date getIssuedOn() {
+		return issuedOn;
+	}
 
-    /**
-     * @param expiresOn the expiresOn to set
-     */
-    public void setExpiresOn(Date expiresOn) {
-        this.expiresOn = expiresOn;
-    }
+	/**
+	 * @param issuedOn
+	 *            the issuedOn to set
+	 */
+	public void setIssuedOn(Date issuedOn) {
+		this.issuedOn = issuedOn;
+	}
 
-    /**
-     * @return the principal
-     */
-    public String getPrincipal() {
-        return principal;
-    }
+	/**
+	 * @return the expiresOn
+	 */
+	public Date getExpiresOn() {
+		return expiresOn;
+	}
 
-    /**
-     * @param principal the principal to set
-     */
-    public void setPrincipal(String principal) {
-        this.principal = principal;
-    }
+	/**
+	 * @param expiresOn
+	 *            the expiresOn to set
+	 */
+	public void setExpiresOn(Date expiresOn) {
+		this.expiresOn = expiresOn;
+	}
 
-    /**
-     * @return the roles
-     */
-    public Set<String> getRoles() {
-        return roles;
-    }
+	/**
+	 * @return the principal
+	 */
+	public String getPrincipal() {
+		return principal;
+	}
 
-    /**
-     * @param roles the roles to set
-     */
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
+	/**
+	 * @param principal
+	 *            the principal to set
+	 */
+	public void setPrincipal(String principal) {
+		this.principal = principal;
+	}
 
-    /**
-     * @return the signature
-     */
-    public String getSignature() {
-        return signature;
-    }
+	/**
+	 * @return the roles
+	 */
+	public Set<String> getRoles() {
+		return roles;
+	}
 
-    /**
-     * @param signature the signature to set
-     */
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
+	/**
+	 * @param roles
+	 *            the roles to set
+	 */
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	/**
+	 * @return the signature
+	 */
+	public String getSignature() {
+		return signature;
+	}
+
+	/**
+	 * @param signature
+	 *            the signature to set
+	 */
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
 
 }

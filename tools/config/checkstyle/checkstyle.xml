@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Hibernate, Relational Persistence for Idiomatic Java
+  ~ Repeid for Idiomatic Java
   ~
   ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later.
   ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
@@ -8,17 +8,7 @@
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.1//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
 
-    <!-- See http://checkstyle.sourceforge.net/checks.html for details of the various checks -->
-
-    <module name="Header">
-        <property name="header" value="/*\n * Hibernate, Relational Persistence for Idiomatic Java\n *\n * License: GNU Lesser General Public License (LGPL), version 2.1 or later.\n * See the lgpl.txt file in the root directory or &lt;http://www.gnu.org/licenses/lgpl-2.1.html&gt;.\n */"/>
-        <property name="fileExtensions" value="java,gradle,groovy"/>
-    </module>
-
-    <module name="Header">
-        <property name="header" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;!--\n ~ Hibernate, Relational Persistence for Idiomatic Java\n ~\n ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later.\n ~ See the lgpl.txt file in the root directory or &lt;http://www.gnu.org/licenses/lgpl-2.1.html&gt;.\n  --&gt;"/>
-        <property name="fileExtensions" value="xml,xsd"/>
-    </module>
+    <!-- See http://checkstyle.sourceforge.net/checks.html for details of the various checks -->    
 
     <module name="TreeWalker">
 
@@ -27,19 +17,23 @@
         <!--
             High-priority warnings : fail the build...
         -->
-        <module name="RegexpSinglelineJava">
-            <property name="ignoreComments" value="true" />
-            <property name="format" value="^\t* +\t*\S" />
-            <property name="message" value="Line has leading space characters; indentation should be performed with tabs only." />
-        </module>
+        
+	<!--
+		<module name="RegexpSinglelineJava">
+		    <property name="ignoreComments" value="true" />
+		    <property name="format" value="^\t* +\t*\S" />
+		    <property name="message" value="Line has leading space characters; indentation should be performed with tabs only." />
+		</module>
+	-->
+	
 
         <module name="MissingDeprecated" />
 
         <module name="MissingOverride" />
 
         <module name="PackageAnnotation" />
-
-        <module name="NeedBraces" />
+	
+        <module name="NeedBraces" />	
 
         <module name="LeftCurly">
             <property name="option" value="eol" />
