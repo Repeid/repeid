@@ -29,9 +29,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Entity
 @Table(name = "FILE")
 public class FileEntity implements Serializable {

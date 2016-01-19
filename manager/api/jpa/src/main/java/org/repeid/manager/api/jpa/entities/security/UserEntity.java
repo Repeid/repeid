@@ -35,168 +35,167 @@ import org.hibernate.annotations.GenericGenerator;
 /**
  * Models a single user.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Entity
 @Table(name = "users")
-@NamedQueries(value = {
-        @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u"),
-        @NamedQuery(name = "UserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username") })
+@NamedQueries(value = { @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u"),
+		@NamedQuery(name = "UserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username") })
 public class UserEntity implements Serializable {
 
-    private static final long serialVersionUID = 865765107251347714L;
+	private static final long serialVersionUID = 865765107251347714L;
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private String id;
+	@Id
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	private String id;
 
-    @Column(updatable = false, nullable = false)
-    private String username;
+	@Column(updatable = false, nullable = false)
+	private String username;
 
-    @Column(name = "full_name")
-    private String fullName;
+	@Column(name = "full_name")
+	private String fullName;
 
-    @Column(name = "email")
-    private String email;
+	@Column(name = "email")
+	private String email;
 
-    @Column(name = "joined_on", updatable = false)
-    private Date joinedOn;
+	@Column(name = "joined_on", updatable = false)
+	private Date joinedOn;
 
-    // Used only when returning information about the current user
-    @Transient
-    private boolean admin;
+	// Used only when returning information about the current user
+	@Transient
+	private boolean admin;
 
-    /**
-     * Constructor.
-     */
-    public UserEntity() {
-    }
+	/**
+	 * Constructor.
+	 */
+	public UserEntity() {
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    /**
-     * @return the fullName
-     */
-    public String getFullName() {
-        return fullName;
-    }
+	/**
+	 * @return the fullName
+	 */
+	public String getFullName() {
+		return fullName;
+	}
 
-    /**
-     * @param fullName
-     *            the fullName to set
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	/**
+	 * @param fullName
+	 *            the fullName to set
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
 
-    /**
-     * @param username
-     *            the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	/**
+	 * @param username
+	 *            the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
 
-    /**
-     * @param email
-     *            the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	/**
+	 * @param email
+	 *            the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    /**
-     * @return the joinedOn
-     */
-    public Date getJoinedOn() {
-        return joinedOn;
-    }
+	/**
+	 * @return the joinedOn
+	 */
+	public Date getJoinedOn() {
+		return joinedOn;
+	}
 
-    /**
-     * @param joinedOn
-     *            the joinedOn to set
-     */
-    public void setJoinedOn(Date joinedOn) {
-        this.joinedOn = joinedOn;
-    }
+	/**
+	 * @param joinedOn
+	 *            the joinedOn to set
+	 */
+	public void setJoinedOn(Date joinedOn) {
+		this.joinedOn = joinedOn;
+	}
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((username == null) ? 0 : username.hashCode());
-        return result;
-    }
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
 
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        UserEntity other = (UserEntity) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserEntity other = (UserEntity) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
-    /**
-     * @return the admin
-     */
-    public boolean isAdmin() {
-        return admin;
-    }
+	/**
+	 * @return the admin
+	 */
+	public boolean isAdmin() {
+		return admin;
+	}
 
-    /**
-     * @param admin
-     *            the admin to set
-     */
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
+	/**
+	 * @param admin
+	 *            the admin to set
+	 */
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    @SuppressWarnings("nls")
-    public String toString() {
-        return "UserEntity [id=" + id + ", username=" + username + ", fullName=" + fullName + ", email="
-                + email + ", joinedOn=" + joinedOn + ", admin=" + admin + "]";
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	@SuppressWarnings("nls")
+	public String toString() {
+		return "UserEntity [id=" + id + ", username=" + username + ", fullName=" + fullName + ", email=" + email
+				+ ", joinedOn=" + joinedOn + ", admin=" + admin + "]";
+	}
 
 }

@@ -27,10 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  * @version $Revision: 1 $
  */
-
 public class JpaRepeidTransaction implements RepeidTransaction {
 
 	private static Logger logger = LoggerFactory.getLogger(JpaRepeidTransaction.class);

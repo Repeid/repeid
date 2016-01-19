@@ -41,9 +41,8 @@ import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.RoleProvider;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @ProviderFactory(ProviderType.JPA)

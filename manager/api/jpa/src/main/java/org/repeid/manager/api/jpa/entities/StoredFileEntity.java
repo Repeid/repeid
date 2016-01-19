@@ -36,7 +36,6 @@ import org.hibernate.annotations.GenericGenerator;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Entity
 @Table(name = "STORED_FILE")
 public class StoredFileEntity implements Serializable {

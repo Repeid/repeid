@@ -33,9 +33,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @MappedSuperclass
 public abstract class PersonaEntity implements Serializable {
 

@@ -30,9 +30,8 @@ import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
     private PersonaNaturalEntity personaNaturalEntity;

@@ -45,7 +45,6 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @ProviderFactory(ProviderType.JPA)

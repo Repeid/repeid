@@ -22,7 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Stateless
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {

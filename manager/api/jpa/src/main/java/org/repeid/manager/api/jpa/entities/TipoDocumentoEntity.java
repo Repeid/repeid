@@ -38,9 +38,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Entity
 @Table(name = "TIPO_DOCUMENTO")
 @NamedQueries(value = {

@@ -25,9 +25,8 @@ import org.repeid.manager.api.jpa.entities.security.UserEntity;
 import org.repeid.manager.api.model.security.UserModel;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 public class UserAdapter implements UserModel {
 
 	private UserEntity userEntity;

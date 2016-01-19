@@ -43,7 +43,6 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Entity
 @Table(name = "PERSONA_NATURAL")
 @NamedQueries(value = {

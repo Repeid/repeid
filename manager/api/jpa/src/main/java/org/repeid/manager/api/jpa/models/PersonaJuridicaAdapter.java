@@ -34,9 +34,8 @@ import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
     protected PersonaJuridicaEntity personaJuridicaEntity;

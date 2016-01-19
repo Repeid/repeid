@@ -42,7 +42,6 @@ import org.repeid.manager.api.model.provider.ProviderType;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @ProviderFactory(ProviderType.JPA)

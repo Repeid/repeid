@@ -42,7 +42,6 @@ import org.hibernate.annotations.NaturalId;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 @Entity
 @Table(name = "ACCIONISTA")
 @NamedQueries(value = { @NamedQuery(name = "AccionistaEntity.findAll", query = "SELECT a FROM AccionistaEntity a"),

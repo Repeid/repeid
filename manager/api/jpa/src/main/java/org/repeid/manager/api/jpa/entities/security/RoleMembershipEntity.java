@@ -42,107 +42,107 @@ import org.hibernate.annotations.GenericGenerator;
  * permissions to a user. A role might grant CREATE-APPLICATION and VIEW-SERVICE
  * permissions for a particular Organization.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Entity
 @Table(name = "memberships", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
 @NamedQueries(value = {
-        @NamedQuery(name = "RoleMembershipEntity.findAll", query = "SELECT r FROM RoleMembershipEntity r"),
-        @NamedQuery(name = "RoleMembershipEntity.findByUserId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.user u WHERE u.id = :userId"),
-        @NamedQuery(name = "RoleMembershipEntity.findByRoleId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.role rr WHERE rr.id = :roleId")})
+		@NamedQuery(name = "RoleMembershipEntity.findAll", query = "SELECT r FROM RoleMembershipEntity r"),
+		@NamedQuery(name = "RoleMembershipEntity.findByUserId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.user u WHERE u.id = :userId"),
+		@NamedQuery(name = "RoleMembershipEntity.findByRoleId", query = "SELECT r FROM RoleMembershipEntity r INNER JOIN r.role rr WHERE rr.id = :roleId") })
 public class RoleMembershipEntity implements Serializable {
 
-    private static final long serialVersionUID = 7798709783947356888L;
+	private static final long serialVersionUID = 7798709783947356888L;
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id")
-    private String id;
+	@Id
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "id")
+	private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey , name = "user_id")
-    private UserEntity user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(foreignKey = @ForeignKey , name = "user_id")
+	private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey , name = "role_id")
-    private RoleEntity role;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(foreignKey = @ForeignKey , name = "role_id")
+	private RoleEntity role;
 
-    @Column(name = "created_on")
-    private Date createdOn;
+	@Column(name = "created_on")
+	private Date createdOn;
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public UserEntity getUser() {
-        return user;
-    }
+	public UserEntity getUser() {
+		return user;
+	}
 
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
 
-    public RoleEntity getRole() {
-        return role;
-    }
+	public RoleEntity getRole() {
+		return role;
+	}
 
-    public void setRole(RoleEntity role) {
-        this.role = role;
-    }
+	public void setRole(RoleEntity role) {
+		this.role = role;
+	}
 
-    public Date getCreatedOn() {
-        return createdOn;
-    }
+	public Date getCreatedOn() {
+		return createdOn;
+	}
 
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    @SuppressWarnings("nls")
-    public String toString() {
-        return "RoleMembershipEntity [id=" + id + ", userId=" + user.getId() + ", roleId=" + role.getId()
-                + ", createdOn=" + createdOn + "]";
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	@SuppressWarnings("nls")
+	public String toString() {
+		return "RoleMembershipEntity [id=" + id + ", userId=" + user.getId() + ", roleId=" + role.getId()
+				+ ", createdOn=" + createdOn + "]";
+	}
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        return result;
-    }
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
 
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RoleMembershipEntity other = (RoleMembershipEntity) obj;
-        if (getId() == null) {
-            if (other.getId() != null)
-                return false;
-        } else if (!getId().equals(other.getId()))
-            return false;
-        return true;
-    }
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RoleMembershipEntity other = (RoleMembershipEntity) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!getId().equals(other.getId()))
+			return false;
+		return true;
+	}
 }

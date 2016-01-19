@@ -27,9 +27,8 @@ import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 
 /**
- * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
 public class AccionistaAdapter implements AccionistaModel {
 
 	private AccionistaEntity accionistaEntity;
