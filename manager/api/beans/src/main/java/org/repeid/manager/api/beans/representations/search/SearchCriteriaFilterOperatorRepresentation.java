@@ -21,10 +21,10 @@ package org.repeid.manager.api.beans.representations.search;
  * The operator to use for a single search criteria filter. Typically we use eq,
  * but other operators are occassionally useful as well.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public enum SearchCriteriaFilterOperatorRepresentation {
 
-    bool_eq, eq, neq, gt, gte, lt, lte, like;
+	bool_eq, eq, neq, gt, gte, lt, lte, like;
 
 }

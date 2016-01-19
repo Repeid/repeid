@@ -20,47 +20,50 @@ package org.repeid.manager.api.beans.representations.security;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class GrantRolesRepresentation {
 
-    private String userId;
-    private Set<String> roleIds = new HashSet<>();
+	private String userId;
+	private Set<String> roleIds = new HashSet<>();
 
-    /**
-     * @param roleId
-     *            the role
-     */
-    public void addRoleId(String roleId) {
-        roleIds.add(roleId);
-    }
+	/**
+	 * @param roleId
+	 *            the role
+	 */
+	public void addRoleId(String roleId) {
+		roleIds.add(roleId);
+	}
 
-    /**
-     * @return the userId
-     */
-    public String getUserId() {
-        return userId;
-    }
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
 
-    /**
-     * @param userId
-     *            the userId to set
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	/**
+	 * @param userId
+	 *            the userId to set
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    /**
-     * @return the roleIds
-     */
-    public Set<String> getRoleIds() {
-        return roleIds;
-    }
+	/**
+	 * @return the roleIds
+	 */
+	public Set<String> getRoleIds() {
+		return roleIds;
+	}
 
-    /**
-     * @param roleIds
-     *            the roleIds to set
-     */
-    public void setRoleIds(Set<String> roleIds) {
-        this.roleIds = roleIds;
-    }
+	/**
+	 * @param roleIds
+	 *            the roleIds to set
+	 */
+	public void setRoleIds(Set<String> roleIds) {
+		this.roleIds = roleIds;
+	}
 
 }

@@ -19,8 +19,8 @@ package org.repeid.manager.api.beans.representations.security;
 
 /**
  * A list of all the permissions supported by the system.
- *
- * @author eric.wittmann@redhat.com
+ * 
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public enum PermissionType {
     

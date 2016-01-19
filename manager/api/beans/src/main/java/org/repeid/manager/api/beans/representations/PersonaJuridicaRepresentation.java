@@ -20,6 +20,9 @@ package org.repeid.manager.api.beans.representations;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class PersonaJuridicaRepresentation implements Serializable {
 
 	/**
@@ -180,8 +183,7 @@ public class PersonaJuridicaRepresentation implements Serializable {
 		return representanteLegal;
 	}
 
-	public void setRepresentanteLegal(
-			PersonaNaturalRepresentation representanteLegal) {
+	public void setRepresentanteLegal(PersonaNaturalRepresentation representanteLegal) {
 		this.representanteLegal = representanteLegal;
 	}
 

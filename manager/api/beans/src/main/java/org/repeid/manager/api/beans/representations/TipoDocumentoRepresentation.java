@@ -19,6 +19,9 @@ package org.repeid.manager.api.beans.representations;
 
 import java.io.Serializable;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class TipoDocumentoRepresentation implements Serializable {
 
 	/**

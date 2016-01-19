@@ -22,34 +22,34 @@ import java.io.Serializable;
 /**
  * Models order-by for a search.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class OrderByRepresentation implements Serializable {
 
-    private static final long serialVersionUID = -7569401325900866820L;
-    
-    private boolean ascending;
+	private static final long serialVersionUID = -7569401325900866820L;
 
-    private String name;
+	private boolean ascending;
 
-    public OrderByRepresentation() {
-        // TODO Auto-generated constructor stub
-    }
+	private String name;
 
-    public boolean isAscending() {
-        return ascending;
-    }
+	public OrderByRepresentation() {
+		// TODO Auto-generated constructor stub
+	}
 
-    public void setAscending(boolean ascending) {
-        this.ascending = ascending;
-    }
+	public boolean isAscending() {
+		return ascending;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setAscending(boolean ascending) {
+		this.ascending = ascending;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }

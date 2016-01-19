@@ -24,51 +24,51 @@ import java.util.List;
 /**
  * Models a set of beans returned as a result of a search.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  * @param <T>
  *            the bean type
  */
 public class SearchResultsRepresentation<T> implements Serializable {
 
-    private static final long serialVersionUID = -1672829715471947181L;
+	private static final long serialVersionUID = -1672829715471947181L;
 
-    private List<T> items = new ArrayList<>();
-    private int totalSize;
+	private List<T> items = new ArrayList<>();
+	private int totalSize;
 
-    /**
-     * Constructor.
-     */
-    public SearchResultsRepresentation() {
-    }
+	/**
+	 * Constructor.
+	 */
+	public SearchResultsRepresentation() {
+	}
 
-    /**
-     * @return the beans
-     */
-    public List<T> getItems() {
-        return items;
-    }
+	/**
+	 * @return the beans
+	 */
+	public List<T> getItems() {
+		return items;
+	}
 
-    /**
-     * @param beans
-     *            the beans to set
-     */
-    public void setItems(List<T> items) {
-        this.items = items;
-    }
+	/**
+	 * @param beans
+	 *            the beans to set
+	 */
+	public void setItems(List<T> items) {
+		this.items = items;
+	}
 
-    /**
-     * @return the totalSize
-     */
-    public int getTotalSize() {
-        return totalSize;
-    }
+	/**
+	 * @return the totalSize
+	 */
+	public int getTotalSize() {
+		return totalSize;
+	}
 
-    /**
-     * @param totalSize
-     *            the totalSize to set
-     */
-    public void setTotalSize(int totalSize) {
-        this.totalSize = totalSize;
-    }
+	/**
+	 * @param totalSize
+	 *            the totalSize to set
+	 */
+	public void setTotalSize(int totalSize) {
+		this.totalSize = totalSize;
+	}
 
 }

@@ -18,105 +18,111 @@
 
 package org.repeid.manager.api.beans.exceptions;
 
-
 /**
- * Simple error bean used to serialize error information to JSON when
- * responding to a REST call with an error.
+ * Simple error bean used to serialize error information to JSON when responding
+ * to a REST call with an error.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class ErrorBean {
 
-    private String type;
-    private int errorCode;
-    private String message;
-    private String moreInfoUrl;
-    private String stacktrace;
+	private String type;
+	private int errorCode;
+	private String message;
+	private String moreInfoUrl;
+	private String stacktrace;
 
-    /**
-     * Constructor.
-     */
-    public ErrorBean() {
-    }
+	/**
+	 * Constructor.
+	 */
+	public ErrorBean() {
+	}
 
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
 
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    /**
-     * @return the errorCode
-     */
-    public int getErrorCode() {
-        return errorCode;
-    }
+	/**
+	 * @return the errorCode
+	 */
+	public int getErrorCode() {
+		return errorCode;
+	}
 
-    /**
-     * @param errorCode the errorCode to set
-     */
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
+	/**
+	 * @param errorCode
+	 *            the errorCode to set
+	 */
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
 
-    /**
-     * @return the moreInfo
-     */
-    public String getMoreInfoUrl() {
-        return moreInfoUrl;
-    }
+	/**
+	 * @return the moreInfo
+	 */
+	public String getMoreInfoUrl() {
+		return moreInfoUrl;
+	}
 
-    /**
-     * @param moreInfoUrl the moreInfo to set
-     */
-    public void setMoreInfoUrl(String moreInfoUrl) {
-        this.moreInfoUrl = moreInfoUrl;
-    }
+	/**
+	 * @param moreInfoUrl
+	 *            the moreInfo to set
+	 */
+	public void setMoreInfoUrl(String moreInfoUrl) {
+		this.moreInfoUrl = moreInfoUrl;
+	}
 
-    /**
-     * @return the message
-     */
-    public String getMessage() {
-        return message;
-    }
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
 
-    /**
-     * @param message the message to set
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	/**
+	 * @param message
+	 *            the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    /**
-     * @return the stacktrace
-     */
-    public String getStacktrace() {
-        return stacktrace;
-    }
+	/**
+	 * @return the stacktrace
+	 */
+	public String getStacktrace() {
+		return stacktrace;
+	}
 
-    /**
-     * @param stacktrace the stacktrace to set
-     */
-    public void setStacktrace(String stacktrace) {
-        this.stacktrace = stacktrace;
-    }
+	/**
+	 * @param stacktrace
+	 *            the stacktrace to set
+	 */
+	public void setStacktrace(String stacktrace) {
+		this.stacktrace = stacktrace;
+	}
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    @SuppressWarnings("nls")
-    public String toString() {
-        return "ErrorBean [type=" + type + ", errorCode=" + errorCode + ", message=" + message
-                + ", moreInfoUrl=" + moreInfoUrl + ", stacktrace=" + stacktrace + "]";
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	@SuppressWarnings("nls")
+	public String toString() {
+		return "ErrorBean [type=" + type + ", errorCode=" + errorCode + ", message=" + message + ", moreInfoUrl="
+				+ moreInfoUrl + ", stacktrace=" + stacktrace + "]";
+	}
 
 }

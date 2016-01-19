@@ -19,6 +19,9 @@ package org.repeid.manager.api.beans.representations.security;
 
 import java.util.Date;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class RoleMembershipRepresentation {
 
     private String id;

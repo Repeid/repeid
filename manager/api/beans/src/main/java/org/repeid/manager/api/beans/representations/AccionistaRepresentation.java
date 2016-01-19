@@ -20,6 +20,9 @@ package org.repeid.manager.api.beans.representations;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class AccionistaRepresentation implements Serializable {
 
 	/**

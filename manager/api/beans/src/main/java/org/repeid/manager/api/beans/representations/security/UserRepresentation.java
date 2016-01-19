@@ -20,63 +20,66 @@ package org.repeid.manager.api.beans.representations.security;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class UserRepresentation {
 
-    private String username;
-    private String fullName;
-    private String email;
-    private Date joinedOn;
+	private String username;
+	private String fullName;
+	private String email;
+	private Date joinedOn;
 
-    // Used only when returning information about the current user
-    private boolean admin;
-    private Set<PermissionType> permissions;
+	// Used only when returning information about the current user
+	private boolean admin;
+	private Set<PermissionType> permissions;
 
-    public String getUsername() {
-        return username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getFullName() {
-        return fullName;
-    }
+	public String getFullName() {
+		return fullName;
+	}
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public Date getJoinedOn() {
-        return joinedOn;
-    }
+	public Date getJoinedOn() {
+		return joinedOn;
+	}
 
-    public void setJoinedOn(Date joinedOn) {
-        this.joinedOn = joinedOn;
-    }
+	public void setJoinedOn(Date joinedOn) {
+		this.joinedOn = joinedOn;
+	}
 
-    public boolean isAdmin() {
-        return admin;
-    }
+	public boolean isAdmin() {
+		return admin;
+	}
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
-    public Set<PermissionType> getPermissions() {
-        return permissions;
-    }
+	public Set<PermissionType> getPermissions() {
+		return permissions;
+	}
 
-    public void setPermissions(Set<PermissionType> permissions) {
-        this.permissions = permissions;
-    }
+	public void setPermissions(Set<PermissionType> permissions) {
+		this.permissions = permissions;
+	}
 
 }

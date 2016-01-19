@@ -23,43 +23,43 @@ import java.io.Serializable;
  * Represents a single filter or search criteria. This is used when searching
  * for beans.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class SearchCriteriaFilterRepresentation implements Serializable {
 
-    private static final long serialVersionUID = -1199180207971619165L;
+	private static final long serialVersionUID = -1199180207971619165L;
 
-    private String name;
-    private Object value;
+	private String name;
+	private Object value;
 
-    private SearchCriteriaFilterOperatorRepresentation operator;
+	private SearchCriteriaFilterOperatorRepresentation operator;
 
-    public SearchCriteriaFilterRepresentation() {
-        // TODO Auto-generated constructor stub
-    }
+	public SearchCriteriaFilterRepresentation() {
+		// TODO Auto-generated constructor stub
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Object getValue() {
-        return value;
-    }
+	public Object getValue() {
+		return value;
+	}
 
-    public void setValue(Object value) {
-        this.value = value;
-    }
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
-    public SearchCriteriaFilterOperatorRepresentation getOperator() {
-        return operator;
-    }
+	public SearchCriteriaFilterOperatorRepresentation getOperator() {
+		return operator;
+	}
 
-    public void setOperator(SearchCriteriaFilterOperatorRepresentation operator) {
-        this.operator = operator;
-    }
+	public void setOperator(SearchCriteriaFilterOperatorRepresentation operator) {
+		this.operator = operator;
+	}
 
 }

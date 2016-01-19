@@ -19,6 +19,9 @@ package org.repeid.manager.api.beans.representations.security;
 
 import java.util.Set;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
 public class UserPermissionsRepresentation {
 
     private String userId;

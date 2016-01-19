@@ -17,13 +17,17 @@
  *******************************************************************************/
 package org.repeid.manager.api.beans.representations;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
-@XmlRootElement(name = "sexo")
-@XmlAccessorType(XmlAccessType.PROPERTY)
-public class SexoRepresentation {
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
+public class SexoRepresentation implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String denominacion;
 

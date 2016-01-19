@@ -24,30 +24,30 @@ import java.io.Serializable;
  * beans. In these cases the criteria might match a large number of beans, and
  * we only want to return a certain number of them.
  *
- * @author eric.wittmann@redhat.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class PagingRepresentation implements Serializable {
 
-    private static final long serialVersionUID = -7218662169900773534L;
-    
-    private int page;
+	private static final long serialVersionUID = -7218662169900773534L;
 
-    private int pageSize;
+	private int page;
 
-    public int getPage() {
-        return page;
-    }
+	private int pageSize;
 
-    public void setPage(int page) {
-        this.page = page;
-    }
+	public int getPage() {
+		return page;
+	}
 
-    public int getPageSize() {
-        return pageSize;
-    }
+	public void setPage(int page) {
+		this.page = page;
+	}
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 
 }
