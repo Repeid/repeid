@@ -3,14 +3,15 @@ dependencies {
 	compile project(':repeid-common:repeid-common-util')
 	compile project(':repeid-common:repeid-common-config')
 	//compile project(':repeid-common:repeid-common-plugin')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
-	
-	provided ( libraries.cdi_api )
+	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')	
 	
 	// Third Party Dependencies
 	compile ( libraries.jackson_core )
 	compile ( libraries.jackson_databind )
 	compile ( libraries.jackson_annotations )
+	
+	provided ( libraries.cdi_api )
+	provided ( libraries.jboss_ejb_api_3_2_spec )
 	
 	// APIs
 	compile ( libraries.joda_time )

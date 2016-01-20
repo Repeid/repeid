@@ -1,7 +1,7 @@
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-package org.repeid.manager.api.core.config;
+package org.repeid.common.util;
 
 import java.io.File;
 import java.util.Properties;

@@ -5,10 +5,12 @@ package org.repeid.manager.api.core.config;
 
 import java.util.Properties;
 
+import org.repeid.common.util.StringPropertyReplacer;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class JsonConfigProvider implements ConfigProvider {
 
