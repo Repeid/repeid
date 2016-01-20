@@ -1,9 +1,7 @@
 dependencies {
 	// Project Dependencies
 	compile project(':repeid-common:repeid-common-util')
-	compile project(':repeid-common:repeid-common-config')
-	//compile project(':repeid-common:repeid-common-plugin')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')	
+	compile project(':repeid-common:repeid-common-config')	
 	
 	// Third Party Dependencies
 	compile ( libraries.jackson_core )
