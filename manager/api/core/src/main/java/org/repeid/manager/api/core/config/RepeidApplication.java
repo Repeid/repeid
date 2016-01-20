@@ -67,7 +67,7 @@ public class RepeidApplication {
 
 			if (node != null) {
 				Properties properties = new SystemEnvProperties();
-				RepeidConfig.init(new JsonConfigProvider(node, properties));
+				Config.init(new JsonConfigProvider(node, properties));
 				return;
 			} else {
 				throw new RuntimeException("Config 'repeid-server.json' not found");
