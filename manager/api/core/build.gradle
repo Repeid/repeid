@@ -7,6 +7,11 @@ dependencies {
 	
 	provided ( libraries.cdi_api )
 	
+	// Third Party Dependencies
+	compile ( libraries.jackson_core )
+	compile ( libraries.jackson_databind )
+	compile ( libraries.jackson_annotations )
+	
 	// APIs
 	compile ( libraries.joda_time )
 	compile ( libraries.commons_lang )

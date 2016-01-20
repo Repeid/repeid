@@ -15,23 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package io.apiman.manager.api.war;
+package org.repeid.manager.api.core.config;
 
-import javax.enterprise.context.ApplicationScoped;
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
+public interface ConfigProvider {
 
-@ApplicationScoped
-public interface TipoDocumentoProviderFactory {
+	String getProvider(String spi);
 
-	/*@Produces
-	public static TipoDocumentoProvider provideTipoDocumentoProvider(Config.Scope config,
-			@New MongoTipoDocumentoProvider jpaProvider, @New MongoTipoDocumentoProvider mongoProvider) {
-		if (config.get("provider").equalsIgnoreCase("jpa")) {
-			return jpaProvider;
-		} else if (config.get("provider").equalsIgnoreCase("mongo")) {
-			return mongoProvider;
-		} else {
-			throw new RuntimeException("Unknown tipoDocumentoProvider type: " + config.get("provider"));
-		}
-	}*/
+	Scope scope(String... scope);
 
 }

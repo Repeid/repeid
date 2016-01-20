@@ -38,6 +38,11 @@ ext {
             jackson_core_asl:		    'org.codehaus.jackson:jackson-core-asl:1.9.13',
             jackson_mapper_asl:		    'org.codehaus.jackson:jackson-mapper-asl:1.9.13',
 
+			// Jackson
+			jackson_core:				'com.fasterxml.jackson.core:jackson-core:2.7.0',			
+			jackson_databind:			'com.fasterxml.jackson.core:jackson-databind:2.7.0',
+			jackson_annotations:		'com.fasterxml.jackson.core:jackson-annotations:2.7.0',
+			
             // Joda time
             joda_time:                  'joda-time:joda-time:2.9.1',
 

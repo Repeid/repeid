@@ -58,6 +58,9 @@ subprojects { subProject ->
 
     // appropriately inject the common dependencies into each sub-project
 	dependencies {
+		compile ( libraries.slf4j_api )
+		compile ( libraries.slf4j_log4j )
+		
 		testCompile( libraries.junit )
 
 		// 6.6 gave me some NPE problems from within checkstyle...

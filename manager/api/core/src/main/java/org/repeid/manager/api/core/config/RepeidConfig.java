@@ -15,23 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package io.apiman.manager.api.war;
+package org.repeid.manager.api.core.config;
 
-import javax.enterprise.context.ApplicationScoped;
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
+public class RepeidConfig {
 
-@ApplicationScoped
-public interface TipoDocumentoProviderFactory {
+	private static ConfigProvider configProvider = new SystemPropertiesConfigProvider();
 
-	/*@Produces
-	public static TipoDocumentoProvider provideTipoDocumentoProvider(Config.Scope config,
-			@New MongoTipoDocumentoProvider jpaProvider, @New MongoTipoDocumentoProvider mongoProvider) {
-		if (config.get("provider").equalsIgnoreCase("jpa")) {
-			return jpaProvider;
-		} else if (config.get("provider").equalsIgnoreCase("mongo")) {
-			return mongoProvider;
+	public static void init(ConfigProvider configProvider) {
+		RepeidConfig.configProvider = configProvider;
+	}
+
+	public static String getAdminRealm() {
+		return configProvider.scope("admin").get("realm", "master");
+	}
+
+	public static String getProvider(String spi) {
+		String provider = configProvider.getProvider(spi);
+		if (provider == null || provider.trim().equals("")) {
+			return null;
 		} else {
-			throw new RuntimeException("Unknown tipoDocumentoProvider type: " + config.get("provider"));
+			return provider;
 		}
-	}*/
+	}
+
+	public static Scope scope(String... scope) {
+		return configProvider.scope(scope);
+	}
 
 }
