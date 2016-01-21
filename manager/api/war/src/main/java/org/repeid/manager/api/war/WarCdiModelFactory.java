@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package io.apiman.manager.api.war;
+package org.repeid.manager.api.war;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -36,15 +36,14 @@ import org.repeid.manager.api.model.provider.ProviderType;
 @ApplicationScoped
 public class WarCdiModelFactory {
 
-	private Config.Scope config = Config.scope("spi");
+	private String realmProvider = Config.getProvider("realm");
 
 	@Produces
 	public TipoDocumentoProvider getTipoDocumentoProvider(@ProviderFactory(ProviderType.JPA) TipoDocumentoProvider jpa,
 			@ProviderFactory(ProviderType.MONGO) TipoDocumentoProvider mongo) {
-		String provider = config.get("provider");
-		if (provider.equalsIgnoreCase("jpa")) {
+		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (provider.equalsIgnoreCase("mongo")) {
+		} else if (realmProvider.equalsIgnoreCase("mongo")) {
 			return mongo;
 		} else {
 			throw new RuntimeException("Provider type desconocido");
@@ -55,10 +54,9 @@ public class WarCdiModelFactory {
 	public PersonaNaturalProvider getPersonaNaturalProvider(
 			@ProviderFactory(ProviderType.JPA) PersonaNaturalProvider jpa,
 			@ProviderFactory(ProviderType.MONGO) PersonaNaturalProvider mongo) {
-		String provider = config.get("provider");
-		if (provider.equalsIgnoreCase("jpa")) {
+		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (provider.equalsIgnoreCase("mongo")) {
+		} else if (realmProvider.equalsIgnoreCase("mongo")) {
 			return mongo;
 		} else {
 			throw new RuntimeException("Provider type desconocido");
@@ -69,10 +67,9 @@ public class WarCdiModelFactory {
 	public PersonaJuridicaProvider getPersonaJuridicaProvider(
 			@ProviderFactory(ProviderType.JPA) PersonaJuridicaProvider jpa,
 			@ProviderFactory(ProviderType.MONGO) PersonaJuridicaProvider mongo) {
-		String provider = config.get("provider");
-		if (provider.equalsIgnoreCase("jpa")) {
+		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (provider.equalsIgnoreCase("mongo")) {
+		} else if (realmProvider.equalsIgnoreCase("mongo")) {
 			return mongo;
 		} else {
 			throw new RuntimeException("Provider type desconocido");
@@ -82,10 +79,9 @@ public class WarCdiModelFactory {
 	@Produces
 	public AccionistaProvider getAccionistaProvider(@ProviderFactory(ProviderType.JPA) AccionistaProvider jpa,
 			@ProviderFactory(ProviderType.MONGO) AccionistaProvider mongo) {
-		String provider = config.get("provider");
-		if (provider.equalsIgnoreCase("jpa")) {
+		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (provider.equalsIgnoreCase("mongo")) {
+		} else if (realmProvider.equalsIgnoreCase("mongo")) {
 			return mongo;
 		} else {
 			throw new RuntimeException("Provider type desconocido");
