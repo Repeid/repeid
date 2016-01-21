@@ -4,6 +4,7 @@
   version="2.5">
 
   <!-- Locale Filter -->
+  <!-- 
   <filter>
     <filter-name>LocaleFilter</filter-name>
     <filter-class>io.apiman.common.servlet.LocaleFilter</filter-class>
@@ -12,8 +13,10 @@
     <filter-name>LocaleFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
+  -->
+ 
   <!-- CORS Filter -->
+  <!--
   <filter>
     <filter-name>CorsFilter</filter-name>
     <filter-class>io.apiman.common.servlet.ApimanCorsFilter</filter-class>
@@ -22,8 +25,10 @@
     <filter-name>CorsFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
+  -->
+  
   <!-- Disable Caching Filter -->
+  <!--
   <filter>
     <filter-name>NoCacheFilter</filter-name>
     <filter-class>io.apiman.common.servlet.DisableCachingFilter</filter-class>
@@ -32,8 +37,10 @@
     <filter-name>NoCacheFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  -->
 
   <!-- Security Context Filter -->
+  <!--
   <filter>
     <filter-name>SecurityContext</filter-name>
     <filter-class>io.apiman.manager.api.security.impl.DefaultSecurityContextFilter</filter-class>
@@ -42,8 +49,10 @@
     <filter-name>SecurityContext</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  -->
 
   <!-- Transaction Watchdog -->
+  <!--
   <filter>
     <filter-name>TransactionWatchdog</filter-name>
     <filter-class>io.apiman.manager.api.war.TransactionWatchdogFilter</filter-class>
@@ -52,8 +61,10 @@
     <filter-name>TransactionWatchdog</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  -->
 
   <!-- Root Resource Filter -->
+  <!--
   <filter>
     <filter-name>RootResourceFilter</filter-name>
     <filter-class>io.apiman.common.servlet.RootResourceFilter</filter-class>
@@ -62,7 +73,9 @@
     <filter-name>RootResourceFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
+  -->
+  
+  <!--
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>apiman</web-resource-name>
@@ -174,5 +187,6 @@
   <security-role>
     <role-name>apiuser</role-name>
   </security-role>
+  -->
 
 </web-app>

@@ -15,32 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package io.apiman.manager.test.util;
+package org.repeid.manager.api.war.wildfly8;
 
 /**
- * Some test util methods.
+ * A wildfly 8 version of the plugin registry.  This subclass exists in order
+ * to properly configure the data directory that should be used.  In this case
+ * the data directory is $WILDFLY/standalone/data/apiman/plugins
  *
  * @author eric.wittmann@redhat.com
  */
-public class ManagerTestUtils {
-    
-    public static enum TestType {
-        jpa, es;
-    }
-
-    public static final String TEST_TYPE = "apiman-test.type"; //$NON-NLS-1$
-
-    /**
-     * @param type the test type
-     */
-    public static final void setTestType(TestType type) {
-        System.setProperty(TEST_TYPE, type.name());
-    }
-    
-    /**
-     * @return what 'type' of test to run
-     */
-    public static final TestType getTestType() {
-        return TestType.valueOf(System.getProperty(TEST_TYPE, TestType.jpa.name()));
-    }
+public class Wildfly8PluginRegistry {
+	
 }
+

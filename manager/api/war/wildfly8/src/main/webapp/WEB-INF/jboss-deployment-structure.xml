@@ -1,14 +1,9 @@
 <jboss-deployment-structure>
   <deployment>
-    <dependencies>
-      <module name="org.infinispan" />
+    <dependencies>      
       <module name="org.hibernate" />
       <module name="org.apache.log4j" />
-      <module name="org.slf4j" />
-      <module name="org.picketbox" />
-    </dependencies>
-    <exclude-subsystems>
-      <subsystem name="webservices" />
-    </exclude-subsystems>
+      <module name="org.slf4j" />      
+    </dependencies>    
   </deployment>
 </jboss-deployment-structure>

@@ -1,10 +1,7 @@
+apply plugin: 'war'
+
 dependencies {
 	// Project Dependencies
-	compile project(':repeid-common:repeid-common-util')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-core')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-model')
-
 	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-war')
 
     // Third Party Dependencies
