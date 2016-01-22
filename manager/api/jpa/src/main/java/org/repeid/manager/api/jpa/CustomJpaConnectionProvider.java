@@ -20,7 +20,6 @@ package org.repeid.manager.api.jpa;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,7 +31,6 @@ import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import org.hibernate.jpa.AvailableSettings;
@@ -43,6 +41,7 @@ import org.repeid.manager.api.core.config.Config;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Stateless
+@JpaConnectionProviderFactory(ConnectionProviderType.CUSTOM_FACTORY)
 public class CustomJpaConnectionProvider implements JpaConnectionProvider {
 
 	private static final Logger logger = Logger.getLogger(CustomJpaConnectionProvider.class);
@@ -62,14 +61,12 @@ public class CustomJpaConnectionProvider implements JpaConnectionProvider {
 
 	@Override
 	public EntityManager getEntityManager() {
-		// return em;
-		return null;
+		return emf.createEntityManager();
 	}
 
 	@PostConstruct
 	public void initialize() {
 		lazyInit();
-		EntityManager em = emf.createEntityManager();
 	}
 
 	private void lazyInit() {
@@ -137,29 +134,36 @@ public class CustomJpaConnectionProvider implements JpaConnectionProvider {
 						if (databaseSchema != null) {
 							logger.trace("Updating database");
 
-							//JpaUpdaterProvider updater = session.getProvider(JpaUpdaterProvider.class);
-							//if (updater == null) {
-							//	throw new RuntimeException("Can't update database: JPA updater provider not found");
-							//}
+							// JpaUpdaterProvider updater =
+							// session.getProvider(JpaUpdaterProvider.class);
+							// if (updater == null) {
+							// throw new RuntimeException("Can't update
+							// database: JPA updater provider not found");
+							// }
 
 							if (databaseSchema.equals("update")) {
-								String currentVersion = null;
-								try {
-									ResultSet resultSet = connection.createStatement()
-											.executeQuery(updater.getCurrentVersionSql(schema));
-									if (resultSet.next()) {
-										currentVersion = resultSet.getString(1);
-									}
-								} catch (SQLException e) {
-								}
-
-								if (currentVersion == null || !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion)) {
-									updater.update(session, connection, schema);
-								} else {
-									logger.debug("Database is up to date");
-								}
+								// String currentVersion = null;
+								// try {
+								// ResultSet resultSet =
+								// connection.createStatement()
+								// .executeQuery(updater.getCurrentVersionSql(schema));
+								// if (resultSet.next()) {
+								// currentVersion = resultSet.getString(1);
+								// }
+								// } catch (SQLException e) {
+								// }
+								//
+								// if (currentVersion == null ||
+								// !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion))
+								// {
+								// updater.update(session, connection, schema);
+								// } else {
+								// logger.debug("Database is up to date");
+								// }
+								properties.put("hibernate.hbm2ddl.auto", "update");
 							} else if (databaseSchema.equals("validate")) {
-								updater.validate(connection, schema);
+								// updater.validate(connection, schema);
+								properties.put("hibernate.hbm2ddl.auto", "validate");
 							} else {
 								throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
 							}

@@ -25,6 +25,7 @@ import javax.persistence.PersistenceContext;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Stateless
+@JpaConnectionProviderFactory(ConnectionProviderType.SYSTEM_FACTORY)
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 	@PersistenceContext
