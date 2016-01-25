@@ -21,9 +21,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
 import org.repeid.manager.api.core.config.Config;
-import org.repeid.manager.api.jpa.ConnectionProviderType;
-import org.repeid.manager.api.jpa.JpaConnectionProvider;
-import org.repeid.manager.api.jpa.JpaConnectionProviderFactory;
+import org.repeid.manager.api.security.ISecurityContext;
+import org.repeid.manager.api.security.impl.SecurityContextFactory;
+import org.repeid.manager.api.security.impl.SecurityContextType;
 
 /**
  * Attempt to create producer methods for CDI beans.
@@ -31,16 +31,18 @@ import org.repeid.manager.api.jpa.JpaConnectionProviderFactory;
  * @author carlosthe19916@sistcoop.com
  */
 @ApplicationScoped
-public class WarCdiJpaConeccionProviderFactory {
+public class WarCdiSecurityFactory {
 
-	private String realmProvider = Config.getProvider("realm");
+	private String realmProvider = Config.getProvider("user");
 
 	@Produces
-	public JpaConnectionProvider getUserProvider(
-			@JpaConnectionProviderFactory(ConnectionProviderType.SYSTEM_FACTORY) JpaConnectionProvider systemFactory,
-			@JpaConnectionProviderFactory(ConnectionProviderType.CUSTOM_FACTORY) JpaConnectionProvider customFactory) {
-		if (realmProvider.equalsIgnoreCase("jpa")) {
-			return systemFactory;
+	public ISecurityContext provideSecurityContext(
+			@SecurityContextFactory(SecurityContextType.DEFAULT) ISecurityContext defaultSC,
+			@SecurityContextFactory(SecurityContextType.KEYCLOAK) ISecurityContext keycloakSC) {
+		if (realmProvider.equalsIgnoreCase("default")) {
+			return defaultSC;
+		} else if (realmProvider.equalsIgnoreCase("keycloak")) {
+			return keycloakSC;
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}

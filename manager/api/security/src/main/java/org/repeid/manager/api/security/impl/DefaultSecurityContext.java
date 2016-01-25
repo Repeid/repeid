@@ -18,7 +18,6 @@
 package org.repeid.manager.api.security.impl;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -27,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author eric.wittmann@redhat.com
  */
 @ApplicationScoped
-@Alternative
+@SecurityContextFactory(SecurityContextType.DEFAULT)
 public class DefaultSecurityContext extends AbstractSecurityContext {
 
 	public static final ThreadLocal<HttpServletRequest> servletRequest = new ThreadLocal<>();

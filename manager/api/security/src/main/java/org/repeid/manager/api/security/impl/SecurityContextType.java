@@ -15,27 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.jpa;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import javax.inject.Qualifier;
+package org.repeid.manager.api.security.impl;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Qualifier
-@Retention(RUNTIME)
-@Target({ METHOD, FIELD, TYPE, PARAMETER })
-public @interface JpaConnectionProviderFactory {
+public enum SecurityContextType {
 
-	ConnectionProviderType value();
+	DEFAULT,
+
+	KEYCLOAK
 
 }

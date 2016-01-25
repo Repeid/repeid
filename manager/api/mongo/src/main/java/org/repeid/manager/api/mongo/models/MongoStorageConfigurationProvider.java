@@ -23,22 +23,22 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Alternative;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.mongo.AbstractMongoStorage;
 import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-
-@Alternative
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@ProviderFactory(ProviderType.MONGO)
 public class MongoStorageConfigurationProvider extends AbstractMongoStorage implements StoreConfigurationProvider {
 
 	@Override
@@ -75,8 +75,8 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 
 	@Override
 	public StoreConfigurationModel findByDenominacion(String denominacion) {
-		TypedQuery<MongoStoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("MongoStoreConfigurationEntity.findByDenominacion", MongoStoreConfigurationEntity.class);
+		TypedQuery<MongoStoreConfigurationEntity> query = getEntityManager().createNamedQuery(
+				"MongoStoreConfigurationEntity.findByDenominacion", MongoStoreConfigurationEntity.class);
 		query.setParameter("denominacion", denominacion);
 		List<MongoStoreConfigurationEntity> results = query.getResultList();
 		if (results.isEmpty()) {
@@ -107,8 +107,8 @@ public class MongoStorageConfigurationProvider extends AbstractMongoStorage impl
 
 	@Override
 	public boolean remove(StoreConfigurationModel storeConfiguration) {
-		MongoStoreConfigurationEntity storeConfigurationEntity = getEntityManager().find(MongoStoreConfigurationEntity.class,
-				storeConfiguration.getId());
+		MongoStoreConfigurationEntity storeConfigurationEntity = getEntityManager()
+				.find(MongoStoreConfigurationEntity.class, storeConfiguration.getId());
 		if (storeConfigurationEntity == null) {
 			return false;
 		}

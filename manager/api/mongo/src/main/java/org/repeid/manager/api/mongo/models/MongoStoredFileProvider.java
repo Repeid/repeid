@@ -23,14 +23,14 @@ import java.util.UUID;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Default;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.mongo.AbstractMongoStorage;
 import org.repeid.manager.api.mongo.entities.MongoFileEntity;
 import org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity;
 import org.repeid.manager.api.mongo.entities.MongoStoredFileEntity;
@@ -42,13 +42,10 @@ import com.dropbox.core.DbxRequestConfig;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Default
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class MongoStoredFileProvider implements StoredFileProvider {
-
-	@PersistenceContext
-	private EntityManager em;
+@ProviderFactory(ProviderType.MONGO)
+public class MongoStoredFileProvider extends AbstractMongoStorage implements StoredFileProvider {
 
 	@Override
 	public void close() {
@@ -57,8 +54,8 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 
 	@Override
 	public StoredFileModel findById(String id) {
-		MongoStoredFileEntity storedFileEntity = this.em.find(MongoStoredFileEntity.class, id);
-		return storedFileEntity != null ? new StoredFileAdapter(em, storedFileEntity) : null;
+		MongoStoredFileEntity storedFileEntity = getEntityManager().find(MongoStoredFileEntity.class, id);
+		return storedFileEntity != null ? new StoredFileAdapter(getEntityManager(), storedFileEntity) : null;
 	}
 
 	@Override
@@ -80,11 +77,11 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 		// File storage
 		MongoFileEntity fileEntity = new MongoFileEntity();
 		fileEntity.setFile(file);
-		em.persist(fileEntity);
+		getEntityManager().persist(fileEntity);
 
 		// Store configuration entity
 		MongoStoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
-				.toStoreConfigurationEntity(configuration, em);
+				.toStoreConfigurationEntity(configuration, getEntityManager());
 
 		// Create StoreFileEntity
 		MongoStoredFileEntity storedFileEntity = new MongoStoredFileEntity();
@@ -92,8 +89,8 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 		storedFileEntity.setUrl(UUID.randomUUID().toString());
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);
 
-		em.persist(storedFileEntity);
-		return new StoredFileAdapter(em, storedFileEntity);
+		getEntityManager().persist(storedFileEntity);
+		return new StoredFileAdapter(getEntityManager(), storedFileEntity);
 	}
 
 	private StoredFileModel createDropboxFile(byte[] file, StoreConfigurationModel configuration) {
@@ -105,7 +102,7 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 
 		// Store configuration entity
 		MongoStoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
-				.toStoreConfigurationEntity(configuration, em);
+				.toStoreConfigurationEntity(configuration, getEntityManager());
 
 		// Create StoreFileEntity
 		MongoStoredFileEntity storedFileEntity = new MongoStoredFileEntity();
@@ -113,8 +110,8 @@ public class MongoStoredFileProvider implements StoredFileProvider {
 		storedFileEntity.setUrl(fileEntity.path);
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);
 
-		em.persist(storedFileEntity);
-		return new StoredFileAdapter(em, storedFileEntity);
+		getEntityManager().persist(storedFileEntity);
+		return new StoredFileAdapter(getEntityManager(), storedFileEntity);
 	}
 
 	private StoredFileModel createGoogleDriveFile(byte[] file, StoreConfigurationModel configuration) {

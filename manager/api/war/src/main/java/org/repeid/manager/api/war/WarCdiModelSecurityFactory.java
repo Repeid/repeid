@@ -23,6 +23,7 @@ import javax.enterprise.inject.Produces;
 import org.repeid.manager.api.core.config.Config;
 import org.repeid.manager.api.model.provider.ProviderFactory;
 import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.security.IStorageQuery;
 import org.repeid.manager.api.model.security.RoleProvider;
 import org.repeid.manager.api.model.security.UserProvider;
 
@@ -51,6 +52,18 @@ public class WarCdiModelSecurityFactory {
 	@Produces
 	public RoleProvider getRoleProvider(@ProviderFactory(ProviderType.JPA) RoleProvider jpa,
 			@ProviderFactory(ProviderType.MONGO) RoleProvider mongo) {
+		if (realmProvider.equalsIgnoreCase("jpa")) {
+			return jpa;
+		} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;
+		} else {
+			throw new RuntimeException("Provider type desconocido");
+		}
+	}
+
+	@Produces
+	public IStorageQuery getIStorageQuery(@ProviderFactory(ProviderType.JPA) IStorageQuery jpa,
+			@ProviderFactory(ProviderType.MONGO) IStorageQuery mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
