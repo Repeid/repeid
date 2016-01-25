@@ -26,7 +26,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.annotation.PreDestroy;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,18 +44,26 @@ import org.repeid.manager.api.core.config.Config;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@ApplicationScoped
+@Startup
+@Singleton
+@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProvider.class);
 
-	private volatile EntityManagerFactory emf;
+	private EntityManagerFactory emf;
 
 	private Config.Scope config;
 
 	private Map<String, String> operationalInfo;
 
+	@PostConstruct
+	public void init() {
+		lazyInit();
+	}
+
 	@Override
+	@PreDestroy
 	public void close() {
 		if (emf != null) {
 			emf.close();
@@ -63,127 +75,118 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 		return emf.createEntityManager();
 	}
 
-	@PostConstruct
-	public void initialize() {
-		lazyInit();
-	}
-
 	private void lazyInit() {
 		if (emf == null) {
-			synchronized (this) {
-				if (emf == null) {
-					logger.debug("Initializing JPA connections");
+			logger.debug("Initializing JPA connections");
 
-					Connection connection = null;
+			Connection connection = null;
 
-					String databaseSchema = config.get("databaseSchema");
+			String databaseSchema = config.get("databaseSchema");
 
-					Map<String, Object> properties = new HashMap<String, Object>();
+			Map<String, Object> properties = new HashMap<String, Object>();
 
-					String unitName = "repeid-default";
+			String unitName = "repeid-default";
 
-					String dataSource = config.get("dataSource");
-					if (dataSource != null) {
-						if (config.getBoolean("jta", false)) {
-							properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
-						} else {
-							properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
-						}
+			String dataSource = config.get("dataSource");
+			if (dataSource != null) {
+				if (config.getBoolean("jta", false)) {
+					properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
+				} else {
+					properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
+				}
+			} else {
+				properties.put(AvailableSettings.JDBC_URL, config.get("url"));
+				properties.put(AvailableSettings.JDBC_DRIVER, config.get("driver"));
+
+				String user = config.get("user");
+				if (user != null) {
+					properties.put(AvailableSettings.JDBC_USER, user);
+				}
+				String password = config.get("password");
+				if (password != null) {
+					properties.put(AvailableSettings.JDBC_PASSWORD, password);
+				}
+			}
+
+			String driverDialect = config.get("driverDialect");
+			if (driverDialect != null && driverDialect.length() > 0) {
+				properties.put("hibernate.dialect", driverDialect);
+			}
+
+			String schema = config.get("schema");
+			if (schema != null) {
+				properties.put(JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
+			}
+
+			if (databaseSchema != null) {
+				if (databaseSchema.equals("development-update")) {
+					properties.put("hibernate.hbm2ddl.auto", "update");
+					databaseSchema = null;
+				} else if (databaseSchema.equals("development-validate")) {
+					properties.put("hibernate.hbm2ddl.auto", "validate");
+					databaseSchema = null;
+				}
+			}
+
+			properties.put("hibernate.show_sql", config.getBoolean("showSql", false));
+			properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
+
+			connection = getConnection();
+			try {
+				prepareOperationalInfo(connection);
+
+				if (databaseSchema != null) {
+					logger.trace("Updating database");
+
+					// JpaUpdaterProvider updater =
+					// session.getProvider(JpaUpdaterProvider.class);
+					// if (updater == null) {
+					// throw new RuntimeException("Can't update
+					// database: JPA updater provider not found");
+					// }
+
+					if (databaseSchema.equals("update")) {
+						// String currentVersion = null;
+						// try {
+						// ResultSet resultSet =
+						// connection.createStatement()
+						// .executeQuery(updater.getCurrentVersionSql(schema));
+						// if (resultSet.next()) {
+						// currentVersion = resultSet.getString(1);
+						// }
+						// } catch (SQLException e) {
+						// }
+						//
+						// if (currentVersion == null ||
+						// !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion))
+						// {
+						// updater.update(session, connection, schema);
+						// } else {
+						// logger.debug("Database is up to date");
+						// }
+						properties.put("hibernate.hbm2ddl.auto", "update");
+					} else if (databaseSchema.equals("validate")) {
+						// updater.validate(connection, schema);
+						properties.put("hibernate.hbm2ddl.auto", "validate");
 					} else {
-						properties.put(AvailableSettings.JDBC_URL, config.get("url"));
-						properties.put(AvailableSettings.JDBC_DRIVER, config.get("driver"));
-
-						String user = config.get("user");
-						if (user != null) {
-							properties.put(AvailableSettings.JDBC_USER, user);
-						}
-						String password = config.get("password");
-						if (password != null) {
-							properties.put(AvailableSettings.JDBC_PASSWORD, password);
-						}
+						throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
 					}
 
-					String driverDialect = config.get("driverDialect");
-					if (driverDialect != null && driverDialect.length() > 0) {
-						properties.put("hibernate.dialect", driverDialect);
-					}
+					logger.trace("Database update completed");
+				}
 
-					String schema = config.get("schema");
-					if (schema != null) {
-						properties.put(JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
-					}
+				logger.trace("Creating EntityManagerFactory");
+				emf = Persistence.createEntityManagerFactory(unitName, properties);
+				logger.trace("EntityManagerFactory created");
 
-					if (databaseSchema != null) {
-						if (databaseSchema.equals("development-update")) {
-							properties.put("hibernate.hbm2ddl.auto", "update");
-							databaseSchema = null;
-						} else if (databaseSchema.equals("development-validate")) {
-							properties.put("hibernate.hbm2ddl.auto", "validate");
-							databaseSchema = null;
-						}
-					}
-
-					properties.put("hibernate.show_sql", config.getBoolean("showSql", false));
-					properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
-
-					connection = getConnection();
+			} finally {
+				// Close after creating EntityManagerFactory to prevent
+				// in-mem databases from closing
+				if (connection != null) {
 					try {
-						prepareOperationalInfo(connection);
-
-						if (databaseSchema != null) {
-							logger.trace("Updating database");
-
-							// JpaUpdaterProvider updater =
-							// session.getProvider(JpaUpdaterProvider.class);
-							// if (updater == null) {
-							// throw new RuntimeException("Can't update
-							// database: JPA updater provider not found");
-							// }
-
-							if (databaseSchema.equals("update")) {
-								// String currentVersion = null;
-								// try {
-								// ResultSet resultSet =
-								// connection.createStatement()
-								// .executeQuery(updater.getCurrentVersionSql(schema));
-								// if (resultSet.next()) {
-								// currentVersion = resultSet.getString(1);
-								// }
-								// } catch (SQLException e) {
-								// }
-								//
-								// if (currentVersion == null ||
-								// !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion))
-								// {
-								// updater.update(session, connection, schema);
-								// } else {
-								// logger.debug("Database is up to date");
-								// }
-								properties.put("hibernate.hbm2ddl.auto", "update");
-							} else if (databaseSchema.equals("validate")) {
-								// updater.validate(connection, schema);
-								properties.put("hibernate.hbm2ddl.auto", "validate");
-							} else {
-								throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
-							}
-
-							logger.trace("Database update completed");
-						}
-
-						logger.trace("Creating EntityManagerFactory");
-						emf = Persistence.createEntityManagerFactory(unitName, properties);
-						logger.trace("EntityManagerFactory created");
-
-					} finally {
-						// Close after creating EntityManagerFactory to prevent
-						// in-mem databases from closing
-						if (connection != null) {
-							try {
-								connection.close();
-							} catch (SQLException e) {
-								logger.warn(e);
-							}
-						}
+						connection.close();
+					} catch (SQLException e) {
+						logger.warn(e);
 					}
 				}
 			}
