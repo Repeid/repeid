@@ -45,6 +45,9 @@ public class Config {
 		return configProvider.scope(scope);
 	}
 
+	/**
+	 * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+	 */
 	public static interface ConfigProvider {
 
 		String getProvider(String spi);
@@ -152,28 +155,84 @@ public class Config {
 	}
 
 	/**
-	 * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+	 * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
 	 */
 	public static interface Scope {
 
+		/**
+		 * Get the value of a key {key: "value"}
+		 * 
+		 * @return String representation of value
+		 */
 		String get(String key);
 
+		/**
+		 * Get the value of a key {key: "value"}, if it's null return
+		 * defaultValue
+		 * 
+		 * @return String representation of value
+		 */
 		String get(String key, String defaultValue);
 
+		/**
+		 * Get the value of a key {key: [value]"}
+		 * 
+		 * @return Array[] representation of value
+		 */
 		String[] getArray(String key);
 
+		/**
+		 * Get the value of a key {key: value"}
+		 * 
+		 * @return Integer representation of value
+		 */
 		Integer getInt(String key);
 
+		/**
+		 * Get the value of a key {key: value"}, if it's null return
+		 * defaultValue
+		 * 
+		 * @return Integer representation of value
+		 */
 		Integer getInt(String key, Integer defaultValue);
 
+		/**
+		 * Get the value of a key {key: value"}, if it's null return
+		 * defaultValue
+		 * 
+		 * @return Long representation of value
+		 */
 		Long getLong(String key);
 
+		/**
+		 * Get the value of a key {key: value"}, if it's null return
+		 * defaultValue
+		 * 
+		 * @return Long representation of value
+		 */
 		Long getLong(String key, Long defaultValue);
 
+		/**
+		 * Get the value of a key {key: true/false"}, if it's null return
+		 * defaultValue
+		 * 
+		 * @return Boolean representation of value
+		 */
 		Boolean getBoolean(String key);
 
+		/**
+		 * Get the value of a key {key: true/false"}, if it's null return
+		 * defaultValue
+		 * 
+		 * @return Boolean representation of value
+		 */
 		Boolean getBoolean(String key, Boolean defaultValue);
 
+		/**
+		 * Get the sub scope value of a tree
+		 * 
+		 * @return Scope representation of value
+		 */
 		Scope scope(String... scope);
 
 	}

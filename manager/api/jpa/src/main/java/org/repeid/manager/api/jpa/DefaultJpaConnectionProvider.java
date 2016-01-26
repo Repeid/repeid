@@ -59,6 +59,7 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 	@PostConstruct
 	public void init() {
+		config = Config.scope("connectionsJpa");
 		lazyInit();
 	}
 
