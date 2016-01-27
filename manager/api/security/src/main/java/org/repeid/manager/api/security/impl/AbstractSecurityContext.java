@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
-import org.repeid.manager.api.model.security.IStorageQuery;
+import org.repeid.manager.api.model.security.UserProvider;
 import org.repeid.manager.api.security.ISecurityContext;
 import org.repeid.manager.api.security.i18n.Messages;
 import org.slf4j.Logger;
@@ -36,70 +36,70 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractSecurityContext implements ISecurityContext {
 
-	private static Logger logger = LoggerFactory.getLogger(AbstractSecurityContext.class);
+    private static Logger logger = LoggerFactory.getLogger(AbstractSecurityContext.class);
 
-	private static final ThreadLocal<IndexedPermissions> permissions = new ThreadLocal<>();
+    private static final ThreadLocal<IndexedPermissions> permissions = new ThreadLocal<>();
 
-	@Inject
-	private IStorageQuery query;
+    @Inject
+    private UserProvider userProvider;
 
-	/**
-	 * @see org.repeid.manager.api.security.ISecurityContext#hasPermission(org.repeid.manager.api.beans.representations.security.PermissionType,
-	 *      java.lang.String)
-	 */
-	@Override
-	public boolean hasPermission(PermissionType permission) {
-		// Admins can do everything.
-		if (isAdmin())
-			return true;
-		return getPermissions().hasQualifiedPermission(permission);
-	}
+    /**
+     * @see org.repeid.manager.api.security.ISecurityContext#hasPermission(org.repeid.manager.api.beans.representations.security.PermissionType,
+     *      java.lang.String)
+     */
+    @Override
+    public boolean hasPermission(PermissionType permission) {
+        // Admins can do everything.
+        if (isAdmin())
+            return true;
+        return getPermissions().hasQualifiedPermission(permission);
+    }
 
-	/**
-	 * @return the user permissions for the current user
-	 */
-	private IndexedPermissions getPermissions() {
-		IndexedPermissions rval = permissions.get();
-		if (rval == null) {
-			rval = loadPermissions();
-			permissions.set(rval);
-		}
-		return rval;
-	}
+    /**
+     * @return the user permissions for the current user
+     */
+    private IndexedPermissions getPermissions() {
+        IndexedPermissions rval = permissions.get();
+        if (rval == null) {
+            rval = loadPermissions();
+            permissions.set(rval);
+        }
+        return rval;
+    }
 
-	/**
-	 * Loads the current user's permissions into a thread local variable.
-	 */
-	private IndexedPermissions loadPermissions() {
-		String userId = getCurrentUser();
-		try {
-			return new IndexedPermissions(getQuery().getPermissions(userId));
-		} catch (StorageException e) {
-			logger.error(Messages.getString("AbstractSecurityContext.ErrorLoadingPermissions") + userId, e); //$NON-NLS-1$
-			return new IndexedPermissions(new HashSet<PermissionType>());
-		}
-	}
+    /**
+     * Loads the current user's permissions into a thread local variable.
+     */
+    private IndexedPermissions loadPermissions() {
+        String userId = getCurrentUser();
+        try {
+            return new IndexedPermissions(getUserProvider().getPermissions(userId));
+        } catch (StorageException e) {
+            logger.error(Messages.getString("AbstractSecurityContext.ErrorLoadingPermissions") + userId, e); //$NON-NLS-1$
+            return new IndexedPermissions(new HashSet<PermissionType>());
+        }
+    }
 
-	/**
-	 * Called to clear the current thread local permissions bean.
-	 */
-	protected static void clearPermissions() {
-		permissions.remove();
-	}
+    /**
+     * Called to clear the current thread local permissions bean.
+     */
+    protected static void clearPermissions() {
+        permissions.remove();
+    }
 
-	/**
-	 * @return the query
-	 */
-	public IStorageQuery getQuery() {
-		return query;
-	}
+    /**
+     * @return the userProvider
+     */
+    public UserProvider getUserProvider() {
+        return userProvider;
+    }
 
-	/**
-	 * @param query
-	 *            the query to set
-	 */
-	public void setQuery(IStorageQuery query) {
-		this.query = query;
-	}
+    /**
+     * @param userProvider
+     *            the query to set
+     */
+    public void setUserProvider(UserProvider userProvider) {
+        this.userProvider = userProvider;
+    }
 
 }

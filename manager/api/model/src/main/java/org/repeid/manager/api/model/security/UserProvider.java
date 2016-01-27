@@ -31,22 +31,33 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
  */
 public interface UserProvider extends Provider {
 
-	UserModel create(String username, String fullName, String email) throws StorageException;
+    UserModel create(String username, String fullName, String email) throws StorageException;
 
-	UserModel findById(String id) throws StorageException;
+    UserModel findById(String id) throws StorageException;
 
-	UserModel findByUsername(String username) throws StorageException;
+    UserModel findByUsername(String username) throws StorageException;
 
-	boolean remove(UserModel user);
+    boolean remove(UserModel user);
 
-	Set<PermissionType> getPermissions(String userId) throws StorageException;
+    /**
+     * Returns a set of permissions granted to the user due to their role
+     * memberships.
+     * 
+     * @param userId
+     *            the user's id
+     * @return set of permissions
+     * @throws StorageException
+     *             if an exception occurs during storage attempt
+     */
+    Set<PermissionType> getPermissions(String userId) throws StorageException;
 
-	List<UserModel> getAll();
+    List<UserModel> getAll();
 
-	List<UserModel> getAll(int firstResult, int maxResults);
+    List<UserModel> getAll(int firstResult, int maxResults);
 
-	SearchResultsModel<UserModel> search(SearchCriteriaModel criteria) throws StorageException;
+    SearchResultsModel<UserModel> search(SearchCriteriaModel criteria) throws StorageException;
 
-	SearchResultsModel<UserModel> search(SearchCriteriaModel criteria, String filterText) throws StorageException;
+    SearchResultsModel<UserModel> search(SearchCriteriaModel criteria, String filterText)
+            throws StorageException;
 
 }
