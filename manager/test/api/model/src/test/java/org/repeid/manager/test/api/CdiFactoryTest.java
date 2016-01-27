@@ -38,6 +38,19 @@ public class CdiFactoryTest {
 
     public static ProviderType PROVIDER = ProviderType.JPA;
 
+    /*@Produces
+    public ServerInfoAwareProviderFactory getServerInfoAwareProviderFactory(
+            @ProviderFactory(ProviderType.JPA) ServerInfoAwareProviderFactory jpa,
+            @ProviderFactory(ProviderType.MONGO) ServerInfoAwareProviderFactory mongo) {
+        if (PROVIDER.equals(ProviderType.JPA)) {
+            return jpa;
+        } else if (PROVIDER.equals(ProviderType.MONGO)) {
+            return mongo;
+        } else {
+            throw new RuntimeException("Provider type desconocido");
+        }
+    }*/
+
     @Produces
     public TipoDocumentoProvider getTipoDocumentoProvider(
             @ProviderFactory(ProviderType.JPA) TipoDocumentoProvider jpa,

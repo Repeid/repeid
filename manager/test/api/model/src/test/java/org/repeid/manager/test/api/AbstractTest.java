@@ -27,8 +27,10 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.runner.RunWith;
+import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
+import org.repeid.manager.api.core.config.RepeidApplication;
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
@@ -72,12 +74,17 @@ public abstract class AbstractTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
                 
                 .addClass(AbstractTest.class)
-                .addClass(CdiFactoryTest.class)
+                .addClass(CdiFactoryTest.class)                             
                 
-                .addPackage(StorageException.class.getPackage())
+                /**common-utils*/
+                .addPackage(SystemEnvProperties.class.getPackage())
+                
+                /**core*/
+                .addPackage(RepeidApplication.class.getPackage())
                 
                 /**beans*/
                 .addPackage(PermissionType.class.getPackage())
+                .addPackage(StorageException.class.getPackage())
                 
                 /** model-api **/
                 .addPackage(Model.class.getPackage())                
@@ -111,6 +118,7 @@ public abstract class AbstractTest {
                 .addPackage(MongoUserProvider.class.getPackage())
                 
                 /**Config**/
+                .addAsResource("META-INF/repeid-server.json", "META-INF/repeid-server.json")
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml");

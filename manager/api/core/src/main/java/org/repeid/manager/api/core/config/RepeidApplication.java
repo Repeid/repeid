@@ -26,8 +26,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.inject.Singleton;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,8 +55,7 @@ public class RepeidApplication {
     public void close() {
         log.info("Stopping the server");
     }
-
-    @PostConstruct
+    
     public void lazyInit() {
         try {
             JsonNode node = null;

@@ -41,9 +41,6 @@ import javax.sql.DataSource;
 import org.hibernate.jpa.AvailableSettings;
 import org.jboss.logging.Logger;
 import org.repeid.manager.api.core.config.Config;
-import org.repeid.manager.api.model.provider.ProviderFactory;
-import org.repeid.manager.api.model.provider.ProviderType;
-import org.repeid.manager.api.model.system.ServerInfoAwareProviderFactory;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -52,8 +49,7 @@ import org.repeid.manager.api.model.system.ServerInfoAwareProviderFactory;
 @Singleton
 @DependsOn(value = { "RepeidApplication" })
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
-@ProviderFactory(ProviderType.JPA)
-public class DefaultJpaConnectionProvider implements JpaConnectionProvider, ServerInfoAwareProviderFactory {
+public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
     private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProvider.class);
 
@@ -232,7 +228,7 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider, Serv
         }
     }
 
-    @Override
+    // @Override
     public Map<String, String> getOperationalInfo() {
         return operationalInfo;
     }
