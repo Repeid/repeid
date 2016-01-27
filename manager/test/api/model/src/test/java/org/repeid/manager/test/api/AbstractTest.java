@@ -17,15 +17,12 @@
  *******************************************************************************/
 package org.repeid.manager.test.api;
 
-import java.io.File;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.runner.RunWith;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -60,16 +57,16 @@ public abstract class AbstractTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-    	File[] dependencies = new File[9];    
-    	dependencies[0] = Maven.resolver().resolve("org.slf4j:slf4j-simple:1.7.10").withoutTransitivity().asSingleFile();
-    	dependencies[1] = Maven.resolver().resolve("com.dropbox.core:dropbox-core-sdk:1.8.2").withoutTransitivity().asSingleFile();
-    	dependencies[2] = Maven.resolver().resolve("com.google.apis:google-api-services-drive:v2-rev173-1.20.0").withoutTransitivity().asSingleFile();
-    	dependencies[3] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client:1.21.0").withoutTransitivity().asSingleFile();
-    	dependencies[4] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-java6:1.20.0").withoutTransitivity().asSingleFile();
-    	dependencies[5] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-jetty:1.20.0").withoutTransitivity().asSingleFile();    	
-    	dependencies[6] = Maven.resolver().resolve("com.google.http-client:google-http-client:1.21.0").withoutTransitivity().asSingleFile();
-    	dependencies[7] = Maven.resolver().resolve("com.google.http-client:google-http-client-jackson2:1.21.0").withoutTransitivity().asSingleFile();    	    	
-    	dependencies[8] = Maven.resolver().resolve("com.google.api-client:google-api-client:1.21.0").withoutTransitivity().asSingleFile();
+    	//File[] dependencies = new File[9];    
+    	//dependencies[0] = Maven.resolver().resolve("org.slf4j:slf4j-simple:1.7.10").withoutTransitivity().asSingleFile();
+    	//dependencies[1] = Maven.resolver().resolve("com.dropbox.core:dropbox-core-sdk:1.8.2").withoutTransitivity().asSingleFile();
+    	//dependencies[2] = Maven.resolver().resolve("com.google.apis:google-api-services-drive:v2-rev173-1.20.0").withoutTransitivity().asSingleFile();
+    	//dependencies[3] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client:1.21.0").withoutTransitivity().asSingleFile();
+    	//dependencies[4] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-java6:1.20.0").withoutTransitivity().asSingleFile();
+    	//dependencies[5] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-jetty:1.20.0").withoutTransitivity().asSingleFile();    	
+    	//dependencies[6] = Maven.resolver().resolve("com.google.http-client:google-http-client:1.21.0").withoutTransitivity().asSingleFile();
+    	//dependencies[7] = Maven.resolver().resolve("com.google.http-client:google-http-client-jackson2:1.21.0").withoutTransitivity().asSingleFile();    	    	
+    	//dependencies[8] = Maven.resolver().resolve("com.google.api-client:google-api-client:1.21.0").withoutTransitivity().asSingleFile();
 
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
                 
@@ -118,12 +115,15 @@ public abstract class AbstractTest {
                 .addPackage(MongoUserProvider.class.getPackage())
                 
                 /**Config**/
-                .addAsResource("META-INF/repeid-server.json", "META-INF/repeid-server.json")
-                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+                .addAsResource("META-INF/repeid-server.json", "META-INF/repeid-server.json")               
+                //.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+                
+                .addAsManifestResource("META-INF/jboss-deployment-structure.xml", "jboss-deployment-structure.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                
                 .addAsWebInfResource("test-ds.xml");
 
-		war.addAsLibraries( dependencies );
+		//war.addAsLibraries( dependencies );
 
         return war;
     }    

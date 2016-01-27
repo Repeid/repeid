@@ -1,35 +1,29 @@
 {
+    "providers": [
+        "classpath:${jboss.server.config.dir}/providers/*"
+    ],
+
     "admin": {
         "realm": "master"
     },
 
     "eventsStore": {
-        "provider": "${keycloak.eventsStore.provider:jpa}"
-    },
-
-    "eventsListener": {
-        "jboss-logging" : {
-            "success-level": "debug",
-            "error-level": "warn"
+        "provider": "jpa",
+        "jpa": {
+            "exclude-events": [ "REFRESH_TOKEN" ]
         }
     },
 
     "realm": {
-        "provider": "${keycloak.realm.provider:jpa}"
+        "provider": "jpa"
     },
 
     "user": {
-        "provider": "${keycloak.user.provider:jpa}"
-    },
-
-    "userSessions": {
-        "infinispan": {
-            "enforceCompat": "${keycloak.connectionsInfinispan.enforceCompat:false}"
-        }
+        "provider": "jpa"
     },
 
     "userSessionPersister": {
-        "provider": "${keycloak.userSessionPersister.provider:jpa}"
+        "provider": "jpa"
     },
 
     "timer": {
@@ -38,11 +32,11 @@
 
     "theme": {
         "default": "keycloak",
-        "staticMaxAge": "${keycloak.theme.staticMaxAge:2592000}",
-        "cacheTemplates": "${keycloak.theme.cacheTemplates:true}",
-        "cacheThemes": "${keycloak.theme.cacheThemes:true}",
+        "staticMaxAge": 2592000,
+        "cacheTemplates": true,
+        "cacheThemes": true,
         "folder": {
-            "dir": "${keycloak.theme.dir}"
+          "dir": "${jboss.server.config.dir}/themes"
         }
     },
 
@@ -51,40 +45,19 @@
     },
 
     "connectionsHttpClient": {
-        "default": {
-            "disable-trust-manager": true
-        }
+        "default": {}
     },
-
 
     "connectionsJpa": {
         "default": {
-            "url": "${keycloak.connectionsJpa.url:jdbc:h2:mem:test}",
-            "driver": "${keycloak.connectionsJpa.driver:org.h2.Driver}",
-            "driverDialect": "${keycloak.connectionsJpa.driverDialect:}",
-            "user": "${keycloak.connectionsJpa.user:sa}",
-            "password": "${keycloak.connectionsJpa.password:}",
-            "databaseSchema": "${keycloak.connectionsJpa.databaseSchema:update}",
-            "showSql": "${keycloak.connectionsJpa.showSql:false}",
-            "formatSql": "${keycloak.connectionsJpa.formatSql:true}"
-        }
-    },
-
-    "connectionsMongo": {
-        "default": {
-            "host": "${keycloak.connectionsMongo.host:127.0.0.1}",
-            "port": "${keycloak.connectionsMongo.port:27017}",
-            "db": "${keycloak.connectionsMongo.db:keycloak}",
-            "databaseSchema": "${keycloak.connectionsMongo.databaseSchema:update}",
-            "connectionsPerHost": "${keycloak.connectionsMongo.connectionsPerHost:100}"
+            "dataSource": "java:jboss/datasources/TestDS",
+            "databaseSchema": "update"
         }
     },
 
     "connectionsInfinispan": {
-        "default": {
-            "clustered": "${keycloak.connectionsInfinispan.clustered:false}",
-            "async": "${keycloak.connectionsInfinispan.async:true}",
-            "sessionsOwners": "${keycloak.connectionsInfinispan.sessionsOwners:2}"
+        "default" : {
+            "cacheContainer" : "java:comp/env/infinispan/Keycloak"
         }
     }
 }
