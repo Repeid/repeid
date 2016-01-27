@@ -17,8 +17,7 @@
 		<class>org.repeid.manager.api.jpa.entities.security.RoleEntity</class>
 		<class>org.repeid.manager.api.jpa.entities.security.UserEntity</class>
 		<class>org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity</class>
-
-		<shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
+		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

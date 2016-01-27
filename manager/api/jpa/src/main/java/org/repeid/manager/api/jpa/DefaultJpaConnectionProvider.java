@@ -27,11 +27,11 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,7 +48,7 @@ import org.repeid.manager.api.core.config.Config;
 @Startup
 @Singleton
 @DependsOn(value = { "RepeidApplication" })
-@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProvider.class);
@@ -95,7 +95,7 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 			String dataSource = config.get("dataSource");
 			if (dataSource != null) {
-				if (config.getBoolean("jta", false)) {
+				if (config.getBoolean("jta", true)) {
 					properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
 				} else {
 					properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
@@ -145,35 +145,9 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 				if (databaseSchema != null) {
 					logger.trace("Updating database");
 
-					// JpaUpdaterProvider updater =
-					// session.getProvider(JpaUpdaterProvider.class);
-					// if (updater == null) {
-					// throw new RuntimeException("Can't update
-					// database: JPA updater provider not found");
-					// }
-
 					if (databaseSchema.equals("update")) {
-						// String currentVersion = null;
-						// try {
-						// ResultSet resultSet =
-						// connection.createStatement()
-						// .executeQuery(updater.getCurrentVersionSql(schema));
-						// if (resultSet.next()) {
-						// currentVersion = resultSet.getString(1);
-						// }
-						// } catch (SQLException e) {
-						// }
-						//
-						// if (currentVersion == null ||
-						// !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion))
-						// {
-						// updater.update(session, connection, schema);
-						// } else {
-						// logger.debug("Database is up to date");
-						// }
 						properties.put("hibernate.hbm2ddl.auto", "update");
 					} else if (databaseSchema.equals("validate")) {
-						// updater.validate(connection, schema);
 						properties.put("hibernate.hbm2ddl.auto", "validate");
 					} else {
 						throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);

@@ -27,11 +27,11 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,7 +48,7 @@ import org.repeid.manager.api.core.config.Config;
 @Startup
 @Singleton
 @DependsOn(value = { "RepeidApplication" })
-@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
 
 	private static final Logger logger = Logger.getLogger(DefaultMongoConnectionProvider.class);
@@ -97,7 +97,7 @@ public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
 
 					String dataSource = config.get("dataSource");
 					if (dataSource != null) {
-						if (config.getBoolean("jta", false)) {
+						if (config.getBoolean("jta", true)) {
 							properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
 						} else {
 							properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);

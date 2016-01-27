@@ -4,8 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 
-	<persistence-unit name="repeid-defaultJpa"
-		transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="repeid-defaultJpa" transaction-type="JTA">
 		<class>org.repeid.manager.api.jpa.entities.PersonaEntity</class>
 		<class>org.repeid.manager.api.jpa.entities.PersonaNaturalEntity</class>
 		<class>org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity</class>
@@ -29,8 +28,7 @@
 		</properties>
 	</persistence-unit>
 
-	<persistence-unit name="repeid-defaultMongo"
-		transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="repeid-defaultMongo" transaction-type="JTA">
 		<class>org.repeid.manager.api.mongo.entities.MongoPersonaEntity</class>
 		<class>org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity</class>
 		<class>org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity</class>
