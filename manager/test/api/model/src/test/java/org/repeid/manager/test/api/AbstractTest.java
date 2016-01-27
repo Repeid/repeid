@@ -116,7 +116,7 @@ public abstract class AbstractTest {
                 
                 /**Config**/
                 .addAsResource("META-INF/repeid-server.json", "META-INF/repeid-server.json")               
-                //.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 
                 .addAsManifestResource("META-INF/jboss-deployment-structure.xml", "jboss-deployment-structure.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
