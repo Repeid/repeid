@@ -146,35 +146,9 @@ public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
 						if (databaseSchema != null) {
 							logger.trace("Updating database");
 
-							// JpaUpdaterProvider updater =
-							// session.getProvider(JpaUpdaterProvider.class);
-							// if (updater == null) {
-							// throw new RuntimeException("Can't update
-							// database: JPA updater provider not found");
-							// }
-
 							if (databaseSchema.equals("update")) {
-								// String currentVersion = null;
-								// try {
-								// ResultSet resultSet =
-								// connection.createStatement()
-								// .executeQuery(updater.getCurrentVersionSql(schema));
-								// if (resultSet.next()) {
-								// currentVersion = resultSet.getString(1);
-								// }
-								// } catch (SQLException e) {
-								// }
-								//
-								// if (currentVersion == null ||
-								// !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion))
-								// {
-								// updater.update(session, connection, schema);
-								// } else {
-								// logger.debug("Database is up to date");
-								// }
 								properties.put("hibernate.hbm2ddl.auto", "update");
 							} else if (databaseSchema.equals("validate")) {
-								// updater.validate(connection, schema);
 								properties.put("hibernate.hbm2ddl.auto", "validate");
 							} else {
 								throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
