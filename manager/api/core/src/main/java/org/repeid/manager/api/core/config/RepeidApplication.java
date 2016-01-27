@@ -23,6 +23,9 @@ import java.net.URL;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Startup;
 import javax.inject.Singleton;
 
@@ -38,43 +41,54 @@ import org.slf4j.LoggerFactory;
  */
 @Startup
 @Singleton
+@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class RepeidApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);
 
-	@PostConstruct
-	public static void init() {
-		try {
-			JsonNode node = null;
+    @PostConstruct
+    public void init() {
+        lazyInit();
+    }
 
-			String configDir = System.getProperty("jboss.server.config.dir");
-			if (configDir != null) {
-				File f = new File(configDir + File.separator + "repeid-server.json");
-				if (f.isFile()) {
-					log.info("Load config from " + f.getAbsolutePath());
-					node = new ObjectMapper().readTree(f);
-				}
-			}
+    @PreDestroy
+    public void close() {
+        log.info("Stopping the server");
+    }
 
-			if (node == null) {
-				URL resource = Thread.currentThread().getContextClassLoader()
-						.getResource("META-INF/repeid-server.json");
-				if (resource != null) {
-					log.info("Load config from " + resource);
-					node = new ObjectMapper().readTree(resource);
-				}
-			}
+    @PostConstruct
+    public void lazyInit() {
+        try {
+            JsonNode node = null;
 
-			if (node != null) {
-				Properties properties = new SystemEnvProperties();
-				Config.init(new JsonConfigProvider(node, properties));
-				return;
-			} else {
-				throw new RuntimeException("Config 'repeid-server.json' not found");
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to load config", e);
-		}
-	}
+            String configDir = System.getProperty("jboss.server.config.dir");
+            if (configDir != null) {
+                File f = new File(configDir + File.separator + "repeid-server.json");
+                if (f.isFile()) {
+                    log.info("Load config from " + f.getAbsolutePath());
+                    node = new ObjectMapper().readTree(f);
+                }
+            }
+
+            if (node == null) {
+                URL resource = Thread.currentThread().getContextClassLoader()
+                        .getResource("META-INF/repeid-server.json");
+                if (resource != null) {
+                    log.info("Load config from " + resource);
+                    node = new ObjectMapper().readTree(resource);
+                }
+            }
+
+            if (node != null) {
+                Properties properties = new SystemEnvProperties();
+                Config.init(new JsonConfigProvider(node, properties));
+                return;
+            } else {
+                throw new RuntimeException("Config 'repeid-server.json' not found");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load config", e);
+        }
+    }
 
 }
