@@ -3,10 +3,12 @@ subprojects {
 	    // Third Party Dependencies
 	    testCompile ( libraries.junit )
 	    testCompile ( libraries.arquillian_junit_container )
-		testCompile ( libraries.arquillian_container_chameleon )
+	    testCompile ( libraries.wildfly_arquillian_container_managed )
+		    
+		//testCompile ( libraries.arquillian_container_chameleon )
 		testCompile ( libraries.hamcrest_all )
-		testCompile ( libraries.rest_assured )
-		testCompile ( libraries.shrinkwrap_descriptors_impl_javaee )
+		//testCompile ( libraries.rest_assured )
+		//testCompile ( libraries.shrinkwrap_descriptors_impl_javaee )
 		testCompile ( libraries.arquillian_persistence_api )
 		testCompile ( libraries.arquillian_persistence_impl )			
 	}

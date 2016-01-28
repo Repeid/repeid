@@ -69,11 +69,16 @@ ext {
             // Junit
             junit:                      'junit:junit:4.12',
             
+            // Hamcrest
+            hamcrest_all: 				'org.hamcrest:hamcrest-all:1.3',
+            
+            // Rest assured
+            rest_assured:				'com.jayway.restassured:rest-assured:2.6.0',
+            
             // Arquillian
             arquillian_junit_container:	'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final',
-            arquillian_container_chameleon:	'org.arquillian.container:arquillian-container-chameleon:1.0.0.Alpha6',
-            hamcrest_all: 				'org.hamcrest:hamcrest-all:1.3',
-            rest_assured:				'com.jayway.restassured:rest-assured:2.6.0',
+            wildfly_arquillian_container_managed: 'org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.2.Final',            
+            arquillian_container_chameleon:	'org.arquillian.container:arquillian-container-chameleon:1.0.0.Alpha6',            
             shrinkwrap_descriptors_impl_javaee:	'org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-javaee:2.0.0-alpha-8',
             arquillian_persistence_api:	'org.jboss.arquillian.extension:arquillian-persistence-api:1.0.0.Alpha7',
             arquillian_persistence_impl:	'org.jboss.arquillian.extension:arquillian-persistence-impl:1.0.0.Alpha6',
