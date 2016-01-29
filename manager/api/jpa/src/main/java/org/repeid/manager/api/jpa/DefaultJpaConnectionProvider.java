@@ -41,6 +41,7 @@ import javax.sql.DataSource;
 import org.hibernate.jpa.AvailableSettings;
 import org.jboss.logging.Logger;
 import org.repeid.manager.api.core.config.Config;
+import org.repeid.manager.api.jpa.utils.JpaUtils;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
