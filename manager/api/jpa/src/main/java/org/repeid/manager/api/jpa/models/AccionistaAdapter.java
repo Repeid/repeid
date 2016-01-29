@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.model.AccionistaModel;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 
@@ -31,41 +32,44 @@ import org.repeid.manager.api.model.PersonaNaturalModel;
  */
 public class AccionistaAdapter implements AccionistaModel {
 
-	private AccionistaEntity accionistaEntity;
-	private EntityManager em;
+	private AccionistaEntity accionista;
 
-	public AccionistaAdapter(EntityManager em, AccionistaEntity accionistaEntity) {
+	private EntityManager em;
+	private KeycloakSession session;
+
+	public AccionistaAdapter(KeycloakSession session, EntityManager em, AccionistaEntity accionistaEntity) {
+		this.session = session;
 		this.em = em;
-		this.accionistaEntity = accionistaEntity;
+		this.accionista = accionistaEntity;
 	}
 
 	public AccionistaEntity getAccionistaEntity() {
-		return accionistaEntity;
+		return accionista;
 	}
 
 	@Override
 	public String getId() {
-		return accionistaEntity.getId();
+		return accionista.getId();
 	}
 
 	@Override
 	public PersonaNaturalModel getPersonaNatural() {
-		return new PersonaNaturalAdapter(em, accionistaEntity.getPersonaNatural());
+		return new PersonaNaturalAdapter(session, em, accionista.getPersonaNatural());
 	}
 
 	@Override
 	public PersonaJuridicaModel getPersonaJuridica() {
-		return new PersonaJuridicaAdapter(em, accionistaEntity.getPersonaJuridica());
+		return new PersonaJuridicaAdapter(session, em, accionista.getPersonaJuridica());
 	}
 
 	@Override
 	public BigDecimal getPorcentajeParticipacion() {
-		return accionistaEntity.getPorcentajeParticipacion();
+		return accionista.getPorcentajeParticipacion();
 	}
 
 	@Override
 	public void setPorcentajeParticipacion(BigDecimal porcentajeParticipacion) {
-		accionistaEntity.setPorcentajeParticipacion(porcentajeParticipacion);
+		accionista.setPorcentajeParticipacion(porcentajeParticipacion);
 	}
 
 	public static AccionistaEntity toAccionistaEntity(AccionistaModel model, EntityManager em) {
@@ -77,7 +81,7 @@ public class AccionistaAdapter implements AccionistaModel {
 
 	@Override
 	public void commit() {
-		em.merge(accionistaEntity);
+		em.merge(accionista);
 	}
 
 	@Override

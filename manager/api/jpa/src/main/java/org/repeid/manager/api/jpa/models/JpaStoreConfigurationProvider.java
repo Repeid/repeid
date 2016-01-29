@@ -20,26 +20,29 @@ package org.repeid.manager.api.jpa.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.manager.api.model.provider.ProviderFactory;
-import org.repeid.manager.api.model.provider.ProviderType;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(ProviderType.JPA)
 public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements StoreConfigurationProvider {
+
+	private final KeycloakSession session;
+	private EntityManager em;
+
+	public JpaStoreConfigurationProvider(KeycloakSession session, EntityManager em) {
+		super(em);
+		this.session = session;
+		this.em = em;
+	}
 
 	@Override
 	public void close() {
@@ -63,20 +66,21 @@ public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements
 		storeConfigurationEntity.setCarpetaTemporal("tmp");
 		storeConfigurationEntity.setDefault(false);
 		storeConfigurationEntity.setToken(null);
-		getEntityManager().persist(storeConfigurationEntity);
-		return new StoreConfigurationAdapter(getEntityManager(), storeConfigurationEntity);
+		em.persist(storeConfigurationEntity);
+		em.flush();
+		return new StoreConfigurationAdapter(session, em, storeConfigurationEntity);
 	}
 
 	@Override
 	public StoreConfigurationModel findById(String id) {
-		StoreConfigurationEntity entity = this.getEntityManager().find(StoreConfigurationEntity.class, id);
-		return entity != null ? new StoreConfigurationAdapter(getEntityManager(), entity) : null;
+		StoreConfigurationEntity entity = this.em.find(StoreConfigurationEntity.class, id);
+		return entity != null ? new StoreConfigurationAdapter(session, em, entity) : null;
 	}
 
 	@Override
 	public StoreConfigurationModel findByDenominacion(String denominacion) {
-		TypedQuery<StoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("StoreConfigurationEntity.findByDenominacion", StoreConfigurationEntity.class);
+		TypedQuery<StoreConfigurationEntity> query = em.createNamedQuery("StoreConfigurationEntity.findByDenominacion",
+				StoreConfigurationEntity.class);
 		query.setParameter("denominacion", denominacion);
 		List<StoreConfigurationEntity> results = query.getResultList();
 		if (results.isEmpty()) {
@@ -85,14 +89,14 @@ public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements
 			throw new IllegalStateException(
 					"Mas de un StoreConfigurationEntity con denominacion=" + denominacion + ", results=" + results);
 		} else {
-			return new StoreConfigurationAdapter(getEntityManager(), results.get(0));
+			return new StoreConfigurationAdapter(session, em, results.get(0));
 		}
 	}
 
 	@Override
 	public StoreConfigurationModel getDefaultStoreConfiguration() {
-		TypedQuery<StoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("StoreConfigurationEntity.findByIsDefault", StoreConfigurationEntity.class);
+		TypedQuery<StoreConfigurationEntity> query = em.createNamedQuery("StoreConfigurationEntity.findByIsDefault",
+				StoreConfigurationEntity.class);
 		query.setParameter("isDefault", true);
 		List<StoreConfigurationEntity> results = query.getResultList();
 		if (results.isEmpty()) {
@@ -101,30 +105,31 @@ public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements
 			throw new IllegalStateException(
 					"Mas de un StoreConfigurationEntity con isDefault=" + true + ", results=" + results);
 		} else {
-			return new StoreConfigurationAdapter(getEntityManager(), results.get(0));
+			return new StoreConfigurationAdapter(session, em, results.get(0));
 		}
 	}
 
 	@Override
 	public boolean remove(StoreConfigurationModel storeConfiguration) {
-		StoreConfigurationEntity storeConfigurationEntity = getEntityManager().find(StoreConfigurationEntity.class,
+		StoreConfigurationEntity storeConfigurationEntity = em.find(StoreConfigurationEntity.class,
 				storeConfiguration.getId());
 		if (storeConfigurationEntity == null) {
 			return false;
 		}
-		getEntityManager().remove(storeConfigurationEntity);
+		em.remove(storeConfigurationEntity);
+		em.flush();
 		return true;
 	}
 
 	@Override
 	public List<StoreConfigurationModel> getAll() {
-		TypedQuery<StoreConfigurationEntity> query = getEntityManager()
-				.createNamedQuery("StoreConfigurationEntity.findAll", StoreConfigurationEntity.class);
+		TypedQuery<StoreConfigurationEntity> query = em.createNamedQuery("StoreConfigurationEntity.findAll",
+				StoreConfigurationEntity.class);
 
 		List<StoreConfigurationEntity> entities = query.getResultList();
 		List<StoreConfigurationModel> models = new ArrayList<StoreConfigurationModel>();
 		for (StoreConfigurationEntity storeConfigurationEntity : entities) {
-			models.add(new StoreConfigurationAdapter(getEntityManager(), storeConfigurationEntity));
+			models.add(new StoreConfigurationAdapter(session, em, storeConfigurationEntity));
 		}
 		return models;
 	}

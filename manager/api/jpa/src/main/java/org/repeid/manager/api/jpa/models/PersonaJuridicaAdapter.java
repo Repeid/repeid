@@ -28,6 +28,7 @@ import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.model.AccionistaModel;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
@@ -38,232 +39,235 @@ import org.repeid.manager.api.model.enums.TipoEmpresa;
  */
 public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
-    protected PersonaJuridicaEntity personaJuridicaEntity;
-    protected EntityManager em;
+	private PersonaJuridicaEntity personaJuridica;
 
-    public PersonaJuridicaAdapter(EntityManager em, PersonaJuridicaEntity personaJuridicaEntity) {
-        this.em = em;
-        this.personaJuridicaEntity = personaJuridicaEntity;
-    }
+	private EntityManager em;
+	private KeycloakSession session;
 
-    public PersonaJuridicaEntity getPersonaJuridicaEntity() {
-        return personaJuridicaEntity;
-    }
+	public PersonaJuridicaAdapter(KeycloakSession session, EntityManager em,
+			PersonaJuridicaEntity personaJuridicaEntity) {
+		this.session = session;
+		this.em = em;
+		this.personaJuridica = personaJuridicaEntity;
+	}
 
-    @Override
-    public String getId() {
-        return personaJuridicaEntity.getId();
-    }
+	public PersonaJuridicaEntity getPersonaJuridicaEntity() {
+		return personaJuridica;
+	}
 
-    @Override
-    public PersonaNaturalModel getRepresentanteLegal() {
-        return new PersonaNaturalAdapter(em, personaJuridicaEntity.getRepresentanteLegal());
-    }
+	@Override
+	public String getId() {
+		return personaJuridica.getId();
+	}
 
-    @Override
-    public void setRepresentanteLegal(PersonaNaturalModel representanteLegal) {
-        PersonaNaturalEntity personaNaturalEntity = PersonaNaturalAdapter
-                .toPersonaNaturalEntity(representanteLegal, em);
-        personaJuridicaEntity.setRepresentanteLegal(personaNaturalEntity);
-    }
+	@Override
+	public PersonaNaturalModel getRepresentanteLegal() {
+		return new PersonaNaturalAdapter(session, em, personaJuridica.getRepresentanteLegal());
+	}
 
-    @Override
-    public List<AccionistaModel> getAccionistas() {
-        Set<AccionistaEntity> list = personaJuridicaEntity.getAccionistas();
-        List<AccionistaModel> result = new ArrayList<AccionistaModel>();
-        for (AccionistaEntity entity : list) {
-            result.add(new AccionistaAdapter(em, entity));
-        }
-        return result;
-    }
+	@Override
+	public void setRepresentanteLegal(PersonaNaturalModel representanteLegal) {
+		PersonaNaturalEntity personaNaturalEntity = PersonaNaturalAdapter.toPersonaNaturalEntity(representanteLegal,
+				em);
+		personaJuridica.setRepresentanteLegal(personaNaturalEntity);
+	}
 
-    @Override
-    public String getCodigoPais() {
-        return personaJuridicaEntity.getCodigoPais();
-    }
+	@Override
+	public List<AccionistaModel> getAccionistas() {
+		Set<AccionistaEntity> list = personaJuridica.getAccionistas();
+		List<AccionistaModel> result = new ArrayList<AccionistaModel>();
+		for (AccionistaEntity entity : list) {
+			result.add(new AccionistaAdapter(session, em, entity));
+		}
+		return result;
+	}
 
-    @Override
-    public void setCodigoPais(String codigoPais) {
-        personaJuridicaEntity.setCodigoPais(codigoPais);
-    }
+	@Override
+	public String getCodigoPais() {
+		return personaJuridica.getCodigoPais();
+	}
 
-    @Override
-    public TipoDocumentoModel getTipoDocumento() {
-        return new TipoDocumentoAdapter(em, personaJuridicaEntity.getTipoDocumento());
-    }
+	@Override
+	public void setCodigoPais(String codigoPais) {
+		personaJuridica.setCodigoPais(codigoPais);
+	}
 
-    @Override
-    public String getNumeroDocumento() {
-        return personaJuridicaEntity.getNumeroDocumento();
-    }
+	@Override
+	public TipoDocumentoModel getTipoDocumento() {
+		return new TipoDocumentoAdapter(session, em, personaJuridica.getTipoDocumento());
+	}
 
-    @Override
-    public String getRazonSocial() {
-        return personaJuridicaEntity.getRazonSocial();
-    }
+	@Override
+	public String getNumeroDocumento() {
+		return personaJuridica.getNumeroDocumento();
+	}
 
-    @Override
-    public void setRazonSocial(String razonSocial) {
-        personaJuridicaEntity.setRazonSocial(razonSocial);
-    }
+	@Override
+	public String getRazonSocial() {
+		return personaJuridica.getRazonSocial();
+	}
 
-    @Override
-    public String getNombreComercial() {
-        return personaJuridicaEntity.getNombreComercial();
-    }
+	@Override
+	public void setRazonSocial(String razonSocial) {
+		personaJuridica.setRazonSocial(razonSocial);
+	}
 
-    @Override
-    public void setNombreComercial(String nombreComercial) {
-        personaJuridicaEntity.setNombreComercial(nombreComercial);
-    }
+	@Override
+	public String getNombreComercial() {
+		return personaJuridica.getNombreComercial();
+	}
 
-    @Override
-    public Date getFechaConstitucion() {
-        return personaJuridicaEntity.getFechaConstitucion();
-    }
+	@Override
+	public void setNombreComercial(String nombreComercial) {
+		personaJuridica.setNombreComercial(nombreComercial);
+	}
 
-    @Override
-    public void setFechaConstitucion(Date fechaConstitucion) {
-        personaJuridicaEntity.setFechaConstitucion(fechaConstitucion);
-    }
+	@Override
+	public Date getFechaConstitucion() {
+		return personaJuridica.getFechaConstitucion();
+	}
 
-    @Override
-    public String getActividadPrincipal() {
-        return personaJuridicaEntity.getActividadPrincipal();
-    }
+	@Override
+	public void setFechaConstitucion(Date fechaConstitucion) {
+		personaJuridica.setFechaConstitucion(fechaConstitucion);
+	}
 
-    @Override
-    public void setActividadPrincipal(String actividadPrincipal) {
-        personaJuridicaEntity.setActividadPrincipal(actividadPrincipal);
-    }
+	@Override
+	public String getActividadPrincipal() {
+		return personaJuridica.getActividadPrincipal();
+	}
 
-    @Override
-    public TipoEmpresa getTipoEmpresa() {
-        String tipoEmpresa = personaJuridicaEntity.getTipoEmpresa();
-        return tipoEmpresa != null ? TipoEmpresa.valueOf(tipoEmpresa) : null;
-    }
+	@Override
+	public void setActividadPrincipal(String actividadPrincipal) {
+		personaJuridica.setActividadPrincipal(actividadPrincipal);
+	}
 
-    @Override
-    public void setTipoEmpresa(TipoEmpresa tipoEmpresa) {
-        if (tipoEmpresa != null) {
-            personaJuridicaEntity.setTipoEmpresa(tipoEmpresa.toString());
-        } else {
-            personaJuridicaEntity.setTipoEmpresa(null);
-        }
-    }
+	@Override
+	public TipoEmpresa getTipoEmpresa() {
+		String tipoEmpresa = personaJuridica.getTipoEmpresa();
+		return tipoEmpresa != null ? TipoEmpresa.valueOf(tipoEmpresa) : null;
+	}
 
-    @Override
-    public boolean isFinLucro() {
-        return personaJuridicaEntity.isFinLucro();
-    }
+	@Override
+	public void setTipoEmpresa(TipoEmpresa tipoEmpresa) {
+		if (tipoEmpresa != null) {
+			personaJuridica.setTipoEmpresa(tipoEmpresa.toString());
+		} else {
+			personaJuridica.setTipoEmpresa(null);
+		}
+	}
 
-    @Override
-    public void setFinLucro(boolean finLucro) {
-        personaJuridicaEntity.setFinLucro(finLucro);
-    }
+	@Override
+	public boolean isFinLucro() {
+		return personaJuridica.isFinLucro();
+	}
 
-    @Override
-    public String getUbigeo() {
-        return personaJuridicaEntity.getUbigeo();
-    }
+	@Override
+	public void setFinLucro(boolean finLucro) {
+		personaJuridica.setFinLucro(finLucro);
+	}
 
-    @Override
-    public void setUbigeo(String ubigeo) {
-        personaJuridicaEntity.setUbigeo(ubigeo);
-    }
+	@Override
+	public String getUbigeo() {
+		return personaJuridica.getUbigeo();
+	}
 
-    @Override
-    public String getDireccion() {
-        return personaJuridicaEntity.getDireccion();
-    }
+	@Override
+	public void setUbigeo(String ubigeo) {
+		personaJuridica.setUbigeo(ubigeo);
+	}
 
-    @Override
-    public void setDireccion(String direccion) {
-        personaJuridicaEntity.setDireccion(direccion);
-    }
+	@Override
+	public String getDireccion() {
+		return personaJuridica.getDireccion();
+	}
 
-    @Override
-    public String getReferencia() {
-        return personaJuridicaEntity.getReferencia();
-    }
+	@Override
+	public void setDireccion(String direccion) {
+		personaJuridica.setDireccion(direccion);
+	}
 
-    @Override
-    public void setReferencia(String referencia) {
-        personaJuridicaEntity.setReferencia(referencia);
-    }
+	@Override
+	public String getReferencia() {
+		return personaJuridica.getReferencia();
+	}
 
-    @Override
-    public String getTelefono() {
-        return personaJuridicaEntity.getTelefono();
-    }
+	@Override
+	public void setReferencia(String referencia) {
+		personaJuridica.setReferencia(referencia);
+	}
 
-    @Override
-    public void setTelefono(String telefono) {
-        personaJuridicaEntity.setTelefono(telefono);
-    }
+	@Override
+	public String getTelefono() {
+		return personaJuridica.getTelefono();
+	}
 
-    @Override
-    public String getCelular() {
-        return personaJuridicaEntity.getCelular();
-    }
+	@Override
+	public void setTelefono(String telefono) {
+		personaJuridica.setTelefono(telefono);
+	}
 
-    @Override
-    public void setCelular(String celular) {
-        personaJuridicaEntity.setCelular(celular);
-    }
+	@Override
+	public String getCelular() {
+		return personaJuridica.getCelular();
+	}
 
-    @Override
-    public String getEmail() {
-        return personaJuridicaEntity.getEmail();
-    }
+	@Override
+	public void setCelular(String celular) {
+		personaJuridica.setCelular(celular);
+	}
 
-    @Override
-    public void setEmail(String email) {
-        personaJuridicaEntity.setEmail(email);
-    }
+	@Override
+	public String getEmail() {
+		return personaJuridica.getEmail();
+	}
 
-    public static PersonaJuridicaEntity toPersonaJuridicaEntity(PersonaJuridicaModel model,
-            EntityManager em) {
-        if (model instanceof PersonaJuridicaAdapter) {
-            return ((PersonaJuridicaAdapter) model).getPersonaJuridicaEntity();
-        }
-        return em.getReference(PersonaJuridicaEntity.class, model.getId());
-    }
+	@Override
+	public void setEmail(String email) {
+		personaJuridica.setEmail(email);
+	}
 
-    @Override
-    public void commit() {
-        em.merge(personaJuridicaEntity);
-    }
+	public static PersonaJuridicaEntity toPersonaJuridicaEntity(PersonaJuridicaModel model, EntityManager em) {
+		if (model instanceof PersonaJuridicaAdapter) {
+			return ((PersonaJuridicaAdapter) model).getPersonaJuridicaEntity();
+		}
+		return em.getReference(PersonaJuridicaEntity.class, model.getId());
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getNumeroDocumento() == null) ? 0 : getNumeroDocumento().hashCode());
-        result = prime * result + ((getTipoDocumento() == null) ? 0 : getTipoDocumento().hashCode());
-        return result;
-    }
+	@Override
+	public void commit() {
+		em.merge(personaJuridica);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof PersonaJuridicaModel))
-            return false;
-        PersonaJuridicaModel other = (PersonaJuridicaModel) obj;
-        if (getNumeroDocumento() == null) {
-            if (other.getNumeroDocumento() != null)
-                return false;
-        } else if (!getNumeroDocumento().equals(other.getNumeroDocumento()))
-            return false;
-        if (getTipoDocumento() == null) {
-            if (other.getTipoDocumento() != null)
-                return false;
-        } else if (!getTipoDocumento().equals(other.getTipoDocumento()))
-            return false;
-        return true;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getNumeroDocumento() == null) ? 0 : getNumeroDocumento().hashCode());
+		result = prime * result + ((getTipoDocumento() == null) ? 0 : getTipoDocumento().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof PersonaJuridicaModel))
+			return false;
+		PersonaJuridicaModel other = (PersonaJuridicaModel) obj;
+		if (getNumeroDocumento() == null) {
+			if (other.getNumeroDocumento() != null)
+				return false;
+		} else if (!getNumeroDocumento().equals(other.getNumeroDocumento()))
+			return false;
+		if (getTipoDocumento() == null) {
+			if (other.getTipoDocumento() != null)
+				return false;
+		} else if (!getTipoDocumento().equals(other.getTipoDocumento()))
+			return false;
+		return true;
+	}
 
 }

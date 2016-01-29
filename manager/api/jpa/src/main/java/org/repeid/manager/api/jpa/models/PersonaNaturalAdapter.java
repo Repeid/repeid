@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
@@ -34,264 +35,267 @@ import org.repeid.manager.api.model.enums.Sexo;
  */
 public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
-    private PersonaNaturalEntity personaNaturalEntity;
-    private EntityManager em;
+	private PersonaNaturalEntity personaNatural;
 
-    public PersonaNaturalAdapter(EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
-        this.em = em;
-        this.personaNaturalEntity = personaNaturalEntity;
-    }
+	private EntityManager em;
+	private KeycloakSession session;
 
-    public PersonaNaturalEntity getPersonaNaturalEntity() {
-        return this.personaNaturalEntity;
-    }
+	public PersonaNaturalAdapter(KeycloakSession session, EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
+		this.session = session;
+		this.em = em;
+		this.personaNatural = personaNaturalEntity;
+	}
 
-    public static PersonaNaturalEntity toPersonaNaturalEntity(PersonaNaturalModel model, EntityManager em) {
-        if (model instanceof PersonaNaturalAdapter) {
-            return ((PersonaNaturalAdapter) model).getPersonaNaturalEntity();
-        }
-        return em.getReference(PersonaNaturalEntity.class, model.getId());
-    }
+	public PersonaNaturalEntity getPersonaNaturalEntity() {
+		return this.personaNatural;
+	}
 
-    @Override
-    public void commit() {
-        em.merge(personaNaturalEntity);
-    }
+	public static PersonaNaturalEntity toPersonaNaturalEntity(PersonaNaturalModel model, EntityManager em) {
+		if (model instanceof PersonaNaturalAdapter) {
+			return ((PersonaNaturalAdapter) model).getPersonaNaturalEntity();
+		}
+		return em.getReference(PersonaNaturalEntity.class, model.getId());
+	}
 
-    @Override
-    public String getId() {
-        return personaNaturalEntity.getId();
-    }
+	@Override
+	public void commit() {
+		em.merge(personaNatural);
+	}
 
-    @Override
-    public String getCodigoPais() {
-        return personaNaturalEntity.getCodigoPais();
-    }
+	@Override
+	public String getId() {
+		return personaNatural.getId();
+	}
 
-    @Override
-    public void setCodigoPais(String codigoPais) {
-        personaNaturalEntity.setCodigoPais(codigoPais);
-    }
+	@Override
+	public String getCodigoPais() {
+		return personaNatural.getCodigoPais();
+	}
 
-    @Override
-    public TipoDocumentoModel getTipoDocumento() {
-        return new TipoDocumentoAdapter(em, personaNaturalEntity.getTipoDocumento());
-    }
+	@Override
+	public void setCodigoPais(String codigoPais) {
+		personaNatural.setCodigoPais(codigoPais);
+	}
 
-    @Override
-    public String getNumeroDocumento() {
-        return personaNaturalEntity.getNumeroDocumento();
-    }
+	@Override
+	public TipoDocumentoModel getTipoDocumento() {
+		return new TipoDocumentoAdapter(session, em, personaNatural.getTipoDocumento());
+	}
 
-    @Override
-    public String getApellidoPaterno() {
-        return personaNaturalEntity.getApellidoPaterno();
-    }
+	@Override
+	public String getNumeroDocumento() {
+		return personaNatural.getNumeroDocumento();
+	}
 
-    @Override
-    public void setApellidoPaterno(String apellidoPaterno) {
-        personaNaturalEntity.setApellidoPaterno(apellidoPaterno);
-    }
+	@Override
+	public String getApellidoPaterno() {
+		return personaNatural.getApellidoPaterno();
+	}
 
-    @Override
-    public String getApellidoMaterno() {
-        return personaNaturalEntity.getApellidoMaterno();
-    }
+	@Override
+	public void setApellidoPaterno(String apellidoPaterno) {
+		personaNatural.setApellidoPaterno(apellidoPaterno);
+	}
 
-    @Override
-    public void setApellidoMaterno(String apellidoMaterno) {
-        personaNaturalEntity.setApellidoMaterno(apellidoMaterno);
-    }
+	@Override
+	public String getApellidoMaterno() {
+		return personaNatural.getApellidoMaterno();
+	}
 
-    @Override
-    public String getNombres() {
-        return personaNaturalEntity.getNombres();
-    }
+	@Override
+	public void setApellidoMaterno(String apellidoMaterno) {
+		personaNatural.setApellidoMaterno(apellidoMaterno);
+	}
 
-    @Override
-    public void setNombres(String nombres) {
-        personaNaturalEntity.setNombres(nombres);
-    }
+	@Override
+	public String getNombres() {
+		return personaNatural.getNombres();
+	}
 
-    @Override
-    public Date getFechaNacimiento() {
-        return personaNaturalEntity.getFechaNacimiento();
-    }
+	@Override
+	public void setNombres(String nombres) {
+		personaNatural.setNombres(nombres);
+	}
 
-    @Override
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        personaNaturalEntity.setFechaNacimiento(fechaNacimiento);
-    }
+	@Override
+	public Date getFechaNacimiento() {
+		return personaNatural.getFechaNacimiento();
+	}
 
-    @Override
-    public Sexo getSexo() {
-        String sexo = personaNaturalEntity.getSexo();
-        return sexo != null ? Sexo.valueOf(sexo) : null;
-    }
+	@Override
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		personaNatural.setFechaNacimiento(fechaNacimiento);
+	}
 
-    @Override
-    public void setSexo(Sexo sexo) {
-        if (sexo != null) {
-            personaNaturalEntity.setSexo(sexo.toString());
-        } else {
-            personaNaturalEntity.setSexo(null);
-        }
-    }
+	@Override
+	public Sexo getSexo() {
+		String sexo = personaNatural.getSexo();
+		return sexo != null ? Sexo.valueOf(sexo) : null;
+	}
 
-    @Override
-    public EstadoCivil getEstadoCivil() {
-        String estadoCivil = personaNaturalEntity.getEstadoCivil();
-        return estadoCivil != null ? EstadoCivil.valueOf(estadoCivil) : null;
-    }
+	@Override
+	public void setSexo(Sexo sexo) {
+		if (sexo != null) {
+			personaNatural.setSexo(sexo.toString());
+		} else {
+			personaNatural.setSexo(null);
+		}
+	}
 
-    @Override
-    public void setEstadoCivil(EstadoCivil estadoCivil) {
-        if (estadoCivil != null) {
-            personaNaturalEntity.setEstadoCivil(estadoCivil.toString());
-        } else {
-            personaNaturalEntity.setEstadoCivil(null);
-        }
-    }
+	@Override
+	public EstadoCivil getEstadoCivil() {
+		String estadoCivil = personaNatural.getEstadoCivil();
+		return estadoCivil != null ? EstadoCivil.valueOf(estadoCivil) : null;
+	}
 
-    @Override
-    public String getOcupacion() {
-        return personaNaturalEntity.getOcupacion();
-    }
+	@Override
+	public void setEstadoCivil(EstadoCivil estadoCivil) {
+		if (estadoCivil != null) {
+			personaNatural.setEstadoCivil(estadoCivil.toString());
+		} else {
+			personaNatural.setEstadoCivil(null);
+		}
+	}
 
-    @Override
-    public void setOcupacion(String ocupacion) {
-        personaNaturalEntity.setOcupacion(ocupacion);
-    }
+	@Override
+	public String getOcupacion() {
+		return personaNatural.getOcupacion();
+	}
 
-    @Override
-    public String getUbigeo() {
-        return personaNaturalEntity.getUbigeo();
-    }
+	@Override
+	public void setOcupacion(String ocupacion) {
+		personaNatural.setOcupacion(ocupacion);
+	}
 
-    @Override
-    public void setUbigeo(String ubigeo) {
-        personaNaturalEntity.setUbigeo(ubigeo);
-    }
+	@Override
+	public String getUbigeo() {
+		return personaNatural.getUbigeo();
+	}
 
-    @Override
-    public String getDireccion() {
-        return personaNaturalEntity.getDireccion();
-    }
+	@Override
+	public void setUbigeo(String ubigeo) {
+		personaNatural.setUbigeo(ubigeo);
+	}
 
-    @Override
-    public void setDireccion(String direccion) {
-        personaNaturalEntity.setDireccion(direccion);
-    }
+	@Override
+	public String getDireccion() {
+		return personaNatural.getDireccion();
+	}
 
-    @Override
-    public String getReferencia() {
-        return personaNaturalEntity.getReferencia();
-    }
+	@Override
+	public void setDireccion(String direccion) {
+		personaNatural.setDireccion(direccion);
+	}
 
-    @Override
-    public void setReferencia(String referencia) {
-        personaNaturalEntity.setReferencia(referencia);
-    }
+	@Override
+	public String getReferencia() {
+		return personaNatural.getReferencia();
+	}
 
-    @Override
-    public String getTelefono() {
-        return personaNaturalEntity.getTelefono();
-    }
+	@Override
+	public void setReferencia(String referencia) {
+		personaNatural.setReferencia(referencia);
+	}
 
-    @Override
-    public void setTelefono(String telefono) {
-        personaNaturalEntity.setTelefono(telefono);
-    }
+	@Override
+	public String getTelefono() {
+		return personaNatural.getTelefono();
+	}
 
-    @Override
-    public String getCelular() {
-        return personaNaturalEntity.getCelular();
-    }
+	@Override
+	public void setTelefono(String telefono) {
+		personaNatural.setTelefono(telefono);
+	}
 
-    @Override
-    public void setCelular(String celular) {
-        personaNaturalEntity.setCelular(celular);
-    }
+	@Override
+	public String getCelular() {
+		return personaNatural.getCelular();
+	}
 
-    @Override
-    public String getEmail() {
-        return personaNaturalEntity.getEmail();
-    }
+	@Override
+	public void setCelular(String celular) {
+		personaNatural.setCelular(celular);
+	}
 
-    @Override
-    public void setEmail(String email) {
-        personaNaturalEntity.setEmail(email);
-    }
+	@Override
+	public String getEmail() {
+		return personaNatural.getEmail();
+	}
 
-    @Override
-    public StoredFileModel getFoto() {
-        StoredFileEntity storedFileEntity = personaNaturalEntity.getFoto();
-        if (storedFileEntity != null) {
-            return new StoredFileAdapter(em, storedFileEntity);
-        } else {
-            return null;
-        }
-    }
+	@Override
+	public void setEmail(String email) {
+		personaNatural.setEmail(email);
+	}
 
-    @Override
-    public StoredFileModel getFirma() {
-        StoredFileEntity storedFileEntity = personaNaturalEntity.getFirma();
-        if (storedFileEntity != null) {
-            return new StoredFileAdapter(em, storedFileEntity);
-        } else {
-            return null;
-        }
-    }
+	@Override
+	public StoredFileModel getFoto() {
+		StoredFileEntity storedFileEntity = personaNatural.getFoto();
+		if (storedFileEntity != null) {
+			return new StoredFileAdapter(session, em, storedFileEntity);
+		} else {
+			return null;
+		}
+	}
 
-    @Override
-    public void setFoto(StoredFileModel foto) {
-        if (foto != null) {
-            StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(foto, em);
-            personaNaturalEntity.setFoto(storedFileEntity);
-        } else {
-            personaNaturalEntity.setFoto(null);
-        }
-    }
+	@Override
+	public StoredFileModel getFirma() {
+		StoredFileEntity storedFileEntity = personaNatural.getFirma();
+		if (storedFileEntity != null) {
+			return new StoredFileAdapter(session, em, storedFileEntity);
+		} else {
+			return null;
+		}
+	}
 
-    @Override
-    public void setFirma(StoredFileModel firma) {
-        if (firma != null) {
-            StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(firma, em);
-            personaNaturalEntity.setFirma(storedFileEntity);
-        } else {
-            personaNaturalEntity.setFirma(null);
-        }
-    }
+	@Override
+	public void setFoto(StoredFileModel foto) {
+		if (foto != null) {
+			StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(foto, em);
+			personaNatural.setFoto(storedFileEntity);
+		} else {
+			personaNatural.setFoto(null);
+		}
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getNumeroDocumento() == null) ? 0 : getNumeroDocumento().hashCode());
-        result = prime * result + ((getTipoDocumento() == null) ? 0 : getTipoDocumento().hashCode());
-        return result;
-    }
+	@Override
+	public void setFirma(StoredFileModel firma) {
+		if (firma != null) {
+			StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(firma, em);
+			personaNatural.setFirma(storedFileEntity);
+		} else {
+			personaNatural.setFirma(null);
+		}
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof PersonaNaturalModel))
-            return false;
-        PersonaNaturalModel other = (PersonaNaturalModel) obj;
-        if (getNumeroDocumento() == null) {
-            if (other.getNumeroDocumento() != null)
-                return false;
-        } else if (!getNumeroDocumento().equals(other.getNumeroDocumento()))
-            return false;
-        if (getTipoDocumento() == null) {
-            if (other.getTipoDocumento() != null)
-                return false;
-        } else if (!getTipoDocumento().equals(other.getTipoDocumento()))
-            return false;
-        return true;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getNumeroDocumento() == null) ? 0 : getNumeroDocumento().hashCode());
+		result = prime * result + ((getTipoDocumento() == null) ? 0 : getTipoDocumento().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof PersonaNaturalModel))
+			return false;
+		PersonaNaturalModel other = (PersonaNaturalModel) obj;
+		if (getNumeroDocumento() == null) {
+			if (other.getNumeroDocumento() != null)
+				return false;
+		} else if (!getNumeroDocumento().equals(other.getNumeroDocumento()))
+			return false;
+		if (getTipoDocumento() == null) {
+			if (other.getTipoDocumento() != null)
+				return false;
+		} else if (!getTipoDocumento().equals(other.getTipoDocumento()))
+			return false;
+		return true;
+	}
 
 }

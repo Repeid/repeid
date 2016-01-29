@@ -20,6 +20,7 @@ package org.repeid.manager.api.jpa.models;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
 
@@ -28,12 +29,15 @@ import org.repeid.manager.api.model.enums.TipoPersona;
  */
 public class TipoDocumentoAdapter implements TipoDocumentoModel {
 
-	private TipoDocumentoEntity tipoDocumentoEntity;
-	private EntityManager em;
+	private TipoDocumentoEntity tipoDocumento;
 
-	public TipoDocumentoAdapter(EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
+	private EntityManager em;
+	private final KeycloakSession session;
+
+	public TipoDocumentoAdapter(KeycloakSession session, EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
+		this.session = session;
 		this.em = em;
-		this.tipoDocumentoEntity = tipoDocumentoEntity;
+		this.tipoDocumento = tipoDocumentoEntity;
 	}
 
 	public static TipoDocumentoEntity toTipoDocumentoEntity(TipoDocumentoModel model, EntityManager em) {
@@ -44,72 +48,72 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 	}
 
 	public TipoDocumentoEntity getTipoDocumentEntity() {
-		return tipoDocumentoEntity;
+		return tipoDocumento;
 	}
 
 	@Override
 	public String getId() {
-		return tipoDocumentoEntity.getId();
+		return tipoDocumento.getId();
 	}
 
 	@Override
 	public String getAbreviatura() {
-		return tipoDocumentoEntity.getAbreviatura();
+		return tipoDocumento.getAbreviatura();
 	}
 
 	@Override
 	public void setAbreviatura(String abreviatura) {
-		tipoDocumentoEntity.setAbreviatura(abreviatura);
+		tipoDocumento.setAbreviatura(abreviatura);
 	}
 
 	@Override
 	public String getDenominacion() {
-		return tipoDocumentoEntity.getDenominacion();
+		return tipoDocumento.getDenominacion();
 	}
 
 	@Override
 	public void setDenominacion(String denominacion) {
-		tipoDocumentoEntity.setDenominacion(denominacion);
+		tipoDocumento.setDenominacion(denominacion);
 	}
 
 	@Override
 	public int getCantidadCaracteres() {
-		return tipoDocumentoEntity.getCantidadCaracteres();
+		return tipoDocumento.getCantidadCaracteres();
 	}
 
 	@Override
 	public void setCantidadCaracteres(int cantidadCaracteres) {
-		tipoDocumentoEntity.setCantidadCaracteres(cantidadCaracteres);
+		tipoDocumento.setCantidadCaracteres(cantidadCaracteres);
 	}
 
 	@Override
 	public TipoPersona getTipoPersona() {
-		String tipoPersona = tipoDocumentoEntity.getTipoPersona();
+		String tipoPersona = tipoDocumento.getTipoPersona();
 		return tipoPersona != null ? TipoPersona.valueOf(tipoPersona) : null;
 	}
 
 	@Override
 	public void setTipoPersona(TipoPersona tipoPersona) {
 		if (tipoPersona != null) {
-			tipoDocumentoEntity.setTipoPersona(tipoPersona.toString());
+			tipoDocumento.setTipoPersona(tipoPersona.toString());
 		} else {
-			tipoDocumentoEntity.setTipoPersona(null);
+			tipoDocumento.setTipoPersona(null);
 		}
 	}
 
 	@Override
 	public boolean getEstado() {
-		return tipoDocumentoEntity.isEstado();
+		return tipoDocumento.isEstado();
 	}
 
 	@Override
 	public void setEstado(boolean estado) {
-		tipoDocumentoEntity.setEstado(estado);
+		tipoDocumento.setEstado(estado);
 	}
 
 	@Override
 	public void commit() {
-		em.merge(tipoDocumentoEntity);
+		em.merge(tipoDocumento);
 	}
 
 	@Override

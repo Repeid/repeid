@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 
@@ -29,12 +30,15 @@ import org.repeid.manager.api.model.StoredFileModel;
  */
 public class StoredFileAdapter implements StoredFileModel {
 
-	private StoredFileEntity fileStoreEntity;
-	private EntityManager em;
+	private StoredFileEntity storedFile;
 
-	public StoredFileAdapter(EntityManager em, StoredFileEntity storedFileEntity) {
+	private EntityManager em;
+	private KeycloakSession session;
+
+	public StoredFileAdapter(KeycloakSession session, EntityManager em, StoredFileEntity storedFileEntity) {
+		this.session = session;
 		this.em = em;
-		this.fileStoreEntity = storedFileEntity;
+		this.storedFile = storedFileEntity;
 	}
 
 	public static StoredFileEntity toStoredFileEntity(StoredFileModel model, EntityManager em) {
@@ -45,43 +49,43 @@ public class StoredFileAdapter implements StoredFileModel {
 	}
 
 	public StoredFileEntity getStoredFileEntity() {
-		return fileStoreEntity;
+		return storedFile;
 	}
 
 	@Override
 	public void commit() {
-		em.merge(fileStoreEntity);
+		em.merge(storedFile);
 	}
 
 	@Override
 	public String getId() {
-		return fileStoreEntity.getId();
+		return storedFile.getId();
 	}
 
 	@Override
 	public String getFileId() {
-		return fileStoreEntity.getFileId();
+		return storedFile.getFileId();
 	}
 
 	@Override
 	public void setFileId(String fileId) {
-		fileStoreEntity.setFileId(fileId);
+		storedFile.setFileId(fileId);
 	}
 
 	@Override
 	public String getUrl() {
-		return fileStoreEntity.getUrl();
+		return storedFile.getUrl();
 	}
 
 	@Override
 	public void setUrl(String url) {
-		fileStoreEntity.setUrl(url);
+		storedFile.setUrl(url);
 	}
 
 	@Override
 	public StoreConfigurationModel getStoreConfiguration() {
-		StoreConfigurationEntity storeConfigurationEntity = fileStoreEntity.getStoreConfiguration();
-		return new StoreConfigurationAdapter(em, storeConfigurationEntity);
+		StoreConfigurationEntity storeConfigurationEntity = storedFile.getStoreConfiguration();
+		return new StoreConfigurationAdapter(session, em, storeConfigurationEntity);
 	}
 
 	@Override

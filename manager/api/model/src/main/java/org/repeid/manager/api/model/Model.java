@@ -22,6 +22,10 @@ package org.repeid.manager.api.model;
  */
 public interface Model {
 
+	/**
+	 * Will remove on the next version
+	 */
+	@Deprecated
 	void commit();
 
 }

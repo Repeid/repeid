@@ -21,37 +21,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.manager.api.model.provider.ProviderFactory;
-import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(ProviderType.JPA)
 public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";
 	private static final String DENOMINACION = "denominacion";
 	private static final String TIPO_PERSONA = "tipoPersona";
 	private static final String ESTADO = "estado";
+
+	private final KeycloakSession session;
+	private EntityManager em;
+
+	public JpaTipoDocumentoProvider(KeycloakSession session, EntityManager em) {
+		super(em);
+		this.session = session;
+		this.em = em;
+	}
 
 	@Override
 	public void close() {
@@ -60,79 +62,82 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 
 	@Override
 	public TipoDocumentoModel create(String abreviatura, String denominacion, int cantidadCaracteres,
-			TipoPersona tipoPersona) throws StorageException {
+			TipoPersona tipoPersona) {
 		if (findByAbreviatura(abreviatura) != null) {
 			throw new ModelDuplicateException(
 					"TipoDocumentoEntity abreviatura debe ser unico, se encontro otra entidad con abreviatura:"
 							+ abreviatura);
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = new TipoDocumentoEntity();
-		tipoDocumentoEntity.setAbreviatura(abreviatura);
-		tipoDocumentoEntity.setDenominacion(denominacion);
-		tipoDocumentoEntity.setCantidadCaracteres(cantidadCaracteres);
-		tipoDocumentoEntity.setTipoPersona(tipoPersona.toString());
-		tipoDocumentoEntity.setEstado(true);
-		super.create(tipoDocumentoEntity);
-		return new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity);
+		TipoDocumentoEntity entity = new TipoDocumentoEntity();
+		entity.setAbreviatura(abreviatura);
+		entity.setDenominacion(denominacion);
+		entity.setCantidadCaracteres(cantidadCaracteres);
+		entity.setTipoPersona(tipoPersona.toString());
+		entity.setEstado(true);
+		em.persist(entity);
+		em.flush();
+		return new TipoDocumentoAdapter(session, em, entity);
 	}
 
 	@Override
-	public TipoDocumentoModel findByAbreviatura(String abreviatura) throws StorageException {
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager()
-				.createNamedQuery("TipoDocumentoEntity.findByAbreviatura", TipoDocumentoEntity.class);
+	public TipoDocumentoModel findByAbreviatura(String abreviatura) {
+		TypedQuery<TipoDocumentoEntity> query = em.createNamedQuery("TipoDocumentoEntity.findByAbreviatura",
+				TipoDocumentoEntity.class);
 		query.setParameter("abreviatura", abreviatura);
-		List<TipoDocumentoEntity> results = executeTypedQuery(query);
+		List<TipoDocumentoEntity> results = query.getResultList();
 		if (results.isEmpty()) {
 			return null;
 		} else if (results.size() > 1) {
 			throw new IllegalStateException(
 					"Mas de un TipoDocumentoEntity con abreviatura=" + abreviatura + ", results=" + results);
 		} else {
-			return new TipoDocumentoAdapter(getEntityManager(), results.get(0));
+			TipoDocumentoEntity entity = results.get(0);
+			return new TipoDocumentoAdapter(session, em, entity);
 		}
 	}
 
 	@Override
-	public TipoDocumentoModel findById(String id) throws StorageException {
-		TipoDocumentoEntity entity = get(id, TipoDocumentoEntity.class);
-		return entity != null ? new TipoDocumentoAdapter(getEntityManager(), entity) : null;
+	public TipoDocumentoModel findById(String id) {
+		TipoDocumentoEntity entity = em.find(TipoDocumentoEntity.class, id);
+		return entity != null ? new TipoDocumentoAdapter(session, em, entity) : null;
 	}
 
 	@Override
-	public boolean remove(TipoDocumentoModel tipoDocumentoModel) throws StorageException {
-		TypedQuery<PersonaNaturalEntity> query1 = getEntityManager()
-				.createNamedQuery("PersonaNaturalEntity.findByTipoDocumento", PersonaNaturalEntity.class);
-		query1.setParameter("tipoDocumento", tipoDocumentoModel.getAbreviatura());
+	public boolean remove(TipoDocumentoModel tipoDocumento) {
+		TypedQuery<PersonaNaturalEntity> query1 = em.createNamedQuery("PersonaNaturalEntity.findByTipoDocumento",
+				PersonaNaturalEntity.class);
+		query1.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query1.setMaxResults(1);
-		if (!executeTypedQuery(query1).isEmpty()) {
+		if (!query1.getResultList().isEmpty()) {
 			return false;
 		}
 
-		TypedQuery<PersonaJuridicaEntity> query2 = getEntityManager()
-				.createNamedQuery("PersonaJuridicaEntity.findByTipoDocumento", PersonaJuridicaEntity.class);
-		query2.setParameter("tipoDocumento", tipoDocumentoModel.getAbreviatura());
+		TypedQuery<PersonaJuridicaEntity> query2 = em.createNamedQuery("PersonaJuridicaEntity.findByTipoDocumento",
+				PersonaJuridicaEntity.class);
+		query2.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query2.setMaxResults(1);
-		if (!executeTypedQuery(query2).isEmpty()) {
+		if (!query2.getResultList().isEmpty()) {
 			return false;
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = get(tipoDocumentoModel.getId(), TipoDocumentoEntity.class);
+		TipoDocumentoEntity tipoDocumentoEntity = em.find(TipoDocumentoEntity.class, tipoDocumento.getId());
 		if (tipoDocumentoEntity == null) {
 			return false;
 		}
-		delete(tipoDocumentoEntity);
+		em.remove(tipoDocumentoEntity);
+		em.flush();
 		return true;
 	}
 
 	@Override
-	public List<TipoDocumentoModel> getAll() throws StorageException {
+	public List<TipoDocumentoModel> getAll() {
 		return getAll(-1, -1);
 	}
 
 	@Override
-	public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) throws StorageException {
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager().createNamedQuery("TipoDocumentoEntity.findAll",
+	public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) {
+		TypedQuery<TipoDocumentoEntity> query = em.createNamedQuery("TipoDocumentoEntity.findAll",
 				TipoDocumentoEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -143,20 +148,20 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		List<TipoDocumentoEntity> entities = query.getResultList();
 		List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
 		for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
-			models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
+			models.add(new TipoDocumentoAdapter(session, em, tipoDocumentoEntity));
 		}
 		return models;
 	}
 
 	@Override
-	public List<TipoDocumentoModel> search(String filterText) throws StorageException {
+	public List<TipoDocumentoModel> search(String filterText) {
 		return search(filterText, -1, -1);
 	}
 
 	@Override
-	public List<TipoDocumentoModel> search(String filterText, int firstResult, int maxResults) throws StorageException {
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager()
-				.createNamedQuery("TipoDocumentoEntity.findByFilterText", TipoDocumentoEntity.class);
+	public List<TipoDocumentoModel> search(String filterText, int firstResult, int maxResults) {
+		TypedQuery<TipoDocumentoEntity> query = em.createNamedQuery("TipoDocumentoEntity.findByFilterText",
+				TipoDocumentoEntity.class);
 		query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -164,23 +169,23 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		if (maxResults != -1) {
 			query.setMaxResults(maxResults);
 		}
-		List<TipoDocumentoEntity> entities = executeTypedQuery(query);
+		List<TipoDocumentoEntity> entities = query.getResultList();
 		List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
 		for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
-			models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
+			models.add(new TipoDocumentoAdapter(session, em, tipoDocumentoEntity));
 		}
 
 		return models;
 	}
 
 	@Override
-	public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes) throws StorageException {
+	public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes) {
 		return searchByAttributes(attributes, -1, -1);
 	}
 
 	@Override
-	public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes, int firstResult, int maxResults)
-			throws StorageException {
+	public List<TipoDocumentoModel> searchByAttributes(Map<String, Object> attributes, int firstResult,
+			int maxResults) {
 		StringBuilder builder = new StringBuilder("SELECT t FROM TipoDocumentoEntity");
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attribute = null;
@@ -214,7 +219,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		}
 		builder.append(" order by t.abreviatura");
 		String q = builder.toString();
-		TypedQuery<TipoDocumentoEntity> query = getEntityManager().createQuery(q, TipoDocumentoEntity.class);
+		TypedQuery<TipoDocumentoEntity> query = em.createQuery(q, TipoDocumentoEntity.class);
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String parameterName = null;
 			if (entry.getKey().equals(TipoDocumentoModel.ABREVIATURA)) {
@@ -247,18 +252,18 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		List<TipoDocumentoEntity> results = query.getResultList();
 		List<TipoDocumentoModel> tipoDocumentos = new ArrayList<TipoDocumentoModel>();
 		for (TipoDocumentoEntity entity : results)
-			tipoDocumentos.add(new TipoDocumentoAdapter(getEntityManager(), entity));
+			tipoDocumentos.add(new TipoDocumentoAdapter(session, em, entity));
 		return tipoDocumentos;
 	}
 
 	@Override
-	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria) throws StorageException {
+	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria) {
 		SearchResultsModel<TipoDocumentoEntity> entityResult = find(criteria, TipoDocumentoEntity.class);
 
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();
 		for (TipoDocumentoEntity entity : entityResult.getModels()) {
-			list.add(new TipoDocumentoAdapter(getEntityManager(), entity));
+			list.add(new TipoDocumentoAdapter(session, em, entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);
@@ -266,15 +271,14 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 	}
 
 	@Override
-	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria, String filterText)
-			throws StorageException {
+	public SearchResultsModel<TipoDocumentoModel> search(SearchCriteriaModel criteria, String filterText) {
 		SearchResultsModel<TipoDocumentoEntity> entityResult = findFullText(criteria, TipoDocumentoEntity.class,
 				filterText, ABREVIATURA, DENOMINACION);
 
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();
 		for (TipoDocumentoEntity entity : entityResult.getModels()) {
-			list.add(new TipoDocumentoAdapter(getEntityManager(), entity));
+			list.add(new TipoDocumentoAdapter(session, em, entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);

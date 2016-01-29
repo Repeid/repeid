@@ -20,6 +20,7 @@ package org.repeid.manager.api.jpa.models;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
 
@@ -28,149 +29,152 @@ import org.repeid.manager.api.model.enums.StoreConfigurationType;
  */
 public class StoreConfigurationAdapter implements StoreConfigurationModel {
 
-    private StoreConfigurationEntity storeConfigurationEntity;
-    private EntityManager em;
+	private StoreConfigurationEntity storeConfiguration;
 
-    public StoreConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
-        this.em = em;
-        this.storeConfigurationEntity = storeConfigurationEntity;
-    }
+	private EntityManager em;
+	private KeycloakSession session;
 
-    public static StoreConfigurationEntity toStoreConfigurationEntity(StoreConfigurationModel model,
-            EntityManager em) {
-        if (model instanceof StoreConfigurationAdapter) {
-            return ((StoreConfigurationAdapter) model).getStoreConfigurationEntity();
-        }
-        return em.getReference(StoreConfigurationEntity.class, model.getId());
-    }
+	public StoreConfigurationAdapter(KeycloakSession session, EntityManager em,
+			StoreConfigurationEntity storeConfigurationEntity) {
+		this.session = session;
+		this.em = em;
+		this.storeConfiguration = storeConfigurationEntity;
+	}
 
-    public StoreConfigurationEntity getStoreConfigurationEntity() {
-        return storeConfigurationEntity;
-    }
+	public static StoreConfigurationEntity toStoreConfigurationEntity(StoreConfigurationModel model, EntityManager em) {
+		if (model instanceof StoreConfigurationAdapter) {
+			return ((StoreConfigurationAdapter) model).getStoreConfigurationEntity();
+		}
+		return em.getReference(StoreConfigurationEntity.class, model.getId());
+	}
 
-    @Override
-    public void commit() {
-        em.merge(storeConfigurationEntity);
-    }
+	public StoreConfigurationEntity getStoreConfigurationEntity() {
+		return storeConfiguration;
+	}
 
-    @Override
-    public String getId() {
-        return storeConfigurationEntity.getId();
-    }
+	@Override
+	public void commit() {
+		em.merge(storeConfiguration);
+	}
 
-    @Override
-    public StoreConfigurationType getProviderName() {
-        return StoreConfigurationType.valueOf(storeConfigurationEntity.getProviderName());
-    }
+	@Override
+	public String getId() {
+		return storeConfiguration.getId();
+	}
 
-    @Override
-    public String getDenominacion() {
-        return storeConfigurationEntity.getDenominacion();
-    }
+	@Override
+	public StoreConfigurationType getProviderName() {
+		return StoreConfigurationType.valueOf(storeConfiguration.getProviderName());
+	}
 
-    @Override
-    public String getCarpetaRaiz() {
-        return storeConfigurationEntity.getCarpetaRaiz();
-    }
+	@Override
+	public String getDenominacion() {
+		return storeConfiguration.getDenominacion();
+	}
 
-    @Override
-    public void setCarpetaRaiz(String carpetaRaiz) {
-        storeConfigurationEntity.setCarpetaRaiz(carpetaRaiz);
-    }
+	@Override
+	public String getCarpetaRaiz() {
+		return storeConfiguration.getCarpetaRaiz();
+	}
 
-    @Override
-    public String getCarpetaFoto() {
-        return storeConfigurationEntity.getCarpetaFoto();
-    }
+	@Override
+	public void setCarpetaRaiz(String carpetaRaiz) {
+		storeConfiguration.setCarpetaRaiz(carpetaRaiz);
+	}
 
-    @Override
-    public void setCarpetaFoto(String carpetaFoto) {
-        storeConfigurationEntity.setCarpetaFoto(carpetaFoto);
-    }
+	@Override
+	public String getCarpetaFoto() {
+		return storeConfiguration.getCarpetaFoto();
+	}
 
-    @Override
-    public String getCarpetaFirma() {
-        return storeConfigurationEntity.getCarpetaFirma();
-    }
+	@Override
+	public void setCarpetaFoto(String carpetaFoto) {
+		storeConfiguration.setCarpetaFoto(carpetaFoto);
+	}
 
-    @Override
-    public void setCarpetaFirma(String carpetaFirma) {
-        storeConfigurationEntity.setCarpetaFirma(carpetaFirma);
-    }
+	@Override
+	public String getCarpetaFirma() {
+		return storeConfiguration.getCarpetaFirma();
+	}
 
-    @Override
-    public String getCarpetaTemporal() {
-        return storeConfigurationEntity.getCarpetaTemporal();
-    }
+	@Override
+	public void setCarpetaFirma(String carpetaFirma) {
+		storeConfiguration.setCarpetaFirma(carpetaFirma);
+	}
 
-    @Override
-    public void setCarpetaTemporal(String carpetaTemporal) {
-        storeConfigurationEntity.setCarpetaTemporal(carpetaTemporal);
-    }
+	@Override
+	public String getCarpetaTemporal() {
+		return storeConfiguration.getCarpetaTemporal();
+	}
 
-    @Override
-    public String getAppKey() {
-        return storeConfigurationEntity.getAppKey();
-    }
+	@Override
+	public void setCarpetaTemporal(String carpetaTemporal) {
+		storeConfiguration.setCarpetaTemporal(carpetaTemporal);
+	}
 
-    @Override
-    public void setAppKey(String appKey) {
-        storeConfigurationEntity.setAppKey(appKey);
-    }
+	@Override
+	public String getAppKey() {
+		return storeConfiguration.getAppKey();
+	}
 
-    @Override
-    public String getAppSecret() {
-        return storeConfigurationEntity.getAppSecret();
-    }
+	@Override
+	public void setAppKey(String appKey) {
+		storeConfiguration.setAppKey(appKey);
+	}
 
-    @Override
-    public void setAppSecret(String appSecret) {
-        storeConfigurationEntity.setAppSecret(appSecret);
-    }
+	@Override
+	public String getAppSecret() {
+		return storeConfiguration.getAppSecret();
+	}
 
-    @Override
-    public String getToken() {
-        return storeConfigurationEntity.getToken();
-    }
+	@Override
+	public void setAppSecret(String appSecret) {
+		storeConfiguration.setAppSecret(appSecret);
+	}
 
-    @Override
-    public void setToken(String token) {
-        storeConfigurationEntity.setToken(token);
-    }
+	@Override
+	public String getToken() {
+		return storeConfiguration.getToken();
+	}
 
-    @Override
-    public boolean isDefault() {
-        return storeConfigurationEntity.isDefault();
-    }
+	@Override
+	public void setToken(String token) {
+		storeConfiguration.setToken(token);
+	}
 
-    @Override
-    public void setDefault(boolean isDefault) {
-        storeConfigurationEntity.setDefault(isDefault);
-    }
+	@Override
+	public boolean isDefault() {
+		return storeConfiguration.isDefault();
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getDenominacion() == null) ? 0 : getDenominacion().hashCode());
-        return result;
-    }
+	@Override
+	public void setDefault(boolean isDefault) {
+		storeConfiguration.setDefault(isDefault);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof StoreConfigurationModel))
-            return false;
-        StoreConfigurationModel other = (StoreConfigurationModel) obj;
-        if (getDenominacion() == null) {
-            if (other.getDenominacion() != null)
-                return false;
-        } else if (!getDenominacion().equals(other.getDenominacion()))
-            return false;
-        return true;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getDenominacion() == null) ? 0 : getDenominacion().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof StoreConfigurationModel))
+			return false;
+		StoreConfigurationModel other = (StoreConfigurationModel) obj;
+		if (getDenominacion() == null) {
+			if (other.getDenominacion() != null)
+				return false;
+		} else if (!getDenominacion().equals(other.getDenominacion()))
+			return false;
+		return true;
+	}
 
 }

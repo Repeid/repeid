@@ -22,6 +22,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.security.UserModel;
 
 /**
@@ -30,9 +31,12 @@ import org.repeid.manager.api.model.security.UserModel;
 public class UserAdapter implements UserModel {
 
 	private UserEntity userEntity;
-	private EntityManager em;
 
-	public UserAdapter(EntityManager em, UserEntity userEntity) {
+	private EntityManager em;
+	private final KeycloakSession session;
+
+	public UserAdapter(KeycloakSession session, EntityManager em, UserEntity userEntity) {
+		this.session = session;
 		this.em = em;
 		this.userEntity = userEntity;
 	}

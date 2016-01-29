@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
@@ -33,19 +31,25 @@ import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.AccionistaProvider;
+import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.manager.api.model.provider.ProviderFactory;
-import org.repeid.manager.api.model.provider.ProviderType;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
-@ProviderFactory(ProviderType.JPA)
+
 public class JpaAccionistaProvider extends AbstractJpaStorage implements AccionistaProvider {
+
+	private final KeycloakSession session;
+	private EntityManager em;
+
+	public JpaAccionistaProvider(KeycloakSession session, EntityManager em) {
+		super(em);
+		this.session = session;
+		this.em = em;
+	}
 
 	@Override
 	public void close() {
@@ -61,30 +65,29 @@ public class JpaAccionistaProvider extends AbstractJpaStorage implements Accioni
 							+ personaJuridica + "y personaNatural=" + personaNatural);
 		}
 
-		PersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(PersonaJuridicaEntity.class,
-				personaJuridica.getId());
-		PersonaNaturalEntity personaNaturalEntity = getEntityManager().find(PersonaNaturalEntity.class,
-				personaNatural.getId());
+		PersonaJuridicaEntity personaJuridicaEntity = em.find(PersonaJuridicaEntity.class, personaJuridica.getId());
+		PersonaNaturalEntity personaNaturalEntity = em.find(PersonaNaturalEntity.class, personaNatural.getId());
 
 		AccionistaEntity accionistaEntity = new AccionistaEntity();
 		accionistaEntity.setPersonaNatural(personaNaturalEntity);
 		accionistaEntity.setPersonaJuridica(personaJuridicaEntity);
 		accionistaEntity.setPorcentajeParticipacion(porcentaje);
-		getEntityManager().persist(accionistaEntity);
-		return new AccionistaAdapter(getEntityManager(), accionistaEntity);
+		em.persist(accionistaEntity);
+		em.flush();
+		return new AccionistaAdapter(session, em, accionistaEntity);
 	}
 
 	@Override
 	public AccionistaModel findById(String id) {
-		AccionistaEntity accionistaEntity = getEntityManager().find(AccionistaEntity.class, id);
-		return accionistaEntity != null ? new AccionistaAdapter(getEntityManager(), accionistaEntity) : null;
+		AccionistaEntity accionistaEntity = em.find(AccionistaEntity.class, id);
+		return accionistaEntity != null ? new AccionistaAdapter(session, em, accionistaEntity) : null;
 	}
 
 	@Override
 	public AccionistaModel findByPersonaJuridicaNatural(PersonaJuridicaModel personaJuridica,
 			PersonaNaturalModel personaNatural) {
-		TypedQuery<AccionistaEntity> query = getEntityManager()
-				.createNamedQuery("AccionistaEntity.findByIdPersonaJuridicaNatural", AccionistaEntity.class);
+		TypedQuery<AccionistaEntity> query = em.createNamedQuery("AccionistaEntity.findByIdPersonaJuridicaNatural",
+				AccionistaEntity.class);
 		query.setParameter("idPersonaJuridica", personaJuridica.getId());
 		query.setParameter("idPersonaNatural", personaNatural.getId());
 		List<AccionistaEntity> results = query.getResultList();
@@ -94,28 +97,30 @@ public class JpaAccionistaProvider extends AbstractJpaStorage implements Accioni
 			throw new IllegalStateException("Mas de un AccionistaEntity con personaNatural=" + personaNatural.getId()
 					+ " y personaJuridica=" + personaJuridica.getId() + ", results=" + results);
 		} else {
-			return new AccionistaAdapter(getEntityManager(), results.get(0));
+			AccionistaEntity entity = results.get(0);
+			return new AccionistaAdapter(session, em, entity);
 		}
 	}
 
 	@Override
 	public boolean remove(AccionistaModel accionistaModel) {
-		AccionistaEntity accionistaEntity = getEntityManager().find(AccionistaEntity.class, accionistaModel.getId());
+		AccionistaEntity accionistaEntity = em.find(AccionistaEntity.class, accionistaModel.getId());
 		if (accionistaEntity == null)
 			return false;
-		getEntityManager().remove(accionistaEntity);
+		em.remove(accionistaEntity);
+		em.flush();
 		return true;
 	}
 
 	@Override
 	public List<AccionistaModel> getAll(PersonaJuridicaModel personaJuridicaModel) {
-		PersonaJuridicaEntity personaJuridicaEntity = getEntityManager().find(PersonaJuridicaEntity.class,
+		PersonaJuridicaEntity personaJuridicaEntity = em.find(PersonaJuridicaEntity.class,
 				personaJuridicaModel.getId());
 
 		Set<AccionistaEntity> entities = personaJuridicaEntity.getAccionistas();
 		List<AccionistaModel> models = new ArrayList<AccionistaModel>();
 		for (AccionistaEntity accionistaEntity : entities) {
-			models.add(new AccionistaAdapter(getEntityManager(), accionistaEntity));
+			models.add(new AccionistaAdapter(session, em, accionistaEntity));
 		}
 
 		return models;
