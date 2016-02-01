@@ -23,12 +23,12 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -38,9 +38,9 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 	private PersonaNaturalEntity personaNatural;
 
 	private EntityManager em;
-	private KeycloakSession session;
+	private RepeidSession session;
 
-	public PersonaNaturalAdapter(KeycloakSession session, EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
+	public PersonaNaturalAdapter(RepeidSession session, EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
 		this.session = session;
 		this.em = em;
 		this.personaNatural = personaNaturalEntity;

@@ -25,20 +25,20 @@ import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoreConfigurationProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements StoreConfigurationProvider {
 
-	private final KeycloakSession session;
+	private final RepeidSession session;
 	private EntityManager em;
 
-	public JpaStoreConfigurationProvider(KeycloakSession session, EntityManager em) {
+	public JpaStoreConfigurationProvider(RepeidSession session, EntityManager em) {
 		super(em);
 		this.session = session;
 		this.em = em;

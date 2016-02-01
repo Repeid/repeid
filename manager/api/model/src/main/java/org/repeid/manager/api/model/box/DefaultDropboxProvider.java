@@ -17,33 +17,15 @@
  *******************************************************************************/
 package org.repeid.manager.api.model.box;
 
-import javax.ejb.Stateless;
-
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
+
 public class DefaultDropboxProvider implements DropboxProvider {
 
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-
 	}
-
-	/*@Override
-	public DbxClient getDropBoxClient(StoreConfigurationModel storeConfiguration) {
-		return null;
-	}
-
-	@Override
-	public DbxEntry.File upload(DbxClient dbxClient, byte[] file) {	
-		return null;
-	}
-
-	@Override
-	public File download(DbxClient dbxClient, String fileId) {		
-		return null;
-	}*/
 
 }

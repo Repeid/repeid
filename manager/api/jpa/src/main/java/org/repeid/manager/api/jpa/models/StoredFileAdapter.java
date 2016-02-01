@@ -21,9 +21,9 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -33,9 +33,9 @@ public class StoredFileAdapter implements StoredFileModel {
 	private StoredFileEntity storedFile;
 
 	private EntityManager em;
-	private KeycloakSession session;
+	private RepeidSession session;
 
-	public StoredFileAdapter(KeycloakSession session, EntityManager em, StoredFileEntity storedFileEntity) {
+	public StoredFileAdapter(RepeidSession session, EntityManager em, StoredFileEntity storedFileEntity) {
 		this.session = session;
 		this.em = em;
 		this.storedFile = storedFileEntity;

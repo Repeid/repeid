@@ -31,22 +31,22 @@ import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.security.UserProvider;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class JpaUserProvider extends AbstractJpaStorage implements UserProvider {
 
-	private final KeycloakSession session;
+	private final RepeidSession session;
 	private EntityManager em;
 
-	public JpaUserProvider(KeycloakSession session, EntityManager em) {
+	public JpaUserProvider(RepeidSession session, EntityManager em) {
 		super(em);
 		this.session = session;
 		this.em = em;

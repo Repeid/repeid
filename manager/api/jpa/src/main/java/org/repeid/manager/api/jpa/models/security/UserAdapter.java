@@ -22,8 +22,8 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.security.UserModel;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -33,9 +33,9 @@ public class UserAdapter implements UserModel {
 	private UserEntity userEntity;
 
 	private EntityManager em;
-	private final KeycloakSession session;
+	private final RepeidSession session;
 
-	public UserAdapter(KeycloakSession session, EntityManager em, UserEntity userEntity) {
+	public UserAdapter(RepeidSession session, EntityManager em, UserEntity userEntity) {
 		this.session = session;
 		this.em = em;
 		this.userEntity = userEntity;

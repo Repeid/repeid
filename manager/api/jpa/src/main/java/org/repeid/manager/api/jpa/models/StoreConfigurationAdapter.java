@@ -20,9 +20,9 @@ package org.repeid.manager.api.jpa.models;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -32,9 +32,9 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
 	private StoreConfigurationEntity storeConfiguration;
 
 	private EntityManager em;
-	private KeycloakSession session;
+	private RepeidSession session;
 
-	public StoreConfigurationAdapter(KeycloakSession session, EntityManager em,
+	public StoreConfigurationAdapter(RepeidSession session, EntityManager em,
 			StoreConfigurationEntity storeConfigurationEntity) {
 		this.session = session;
 		this.em = em;

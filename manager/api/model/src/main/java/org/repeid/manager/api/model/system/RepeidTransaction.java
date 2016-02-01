@@ -25,16 +25,16 @@ import org.repeid.manager.api.beans.exceptions.StorageException;
  */
 public interface RepeidTransaction {
 
-	void beginTx() throws StorageException;
+	void begin() throws StorageException;
 
-	void commitTx() throws StorageException;
+	void commit() throws StorageException;
 
-	void rollbackTx();
+	void rollback();
 
-	void setRollbackTxOnly();
+	void setRollbackOnly();
 
-	boolean getRollbackTxOnly();
+	boolean getRollbackOnly();
 
-	boolean isTxActive();
+	boolean isActive();
 
 }

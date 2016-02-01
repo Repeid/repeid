@@ -17,21 +17,14 @@
  *******************************************************************************/
 package org.repeid.manager.api.model.box;
 
-import javax.ejb.Stateless;
-
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
 public class DefaultGoogleDriveProvider implements GoogleDriveProvider {
 
-	/* (non-Javadoc)
-	 * @see org.repeid.manager.api.model.provider.Provider#close()
-	 */
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

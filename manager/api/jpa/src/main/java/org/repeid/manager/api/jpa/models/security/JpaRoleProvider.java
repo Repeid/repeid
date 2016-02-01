@@ -30,22 +30,22 @@ import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.security.RoleEntity;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.RoleProvider;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider {
 
-	private final KeycloakSession session;
+	private final RepeidSession session;
 	private EntityManager em;
 
-	public JpaRoleProvider(KeycloakSession session, EntityManager em) {
+	public JpaRoleProvider(RepeidSession session, EntityManager em) {
 		super(em);
 		this.session = session;
 		this.em = em;

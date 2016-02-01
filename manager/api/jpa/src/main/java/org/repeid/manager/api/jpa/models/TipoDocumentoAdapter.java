@@ -20,9 +20,9 @@ package org.repeid.manager.api.jpa.models;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -32,9 +32,9 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 	private TipoDocumentoEntity tipoDocumento;
 
 	private EntityManager em;
-	private final KeycloakSession session;
+	private final RepeidSession session;
 
-	public TipoDocumentoAdapter(KeycloakSession session, EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
+	public TipoDocumentoAdapter(RepeidSession session, EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
 		this.session = session;
 		this.em = em;
 		this.tipoDocumento = tipoDocumentoEntity;

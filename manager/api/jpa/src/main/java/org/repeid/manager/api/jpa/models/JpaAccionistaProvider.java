@@ -31,10 +31,10 @@ import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.AccionistaProvider;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -42,10 +42,10 @@ import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 
 public class JpaAccionistaProvider extends AbstractJpaStorage implements AccionistaProvider {
 
-	private final KeycloakSession session;
+	private final RepeidSession session;
 	private EntityManager em;
 
-	public JpaAccionistaProvider(KeycloakSession session, EntityManager em) {
+	public JpaAccionistaProvider(RepeidSession session, EntityManager em) {
 		super(em);
 		this.session = session;
 		this.em = em;

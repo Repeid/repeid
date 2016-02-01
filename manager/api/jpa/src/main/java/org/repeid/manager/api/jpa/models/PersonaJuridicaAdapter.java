@@ -28,11 +28,11 @@ import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.model.AccionistaModel;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -42,9 +42,9 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 	private PersonaJuridicaEntity personaJuridica;
 
 	private EntityManager em;
-	private KeycloakSession session;
+	private RepeidSession session;
 
-	public PersonaJuridicaAdapter(KeycloakSession session, EntityManager em,
+	public PersonaJuridicaAdapter(RepeidSession session, EntityManager em,
 			PersonaJuridicaEntity personaJuridicaEntity) {
 		this.session = session;
 		this.em = em;

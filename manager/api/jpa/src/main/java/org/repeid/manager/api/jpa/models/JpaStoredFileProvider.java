@@ -25,21 +25,21 @@ import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.FileEntity;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredFileProvider {
 
-	private final KeycloakSession session;
+	private final RepeidSession session;
 	private EntityManager em;
 
-	public JpaStoredFileProvider(KeycloakSession session, EntityManager em) {
+	public JpaStoredFileProvider(RepeidSession session, EntityManager em) {
 		super(em);
 		this.session = session;
 		this.em = em;

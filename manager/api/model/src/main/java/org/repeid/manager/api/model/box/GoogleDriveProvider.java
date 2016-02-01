@@ -24,9 +24,4 @@ import org.repeid.manager.api.model.provider.Provider;
  */
 public interface GoogleDriveProvider extends Provider {
 
-	/*Credential getGoogleDriveService(StoreConfigurationModel storeConfiguration);
-
-	String upload(Drive service, java.io.File UPLOAD_FILE, String title, String mimeType, String description,
-			String... parents) throws GeneralSecurityException, IOException;
-*/
 }

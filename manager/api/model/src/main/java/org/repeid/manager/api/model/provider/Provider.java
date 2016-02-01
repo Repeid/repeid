@@ -22,6 +22,7 @@ package org.repeid.manager.api.model.provider;
  */
 public interface Provider {
 
+	@Deprecated
 	public void close();
 
 }

@@ -24,10 +24,4 @@ import org.repeid.manager.api.model.provider.Provider;
  */
 public interface DropboxProvider extends Provider {
 
-	//DbxClient getDropBoxClient(StoreConfigurationModel storeConfiguration);
-
-	//DbxEntry.File upload(DbxClient dbxClient, byte[] file);
-
-	//DbxEntry.File download(DbxClient dbxClient, String fileId);
-
 }

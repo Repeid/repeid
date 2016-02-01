@@ -30,7 +30,6 @@ import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
-import org.repeid.manager.api.model.KeycloakSession;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
@@ -38,6 +37,7 @@ import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -49,10 +49,10 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 	private static final String NOMBRES = "nombres";
 	private static final String NUMERO_DOCUMENTO = "numeroDocumento";
 
-	private final KeycloakSession session;
+	private final RepeidSession session;
 	private EntityManager em;
 
-	public JpaPersonaNaturalProvider(KeycloakSession session, EntityManager em) {
+	public JpaPersonaNaturalProvider(RepeidSession session, EntityManager em) {
 		super(em);
 		this.session = session;
 		this.em = em;
