@@ -52,7 +52,7 @@ public interface RepeidSession {
 	 * @throws IllegalStateException
 	 *             if transaction is not active
 	 */
-	TipoDocumentoProvider documentos();
+	TipoDocumentoProvider tipoDocumentos();
 
 	/**
 	 * Returns a managed provider instance. Will start a provider transaction.

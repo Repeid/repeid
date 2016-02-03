@@ -15,64 +15,62 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package org.repeid.manager.api.jpa;
 
-import javax.persistence.EntityExistsException;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.RollbackException;
+import javax.persistence.PersistenceException;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.model.system.RepeidTransaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
- * @version $Revision: 1 $
  */
 public class JpaRepeidTransaction implements RepeidTransaction {
 
-	private static Logger logger = LoggerFactory.getLogger(JpaRepeidTransaction.class);
+	@Inject
+	private JpaConnectionProvider connectionProvider;
 
-	protected EntityManager em;
+	private EntityManager em;
+
+	@PostConstruct
+	public void init() {
+		this.em = connectionProvider.getEntityManager();
+	}
 
 	@Override
-	public void beginTx() throws StorageException {
+	public void begin() {
 		em.getTransaction().begin();
 	}
 
 	@Override
-	public void commitTx() throws StorageException {
+	public void commit() {
 		try {
 			em.getTransaction().commit();
-		} catch (EntityExistsException e) {
-			throw new StorageException(e);
-		} catch (RollbackException e) {
-			logger.error(e.getMessage(), e);
-			throw new StorageException(e);
-		} catch (Throwable t) {
-			logger.error(t.getMessage(), t);
-			throw new StorageException(t);
+		} catch (PersistenceException e) {
+			throw PersistenceExceptionConverter.convert(e.getCause() != null ? e.getCause() : e);
 		}
 	}
 
 	@Override
-	public void rollbackTx() {
+	public void rollback() {
 		em.getTransaction().rollback();
 	}
 
 	@Override
-	public void setRollbackTxOnly() {
+	public void setRollbackOnly() {
 		em.getTransaction().setRollbackOnly();
 	}
 
 	@Override
-	public boolean getRollbackTxOnly() {
+	public boolean getRollbackOnly() {
 		return em.getTransaction().getRollbackOnly();
 	}
 
 	@Override
-	public boolean isTxActive() {
+	public boolean isActive() {
 		return em.getTransaction().isActive();
 	}
 

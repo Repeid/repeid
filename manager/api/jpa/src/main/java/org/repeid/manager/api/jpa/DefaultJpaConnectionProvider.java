@@ -27,11 +27,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.DependsOn;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import javax.enterprise.context.ApplicationScoped;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,10 +42,7 @@ import org.repeid.manager.api.jpa.utils.JpaUtils;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Startup
-@Singleton
-@DependsOn(value = { "RepeidApplication" })
-@TransactionManagement(TransactionManagementType.BEAN)
+@ApplicationScoped
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProvider.class);
@@ -96,7 +89,7 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 			String dataSource = config.get("dataSource");
 			if (dataSource != null) {
-				if (config.getBoolean("jta", true)) {
+				if (config.getBoolean("jta", false)) {
 					properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
 				} else {
 					properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
@@ -209,4 +202,5 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 	public Map<String, String> getOperationalInfo() {
 		return operationalInfo;
 	}
+
 }

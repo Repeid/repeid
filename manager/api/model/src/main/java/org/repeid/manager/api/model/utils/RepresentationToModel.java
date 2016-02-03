@@ -38,6 +38,7 @@ import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.manager.api.model.enums.TipoPersona;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -46,7 +47,7 @@ import org.repeid.manager.api.model.enums.TipoPersona;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class RepresentationToModel {
 
-	public TipoDocumentoModel createTipoDocumento(TipoDocumentoRepresentation rep, TipoDocumentoProvider provider) throws StorageException {
+	public static TipoDocumentoModel createTipoDocumento(RepeidSession session, TipoDocumentoRepresentation rep) {
 		TipoDocumentoModel model = provider.create(rep.getAbreviatura(), rep.getDenominacion(),
 				rep.getCantidadCaracteres(), TipoPersona.valueOf(rep.getTipoPersona()));
 		return model;

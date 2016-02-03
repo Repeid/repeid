@@ -71,8 +71,7 @@ public interface TiposDocumentoResource {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(TipoDocumentoRepresentation rep)
-			throws TipoDocumentoAlreadyExistsException, NotAuthorizedException;
+	public Response create(TipoDocumentoRepresentation rep);
 
 	/**
 	 * Este endpoint provee una forma de buscar tipoDocumentos. Los criterios de
@@ -106,8 +105,7 @@ public interface TiposDocumentoResource {
 	public List<TipoDocumentoRepresentation> search(@QueryParam("abreviatura") String abreviatura,
 			@QueryParam("denominacion") String denominacion, @QueryParam("tipoPersona") String tipoPersona,
 			@QueryParam("estado") Boolean estado, @QueryParam("filterText") String filterText,
-			@QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults)
-					throws NotAuthorizedException;
+			@QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
 
 	/**
 	 * Este endpoint provee una forma de buscar tipoDocumentos. Los criterios de
@@ -126,7 +124,6 @@ public interface TiposDocumentoResource {
 	@POST
 	@Path("search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria)
-			throws InvalidSearchCriteriaException, NotAuthorizedException;
+	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

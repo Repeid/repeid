@@ -20,6 +20,7 @@ package org.repeid.manager.api.jpa;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Criteria;
@@ -43,14 +44,15 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
  */
 public abstract class AbstractJpaStorage {
 
-	protected EntityManager em;
+	@Inject
+	private JpaConnectionProvider jpaConnectionProvider;
 
-	public AbstractJpaStorage(EntityManager em) {
-		this.em = em;
+	public EntityManager getEntityManager() {
+		return jpaConnectionProvider.getEntityManager();
 	}
 
 	public Session getSession() {
-		return this.em.unwrap(Session.class);
+		return getEntityManager().unwrap(Session.class);
 	}
 
 	protected <T> SearchResultsModel<T> findFullText(SearchCriteriaModel criteria, Class<T> type, String filterText,

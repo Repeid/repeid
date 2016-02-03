@@ -22,161 +22,149 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.TipoDocumentoModel;
-import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
 import org.repeid.manager.api.model.utils.RepresentationToModel;
 import org.repeid.manager.api.rest.bussiness.TipoDocumentoResource;
 import org.repeid.manager.api.rest.bussiness.TiposDocumentoResource;
-import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
-import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoAlreadyExistsException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.security.ISecurityContext;
 
-@Stateless
+@ApplicationScoped
 public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 
-    @Inject
-    private TipoDocumentoProvider tipoDocumentoProvider;
+	@Inject
+	private RepeidSession session;
 
-    @Inject
-    private RepresentationToModel representationToModel;
+	@Inject
+	private ISecurityContext auth;
 
-    @Inject
-    private TipoDocumentoResource tipoDocumentoResource;
+	@Context
+	private UriInfo uriInfo;
 
-    @Inject
-    private ISecurityContext iSecurityContext;
+	@Inject
+	private TipoDocumentoResource tipoDocumentoResource;
 
-    @Context
-    private UriInfo uriInfo;
+	@Override
+	public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
+		return tipoDocumentoResource;
+	}
 
-    @Override
-    public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
-        return tipoDocumentoResource;
-    }
+	@Override
+	public Response create(TipoDocumentoRepresentation rep) {
+		if (!auth.hasPermission(PermissionType.documentoAdmin))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Override
-    public Response create(TipoDocumentoRepresentation rep)
-            throws TipoDocumentoAlreadyExistsException, NotAuthorizedException {
+		// Check duplicated abreviatura
+		if (session.tipoDocumentos().findByAbreviatura(rep.getAbreviatura()) != null) {
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
+		}
 
-        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
-            throw ExceptionFactory.notAuthorizedException();
+		try {
+			TipoDocumentoModel tipoDocumento = RepresentationToModel.createTipoDocumento(session, rep);
 
-        try {
-            // Check duplicated abreviatura
-            if (tipoDocumentoProvider.findByAbreviatura(rep.getAbreviatura()) != null) {
-                throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-            }
-            try {
-                TipoDocumentoModel model = representationToModel.createTipoDocumento(rep,
-                        tipoDocumentoProvider);
-                return Response.created(uriInfo.getAbsolutePathBuilder().path(model.getId()).build())
-                        .header("Access-Control-Expose-Headers", "Location")
-                        .entity(ModelToRepresentation.toRepresentation(model)).build();
-            } catch (ModelDuplicateException e) {
-                throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-            }
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
 
-    @Override
-    public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion,
-            String tipoPersona, Boolean estado, String filterText, Integer firstResult, Integer maxResults)
-                    throws NotAuthorizedException {
+			return Response.created(uriInfo.getAbsolutePathBuilder().path(tipoDocumento.getId()).build()).build();
+		} catch (ModelDuplicateException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+	}
 
-        if (!iSecurityContext.hasPermission(PermissionType.documentoView))
-            throw ExceptionFactory.notAuthorizedException();
+	@Override
+	public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion, String tipoPersona,
+			Boolean estado, String filterText, Integer firstResult, Integer maxResults) {
+		if (!auth.hasPermission(PermissionType.documentoView))
+			throw ExceptionFactory.notAuthorizedException();
 
-        try {
-            firstResult = firstResult != null ? firstResult : -1;
-            maxResults = maxResults != null ? maxResults : -1;
+		firstResult = firstResult != null ? firstResult : -1;
+		maxResults = maxResults != null ? maxResults : -1;
 
-            List<TipoDocumentoModel> models;
-            if (filterText != null) {
-                models = tipoDocumentoProvider.search(filterText.trim(), firstResult, maxResults);
-            } else if (denominacion != null || abreviatura != null || tipoPersona != null || estado != null) {
-                Map<String, Object> attributes = new HashMap<String, Object>();
-                if (abreviatura != null) {
-                    attributes.put(TipoDocumentoModel.ABREVIATURA, abreviatura);
-                }
-                if (denominacion != null) {
-                    attributes.put(TipoDocumentoModel.DENOMINACION, denominacion);
-                }
-                if (tipoPersona != null) {
-                    attributes.put(TipoDocumentoModel.TIPO_PERSONA, tipoPersona);
-                }
-                if (estado != null) {
-                    attributes.put(TipoDocumentoModel.ESTADO, estado);
-                }
-                models = tipoDocumentoProvider.searchByAttributes(attributes, firstResult, maxResults);
-            } else {
-                models = tipoDocumentoProvider.getAll(firstResult, maxResults);
-            }
+		List<TipoDocumentoModel> models;
+		if (filterText != null) {
+			models = session.tipoDocumentos().search(filterText.trim(), firstResult, maxResults);
+		} else if (denominacion != null || abreviatura != null || tipoPersona != null || estado != null) {
+			Map<String, Object> attributes = new HashMap<String, Object>();
+			if (abreviatura != null) {
+				attributes.put(TipoDocumentoModel.ABREVIATURA, abreviatura);
+			}
+			if (denominacion != null) {
+				attributes.put(TipoDocumentoModel.DENOMINACION, denominacion);
+			}
+			if (tipoPersona != null) {
+				attributes.put(TipoDocumentoModel.TIPO_PERSONA, tipoPersona);
+			}
+			if (estado != null) {
+				attributes.put(TipoDocumentoModel.ESTADO, estado);
+			}
+			models = session.tipoDocumentos().searchByAttributes(attributes, firstResult, maxResults);
+		} else {
+			models = session.tipoDocumentos().getAll(firstResult, maxResults);
+		}
 
-            List<TipoDocumentoRepresentation> results = new ArrayList<>();
-            for (TipoDocumentoModel model : models) {
-                results.add(ModelToRepresentation.toRepresentation(model));
-            }
-            return results;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		List<TipoDocumentoRepresentation> results = new ArrayList<>();
+		for (TipoDocumentoModel model : models) {
+			results.add(ModelToRepresentation.toRepresentation(model));
+		}
 
-    @Override
-    public SearchResultsRepresentation<TipoDocumentoRepresentation> search(
-            SearchCriteriaRepresentation criteria)
-                    throws InvalidSearchCriteriaException, NotAuthorizedException {
+		return results;
+	}
 
-        if (!iSecurityContext.hasPermission(PermissionType.documentoView))
-            throw ExceptionFactory.notAuthorizedException();
+	@Override
+	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria) {
+		if (!auth.hasPermission(PermissionType.documentoView))
+			throw ExceptionFactory.notAuthorizedException();
 
-        try {
-            SearchCriteriaUtil.validateSearchCriteria(criteria);
-            SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
+		SearchCriteriaUtil.validateSearchCriteria(criteria);
+		SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
 
-            // extract filterText
-            String filterText = criteria.getFilterText();
+		// extract filterText
+		String filterText = criteria.getFilterText();
 
-            // search
-            SearchResultsModel<TipoDocumentoModel> models = null;
-            if (filterText == null) {
-                models = tipoDocumentoProvider.search(criteriaModel);
-            } else {
-                models = tipoDocumentoProvider.search(criteriaModel, filterText);
-            }
+		// search
+		SearchResultsModel<TipoDocumentoModel> models = null;
+		if (filterText == null) {
+			models = session.tipoDocumentos().search(criteriaModel);
+		} else {
+			models = session.tipoDocumentos().search(criteriaModel, filterText);
+		}
 
-            SearchResultsRepresentation<TipoDocumentoRepresentation> result = new SearchResultsRepresentation<>();
-            List<TipoDocumentoRepresentation> items = new ArrayList<>();
-            for (TipoDocumentoModel model : models.getModels()) {
-                items.add(ModelToRepresentation.toRepresentation(model));
-            }
-            result.setItems(items);
-            result.setTotalSize(models.getTotalSize());
-            return result;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		SearchResultsRepresentation<TipoDocumentoRepresentation> result = new SearchResultsRepresentation<>();
+		List<TipoDocumentoRepresentation> items = new ArrayList<>();
+		for (TipoDocumentoModel model : models.getModels()) {
+			items.add(ModelToRepresentation.toRepresentation(model));
+		}
+		result.setItems(items);
+		result.setTotalSize(models.getTotalSize());
+
+		return result;
+	}
 
 }
