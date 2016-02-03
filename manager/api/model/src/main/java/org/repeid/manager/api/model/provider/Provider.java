@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package org.repeid.manager.api.model.provider;
 
 /**
@@ -22,7 +23,6 @@ package org.repeid.manager.api.model.provider;
  */
 public interface Provider {
 
-	@Deprecated
 	public void close();
 
 }

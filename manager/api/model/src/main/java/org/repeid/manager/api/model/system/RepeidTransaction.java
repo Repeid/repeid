@@ -15,19 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.model.system;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
+package org.repeid.manager.api.model.system;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
- * @version $Revision: 1 $
  */
 public interface RepeidTransaction {
 
-	void begin() throws StorageException;
+	void begin();
 
-	void commit() throws StorageException;
+	void commit();
 
 	void rollback();
 

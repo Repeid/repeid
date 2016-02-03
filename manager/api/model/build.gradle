@@ -10,5 +10,6 @@ dependencies {
     compile ( libraries.google_oauth_client_java6 )
     compile ( libraries.google_oauth_client_jetty )
         
-	provided ( libraries.jboss_ejb_api_3_2_spec )	
+	provided ( libraries.jboss_ejb_api_3_2_spec )
+	provided ( libraries.jboss_logging )
 }

@@ -15,21 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.model.provider;
+
+package org.repeid.manager.api.model.system;
+
+import java.util.List;
+
+import org.repeid.manager.api.model.provider.Provider;
+import org.repeid.manager.api.model.provider.ProviderEventManager;
+import org.repeid.manager.api.model.provider.ProviderFactory;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public enum ProviderType {
+public interface RepeidSessionFactory extends ProviderEventManager {
 
-	/**
-	 * Jpa persistence
-	 */
-	JPA,
+	RepeidSession create();
 
-	/**
-	 * Mongo persistence
-	 */
-	MONGO
+	<T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+
+	<T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
+
+	@SuppressWarnings("rawtypes")
+	List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
+
+	long getServerStartupTimestamp();
+
+	void close();
 
 }

@@ -16,15 +16,13 @@
  * limitations under the License.
  *******************************************************************************/
 
-package org.repeid.manager.api.model.system;
+package org.repeid.manager.api.model.provider;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface RepeidTransactionManager extends RepeidTransaction {
+public interface ProviderEventListener {
 
-	void enlist(RepeidTransaction transaction);
-
-	void enlistAfterCompletion(RepeidTransaction transaction);
+	void onEvent(ProviderEvent event);
 
 }

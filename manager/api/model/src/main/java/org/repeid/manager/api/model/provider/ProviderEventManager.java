@@ -15,26 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.model.system;
 
-import java.util.Map;
+package org.repeid.manager.api.model.provider;
 
 /**
- * Marker interface for {@link ProviderFactory} of Provider which wants to show
- * some info on "Server Info" page in Admin console.
- * 
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface ServerInfoAwareProviderFactory {
+public interface ProviderEventManager {
 
-	/**
-	 * Return actual info about the provider. This info contains informations
-	 * about providers configuration and operational conditions (eg. errors in
-	 * connection to remote systems etc) which is shown on "Server Info" page
-	 * then.
-	 * 
-	 * @return Map with keys describing value and relevant values itself
-	 */
-	public Map<String, String> getOperationalInfo();
+	void register(ProviderEventListener listener);
+
+	void unregister(ProviderEventListener listener);
+
+	void publish(ProviderEvent event);
 
 }

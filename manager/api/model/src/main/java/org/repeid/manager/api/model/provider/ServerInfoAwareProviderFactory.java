@@ -18,42 +18,24 @@
 
 package org.repeid.manager.api.model.provider;
 
-import org.repeid.manager.api.core.config.Config;
-import org.repeid.manager.api.model.system.RepeidSessionFactory;
-import org.repeid.manager.api.model.system.RepeidSession;
+import java.util.Map;
 
 /**
- * At boot time, Repeid discovers all factories. For each discovered factory,
- * the init() method is called. After all factories have been initialized, the
- * postInit() method is called. close() is called when the server shuts down.
- *
- * Only one instance of a factory exists per server.
- *
+ * Marker interface for {@link ProviderFactory} of Provider which wants to show
+ * some info on "Server Info" page in Admin console.
+ * 
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface ProviderFactory<T extends Provider> {
-
-	public T create(RepeidSession session);
+public interface ServerInfoAwareProviderFactory {
 
 	/**
-	 * Only called once when the factory is first created. This config is pulled
-	 * from repeid_server.json
-	 *
-	 * @param config
+	 * Return actual info about the provider. This info contains informations
+	 * about providers configuration and operational conditions (eg. errors in
+	 * connection to remote systems etc) which is shown on "Server Info" page
+	 * then.
+	 * 
+	 * @return Map with keys describing value and relevant values itself
 	 */
-	public void init(Config.Scope config);
-
-	/**
-	 * Called after all provider factories have been initialized
-	 */
-	public void postInit(RepeidSessionFactory factory);
-
-	/**
-	 * This is called when the server shuts down.
-	 *
-	 */
-	public void close();
-
-	public String getId();
+	public Map<String, String> getOperationalInfo();
 
 }

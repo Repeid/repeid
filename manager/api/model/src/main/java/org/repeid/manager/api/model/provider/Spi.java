@@ -16,15 +16,20 @@
  * limitations under the License.
  *******************************************************************************/
 
-package org.repeid.manager.api.model.system;
+package org.repeid.manager.api.model.provider;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface RepeidTransactionManager extends RepeidTransaction {
+public interface Spi {
 
-	void enlist(RepeidTransaction transaction);
+	boolean isInternal();
 
-	void enlistAfterCompletion(RepeidTransaction transaction);
+	String getName();
+
+	Class<? extends Provider> getProviderClass();
+
+	@SuppressWarnings("rawtypes")
+	Class<? extends ProviderFactory> getProviderFactoryClass();
 
 }
