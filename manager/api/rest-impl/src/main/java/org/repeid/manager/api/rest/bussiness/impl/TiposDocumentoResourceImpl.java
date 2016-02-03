@@ -47,6 +47,10 @@ import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.security.ISecurityContext;
 
+/**
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ */
+
 @ApplicationScoped
 public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 

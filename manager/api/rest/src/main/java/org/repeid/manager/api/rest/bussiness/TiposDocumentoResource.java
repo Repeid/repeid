@@ -37,7 +37,7 @@ import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoAlreadyExistsException;
 
 /**
- * @author carlosthe19916@gmail.com
+ * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
 @Path("tipoDocumentos")
