@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.api;
+package org.repeid.manager.api.mongo.api;
 
 /**
  * Base interface for object, which is persisted in Mongo

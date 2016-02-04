@@ -1,6 +1,6 @@
-package org.keycloak.connections.mongo.api;
+package org.repeid.manager.api.mongo.api;
 
-import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
+import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
 
 /**
  * Entity with Id

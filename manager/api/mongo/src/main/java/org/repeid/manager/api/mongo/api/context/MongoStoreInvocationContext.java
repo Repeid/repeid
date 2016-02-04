@@ -1,7 +1,7 @@
-package org.keycloak.connections.mongo.api.context;
+package org.repeid.manager.api.mongo.api.context;
 
-import org.keycloak.connections.mongo.api.MongoIdentifiableEntity;
-import org.keycloak.connections.mongo.api.MongoStore;
+import org.repeid.manager.api.mongo.api.MongoIdentifiableEntity;
+import org.repeid.manager.api.mongo.api.MongoStore;
 
 /**
  * Context, which provides callback methods to be invoked by MongoStore

@@ -1,9 +1,10 @@
-package org.keycloak.connections.mongo.api;
+package org.repeid.manager.api.mongo.api;
 
 import com.mongodb.DBObject;
-import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
 
 import java.util.List;
+
+import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

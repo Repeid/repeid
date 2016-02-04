@@ -3,10 +3,11 @@ package org.keycloak.connections.mongo.impl.types;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.repeid.manager.api.mongo.api.types.Mapper;
+import org.repeid.manager.api.mongo.api.types.MapperContext;
+import org.repeid.manager.api.mongo.api.types.MapperRegistry;
+
 import com.mongodb.BasicDBList;
-import org.keycloak.connections.mongo.api.types.Mapper;
-import org.keycloak.connections.mongo.api.types.MapperContext;
-import org.keycloak.connections.mongo.api.types.MapperRegistry;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

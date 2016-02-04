@@ -1,7 +1,7 @@
 package org.keycloak.connections.mongo.impl.types;
 
-import org.keycloak.connections.mongo.api.types.Mapper;
-import org.keycloak.connections.mongo.api.types.MapperContext;
+import org.repeid.manager.api.mongo.api.types.Mapper;
+import org.repeid.manager.api.mongo.api.types.MapperContext;
 
 /**
  * Just returns input

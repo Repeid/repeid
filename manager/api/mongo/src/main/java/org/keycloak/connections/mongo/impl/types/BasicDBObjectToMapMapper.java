@@ -1,15 +1,16 @@
 package org.keycloak.connections.mongo.impl.types;
 
 import com.mongodb.BasicDBObject;
-import org.keycloak.connections.mongo.api.types.Mapper;
-import org.keycloak.connections.mongo.api.types.MapperContext;
-import org.keycloak.connections.mongo.api.types.MapperRegistry;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.repeid.manager.api.mongo.api.types.Mapper;
+import org.repeid.manager.api.mongo.api.types.MapperContext;
+import org.repeid.manager.api.mongo.api.types.MapperRegistry;
 
 /**
  *

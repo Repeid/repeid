@@ -20,11 +20,11 @@ package org.repeid.manager.api.mongo;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
 import org.keycloak.connections.mongo.impl.MongoStoreImpl;
 import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.system.RepeidTransaction;
+import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
 
 import com.mongodb.MongoException;
 

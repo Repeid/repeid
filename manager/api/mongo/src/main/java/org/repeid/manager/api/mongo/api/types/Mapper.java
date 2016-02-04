@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.api.types;
+package org.repeid.manager.api.mongo.api.types;
 
 /**
  * SPI object to convert object from application type to database type and vice versa. Shouldn't be directly used by application.

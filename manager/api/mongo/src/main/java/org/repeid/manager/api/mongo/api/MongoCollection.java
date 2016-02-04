@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.api;
+package org.repeid.manager.api.mongo.api;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;

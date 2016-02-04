@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.api.context;
+package org.repeid.manager.api.mongo.api.context;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

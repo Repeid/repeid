@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.api.types;
+package org.repeid.manager.api.mongo.api.types;
 
 import java.lang.reflect.Type;
 import java.util.List;

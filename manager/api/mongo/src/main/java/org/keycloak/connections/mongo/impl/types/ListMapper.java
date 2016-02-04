@@ -1,11 +1,12 @@
 package org.keycloak.connections.mongo.impl.types;
 
 import com.mongodb.BasicDBList;
-import org.keycloak.connections.mongo.api.types.Mapper;
-import org.keycloak.connections.mongo.api.types.MapperContext;
-import org.keycloak.connections.mongo.api.types.MapperRegistry;
 
 import java.util.Collection;
+
+import org.repeid.manager.api.mongo.api.types.Mapper;
+import org.repeid.manager.api.mongo.api.types.MapperContext;
+import org.repeid.manager.api.mongo.api.types.MapperRegistry;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

@@ -1,9 +1,9 @@
 package org.keycloak.connections.mongo.impl.context;
 
-import org.keycloak.connections.mongo.api.MongoIdentifiableEntity;
-import org.keycloak.connections.mongo.api.MongoStore;
-import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
-import org.keycloak.connections.mongo.api.context.MongoTask;
+import org.repeid.manager.api.mongo.api.MongoIdentifiableEntity;
+import org.repeid.manager.api.mongo.api.MongoStore;
+import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
+import org.repeid.manager.api.mongo.api.context.MongoTask;
 
 /**
  * Context, which is not doing any postponing of tasks and does not cache anything

@@ -17,43 +17,43 @@
  *******************************************************************************/
 package org.repeid.manager.api.mongo;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.lang.reflect.Method;
+import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.DependsOn;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.naming.InitialContext;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.sql.DataSource;
+import javax.net.ssl.SSLSocketFactory;
 
-import org.hibernate.jpa.AvailableSettings;
 import org.jboss.logging.Logger;
+import org.keycloak.connections.mongo.impl.MongoStoreImpl;
+import org.keycloak.connections.mongo.impl.context.TransactionMongoStoreInvocationContext;
 import org.repeid.manager.api.core.config.Config;
+import org.repeid.manager.api.mongo.api.MongoStore;
+import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
+
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientURI;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Startup
-@Singleton
-@DependsOn(value = { "RepeidApplication" })
-@TransactionManagement(TransactionManagementType.BEAN)
 public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
+
+	private String[] entities = new String[] {};
 
 	private static final Logger logger = Logger.getLogger(DefaultMongoConnectionProvider.class);
 
-	private EntityManagerFactory emf;
+	private volatile MongoClient client;
+	private DB db;
+
+	private MongoStore mongoStore;
 
 	private Config.Scope config;
 
@@ -68,140 +68,182 @@ public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
 		}
 	}
 
-	@Override
 	@PreDestroy
+	@Override
 	public void close() {
-		if (emf != null) {
-			emf.close();
+		if (client != null) {
+			client.close();
 		}
 	}
 
 	@Override
-	public EntityManager getEntityManager() {
-		return emf.createEntityManager();
+	public DB getDB() {
+		return db;
 	}
 
+	@Override
+	public MongoStore getMongoStore() {
+		return mongoStore;
+	}
+
+	@Override
+	public MongoStoreInvocationContext getInvocationContext() {
+		return new TransactionMongoStoreInvocationContext(mongoStore);
+	}
+
+	@SuppressWarnings("deprecation")
 	private void lazyInit() {
-		if (emf == null) {
+		if (client == null) {
 			synchronized (this) {
-				if (emf == null) {
-					logger.debug("Initializing JPA connections");
-
-					Connection connection = null;
-
-					String databaseSchema = config.get("databaseSchema");
-
-					Map<String, Object> properties = new HashMap<String, Object>();
-
-					String unitName = "repeid-defaultMongo";
-
-					String dataSource = config.get("dataSource");
-					if (dataSource != null) {
-						if (config.getBoolean("jta", true)) {
-							properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
-						} else {
-							properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
-						}
-					} else {
-						properties.put(AvailableSettings.JDBC_URL, config.get("url"));
-						properties.put(AvailableSettings.JDBC_DRIVER, config.get("driver"));
-
-						String user = config.get("user");
-						if (user != null) {
-							properties.put(AvailableSettings.JDBC_USER, user);
-						}
-						String password = config.get("password");
-						if (password != null) {
-							properties.put(AvailableSettings.JDBC_PASSWORD, password);
-						}
-					}
-
-					String driverDialect = config.get("driverDialect");
-					if (driverDialect != null && driverDialect.length() > 0) {
-						properties.put("hibernate.dialect", driverDialect);
-					}
-
-					String schema = config.get("schema");
-					if (schema != null) {
-						properties.put(JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
-					}
-
-					if (databaseSchema != null) {
-						if (databaseSchema.equals("development-update")) {
-							properties.put("hibernate.hbm2ddl.auto", "update");
-							databaseSchema = null;
-						} else if (databaseSchema.equals("development-validate")) {
-							properties.put("hibernate.hbm2ddl.auto", "validate");
-							databaseSchema = null;
-						}
-					}
-
-					properties.put("hibernate.show_sql", config.getBoolean("showSql", false));
-					properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
-
-					connection = getConnection();
+				if (client == null) {
 					try {
-						prepareOperationalInfo(connection);
+						this.client = createMongoClient();
 
+						String dbName = config.get("db", "repeid");
+						this.db = client.getDB(dbName);
+
+						String databaseSchema = config.get("databaseSchema");
 						if (databaseSchema != null) {
-							logger.trace("Updating database");
-
 							if (databaseSchema.equals("update")) {
-								properties.put("hibernate.hbm2ddl.auto", "update");
-							} else if (databaseSchema.equals("validate")) {
-								properties.put("hibernate.hbm2ddl.auto", "validate");
+								// MongoUpdaterProvider mongoUpdater =
+								// session.getProvider(MongoUpdaterProvider.class);
+
+								/*
+								 * if (mongoUpdater == null) { throw new
+								 * RuntimeException(
+								 * "Can't update database: Mongo updater provider not found"
+								 * ); }
+								 * 
+								 * mongoUpdater.update(session, db);
+								 */
 							} else {
 								throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
 							}
-
-							logger.trace("Database update completed");
 						}
 
-						logger.trace("Creating EntityManagerFactory");
-						emf = Persistence.createEntityManagerFactory(unitName, properties);
-						logger.trace("EntityManagerFactory created");
-
-					} finally {
-						// Close after creating EntityManagerFactory to prevent
-						// in-mem databases from closing
-						if (connection != null) {
-							try {
-								connection.close();
-							} catch (SQLException e) {
-								logger.warn(e);
-							}
-						}
+						this.mongoStore = new MongoStoreImpl(db, getManagedEntities());
+					} catch (Exception e) {
+						throw new RuntimeException(e);
 					}
 				}
 			}
 		}
 	}
 
-	protected void prepareOperationalInfo(Connection connection) {
-		try {
-			operationalInfo = new LinkedHashMap<>();
-			DatabaseMetaData md = connection.getMetaData();
-			operationalInfo.put("databaseUrl", md.getURL());
-			operationalInfo.put("databaseUser", md.getUserName());
-			operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
-			operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
-		} catch (SQLException e) {
-			logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
+	@SuppressWarnings("rawtypes")
+	private Class[] getManagedEntities() throws ClassNotFoundException {
+		Class[] entityClasses = new Class[entities.length];
+		for (int i = 0; i < entities.length; i++) {
+			entityClasses[i] = Thread.currentThread().getContextClassLoader().loadClass(entities[i]);
+		}
+		return entityClasses;
+	}
+
+	/**
+	 * Override this method if you want more possibility to configure Mongo
+	 * client. It can be also used to inject mongo client from different source.
+	 *
+	 * This method can assume that "config" is already set and can use it.
+	 *
+	 * @return mongoClient instance, which will be shared for whole Repeid
+	 *
+	 * @throws UnknownHostException
+	 */
+	protected MongoClient createMongoClient() throws UnknownHostException {
+		operationalInfo = new LinkedHashMap<>();
+		String dbName = config.get("db", "repeid");
+
+		String uriString = config.get("uri");
+		if (uriString != null) {
+			MongoClientURI uri = new MongoClientURI(uriString);
+			MongoClient client = new MongoClient(uri);
+
+			StringBuilder hostsBuilder = new StringBuilder();
+			for (int i = 0; i < uri.getHosts().size(); i++) {
+				if (i != 0) {
+					hostsBuilder.append(", ");
+				}
+				hostsBuilder.append(uri.getHosts().get(i));
+			}
+			String hosts = hostsBuilder.toString();
+
+			operationalInfo.put("mongoHosts", hosts);
+			operationalInfo.put("mongoDatabaseName", dbName);
+			operationalInfo.put("mongoUser", uri.getUsername());
+
+			logger.debugv("Initialized mongo model. host(s): %s, db: %s", uri.getHosts(), dbName);
+			return client;
+		} else {
+			String host = config.get("host", ServerAddress.defaultHost());
+			int port = config.getInt("port", ServerAddress.defaultPort());
+
+			String user = config.get("user");
+			String password = config.get("password");
+
+			MongoClientOptions clientOptions = getClientOptions();
+
+			MongoClient client;
+			if (user != null && password != null) {
+				MongoCredential credential = MongoCredential.createMongoCRCredential(user, dbName,
+						password.toCharArray());
+				client = new MongoClient(new ServerAddress(host, port), Collections.singletonList(credential),
+						clientOptions);
+			} else {
+				client = new MongoClient(new ServerAddress(host, port), clientOptions);
+			}
+
+			operationalInfo.put("mongoServerAddress", client.getAddress().toString());
+			operationalInfo.put("mongoDatabaseName", dbName);
+			operationalInfo.put("mongoUser", user);
+
+			logger.debugv("Initialized mongo model. host: %s, port: %d, db: %s", host, port, dbName);
+			return client;
 		}
 	}
 
-	private Connection getConnection() {
-		try {
-			String dataSourceLookup = config.get("dataSource");
-			if (dataSourceLookup != null) {
-				DataSource dataSource = (DataSource) new InitialContext().lookup(dataSourceLookup);
-				return dataSource.getConnection();
-			} else {
-				Class.forName(config.get("driver"));
-				return DriverManager.getConnection(config.get("url"), config.get("user"), config.get("password"));
+	protected MongoClientOptions getClientOptions() {
+		MongoClientOptions.Builder builder = MongoClientOptions.builder();
+		checkIntOption("connectionsPerHost", builder);
+		checkIntOption("threadsAllowedToBlockForConnectionMultiplier", builder);
+		checkIntOption("maxWaitTime", builder);
+		checkIntOption("connectTimeout", builder);
+		checkIntOption("socketTimeout", builder);
+		checkBooleanOption("socketKeepAlive", builder);
+		checkBooleanOption("autoConnectRetry", builder);
+		if (config.getBoolean("ssl", false)) {
+			builder.socketFactory(SSLSocketFactory.getDefault());
+		}
+
+		return builder.build();
+	}
+
+	protected void checkBooleanOption(String optionName, MongoClientOptions.Builder builder) {
+		Boolean val = config.getBoolean(optionName);
+		if (val != null) {
+			try {
+				Method m = MongoClientOptions.Builder.class.getMethod(optionName, boolean.class);
+				m.invoke(builder, val);
+			} catch (Exception e) {
+				throw new IllegalStateException(
+						"Problem configuring boolean option " + optionName
+								+ " for mongo client. Ensure you used correct value true or false and if this option is supported by mongo driver",
+						e);
 			}
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to connect to database", e);
+		}
+	}
+
+	protected void checkIntOption(String optionName, MongoClientOptions.Builder builder) {
+		Integer val = config.getInt(optionName);
+		if (val != null) {
+			try {
+				Method m = MongoClientOptions.Builder.class.getMethod(optionName, int.class);
+				m.invoke(builder, val);
+			} catch (Exception e) {
+				throw new IllegalStateException(
+						"Problem configuring int option " + optionName
+								+ " for mongo client. Ensure you used correct value (number) and if this option is supported by mongo driver",
+						e);
+			}
 		}
 	}
 
@@ -209,4 +251,5 @@ public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
 	public Map<String, String> getOperationalInfo() {
 		return operationalInfo;
 	}
+
 }

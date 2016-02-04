@@ -2,13 +2,13 @@ package org.keycloak.connections.mongo.impl.types;
 
 import com.mongodb.BasicDBObject;
 import org.jboss.logging.Logger;
-import org.keycloak.connections.mongo.api.MongoIdentifiableEntity;
-import org.keycloak.connections.mongo.api.types.Mapper;
-import org.keycloak.connections.mongo.api.types.MapperContext;
-import org.keycloak.connections.mongo.api.types.MapperRegistry;
 import org.keycloak.connections.mongo.impl.EntityInfo;
 import org.keycloak.connections.mongo.impl.MongoStoreImpl;
 import org.keycloak.models.utils.reflection.Property;
+import org.repeid.manager.api.mongo.api.MongoIdentifiableEntity;
+import org.repeid.manager.api.mongo.api.types.Mapper;
+import org.repeid.manager.api.mongo.api.types.MapperContext;
+import org.repeid.manager.api.mongo.api.types.MapperRegistry;
 import org.keycloak.common.util.reflections.Types;
 
 import java.lang.reflect.ParameterizedType;

@@ -1,12 +1,13 @@
 package org.keycloak.connections.mongo.impl.types;
 
 import com.mongodb.BasicDBObject;
-import org.keycloak.connections.mongo.api.types.Mapper;
-import org.keycloak.connections.mongo.api.types.MapperContext;
-import org.keycloak.connections.mongo.api.types.MapperRegistry;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.repeid.manager.api.mongo.api.types.Mapper;
+import org.repeid.manager.api.mongo.api.types.MapperContext;
+import org.repeid.manager.api.mongo.api.types.MapperRegistry;
 
 /**
  * For now, we support just convert from Map<String, simpleType>

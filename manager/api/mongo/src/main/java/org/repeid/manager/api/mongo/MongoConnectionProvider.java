@@ -17,9 +17,9 @@
  *******************************************************************************/
 package org.repeid.manager.api.mongo;
 
-import org.keycloak.connections.mongo.api.MongoStore;
-import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
 import org.repeid.manager.api.model.provider.Provider;
+import org.repeid.manager.api.mongo.api.MongoStore;
+import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
 
 import com.mongodb.DB;
 
