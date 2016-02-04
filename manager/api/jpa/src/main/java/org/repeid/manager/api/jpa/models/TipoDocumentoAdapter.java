@@ -22,7 +22,6 @@ import javax.persistence.EntityManager;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -32,10 +31,8 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 	private TipoDocumentoEntity tipoDocumento;
 
 	private EntityManager em;
-	private final RepeidSession session;
 
-	public TipoDocumentoAdapter(RepeidSession session, EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
-		this.session = session;
+	public TipoDocumentoAdapter(EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {
 		this.em = em;
 		this.tipoDocumento = tipoDocumentoEntity;
 	}
@@ -49,6 +46,11 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 
 	public TipoDocumentoEntity getTipoDocumentEntity() {
 		return tipoDocumento;
+	}
+
+	@Override
+	public void commit() {
+		em.merge(tipoDocumento);
 	}
 
 	@Override
@@ -109,11 +111,6 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 	@Override
 	public void setEstado(boolean estado) {
 		tipoDocumento.setEstado(estado);
-	}
-
-	@Override
-	public void commit() {
-		em.merge(tipoDocumento);
 	}
 
 	@Override

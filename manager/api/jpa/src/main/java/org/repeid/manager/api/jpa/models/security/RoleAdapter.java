@@ -25,7 +25,6 @@ import javax.persistence.EntityManager;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.jpa.entities.security.RoleEntity;
 import org.repeid.manager.api.model.security.RoleModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -35,10 +34,8 @@ public class RoleAdapter implements RoleModel {
 	private RoleEntity roleEntity;
 
 	private EntityManager em;
-	private final RepeidSession session;
 
-	public RoleAdapter(RepeidSession session, EntityManager em, RoleEntity roleEntity) {
-		this.session = session;
+	public RoleAdapter(EntityManager em, RoleEntity roleEntity) {
 		this.em = em;
 		this.roleEntity = roleEntity;
 	}

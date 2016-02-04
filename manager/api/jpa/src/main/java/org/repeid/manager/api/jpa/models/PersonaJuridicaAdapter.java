@@ -32,7 +32,6 @@ import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -42,11 +41,8 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 	private PersonaJuridicaEntity personaJuridica;
 
 	private EntityManager em;
-	private RepeidSession session;
 
-	public PersonaJuridicaAdapter(RepeidSession session, EntityManager em,
-			PersonaJuridicaEntity personaJuridicaEntity) {
-		this.session = session;
+	public PersonaJuridicaAdapter(EntityManager em, PersonaJuridicaEntity personaJuridicaEntity) {
 		this.em = em;
 		this.personaJuridica = personaJuridicaEntity;
 	}
@@ -62,7 +58,7 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
 	@Override
 	public PersonaNaturalModel getRepresentanteLegal() {
-		return new PersonaNaturalAdapter(session, em, personaJuridica.getRepresentanteLegal());
+		return new PersonaNaturalAdapter(em, personaJuridica.getRepresentanteLegal());
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 		Set<AccionistaEntity> list = personaJuridica.getAccionistas();
 		List<AccionistaModel> result = new ArrayList<AccionistaModel>();
 		for (AccionistaEntity entity : list) {
-			result.add(new AccionistaAdapter(session, em, entity));
+			result.add(new AccionistaAdapter(em, entity));
 		}
 		return result;
 	}
@@ -94,7 +90,7 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 
 	@Override
 	public TipoDocumentoModel getTipoDocumento() {
-		return new TipoDocumentoAdapter(session, em, personaJuridica.getTipoDocumento());
+		return new TipoDocumentoAdapter(em, personaJuridica.getTipoDocumento());
 	}
 
 	@Override

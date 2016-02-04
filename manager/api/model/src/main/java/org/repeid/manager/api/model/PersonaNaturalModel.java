@@ -25,6 +25,7 @@ import org.repeid.manager.api.model.enums.Sexo;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public interface PersonaNaturalModel extends Model {
 
 	String APELLIDO_PATERNO = "apellidoPaterno";

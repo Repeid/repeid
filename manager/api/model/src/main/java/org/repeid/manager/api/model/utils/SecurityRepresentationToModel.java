@@ -17,31 +17,31 @@
  *******************************************************************************/
 package org.repeid.manager.api.model.utils;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
 import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.security.RoleRepresentation;
 import org.repeid.manager.api.beans.representations.security.UserRepresentation;
 import org.repeid.manager.api.model.security.RoleModel;
-import org.repeid.manager.api.model.security.RoleProvider;
 import org.repeid.manager.api.model.security.UserModel;
-import org.repeid.manager.api.model.security.UserProvider;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SecurityRepresentationToModel {
 
-	public RoleModel createRole(RoleRepresentation rep, RoleProvider provider, String createdBy) throws StorageException {
-        return provider.create(rep.getName(), rep.getDescription(), rep.getAutoGrant(), rep.getPermissions(),
-                createdBy);
+	public static RoleModel createRole(RepeidSession session, RoleRepresentation rep, String createdBy)
+			throws StorageException {
+		/*
+		 * return provider.create(rep.getName(), rep.getDescription(),
+		 * rep.getAutoGrant(), rep.getPermissions(), createdBy);
+		 */
+		return null;
 	}
 
-	public UserModel createUser(UserRepresentation rep, UserProvider provider) throws StorageException {
-		return provider.create(rep.getUsername(), rep.getFullName(), rep.getEmail());
+	public static UserModel createUser(RepeidSession session, UserRepresentation rep) throws StorageException {
+		// return provider.create(rep.getUsername(), rep.getFullName(),
+		// rep.getEmail());
+		return null;
 	}
+
 }

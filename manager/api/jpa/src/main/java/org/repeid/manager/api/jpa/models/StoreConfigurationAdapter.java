@@ -22,7 +22,6 @@ import javax.persistence.EntityManager;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -32,11 +31,8 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
 	private StoreConfigurationEntity storeConfiguration;
 
 	private EntityManager em;
-	private RepeidSession session;
 
-	public StoreConfigurationAdapter(RepeidSession session, EntityManager em,
-			StoreConfigurationEntity storeConfigurationEntity) {
-		this.session = session;
+	public StoreConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {
 		this.em = em;
 		this.storeConfiguration = storeConfigurationEntity;
 	}

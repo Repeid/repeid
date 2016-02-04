@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -31,24 +30,22 @@ import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.security.RoleEntity;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.RoleModel;
 import org.repeid.manager.api.model.security.RoleProvider;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+@ProviderType(Type.JPA)
 public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider {
 
-	private final RepeidSession session;
-	private EntityManager em;
-
-	public JpaRoleProvider(RepeidSession session, EntityManager em) {
-		super(em);
-		this.session = session;
-		this.em = em;
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -71,20 +68,20 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 		roleEntity.setPermissions(permissions);
 		roleEntity.setCreatedOn(Calendar.getInstance().getTime());
 		roleEntity.setCreatedBy(createdBy);
-		em.persist(roleEntity);
-		em.flush();
-		return new RoleAdapter(session, em, roleEntity);
+		getEntityManager().persist(roleEntity);
+		getEntityManager().flush();
+		return new RoleAdapter(getEntityManager(), roleEntity);
 	}
 
 	@Override
 	public RoleModel findById(String id) throws StorageException {
-		RoleEntity roleEntity = em.find(RoleEntity.class, id);
-		return roleEntity != null ? new RoleAdapter(session, em, roleEntity) : null;
+		RoleEntity roleEntity = getEntityManager().find(RoleEntity.class, id);
+		return roleEntity != null ? new RoleAdapter(getEntityManager(), roleEntity) : null;
 	}
 
 	@Override
 	public RoleModel findByName(String rolName) throws StorageException {
-		TypedQuery<RoleEntity> query = em.createNamedQuery("RoleEntity.findByName", RoleEntity.class);
+		TypedQuery<RoleEntity> query = getEntityManager().createNamedQuery("RoleEntity.findByName", RoleEntity.class);
 		query.setParameter("name", rolName);
 		List<RoleEntity> results = query.getResultList();
 		if (results.isEmpty()) {
@@ -92,25 +89,25 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 		} else if (results.size() > 1) {
 			throw new IllegalStateException("Mas de un RoleEntity con nama=" + rolName + ", results=" + results);
 		} else {
-			return new RoleAdapter(session, em, results.get(0));
+			return new RoleAdapter(getEntityManager(), results.get(0));
 		}
 	}
 
 	@Override
 	public boolean remove(RoleModel role) {
-		RoleEntity roleEntity = em.find(RoleEntity.class, role.getId());
+		RoleEntity roleEntity = getEntityManager().find(RoleEntity.class, role.getId());
 
-		TypedQuery<RoleMembershipEntity> query = em.createNamedQuery("RoleMembershipEntity.findByRoleId",
-				RoleMembershipEntity.class);
+		TypedQuery<RoleMembershipEntity> query = getEntityManager()
+				.createNamedQuery("RoleMembershipEntity.findByRoleId", RoleMembershipEntity.class);
 		query.setParameter("roleId", role.getId());
 		List<RoleMembershipEntity> roleMemberships = query.getResultList();
 
-		em.remove(roleEntity);
+		getEntityManager().remove(roleEntity);
 		for (RoleMembershipEntity roleMembership : roleMemberships) {
-			em.remove(roleMembership.getUser());
-			em.remove(roleMembership);
+			getEntityManager().remove(roleMembership.getUser());
+			getEntityManager().remove(roleMembership);
 		}
-		em.flush();
+		getEntityManager().flush();
 		return true;
 	}
 
@@ -121,7 +118,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 
 	@Override
 	public List<RoleModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<RoleEntity> query = em.createNamedQuery("RoleEntity.findAll", RoleEntity.class);
+		TypedQuery<RoleEntity> query = getEntityManager().createNamedQuery("RoleEntity.findAll", RoleEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
 		}
@@ -131,7 +128,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 		List<RoleEntity> entities = query.getResultList();
 		List<RoleModel> models = new ArrayList<>();
 		for (RoleEntity entity : entities) {
-			models.add(new RoleAdapter(session, em, entity));
+			models.add(new RoleAdapter(getEntityManager(), entity));
 		}
 		return models;
 	}
@@ -149,8 +146,8 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 	 * query.setMaxResults(maxResults); } List<TipoDocumentoEntity> entities =
 	 * query.getResultList(); List<TipoDocumentoModel> models = new
 	 * ArrayList<TipoDocumentoModel>(); for (TipoDocumentoEntity
-	 * tipoDocumentoEntity : entities) { models.add(new
-	 * TipoDocumentoAdapter(session, em, tipoDocumentoEntity)); }
+	 * tipoDocumentoEntity : entities) { models.add(new TipoDocumentoAdapter(
+	 * getEntityManager(), tipoDocumentoEntity)); }
 	 * 
 	 * return models; }
 	 */
@@ -182,7 +179,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 	 * if (attribute == null) { continue; } builder.append(" and ");
 	 * builder.append(attribute).append(" = :").append(parameterName); } }
 	 * builder.append(" order by t.abreviatura"); String q = builder.toString();
-	 * TypedQuery<TipoDocumentoEntity> query = em.createQuery(q,
+	 * TypedQuery<TipoDocumentoEntity> query = getEntityManager().createQuery(q,
 	 * TipoDocumentoEntity.class); for (Map.Entry<String, Object> entry :
 	 * attributes.entrySet()) { String parameterName = null; if
 	 * (entry.getKey().equals(TipoDocumentoModel.ABREVIATURA)) { parameterName =
@@ -203,7 +200,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 	 * query.setMaxResults(maxResults); } List<TipoDocumentoEntity> results =
 	 * query.getResultList(); List<TipoDocumentoModel> tipoDocumentos = new
 	 * ArrayList<TipoDocumentoModel>(); for (TipoDocumentoEntity entity :
-	 * results) tipoDocumentos.add(new TipoDocumentoAdapter(session, em,
+	 * results) tipoDocumentos.add(new TipoDocumentoAdapter( getEntityManager(),
 	 * entity)); return tipoDocumentos; }
 	 */
 
@@ -214,7 +211,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 		SearchResultsModel<RoleModel> modelResult = new SearchResultsModel<>();
 		List<RoleModel> list = new ArrayList<>();
 		for (RoleEntity entity : entityResult.getModels()) {
-			list.add(new RoleAdapter(session, em, entity));
+			list.add(new RoleAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);
@@ -228,7 +225,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 		SearchResultsModel<RoleModel> modelResult = new SearchResultsModel<>();
 		List<RoleModel> list = new ArrayList<>();
 		for (RoleEntity entity : entityResult.getModels()) {
-			list.add(new RoleAdapter(session, em, entity));
+			list.add(new RoleAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);

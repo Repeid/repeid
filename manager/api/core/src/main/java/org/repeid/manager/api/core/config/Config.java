@@ -15,11 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package org.repeid.manager.api.core.config;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public class Config {
 
 	private static ConfigProvider configProvider = new SystemPropertiesConfigProvider();

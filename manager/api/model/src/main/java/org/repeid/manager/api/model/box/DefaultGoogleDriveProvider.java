@@ -17,10 +17,19 @@
  *******************************************************************************/
 package org.repeid.manager.api.model.box;
 
+import javax.enterprise.context.ApplicationScoped;
+
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@ApplicationScoped
 public class DefaultGoogleDriveProvider implements GoogleDriveProvider {
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public void close() {

@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
@@ -30,35 +29,33 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public interface PersonaJuridicaProvider extends Provider {
 
-	PersonaJuridicaModel findById(String id) throws StorageException;
+	PersonaJuridicaModel findById(String id);
 
-	PersonaJuridicaModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento)
-			throws StorageException;
+	PersonaJuridicaModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento);
 
 	PersonaJuridicaModel create(PersonaNaturalModel representanteLegal, String codigoPais,
 			TipoDocumentoModel tipoDocumentoModel, String numeroDocumento, String razonSocial, Date fechaConstitucion,
-			TipoEmpresa tipoEmpresa, boolean finLucro) throws StorageException;
+			TipoEmpresa tipoEmpresa, boolean finLucro);
 
-	boolean remove(PersonaJuridicaModel personaJuridicaModel) throws StorageException;
+	boolean remove(PersonaJuridicaModel personaJuridicaModel);
 
-	List<PersonaJuridicaModel> getAll() throws StorageException;
+	List<PersonaJuridicaModel> getAll();
 
-	List<PersonaJuridicaModel> getAll(int firstResult, int maxResults) throws StorageException;
+	List<PersonaJuridicaModel> getAll(int firstResult, int maxResults);
 
-	List<PersonaJuridicaModel> search(String filterText) throws StorageException;
+	List<PersonaJuridicaModel> search(String filterText);
 
-	List<PersonaJuridicaModel> search(String filterText, int firstResult, int maxResults) throws StorageException;
+	List<PersonaJuridicaModel> search(String filterText, int firstResult, int maxResults);
 
-	List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes) throws StorageException;
+	List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes);
 
-	List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes, int firstResult, int maxResults)
-			throws StorageException;
+	List<PersonaJuridicaModel> searchByAttributes(Map<String, String> attributes, int firstResult, int maxResults);
 
-	SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria) throws StorageException;
+	SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria);
 
-	SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria, String filterText)
-			throws StorageException;
+	SearchResultsModel<PersonaJuridicaModel> search(SearchCriteriaModel criteria, String filterText);
 
 }

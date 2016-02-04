@@ -15,25 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package org.repeid.manager.api.model.utils;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.AccionistaRepresentation;
 import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.model.AccionistaModel;
-import org.repeid.manager.api.model.AccionistaProvider;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
-import org.repeid.manager.api.model.PersonaJuridicaProvider;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
-import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
@@ -43,21 +35,17 @@ import org.repeid.manager.api.model.system.RepeidSession;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class RepresentationToModel {
 
 	public static TipoDocumentoModel createTipoDocumento(RepeidSession session, TipoDocumentoRepresentation rep) {
-		TipoDocumentoModel model = provider.create(rep.getAbreviatura(), rep.getDenominacion(),
-				rep.getCantidadCaracteres(), TipoPersona.valueOf(rep.getTipoPersona()));
-		return model;
+		return session.tipoDocumentos().create(rep.getAbreviatura(), rep.getDenominacion(), rep.getCantidadCaracteres(),
+				TipoPersona.valueOf(rep.getTipoPersona()));
 	}
 
-	public PersonaNaturalModel createPersonaNatural(PersonaNaturalRepresentation rep,
-			TipoDocumentoModel tipoDocumentoModel, PersonaNaturalProvider personaNaturalProvider)
-					throws StorageException {
+	public static PersonaNaturalModel createPersonaNatural(RepeidSession session, PersonaNaturalRepresentation rep,
+			TipoDocumentoModel tipoDocumentoModel) {
 
-		PersonaNaturalModel model = personaNaturalProvider.create(rep.getCodigoPais(), tipoDocumentoModel,
+		PersonaNaturalModel model = session.personasNaturales().create(rep.getCodigoPais(), tipoDocumentoModel,
 				rep.getNumeroDocumento(), rep.getApellidoPaterno(), rep.getApellidoMaterno(), rep.getNombres(),
 				rep.getFechaNacimiento(), Sexo.valueOf(rep.getSexo().toUpperCase()));
 
@@ -71,15 +59,13 @@ public class RepresentationToModel {
 		model.setCelular(rep.getCelular());
 		model.setEmail(rep.getEmail());
 
-		model.commit();
 		return model;
 	}
 
-	public PersonaJuridicaModel createPersonaJuridica(PersonaJuridicaRepresentation rep,
-			TipoDocumentoModel tipoDocumentoModel, PersonaNaturalModel representanteLegal,
-			PersonaJuridicaProvider personaJuridicaProvider) throws StorageException {
+	public static PersonaJuridicaModel createPersonaJuridica(RepeidSession session, PersonaJuridicaRepresentation rep,
+			TipoDocumentoModel tipoDocumentoModel, PersonaNaturalModel representanteLegal) {
 
-		PersonaJuridicaModel model = personaJuridicaProvider.create(representanteLegal, rep.getCodigoPais(),
+		PersonaJuridicaModel model = session.personasJuridicas().create(representanteLegal, rep.getCodigoPais(),
 				tipoDocumentoModel, rep.getNumeroDocumento(), rep.getRazonSocial(), rep.getFechaConstitucion(),
 				TipoEmpresa.valueOf(rep.getTipoEmpresa().toUpperCase()), rep.isFinLucro());
 
@@ -93,16 +79,17 @@ public class RepresentationToModel {
 		model.setCelular(rep.getCelular());
 		model.setEmail(rep.getEmail());
 
-		model.commit();
 		return model;
 	}
 
-	public AccionistaModel createAccionista(AccionistaRepresentation rep, PersonaJuridicaModel personaJuridica,
-			PersonaNaturalModel personaNatural, AccionistaProvider accionistaProvider) {
-
-		AccionistaModel model = accionistaProvider.create(personaJuridica, personaNatural,
-				rep.getPorcentajeParticipacion());
-		return model;
+	public static AccionistaModel createAccionista(RepeidSession session, AccionistaRepresentation rep,
+			PersonaJuridicaModel personaJuridica, PersonaNaturalModel personaNatural) {
+		/*
+		 * AccionistaModel model =
+		 * session.personasJuridicas().create(personaJuridica, personaNatural,
+		 * rep.getPorcentajeParticipacion()); return model;
+		 */
+		return null;
 	}
 
 }

@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -32,24 +31,22 @@ import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity;
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.security.UserProvider;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+@ProviderType(Type.JPA)
 public class JpaUserProvider extends AbstractJpaStorage implements UserProvider {
 
-	private final RepeidSession session;
-	private EntityManager em;
-
-	public JpaUserProvider(RepeidSession session, EntityManager em) {
-		super(em);
-		this.session = session;
-		this.em = em;
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -69,20 +66,21 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 		userEntity.setFullName(fullName);
 		userEntity.setEmail(email);
 		userEntity.setJoinedOn(Calendar.getInstance().getTime());
-		em.persist(userEntity);
-		em.flush();
-		return new UserAdapter(session, em, userEntity);
+		getEntityManager().persist(userEntity);
+		getEntityManager().flush();
+		return new UserAdapter(getEntityManager(), userEntity);
 	}
 
 	@Override
 	public UserModel findById(String id) throws StorageException {
-		UserEntity userEntity = em.find(UserEntity.class, id);
-		return userEntity != null ? new UserAdapter(session, em, userEntity) : null;
+		UserEntity userEntity = getEntityManager().find(UserEntity.class, id);
+		return userEntity != null ? new UserAdapter(getEntityManager(), userEntity) : null;
 	}
 
 	@Override
 	public UserModel findByUsername(String username) throws StorageException {
-		TypedQuery<UserEntity> query = em.createNamedQuery("UserEntity.findByUsername", UserEntity.class);
+		TypedQuery<UserEntity> query = getEntityManager().createNamedQuery("UserEntity.findByUsername",
+				UserEntity.class);
 		query.setParameter("username", username);
 		List<UserEntity> results = query.getResultList();
 		if (results.isEmpty()) {
@@ -90,31 +88,31 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 		} else if (results.size() > 1) {
 			throw new IllegalStateException("Mas de un UserEntity con usermane=" + username + ", results=" + results);
 		} else {
-			return new UserAdapter(session, em, results.get(0));
+			return new UserAdapter(getEntityManager(), results.get(0));
 		}
 	}
 
 	@Override
 	public boolean remove(UserModel user) {
-		UserEntity userEntity = em.find(UserEntity.class, user.getId());
+		UserEntity userEntity = getEntityManager().find(UserEntity.class, user.getId());
 
-		TypedQuery<RoleMembershipEntity> query = em.createNamedQuery("RoleMembershipEntity.findByUserId",
-				RoleMembershipEntity.class);
+		TypedQuery<RoleMembershipEntity> query = getEntityManager()
+				.createNamedQuery("RoleMembershipEntity.findByUserId", RoleMembershipEntity.class);
 		query.setParameter("userId", user.getId());
 		List<RoleMembershipEntity> roleMemberships = query.getResultList();
 
-		em.remove(userEntity);
+		getEntityManager().remove(userEntity);
 		for (RoleMembershipEntity roleMembership : roleMemberships) {
-			em.remove(roleMembership);
+			getEntityManager().remove(roleMembership);
 		}
-		em.flush();
+		getEntityManager().flush();
 		return true;
 	}
 
 	@Override
 	public Set<PermissionType> getPermissions(String userId) throws StorageException {
-		TypedQuery<RoleMembershipEntity> query = em.createNamedQuery("RoleMembershipEntity.findByUserId",
-				RoleMembershipEntity.class);
+		TypedQuery<RoleMembershipEntity> query = getEntityManager()
+				.createNamedQuery("RoleMembershipEntity.findByUserId", RoleMembershipEntity.class);
 		query.setParameter("userId", userId);
 		List<RoleMembershipEntity> roleMemberships = query.getResultList();
 
@@ -132,7 +130,7 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 
 	@Override
 	public List<UserModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<UserEntity> query = em.createNamedQuery("UserEntity.findAll", UserEntity.class);
+		TypedQuery<UserEntity> query = getEntityManager().createNamedQuery("UserEntity.findAll", UserEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
 		}
@@ -142,7 +140,7 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 		List<UserEntity> entities = query.getResultList();
 		List<UserModel> models = new ArrayList<>();
 		for (UserEntity entity : entities) {
-			models.add(new UserAdapter(session, em, entity));
+			models.add(new UserAdapter(getEntityManager(), entity));
 		}
 		return models;
 	}
@@ -160,8 +158,8 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 	 * query.setMaxResults(maxResults); } List<TipoDocumentoEntity> entities =
 	 * query.getResultList(); List<TipoDocumentoModel> models = new
 	 * ArrayList<TipoDocumentoModel>(); for (TipoDocumentoEntity
-	 * tipoDocumentoEntity : entities) { models.add(new
-	 * TipoDocumentoAdapter(session, em, tipoDocumentoEntity)); }
+	 * tipoDocumentoEntity : entities) { models.add(new TipoDocumentoAdapter(
+	 * getEntityManager()., tipoDocumentoEntity)); }
 	 * 
 	 * return models; }
 	 */
@@ -193,7 +191,7 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 	 * if (attribute == null) { continue; } builder.append(" and ");
 	 * builder.append(attribute).append(" = :").append(parameterName); } }
 	 * builder.append(" order by t.abreviatura"); String q = builder.toString();
-	 * TypedQuery<TipoDocumentoEntity> query = em.createQuery(q,
+	 * TypedQuery<TipoDocumentoEntity> query = getEntityManager().createQuery(q,
 	 * TipoDocumentoEntity.class); for (Map.Entry<String, Object> entry :
 	 * attributes.entrySet()) { String parameterName = null; if
 	 * (entry.getKey().equals(TipoDocumentoModel.ABREVIATURA)) { parameterName =
@@ -214,8 +212,8 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 	 * query.setMaxResults(maxResults); } List<TipoDocumentoEntity> results =
 	 * query.getResultList(); List<TipoDocumentoModel> tipoDocumentos = new
 	 * ArrayList<TipoDocumentoModel>(); for (TipoDocumentoEntity entity :
-	 * results) tipoDocumentos.add(new TipoDocumentoAdapter(session, em,
-	 * entity)); return tipoDocumentos; }
+	 * results) tipoDocumentos.add(new TipoDocumentoAdapter(
+	 * getEntityManager()., entity)); return tipoDocumentos; }
 	 */
 
 	@Override
@@ -225,7 +223,7 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 		SearchResultsModel<UserModel> modelResult = new SearchResultsModel<>();
 		List<UserModel> list = new ArrayList<>();
 		for (UserEntity entity : entityResult.getModels()) {
-			list.add(new UserAdapter(session, em, entity));
+			list.add(new UserAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);
@@ -239,7 +237,7 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 		SearchResultsModel<UserModel> modelResult = new SearchResultsModel<>();
 		List<UserModel> list = new ArrayList<>();
 		for (UserEntity entity : entityResult.getModels()) {
-			list.add(new UserAdapter(session, em, entity));
+			list.add(new UserAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);

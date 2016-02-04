@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package org.repeid.manager.api.core.config;
 
 import java.util.Properties;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public class JsonConfigProvider implements Config.ConfigProvider {
 
 	private Properties properties;

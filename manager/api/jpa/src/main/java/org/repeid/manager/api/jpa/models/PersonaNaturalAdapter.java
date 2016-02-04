@@ -28,7 +28,6 @@ import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -38,10 +37,8 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 	private PersonaNaturalEntity personaNatural;
 
 	private EntityManager em;
-	private RepeidSession session;
 
-	public PersonaNaturalAdapter(RepeidSession session, EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
-		this.session = session;
+	public PersonaNaturalAdapter(EntityManager em, PersonaNaturalEntity personaNaturalEntity) {
 		this.em = em;
 		this.personaNatural = personaNaturalEntity;
 	}
@@ -79,7 +76,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 
 	@Override
 	public TipoDocumentoModel getTipoDocumento() {
-		return new TipoDocumentoAdapter(session, em, personaNatural.getTipoDocumento());
+		return new TipoDocumentoAdapter(em, personaNatural.getTipoDocumento());
 	}
 
 	@Override
@@ -231,7 +228,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 	public StoredFileModel getFoto() {
 		StoredFileEntity storedFileEntity = personaNatural.getFoto();
 		if (storedFileEntity != null) {
-			return new StoredFileAdapter(session, em, storedFileEntity);
+			return new StoredFileAdapter(em, storedFileEntity);
 		} else {
 			return null;
 		}
@@ -241,7 +238,7 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 	public StoredFileModel getFirma() {
 		StoredFileEntity storedFileEntity = personaNatural.getFirma();
 		if (storedFileEntity != null) {
-			return new StoredFileAdapter(session, em, storedFileEntity);
+			return new StoredFileAdapter(em, storedFileEntity);
 		} else {
 			return null;
 		}

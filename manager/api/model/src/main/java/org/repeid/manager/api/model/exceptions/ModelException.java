@@ -20,6 +20,7 @@ package org.repeid.manager.api.model.exceptions;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public class ModelException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

@@ -18,9 +18,30 @@
 
 package org.repeid.manager.api.model.provider;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+import org.repeid.manager.api.core.config.Config;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
+
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface ProviderEvent {
+
+@ApplicationScoped
+public class ProviderProducer {
+
+	private String realmProvider = Config.getProvider("realm");
+
+	@Produces
+	public <T extends Provider> T getProvider(@ProviderType(Type.JPA) T jpa, @ProviderType(Type.MONGO) T mongo) {
+		if (realmProvider.equalsIgnoreCase("jpa")) {
+			return jpa;
+		} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;
+		} else {
+			throw new RuntimeException("Provider type desconocido");
+		}
+	}
 
 }

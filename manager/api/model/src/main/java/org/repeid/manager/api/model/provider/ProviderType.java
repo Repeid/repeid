@@ -18,15 +18,34 @@
 
 package org.repeid.manager.api.model.provider;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.METHOD;
+
+import javax.enterprise.util.Nonbinding;
+import javax.inject.Qualifier;
+
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface ProviderEventManager {
 
-	void register(ProviderEventListener listener);
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ METHOD, FIELD, TYPE, PARAMETER })
+public @interface ProviderType {
 
-	void unregister(ProviderEventListener listener);
+	Type value() default Type.JPA;
 
-	void publish(ProviderEvent event);
+	@Nonbinding
+	String description() default "";
+
+	enum Type {
+		JPA, MONGO
+	}
 
 }

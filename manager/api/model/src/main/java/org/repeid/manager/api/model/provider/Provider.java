@@ -21,7 +21,10 @@ package org.repeid.manager.api.model.provider;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public interface Provider {
+
+	public void init();
 
 	public void close();
 

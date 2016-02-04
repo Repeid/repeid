@@ -20,11 +20,9 @@ package org.repeid.manager.api.model;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public interface Model {
 
-	/**
-	 * Will remove on the next version
-	 */
 	@Deprecated
 	void commit();
 

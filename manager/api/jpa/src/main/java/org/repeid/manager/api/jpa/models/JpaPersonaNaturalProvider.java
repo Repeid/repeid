@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
@@ -35,13 +34,15 @@ import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+@ProviderType(Type.JPA)
 public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements PersonaNaturalProvider {
 
 	private static final String APELLIDO_PATERNO = "apellidoPaterno";
@@ -49,13 +50,9 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 	private static final String NOMBRES = "nombres";
 	private static final String NUMERO_DOCUMENTO = "numeroDocumento";
 
-	private final RepeidSession session;
-	private EntityManager em;
-
-	public JpaPersonaNaturalProvider(RepeidSession session, EntityManager em) {
-		super(em);
-		this.session = session;
-		this.em = em;
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -72,7 +69,8 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 							+ tipoDocumentoModel + "y numeroDocumento=" + numeroDocumento);
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = em.find(TipoDocumentoEntity.class, tipoDocumentoModel.getId());
+		TipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(TipoDocumentoEntity.class,
+				tipoDocumentoModel.getId());
 
 		PersonaNaturalEntity personaNaturalEntity = new PersonaNaturalEntity();
 		personaNaturalEntity.setCodigoPais(codigoPais);
@@ -83,22 +81,22 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		personaNaturalEntity.setNombres(nombres);
 		personaNaturalEntity.setFechaNacimiento(fechaNacimiento);
 		personaNaturalEntity.setSexo(sexo.toString());
-		em.persist(personaNaturalEntity);
-		em.flush();
-		return new PersonaNaturalAdapter(session, em, personaNaturalEntity);
+		getEntityManager().persist(personaNaturalEntity);
+		getEntityManager().flush();
+		return new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity);
 	}
 
 	@Override
 	public boolean remove(PersonaNaturalModel personaNaturalModel) {
-		TypedQuery<AccionistaEntity> query1 = em.createNamedQuery("AccionistaEntity.findByIdPersonaNatural",
-				AccionistaEntity.class);
+		TypedQuery<AccionistaEntity> query1 = getEntityManager()
+				.createNamedQuery("AccionistaEntity.findByIdPersonaNatural", AccionistaEntity.class);
 		query1.setParameter("idPersonaNatural", personaNaturalModel.getId());
 		query1.setMaxResults(1);
 		if (!query1.getResultList().isEmpty()) {
 			return false;
 		}
 
-		TypedQuery<PersonaJuridicaEntity> query2 = em.createNamedQuery(
+		TypedQuery<PersonaJuridicaEntity> query2 = getEntityManager().createNamedQuery(
 				"PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", PersonaJuridicaEntity.class);
 		query2.setParameter("idPersonaNaturalRepresentanteLegal", personaNaturalModel.getId());
 		query2.setMaxResults(1);
@@ -106,25 +104,27 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 			return false;
 		}
 
-		PersonaNaturalEntity personaNaturalEntity = em.find(PersonaNaturalEntity.class, personaNaturalModel.getId());
+		PersonaNaturalEntity personaNaturalEntity = getEntityManager().find(PersonaNaturalEntity.class,
+				personaNaturalModel.getId());
 		if (personaNaturalEntity == null) {
 			return false;
 		}
-		em.remove(personaNaturalEntity);
-		em.flush();
+		getEntityManager().remove(personaNaturalEntity);
+		getEntityManager().flush();
 		return true;
 	}
 
 	@Override
 	public PersonaNaturalModel findById(String id) {
-		PersonaNaturalEntity personaNaturalEntity = this.em.find(PersonaNaturalEntity.class, id);
-		return personaNaturalEntity != null ? new PersonaNaturalAdapter(session, em, personaNaturalEntity) : null;
+		PersonaNaturalEntity personaNaturalEntity = this.getEntityManager().find(PersonaNaturalEntity.class, id);
+		return personaNaturalEntity != null ? new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity)
+				: null;
 	}
 
 	@Override
 	public PersonaNaturalModel findByTipoNumeroDocumento(TipoDocumentoModel tipoDocumento, String numeroDocumento) {
-		TypedQuery<PersonaNaturalEntity> query = em.createNamedQuery("PersonaNaturalEntity.findByTipoNumeroDocumento",
-				PersonaNaturalEntity.class);
+		TypedQuery<PersonaNaturalEntity> query = getEntityManager()
+				.createNamedQuery("PersonaNaturalEntity.findByTipoNumeroDocumento", PersonaNaturalEntity.class);
 		query.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query.setParameter("numeroDocumento", numeroDocumento);
 		List<PersonaNaturalEntity> results = query.getResultList();
@@ -134,7 +134,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 			throw new IllegalStateException("Mas de una PersonaNaturalEntity con tipoDocumento=" + tipoDocumento
 					+ " y numeroDocumento=" + numeroDocumento + ", results=" + results);
 		} else {
-			return new PersonaNaturalAdapter(session, em, results.get(0));
+			return new PersonaNaturalAdapter(getEntityManager(), results.get(0));
 		}
 	}
 
@@ -145,7 +145,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 
 	@Override
 	public List<PersonaNaturalModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<PersonaNaturalEntity> query = em.createNamedQuery("PersonaNaturalEntity.findAll",
+		TypedQuery<PersonaNaturalEntity> query = getEntityManager().createNamedQuery("PersonaNaturalEntity.findAll",
 				PersonaNaturalEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -156,7 +156,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		List<PersonaNaturalEntity> entities = query.getResultList();
 		List<PersonaNaturalModel> result = new ArrayList<PersonaNaturalModel>();
 		for (PersonaNaturalEntity personaNaturalEntity : entities) {
-			result.add(new PersonaNaturalAdapter(session, em, personaNaturalEntity));
+			result.add(new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity));
 		}
 		return result;
 	}
@@ -168,8 +168,8 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 
 	@Override
 	public List<PersonaNaturalModel> search(String filterText, int firstResult, int maxResults) {
-		TypedQuery<PersonaNaturalEntity> query = em.createNamedQuery("PersonaNaturalEntity.findByFilterText",
-				PersonaNaturalEntity.class);
+		TypedQuery<PersonaNaturalEntity> query = getEntityManager()
+				.createNamedQuery("PersonaNaturalEntity.findByFilterText", PersonaNaturalEntity.class);
 		query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -180,7 +180,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		List<PersonaNaturalEntity> entities = query.getResultList();
 		List<PersonaNaturalModel> models = new ArrayList<PersonaNaturalModel>();
 		for (PersonaNaturalEntity personaNaturalEntity : entities) {
-			models.add(new PersonaNaturalAdapter(session, em, personaNaturalEntity));
+			models.add(new PersonaNaturalAdapter(getEntityManager(), personaNaturalEntity));
 		}
 		return models;
 	}
@@ -218,7 +218,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		}
 		builder.append(" order by p.apellidoPaterno, p.apellidoMaterno, p.nombres");
 		String q = builder.toString();
-		TypedQuery<PersonaNaturalEntity> query = em.createQuery(q, PersonaNaturalEntity.class);
+		TypedQuery<PersonaNaturalEntity> query = getEntityManager().createQuery(q, PersonaNaturalEntity.class);
 		for (Map.Entry<String, String> entry : attributes.entrySet()) {
 			String parameterName = null;
 			if (entry.getKey().equals(PersonaNaturalModel.APELLIDO_PATERNO)) {
@@ -245,7 +245,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		List<PersonaNaturalEntity> results = query.getResultList();
 		List<PersonaNaturalModel> personaNaturales = new ArrayList<PersonaNaturalModel>();
 		for (PersonaNaturalEntity entity : results)
-			personaNaturales.add(new PersonaNaturalAdapter(session, em, entity));
+			personaNaturales.add(new PersonaNaturalAdapter(getEntityManager(), entity));
 		return personaNaturales;
 	}
 
@@ -256,7 +256,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		SearchResultsModel<PersonaNaturalModel> modelResult = new SearchResultsModel<>();
 		List<PersonaNaturalModel> list = new ArrayList<>();
 		for (PersonaNaturalEntity entity : entityResult.getModels()) {
-			list.add(new PersonaNaturalAdapter(session, em, entity));
+			list.add(new PersonaNaturalAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);
@@ -271,7 +271,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 		SearchResultsModel<PersonaNaturalModel> modelResult = new SearchResultsModel<>();
 		List<PersonaNaturalModel> list = new ArrayList<>();
 		for (PersonaNaturalEntity entity : entityResult.getModels()) {
-			list.add(new PersonaNaturalAdapter(session, em, entity));
+			list.add(new PersonaNaturalAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);

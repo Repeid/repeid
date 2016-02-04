@@ -23,7 +23,6 @@ import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
 import org.repeid.manager.api.jpa.entities.StoredFileEntity;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -33,10 +32,8 @@ public class StoredFileAdapter implements StoredFileModel {
 	private StoredFileEntity storedFile;
 
 	private EntityManager em;
-	private RepeidSession session;
 
-	public StoredFileAdapter(RepeidSession session, EntityManager em, StoredFileEntity storedFileEntity) {
-		this.session = session;
+	public StoredFileAdapter(EntityManager em, StoredFileEntity storedFileEntity) {
 		this.em = em;
 		this.storedFile = storedFileEntity;
 	}
@@ -85,7 +82,7 @@ public class StoredFileAdapter implements StoredFileModel {
 	@Override
 	public StoreConfigurationModel getStoreConfiguration() {
 		StoreConfigurationEntity storeConfigurationEntity = storedFile.getStoreConfiguration();
-		return new StoreConfigurationAdapter(session, em, storeConfigurationEntity);
+		return new StoreConfigurationAdapter(em, storeConfigurationEntity);
 	}
 
 	@Override

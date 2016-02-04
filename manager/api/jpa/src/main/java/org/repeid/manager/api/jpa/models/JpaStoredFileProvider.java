@@ -19,8 +19,6 @@ package org.repeid.manager.api.jpa.models;
 
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.FileEntity;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
@@ -29,20 +27,18 @@ import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.StoredFileProvider;
 import org.repeid.manager.api.model.enums.StoreConfigurationType;
-import org.repeid.manager.api.model.system.RepeidSession;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+@ProviderType(Type.JPA)
 public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredFileProvider {
 
-	private final RepeidSession session;
-	private EntityManager em;
-
-	public JpaStoredFileProvider(RepeidSession session, EntityManager em) {
-		super(em);
-		this.session = session;
-		this.em = em;
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -52,8 +48,8 @@ public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredF
 
 	@Override
 	public StoredFileModel findById(String id) {
-		StoredFileEntity storedFileEntity = em.find(StoredFileEntity.class, id);
-		return storedFileEntity != null ? new StoredFileAdapter(session, em, storedFileEntity) : null;
+		StoredFileEntity storedFileEntity = getEntityManager().find(StoredFileEntity.class, id);
+		return storedFileEntity != null ? new StoredFileAdapter(getEntityManager(), storedFileEntity) : null;
 	}
 
 	@Override
@@ -71,11 +67,11 @@ public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredF
 		// File storage
 		FileEntity fileEntity = new FileEntity();
 		fileEntity.setFile(file);
-		em.persist(fileEntity);
+		getEntityManager().persist(fileEntity);
 
 		// Store configuration entity
 		StoreConfigurationEntity storeConfigurationEntity = StoreConfigurationAdapter
-				.toStoreConfigurationEntity(configuration, em);
+				.toStoreConfigurationEntity(configuration, getEntityManager());
 
 		// Create StoreFileEntity
 		StoredFileEntity storedFileEntity = new StoredFileEntity();
@@ -83,9 +79,9 @@ public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredF
 		storedFileEntity.setUrl(UUID.randomUUID().toString());
 		storedFileEntity.setStoreConfiguration(storeConfigurationEntity);
 
-		em.persist(storedFileEntity);
-		em.flush();
-		return new StoredFileAdapter(session, em, storedFileEntity);
+		getEntityManager().persist(storedFileEntity);
+		getEntityManager().flush();
+		return new StoredFileAdapter(getEntityManager(), storedFileEntity);
 	}
 
 	@Override

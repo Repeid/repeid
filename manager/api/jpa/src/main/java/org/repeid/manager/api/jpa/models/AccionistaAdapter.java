@@ -25,7 +25,6 @@ import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -35,10 +34,8 @@ public class AccionistaAdapter implements AccionistaModel {
 	private AccionistaEntity accionista;
 
 	private EntityManager em;
-	private RepeidSession session;
 
-	public AccionistaAdapter(RepeidSession session, EntityManager em, AccionistaEntity accionistaEntity) {
-		this.session = session;
+	public AccionistaAdapter(EntityManager em, AccionistaEntity accionistaEntity) {
 		this.em = em;
 		this.accionista = accionistaEntity;
 	}
@@ -54,12 +51,12 @@ public class AccionistaAdapter implements AccionistaModel {
 
 	@Override
 	public PersonaNaturalModel getPersonaNatural() {
-		return new PersonaNaturalAdapter(session, em, accionista.getPersonaNatural());
+		return new PersonaNaturalAdapter(em, accionista.getPersonaNatural());
 	}
 
 	@Override
 	public PersonaJuridicaModel getPersonaJuridica() {
-		return new PersonaJuridicaAdapter(session, em, accionista.getPersonaJuridica());
+		return new PersonaJuridicaAdapter(em, accionista.getPersonaJuridica());
 	}
 
 	@Override

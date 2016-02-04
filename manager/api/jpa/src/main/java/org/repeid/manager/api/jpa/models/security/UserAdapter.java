@@ -23,7 +23,6 @@ import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.security.UserEntity;
 import org.repeid.manager.api.model.security.UserModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -33,10 +32,8 @@ public class UserAdapter implements UserModel {
 	private UserEntity userEntity;
 
 	private EntityManager em;
-	private final RepeidSession session;
 
-	public UserAdapter(RepeidSession session, EntityManager em, UserEntity userEntity) {
-		this.session = session;
+	public UserAdapter(EntityManager em, UserEntity userEntity) {
 		this.em = em;
 		this.userEntity = userEntity;
 	}

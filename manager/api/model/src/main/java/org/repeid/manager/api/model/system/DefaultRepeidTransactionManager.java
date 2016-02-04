@@ -23,17 +23,43 @@ import org.jboss.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@ApplicationScoped
 public class DefaultRepeidTransactionManager implements RepeidTransactionManager {
 
-	public static final Logger logger = Logger.getLogger(DefaultRepeidTransactionManager.class);
+	public static final Logger log = Logger.getLogger(DefaultRepeidTransactionManager.class);
+
+	@Inject
+	private RepeidTransaction repeidTransaction;
 
 	private List<RepeidTransaction> transactions = new LinkedList<RepeidTransaction>();
 	private List<RepeidTransaction> afterCompletion = new LinkedList<RepeidTransaction>();
 	private boolean active;
 	private boolean rollback;
+
+	@PostConstruct
+	public void init() {
+		lazyInit();
+		log.info("RepeidTransactionManager started");
+	}
+
+	@PreDestroy
+	public void close() {
+		log.info("Stopping RepeidTransactionManager");
+	}
+
+	public void lazyInit() {
+		enlist(repeidTransaction);
+		log.info("Enlisted RepeidTransacction on RepeidTransactionManager");
+	}
 
 	@Override
 	public void enlist(RepeidTransaction transaction) {
@@ -92,7 +118,7 @@ public class DefaultRepeidTransactionManager implements RepeidTransactionManager
 				try {
 					tx.rollback();
 				} catch (RuntimeException e) {
-					logger.error("Exception during rollback", e);
+					log.error("Exception during rollback", e);
 				}
 			}
 		}

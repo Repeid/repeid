@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
@@ -32,13 +31,16 @@ import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@ProviderType(Type.JPA)
 public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";
@@ -46,13 +48,9 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 	private static final String TIPO_PERSONA = "tipoPersona";
 	private static final String ESTADO = "estado";
 
-	private final RepeidSession session;
-	private EntityManager em;
-
-	public JpaTipoDocumentoProvider(RepeidSession session, EntityManager em) {
-		super(em);
-		this.session = session;
-		this.em = em;
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -75,15 +73,15 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		entity.setCantidadCaracteres(cantidadCaracteres);
 		entity.setTipoPersona(tipoPersona.toString());
 		entity.setEstado(true);
-		em.persist(entity);
-		em.flush();
-		return new TipoDocumentoAdapter(session, em, entity);
+		getEntityManager().persist(entity);
+		getEntityManager().flush();
+		return new TipoDocumentoAdapter(getEntityManager(), entity);
 	}
 
 	@Override
 	public TipoDocumentoModel findByAbreviatura(String abreviatura) {
-		TypedQuery<TipoDocumentoEntity> query = em.createNamedQuery("TipoDocumentoEntity.findByAbreviatura",
-				TipoDocumentoEntity.class);
+		TypedQuery<TipoDocumentoEntity> query = getEntityManager()
+				.createNamedQuery("TipoDocumentoEntity.findByAbreviatura", TipoDocumentoEntity.class);
 		query.setParameter("abreviatura", abreviatura);
 		List<TipoDocumentoEntity> results = query.getResultList();
 		if (results.isEmpty()) {
@@ -93,40 +91,41 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 					"Mas de un TipoDocumentoEntity con abreviatura=" + abreviatura + ", results=" + results);
 		} else {
 			TipoDocumentoEntity entity = results.get(0);
-			return new TipoDocumentoAdapter(session, em, entity);
+			return new TipoDocumentoAdapter(getEntityManager(), entity);
 		}
 	}
 
 	@Override
 	public TipoDocumentoModel findById(String id) {
-		TipoDocumentoEntity entity = em.find(TipoDocumentoEntity.class, id);
-		return entity != null ? new TipoDocumentoAdapter(session, em, entity) : null;
+		TipoDocumentoEntity entity = getEntityManager().find(TipoDocumentoEntity.class, id);
+		return entity != null ? new TipoDocumentoAdapter(getEntityManager(), entity) : null;
 	}
 
 	@Override
 	public boolean remove(TipoDocumentoModel tipoDocumento) {
-		TypedQuery<PersonaNaturalEntity> query1 = em.createNamedQuery("PersonaNaturalEntity.findByTipoDocumento",
-				PersonaNaturalEntity.class);
+		TypedQuery<PersonaNaturalEntity> query1 = getEntityManager()
+				.createNamedQuery("PersonaNaturalEntity.findByTipoDocumento", PersonaNaturalEntity.class);
 		query1.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query1.setMaxResults(1);
 		if (!query1.getResultList().isEmpty()) {
 			return false;
 		}
 
-		TypedQuery<PersonaJuridicaEntity> query2 = em.createNamedQuery("PersonaJuridicaEntity.findByTipoDocumento",
-				PersonaJuridicaEntity.class);
+		TypedQuery<PersonaJuridicaEntity> query2 = getEntityManager()
+				.createNamedQuery("PersonaJuridicaEntity.findByTipoDocumento", PersonaJuridicaEntity.class);
 		query2.setParameter("tipoDocumento", tipoDocumento.getAbreviatura());
 		query2.setMaxResults(1);
 		if (!query2.getResultList().isEmpty()) {
 			return false;
 		}
 
-		TipoDocumentoEntity tipoDocumentoEntity = em.find(TipoDocumentoEntity.class, tipoDocumento.getId());
+		TipoDocumentoEntity tipoDocumentoEntity = getEntityManager().find(TipoDocumentoEntity.class,
+				tipoDocumento.getId());
 		if (tipoDocumentoEntity == null) {
 			return false;
 		}
-		em.remove(tipoDocumentoEntity);
-		em.flush();
+		getEntityManager().remove(tipoDocumentoEntity);
+		getEntityManager().flush();
 		return true;
 	}
 
@@ -137,7 +136,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 
 	@Override
 	public List<TipoDocumentoModel> getAll(int firstResult, int maxResults) {
-		TypedQuery<TipoDocumentoEntity> query = em.createNamedQuery("TipoDocumentoEntity.findAll",
+		TypedQuery<TipoDocumentoEntity> query = getEntityManager().createNamedQuery("TipoDocumentoEntity.findAll",
 				TipoDocumentoEntity.class);
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -148,7 +147,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		List<TipoDocumentoEntity> entities = query.getResultList();
 		List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
 		for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
-			models.add(new TipoDocumentoAdapter(session, em, tipoDocumentoEntity));
+			models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
 		}
 		return models;
 	}
@@ -160,8 +159,8 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 
 	@Override
 	public List<TipoDocumentoModel> search(String filterText, int firstResult, int maxResults) {
-		TypedQuery<TipoDocumentoEntity> query = em.createNamedQuery("TipoDocumentoEntity.findByFilterText",
-				TipoDocumentoEntity.class);
+		TypedQuery<TipoDocumentoEntity> query = getEntityManager()
+				.createNamedQuery("TipoDocumentoEntity.findByFilterText", TipoDocumentoEntity.class);
 		query.setParameter("filterText", "%" + filterText.toLowerCase() + "%");
 		if (firstResult != -1) {
 			query.setFirstResult(firstResult);
@@ -172,7 +171,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		List<TipoDocumentoEntity> entities = query.getResultList();
 		List<TipoDocumentoModel> models = new ArrayList<TipoDocumentoModel>();
 		for (TipoDocumentoEntity tipoDocumentoEntity : entities) {
-			models.add(new TipoDocumentoAdapter(session, em, tipoDocumentoEntity));
+			models.add(new TipoDocumentoAdapter(getEntityManager(), tipoDocumentoEntity));
 		}
 
 		return models;
@@ -219,7 +218,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		}
 		builder.append(" order by t.abreviatura");
 		String q = builder.toString();
-		TypedQuery<TipoDocumentoEntity> query = em.createQuery(q, TipoDocumentoEntity.class);
+		TypedQuery<TipoDocumentoEntity> query = getEntityManager().createQuery(q, TipoDocumentoEntity.class);
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String parameterName = null;
 			if (entry.getKey().equals(TipoDocumentoModel.ABREVIATURA)) {
@@ -252,7 +251,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		List<TipoDocumentoEntity> results = query.getResultList();
 		List<TipoDocumentoModel> tipoDocumentos = new ArrayList<TipoDocumentoModel>();
 		for (TipoDocumentoEntity entity : results)
-			tipoDocumentos.add(new TipoDocumentoAdapter(session, em, entity));
+			tipoDocumentos.add(new TipoDocumentoAdapter(getEntityManager(), entity));
 		return tipoDocumentos;
 	}
 
@@ -263,7 +262,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();
 		for (TipoDocumentoEntity entity : entityResult.getModels()) {
-			list.add(new TipoDocumentoAdapter(session, em, entity));
+			list.add(new TipoDocumentoAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);
@@ -278,7 +277,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 		SearchResultsModel<TipoDocumentoModel> modelResult = new SearchResultsModel<>();
 		List<TipoDocumentoModel> list = new ArrayList<>();
 		for (TipoDocumentoEntity entity : entityResult.getModels()) {
-			list.add(new TipoDocumentoAdapter(session, em, entity));
+			list.add(new TipoDocumentoAdapter(getEntityManager(), entity));
 		}
 		modelResult.setTotalSize(entityResult.getTotalSize());
 		modelResult.setModels(list);

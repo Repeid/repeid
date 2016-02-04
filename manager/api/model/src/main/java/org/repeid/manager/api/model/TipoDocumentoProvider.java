@@ -28,6 +28,7 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public interface TipoDocumentoProvider extends Provider {
 
 	TipoDocumentoModel findById(String id);

@@ -16,30 +16,26 @@
  * limitations under the License.
  *******************************************************************************/
 
-package org.repeid.manager.api.model.system;
+package org.repeid.manager.api.model.provider;
 
-import java.util.List;
-
-import org.repeid.manager.api.model.provider.Provider;
-import org.repeid.manager.api.model.provider.ProviderEventManager;
-import org.repeid.manager.api.model.provider.ProviderFactory;
+import java.util.Map;
 
 /**
+ * Marker interface for {@link ProviderFactory} of Provider which wants to show
+ * some info on "Server Info" page in Admin console.
+ * 
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface RepeidSessionFactory extends ProviderEventManager {
+public interface ServerInfoAwareProvider {
 
-	RepeidSession create();
-
-	<T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
-
-	<T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
-
-	@SuppressWarnings("rawtypes")
-	List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
-
-	long getServerStartupTimestamp();
-
-	void close();
+	/**
+	 * Return actual info about the provider. This info contains informations
+	 * about providers configuration and operational conditions (eg. errors in
+	 * connection to remote systems etc) which is shown on "Server Info" page
+	 * then.
+	 * 
+	 * @return Map with keys describing value and relevant values itself
+	 */
+	public Map<String, String> getOperationalInfo();
 
 }

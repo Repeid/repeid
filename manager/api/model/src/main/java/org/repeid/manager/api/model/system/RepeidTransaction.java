@@ -21,6 +21,7 @@ package org.repeid.manager.api.model.system;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
 public interface RepeidTransaction {
 
 	void begin();

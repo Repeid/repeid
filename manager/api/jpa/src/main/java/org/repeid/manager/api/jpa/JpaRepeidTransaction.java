@@ -23,11 +23,14 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.system.RepeidTransaction;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+@ProviderType(Type.JPA)
 public class JpaRepeidTransaction implements RepeidTransaction {
 
 	@Inject
