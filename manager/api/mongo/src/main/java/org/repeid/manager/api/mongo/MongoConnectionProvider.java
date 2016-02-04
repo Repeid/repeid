@@ -17,15 +17,21 @@
  *******************************************************************************/
 package org.repeid.manager.api.mongo;
 
-import javax.persistence.EntityManager;
-
+import org.keycloak.connections.mongo.api.MongoStore;
+import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
 import org.repeid.manager.api.model.provider.Provider;
+
+import com.mongodb.DB;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public interface MongoConnectionProvider extends Provider {
 
-	EntityManager getEntityManager();
+	DB getDB();
+
+	MongoStore getMongoStore();
+
+	MongoStoreInvocationContext getInvocationContext();
 
 }

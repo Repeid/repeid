@@ -3,6 +3,7 @@ dependencies {
     compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-model')
     
     // Third Party Dependencies
+    compile ( libraries.mongo_java_driver )
 	compile ( libraries.hibernate_entitymanager )
 	compile ( libraries.hibernate_validator )
 	compile ( libraries.javax_inject )

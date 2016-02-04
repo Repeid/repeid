@@ -17,63 +17,82 @@
  *******************************************************************************/
 package org.repeid.manager.api.mongo;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.RollbackException;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
+import org.keycloak.connections.mongo.api.context.MongoStoreInvocationContext;
+import org.keycloak.connections.mongo.impl.MongoStoreImpl;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.system.RepeidTransaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.mongodb.MongoException;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  * @version $Revision: 1 $
  */
+@ProviderType(Type.MONGO)
 public class MongoRepeidTransaction implements RepeidTransaction {
 
-	private static Logger logger = LoggerFactory.getLogger(MongoRepeidTransaction.class);
+	@Inject
+	private MongoConnectionProvider connectionProvider;
 
-	protected EntityManager em;
+	private MongoStoreInvocationContext invocationContext;
 
-	@Override
-	public void beginTx() throws StorageException {
-		em.getTransaction().begin();
+	private boolean started = false;
+	private boolean rollbackOnly = false;
+
+	@PostConstruct
+	public void init() {
+		this.invocationContext = connectionProvider.getInvocationContext();
 	}
 
 	@Override
-	public void commitTx() throws StorageException {
-		try {
-			em.getTransaction().commit();
-		} catch (EntityExistsException e) {
-			throw new StorageException(e);
-		} catch (RollbackException e) {
-			logger.error(e.getMessage(), e);
-			throw new StorageException(e);
-		} catch (Throwable t) {
-			logger.error(t.getMessage(), t);
-			throw new StorageException(t);
+	public void begin() {
+		if (started) {
+			throw new IllegalStateException("Transaction already started");
 		}
+		started = true;
+		invocationContext.begin();
 	}
 
 	@Override
-	public void rollbackTx() {
-		em.getTransaction().rollback();
+	public void commit() {
+		if (!started) {
+			throw new IllegalStateException("Transaction not yet started");
+		}
+		if (rollbackOnly) {
+			throw new IllegalStateException("Can't commit as transaction marked for rollback");
+		}
+
+		try {
+			invocationContext.commit();
+		} catch (MongoException e) {
+			throw MongoStoreImpl.convertException(e);
+		}
+		started = false;
 	}
 
 	@Override
-	public void setRollbackTxOnly() {
-		em.getTransaction().setRollbackOnly();
+	public void rollback() {
+		invocationContext.rollback();
+		started = false;
 	}
 
 	@Override
-	public boolean getRollbackTxOnly() {
-		return em.getTransaction().getRollbackOnly();
+	public void setRollbackOnly() {
+		this.rollbackOnly = true;
 	}
 
 	@Override
-	public boolean isTxActive() {
-		return em.getTransaction().isActive();
+	public boolean getRollbackOnly() {
+		return rollbackOnly;
+	}
+
+	@Override
+	public boolean isActive() {
+		return started;
 	}
 
 }
