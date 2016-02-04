@@ -25,8 +25,8 @@ import org.repeid.manager.api.model.AccionistaProvider;
 import org.repeid.manager.api.model.PersonaJuridicaProvider;
 import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
-import org.repeid.manager.api.model.provider.ProviderFactory;
 import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 
 /**
  * Attempt to create producer methods for CDI beans.
@@ -36,11 +36,11 @@ import org.repeid.manager.api.model.provider.ProviderType;
 @ApplicationScoped
 public class WarCdiModelFactory {
 
-	private String realmProvider = Config.getProvider("realm");
+	/*private String realmProvider = Config.getProvider("realm");
 
 	@Produces
-	public TipoDocumentoProvider getTipoDocumentoProvider(@ProviderFactory(ProviderType.JPA) TipoDocumentoProvider jpa,
-			@ProviderFactory(ProviderType.MONGO) TipoDocumentoProvider mongo) {
+	public TipoDocumentoProvider getTipoDocumentoProvider(@ProviderType(Type.JPA) TipoDocumentoProvider jpa,
+			@ProviderType(Type.MONGO) TipoDocumentoProvider mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
@@ -51,9 +51,8 @@ public class WarCdiModelFactory {
 	}
 
 	@Produces
-	public PersonaNaturalProvider getPersonaNaturalProvider(
-			@ProviderFactory(ProviderType.JPA) PersonaNaturalProvider jpa,
-			@ProviderFactory(ProviderType.MONGO) PersonaNaturalProvider mongo) {
+	public PersonaNaturalProvider getPersonaNaturalProvider(@ProviderType(Type.JPA) PersonaNaturalProvider jpa,
+			@ProviderType(Type.MONGO) PersonaNaturalProvider mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
@@ -64,9 +63,8 @@ public class WarCdiModelFactory {
 	}
 
 	@Produces
-	public PersonaJuridicaProvider getPersonaJuridicaProvider(
-			@ProviderFactory(ProviderType.JPA) PersonaJuridicaProvider jpa,
-			@ProviderFactory(ProviderType.MONGO) PersonaJuridicaProvider mongo) {
+	public PersonaJuridicaProvider getPersonaJuridicaProvider(@ProviderType(Type.JPA) PersonaJuridicaProvider jpa,
+			@ProviderType(Type.MONGO) PersonaJuridicaProvider mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
@@ -77,8 +75,8 @@ public class WarCdiModelFactory {
 	}
 
 	@Produces
-	public AccionistaProvider getAccionistaProvider(@ProviderFactory(ProviderType.JPA) AccionistaProvider jpa,
-			@ProviderFactory(ProviderType.MONGO) AccionistaProvider mongo) {
+	public AccionistaProvider getAccionistaProvider(@ProviderType(Type.JPA) AccionistaProvider jpa,
+			@ProviderType(Type.MONGO) AccionistaProvider mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
@@ -86,6 +84,6 @@ public class WarCdiModelFactory {
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
-	}
+	}*/
 
 }
