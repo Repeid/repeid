@@ -17,16 +17,11 @@
  *******************************************************************************/
 package org.repeid.manager.api.mongo;
 
-import javax.inject.Inject;
-
 /**
  * A base class that Hibernate storage impls can extend.
  *
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public abstract class AbstractMongoStorage {
-
-	@Inject
-	private MongoConnectionProvider connectionProvider;
 
 }

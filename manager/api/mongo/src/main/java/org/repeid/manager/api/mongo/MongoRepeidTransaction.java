@@ -20,7 +20,6 @@ package org.repeid.manager.api.mongo;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.keycloak.connections.mongo.impl.MongoStoreImpl;
 import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.system.RepeidTransaction;
@@ -69,7 +68,7 @@ public class MongoRepeidTransaction implements RepeidTransaction {
 		try {
 			invocationContext.commit();
 		} catch (MongoException e) {
-			throw MongoStoreImpl.convertException(e);
+			//throw MongoStoreImpl.convertException(e);
 		}
 		started = false;
 	}

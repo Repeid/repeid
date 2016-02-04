@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.impl;
+package org.repeid.manager.api.mongo.impl;
 
 import java.util.Collection;
 import java.util.Map;

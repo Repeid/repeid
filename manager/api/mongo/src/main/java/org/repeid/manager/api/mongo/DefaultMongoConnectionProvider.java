@@ -28,11 +28,10 @@ import javax.annotation.PreDestroy;
 import javax.net.ssl.SSLSocketFactory;
 
 import org.jboss.logging.Logger;
-import org.keycloak.connections.mongo.impl.MongoStoreImpl;
-import org.keycloak.connections.mongo.impl.context.TransactionMongoStoreInvocationContext;
 import org.repeid.manager.api.core.config.Config;
 import org.repeid.manager.api.mongo.api.MongoStore;
 import org.repeid.manager.api.mongo.api.context.MongoStoreInvocationContext;
+import org.repeid.manager.api.mongo.impl.context.TransactionMongoStoreInvocationContext;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -121,7 +120,8 @@ public class DefaultMongoConnectionProvider implements MongoConnectionProvider {
 							}
 						}
 
-						this.mongoStore = new MongoStoreImpl(db, getManagedEntities());
+						// this.mongoStore = new MongoStoreImpl(db,
+						// getManagedEntities());
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}

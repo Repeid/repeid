@@ -1,4 +1,4 @@
-package org.keycloak.connections.mongo.impl.context;
+package org.repeid.manager.api.mongo.impl.context;
 
 import org.repeid.manager.api.mongo.api.MongoIdentifiableEntity;
 import org.repeid.manager.api.mongo.api.MongoStore;
