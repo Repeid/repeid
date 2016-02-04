@@ -70,8 +70,7 @@ public interface PersonasJuridicasResource {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(PersonaJuridicaRepresentation rep)
-			throws PersonaJuridicaAlreadyExistsException, NotAuthorizedException;
+	public Response create(PersonaJuridicaRepresentation rep);
 
 	/**
 	 * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
@@ -107,8 +106,7 @@ public interface PersonasJuridicasResource {
 	public List<PersonaJuridicaRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
 			@QueryParam("numeroDocumento") String numeroDocumento, @QueryParam("razonSocial") String razonSocial,
 			@QueryParam("nombreComercial") String nombreComercial, @QueryParam("filterText") String filterText,
-			@QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults)
-					throws NotAuthorizedException;
+			@QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
 
 	/**
 	 * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
@@ -127,7 +125,6 @@ public interface PersonasJuridicasResource {
 	@POST
 	@Path("search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(SearchCriteriaRepresentation criteria)
-			throws InvalidSearchCriteriaException, NotAuthorizedException;
+	public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

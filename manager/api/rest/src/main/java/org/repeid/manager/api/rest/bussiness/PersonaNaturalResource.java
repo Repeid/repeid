@@ -173,6 +173,6 @@ public interface PersonaNaturalResource {
      */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response remove() throws PersonaNaturalNotFoundException, NotAuthorizedException;
+    public void remove() throws PersonaNaturalNotFoundException, NotAuthorizedException;
 
 }

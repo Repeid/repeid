@@ -17,108 +17,104 @@
  *******************************************************************************/
 package org.repeid.manager.api.rest.bussiness.impl;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
-import org.repeid.manager.api.model.PersonaJuridicaProvider;
+import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
+import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
 import org.repeid.manager.api.rest.bussiness.AccionistasResource;
 import org.repeid.manager.api.rest.bussiness.PersonaJuridicaResource;
 import org.repeid.manager.api.rest.bussiness.PersonasJuridicasResource;
-import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
-import org.repeid.manager.api.rest.contract.exceptions.PersonaJuridicaNotFoundException;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.PersonaJuridicaManager;
 import org.repeid.manager.api.security.ISecurityContext;
 
-@Stateless
+@RequestScoped
 public class PersonaJuridicaResourceImpl implements PersonaJuridicaResource {
 
-    @PathParam(PersonasJuridicasResource.PERSONA_JURIDICA_ID)
-    private String personaJuridicaId;
+	@PathParam(PersonasJuridicasResource.PERSONA_JURIDICA_ID)
+	private String personaJuridicaId;
 
-    @Inject
-    private PersonaJuridicaProvider personaJuridicaProvider;
+	@Inject
+	private RepeidSession session;
 
-    @Inject
-    private PersonaJuridicaManager personaJuridicaManager;
+	@Inject
+	private ISecurityContext auth;
 
-    @Inject
-    private AccionistasResource accionistasResource;
+	@Inject
+	private AccionistasResource accionistasResource;
 
-    @Inject
-    private ISecurityContext iSecurityContext;
+	private PersonaJuridicaModel getPersonaJuridicaModel() {
+		return session.personasJuridicas().findById(personaJuridicaId);
+	}
 
-    private PersonaJuridicaModel getPersonaJuridicaModel() throws StorageException {
-        return personaJuridicaProvider.findById(personaJuridicaId);
-    }
+	@Override
+	public PersonaJuridicaRepresentation toRepresentation() {
+		if (!auth.hasPermission(PermissionType.personaView))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Override
-    public PersonaJuridicaRepresentation toRepresentation()
-            throws PersonaJuridicaNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.personaView))
-            throw ExceptionFactory.notAuthorizedException();
+		PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
+		if (personaJuridica == null) {
+			throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
+		}
+		return ModelToRepresentation.toRepresentation(personaJuridica);
+	}
 
-        try {
-            PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
-            if (personaJuridica == null) {
-                throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
-            }
-            return ModelToRepresentation.toRepresentation(personaJuridica);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+	@Override
+	public void update(PersonaJuridicaRepresentation rep) {
+		if (!auth.hasPermission(PermissionType.personaEdit))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Override
-    public void update(PersonaJuridicaRepresentation rep)
-            throws PersonaJuridicaNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.personaEdit))
-            throw ExceptionFactory.notAuthorizedException();
+		PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
+		if (personaJuridica == null) {
+			throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
+		}
 
-        try {
-            PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
-            if (personaJuridica == null) {
-                throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
-            }
-            personaJuridicaManager.update(personaJuridica, rep);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		boolean result = new PersonaJuridicaManager(session).update(personaJuridica, rep);
+		if (!result) {
+			throw ExceptionFactory.tipoDocumentoLockedException(personaJuridicaId);
+		}
+	}
 
-    @Override
-    public Response remove() throws PersonaJuridicaNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
-            throw ExceptionFactory.notAuthorizedException();
+	@Override
+	public void remove() {
+		if (!auth.hasPermission(PermissionType.documentoAdmin))
+			throw ExceptionFactory.notAuthorizedException();
 
-        try {
-            PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
-            if (personaJuridica == null) {
-                throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
-            }
+		PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
+		if (personaJuridica == null) {
+			throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
+		}
 
-            boolean removed = personaJuridicaProvider.remove(personaJuridica);
-            if (removed) {
-                return Response.noContent().build();
-            } else {
-                throw ExceptionFactory.personaJuridicaLockedException(personaJuridicaId);
-            }
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		try {
+			session.personasJuridicas().remove(personaJuridica);
 
-    @Override
-    public AccionistasResource accionistas() {
-        return accionistasResource;
-    }
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+		} catch (ModelReadOnlyException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+	}
+
+	@Override
+	public AccionistasResource accionistas() {
+		return accionistasResource;
+	}
 
 }

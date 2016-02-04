@@ -17,34 +17,95 @@
  *******************************************************************************/
 package org.repeid.manager.api.rest.managers;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
+import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
+import org.repeid.manager.api.model.system.RepeidSession;
+import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
+import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class TipoDocumentoManager {
 
-	public void update(TipoDocumentoModel model, TipoDocumentoRepresentation rep) throws StorageException {
+	private RepeidSession session;
+
+	public TipoDocumentoManager(RepeidSession session) {
+		this.session = session;
+	}
+
+	public boolean update(TipoDocumentoModel model, TipoDocumentoRepresentation rep) {
 		model.setDenominacion(rep.getDenominacion());
 		model.setCantidadCaracteres(rep.getCantidadCaracteres());
 		model.setTipoPersona(TipoPersona.valueOf(rep.getTipoPersona()));
-		model.commit();
+
+		try {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+		} catch (ModelReadOnlyException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getAbreviatura());
+		} catch (ModelDuplicateException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+
+		return true;
 	}
 
-	public void enable(TipoDocumentoModel model) throws StorageException {
+	public boolean enable(TipoDocumentoModel model) {
 		model.setEstado(true);
-		model.commit();
+
+		try {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+		} catch (ModelReadOnlyException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getAbreviatura());
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+
+		return true;
 	}
 
-	public void disable(TipoDocumentoModel model) throws StorageException {
+	public boolean disable(TipoDocumentoModel model) {
 		model.setEstado(false);
-		model.commit();
+
+		try {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+		} catch (ModelReadOnlyException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getAbreviatura());
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+
+		return true;
 	}
 
 }

@@ -70,8 +70,7 @@ public interface PersonasNaturalesResource {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(PersonaNaturalRepresentation rep)
-			throws PersonaNaturalAlreadyExistsException, NotAuthorizedException;
+	public Response create(PersonaNaturalRepresentation rep);
 
 	/**
 	 * Este endpoint provee una forma de buscar personaNaturales. Los criterios
@@ -109,7 +108,7 @@ public interface PersonasNaturalesResource {
 			@QueryParam("apellidoPaterno") String apellidoPaterno,
 			@QueryParam("apellidoMaterno") String apellidoMaterno, @QueryParam("nombres") String nombres,
 			@QueryParam("filterText") String filterText, @QueryParam("first") Integer firstResult,
-			@QueryParam("max") Integer maxResults) throws NotAuthorizedException;
+			@QueryParam("max") Integer maxResults);
 
 	/**
 	 * Este endpoint provee una forma de buscar personaNaturales. Los criterios
@@ -128,7 +127,6 @@ public interface PersonasNaturalesResource {
 	@POST
 	@Path("search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public SearchResultsRepresentation<PersonaNaturalRepresentation> search(SearchCriteriaRepresentation criteria)
-			throws InvalidSearchCriteriaException, NotAuthorizedException;
+	public SearchResultsRepresentation<PersonaNaturalRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

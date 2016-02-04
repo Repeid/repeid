@@ -17,24 +17,27 @@
  *******************************************************************************/
 package org.repeid.manager.api.rest.managers;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.StoreConfigurationModel;
 import org.repeid.manager.api.model.StoredFileModel;
-import org.repeid.manager.api.model.StoredFileProvider;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
+import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
+import org.repeid.manager.api.model.system.RepeidSession;
+import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
+import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class PersonaNaturalManager {
 
-	public void update(PersonaNaturalModel model, PersonaNaturalRepresentation representation) throws StorageException {
+	private RepeidSession session;
+
+	public PersonaNaturalManager(RepeidSession session) {
+		this.session = session;
+	}
+
+	public boolean update(PersonaNaturalModel model, PersonaNaturalRepresentation representation) {
 		model.setCodigoPais(representation.getCodigoPais());
 		model.setApellidoPaterno(representation.getApellidoPaterno());
 		model.setApellidoMaterno(representation.getApellidoMaterno());
@@ -52,23 +55,31 @@ public class PersonaNaturalManager {
 		model.setCelular(representation.getCelular());
 		model.setEmail(representation.getEmail());
 
-		model.commit();
+		try {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+		} catch (ModelReadOnlyException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getId());
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+
+		return true;
 	}
 
-	public StoredFileModel setFoto(PersonaNaturalModel personaNatural, StoreConfigurationModel config, byte[] bytes,
-			StoredFileProvider storedFileProvider) throws StorageException {
-		StoredFileModel storedFileModel = storedFileProvider.create(bytes, config);
-		personaNatural.setFoto(storedFileModel);
-		personaNatural.commit();
-		return storedFileModel;
+	public StoredFileModel setFoto(PersonaNaturalModel personaNatural, StoreConfigurationModel config, byte[] bytes) {
+		return null;
 	}
 
-	public StoredFileModel setFirma(PersonaNaturalModel personaNatural, StoreConfigurationModel config, byte[] bytes,
- StoredFileProvider storedFileProvider) throws StorageException {
-		StoredFileModel storedFileModel = storedFileProvider.create(bytes, config);
-		personaNatural.setFirma(storedFileModel);
-		personaNatural.commit();
-		return storedFileModel;
+	public StoredFileModel setFirma(PersonaNaturalModel personaNatural, StoreConfigurationModel config, byte[] bytes) {
+		return null;
 	}
 
 }

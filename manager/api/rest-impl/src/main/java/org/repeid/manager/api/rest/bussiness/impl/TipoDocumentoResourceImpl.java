@@ -17,131 +17,127 @@
  *******************************************************************************/
 package org.repeid.manager.api.rest.bussiness.impl;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.TipoDocumentoModel;
-import org.repeid.manager.api.model.TipoDocumentoProvider;
+import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
+import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
 import org.repeid.manager.api.rest.bussiness.TipoDocumentoResource;
 import org.repeid.manager.api.rest.bussiness.TiposDocumentoResource;
-import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.contract.exceptions.TipoDocumentoNotFoundException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.TipoDocumentoManager;
 import org.repeid.manager.api.security.ISecurityContext;
 
-@Stateless
+@RequestScoped
 public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
 
-    @PathParam(TiposDocumentoResource.TIPO_DOCUMENTO_ID)
-    private String tipoDocumentoId;
+	@PathParam(TiposDocumentoResource.TIPO_DOCUMENTO_ID)
+	private String tipoDocumentoId;
 
-    @Inject
-    private TipoDocumentoProvider tipoDocumentoProvider;
+	@Inject
+	private RepeidSession session;
 
-    @Inject
-    private TipoDocumentoManager tipoDocumentoManager;
+	@Inject
+	private ISecurityContext auth;
 
-    @Inject
-    private ISecurityContext iSecurityContext;
+	private TipoDocumentoModel getTipoDocumentoModel() {
+		return session.tipoDocumentos().findById(tipoDocumentoId);
+	}
 
-    private TipoDocumentoModel getTipoDocumentoModel() throws StorageException {
-        return tipoDocumentoProvider.findById(tipoDocumentoId);
-    }
+	@Override
+	public TipoDocumentoRepresentation toRepresentation() {
+		if (!auth.hasPermission(PermissionType.documentoView))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Override
-    public TipoDocumentoRepresentation toRepresentation()
-            throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.documentoView))
-            throw ExceptionFactory.notAuthorizedException();
+		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+		if (tipoDocumento == null) {
+			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
+		}
+		return ModelToRepresentation.toRepresentation(tipoDocumento);
+	}
 
-        try {
-            TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-            if (tipoDocumento == null) {
-                throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-            }
-            return ModelToRepresentation.toRepresentation(tipoDocumento);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+	@Override
+	public void update(TipoDocumentoRepresentation rep) {
+		if (!auth.hasPermission(PermissionType.documentoEdit))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Override
-    public void update(TipoDocumentoRepresentation rep)
-            throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
-            throw ExceptionFactory.notAuthorizedException();
+		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+		if (tipoDocumento == null) {
+			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
+		}
 
-        try {
-            TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-            if (tipoDocumento == null) {
-                throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-            }
-            tipoDocumentoManager.update(tipoDocumento, rep);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		boolean result = new TipoDocumentoManager(session).update(tipoDocumento, rep);
+		if (!result) {
+			throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
+		}
+	}
 
-    @Override
-    public void enable() throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
-            throw ExceptionFactory.notAuthorizedException();
+	@Override
+	public void enable() {
+		if (!auth.hasPermission(PermissionType.documentoEdit))
+			throw ExceptionFactory.notAuthorizedException();
 
-        try {
-            TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-            if (tipoDocumento == null) {
-                throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-            }
-            tipoDocumentoManager.enable(tipoDocumento);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+		if (tipoDocumento == null) {
+			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
+		}
 
-    @Override
-    public void disable() throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.documentoEdit))
-            throw ExceptionFactory.notAuthorizedException();
+		boolean result = new TipoDocumentoManager(session).enable(tipoDocumento);
+		if (!result) {
+			throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
+		}
+	}
 
-        try {
-            TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-            if (tipoDocumento == null) {
-                throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-            }
-            tipoDocumentoManager.disable(tipoDocumento);
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+	@Override
+	public void disable() {
+		if (!auth.hasPermission(PermissionType.documentoEdit))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Override
-    public Response remove() throws TipoDocumentoNotFoundException, NotAuthorizedException {
-        if (!iSecurityContext.hasPermission(PermissionType.documentoAdmin))
-            throw ExceptionFactory.notAuthorizedException();
+		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+		if (tipoDocumento == null) {
+			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
+		}
 
-        try {
-            TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-            if (tipoDocumento == null) {
-                throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-            }
+		boolean result = new TipoDocumentoManager(session).disable(tipoDocumento);
+		if (!result) {
+			throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
+		}
+	}
 
-            boolean removed = tipoDocumentoProvider.remove(tipoDocumento);
-            if (removed) {
-                return Response.noContent().build();
-            } else {
-                throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
-            }
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+	@Override
+	public void remove() {
+		if (!auth.hasPermission(PermissionType.documentoAdmin))
+			throw ExceptionFactory.notAuthorizedException();
+
+		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+		if (tipoDocumento == null) {
+			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
+		}
+
+		try {
+			session.tipoDocumentos().remove(tipoDocumento);
+
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+		} catch (ModelReadOnlyException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+	}
 
 }

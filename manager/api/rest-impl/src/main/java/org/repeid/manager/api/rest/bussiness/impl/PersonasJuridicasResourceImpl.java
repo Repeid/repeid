@@ -22,189 +22,165 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.repeid.manager.api.beans.exceptions.StorageException;
 import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
-import org.repeid.manager.api.model.PersonaJuridicaProvider;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
-import org.repeid.manager.api.model.TipoDocumentoProvider;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
+import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
 import org.repeid.manager.api.model.utils.RepresentationToModel;
 import org.repeid.manager.api.rest.bussiness.PersonaJuridicaResource;
 import org.repeid.manager.api.rest.bussiness.PersonasJuridicasResource;
-import org.repeid.manager.api.rest.contract.exceptions.InvalidSearchCriteriaException;
-import org.repeid.manager.api.rest.contract.exceptions.NotAuthorizedException;
-import org.repeid.manager.api.rest.contract.exceptions.PersonaJuridicaAlreadyExistsException;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
 import org.repeid.manager.api.security.ISecurityContext;
 
-@Stateless
+@RequestScoped
 public class PersonasJuridicasResourceImpl implements PersonasJuridicasResource {
 
-    @Inject
-    private RepresentationToModel representationToModel;
+	@Inject
+	private RepeidSession session;
 
-    @Inject
-    private TipoDocumentoProvider tipoDocumentoProvider;
+	@Inject
+	private ISecurityContext auth;
 
-    @Inject
-    private PersonaNaturalProvider personaNaturalProvider;
+	@Context
+	private UriInfo uriInfo;
 
-    @Inject
-    private PersonaJuridicaProvider personaJuridicaProvider;
+	@Inject
+	private PersonaJuridicaResource personaJuridicaResource;
 
-    @Inject
-    private PersonaJuridicaResource personaJuridicaResource;
+	@Override
+	public PersonaJuridicaResource personaJuridica(String personaJuridica) {
+		return personaJuridicaResource;
+	}
 
-    @Inject
-    private ISecurityContext iSecurityContext;
+	@Override
+	public Response create(PersonaJuridicaRepresentation rep) {
+		if (!auth.hasPermission(PermissionType.personaAdmin))
+			throw ExceptionFactory.notAuthorizedException();
 
-    @Context
-    private UriInfo uriInfo;
+		TipoDocumentoModel tipoDocumentoPersonaJuridica = session.tipoDocumentos()
+				.findByAbreviatura(rep.getTipoDocumento());
 
-    @Override
-    public PersonaJuridicaResource personaJuridica(String personaJuridica) {
-        return personaJuridicaResource;
-    }
+		// Check duplicated tipo y numero de documento
+		if (session.personasJuridicas().findByTipoNumeroDocumento(tipoDocumentoPersonaJuridica,
+				rep.getNumeroDocumento()) != null) {
+			throw ExceptionFactory
+					.personaJuridicaAlreadyExistsException(rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
+		}
 
-    @Override
-    public Response create(PersonaJuridicaRepresentation rep)
-            throws PersonaJuridicaAlreadyExistsException, NotAuthorizedException {
+		PersonaNaturalRepresentation representanteRep = rep.getRepresentanteLegal();
+		TipoDocumentoModel tipoDocumentoRepresentante = session.tipoDocumentos()
+				.findByAbreviatura(representanteRep.getTipoDocumento());
+		PersonaNaturalModel representanteLegal = session.personasNaturales()
+				.findByTipoNumeroDocumento(tipoDocumentoRepresentante, representanteRep.getNumeroDocumento());
+		try {
+			PersonaJuridicaModel personaJuridica = RepresentationToModel.createPersonaJuridica(session, rep,
+					tipoDocumentoPersonaJuridica, representanteLegal);
 
-        if (!iSecurityContext.hasPermission(PermissionType.personaAdmin))
-            throw ExceptionFactory.notAuthorizedException();
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
 
-        try {
-            TipoDocumentoModel tipoDocumentoPersonaJuridica = tipoDocumentoProvider
-                    .findByAbreviatura(rep.getTipoDocumento());
+			return Response.created(uriInfo.getAbsolutePathBuilder().path(personaJuridica.getId()).build()).build();
+		} catch (ModelDuplicateException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw ExceptionFactory
+					.personaJuridicaAlreadyExistsException(rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
+		} catch (ModelException e) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().setRollbackOnly();
+			}
+			throw new SystemErrorException(e);
+		}
+	}
 
-            // Check duplicated tipo y numero de documento
-            if (personaJuridicaProvider.findByTipoNumeroDocumento(tipoDocumentoPersonaJuridica,
-                    rep.getNumeroDocumento()) != null) {
-                throw ExceptionFactory.personaJuridicaAlreadyExistsException(
-                        rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
-            }
+	@Override
+	public List<PersonaJuridicaRepresentation> search(String tipoDocumento, String numeroDocumento, String razonSocial,
+			String nombreComercial, String filterText, Integer firstResult, Integer maxResults) {
+		if (!auth.hasPermission(PermissionType.personaView))
+			throw ExceptionFactory.notAuthorizedException();
 
-            PersonaNaturalRepresentation representanteRep = rep.getRepresentanteLegal();
-            TipoDocumentoModel tipoDocumentoRepresentante = tipoDocumentoProvider
-                    .findByAbreviatura(representanteRep.getTipoDocumento());
-            PersonaNaturalModel representanteLegal = personaNaturalProvider.findByTipoNumeroDocumento(
-                    tipoDocumentoRepresentante, representanteRep.getNumeroDocumento());
-            try {
-                PersonaJuridicaModel personaJuridica = representationToModel.createPersonaJuridica(rep,
-                        tipoDocumentoPersonaJuridica, representanteLegal, personaJuridicaProvider);
-                return Response
-                        .created(uriInfo.getAbsolutePathBuilder().path(personaJuridica.getId()).build())
-                        .header("Access-Control-Expose-Headers", "Location")
-                        .entity(ModelToRepresentation.toRepresentation(personaJuridica)).build();
-            } catch (ModelDuplicateException e) {
-                throw ExceptionFactory.personaJuridicaAlreadyExistsException(
-                        rep.getTipoDocumento() + ":" + rep.getNumeroDocumento());
-            }
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		firstResult = firstResult != null ? firstResult : -1;
+		maxResults = maxResults != null ? maxResults : -1;
 
-    @Override
-    public List<PersonaJuridicaRepresentation> search(String tipoDocumento, String numeroDocumento,
-            String razonSocial, String nombreComercial, String filterText, Integer firstResult,
-            Integer maxResults) throws NotAuthorizedException {
+		List<PersonaJuridicaModel> models;
+		if (filterText != null) {
+			models = session.personasJuridicas().search(filterText.trim(), firstResult, maxResults);
+		} else if (tipoDocumento != null || numeroDocumento != null) {
+			TipoDocumentoModel tipoDocumentoModel = session.tipoDocumentos().findByAbreviatura(tipoDocumento);
+			PersonaJuridicaModel personaJuridica = session.personasJuridicas()
+					.findByTipoNumeroDocumento(tipoDocumentoModel, numeroDocumento);
+			models = new ArrayList<>();
+			models.add(personaJuridica);
+		} else if (razonSocial != null || nombreComercial != null || numeroDocumento != null) {
+			Map<String, String> attributes = new HashMap<String, String>();
+			if (razonSocial != null) {
+				attributes.put(PersonaJuridicaModel.RAZON_SOCIAL, razonSocial);
+			}
+			if (nombreComercial != null) {
+				attributes.put(PersonaJuridicaModel.NOMBRE_COMERCIAL, nombreComercial);
+			}
+			if (numeroDocumento != null) {
+				attributes.put(PersonaJuridicaModel.NUMERO_DOCUMENTO, numeroDocumento);
+			}
+			models = session.personasJuridicas().searchByAttributes(attributes, firstResult, maxResults);
+		} else {
+			models = session.personasJuridicas().getAll(firstResult, maxResults);
+		}
 
-        if (!iSecurityContext.hasPermission(PermissionType.personaView))
-            throw ExceptionFactory.notAuthorizedException();
+		List<PersonaJuridicaRepresentation> result = new ArrayList<>();
+		for (PersonaJuridicaModel model : models) {
+			result.add(ModelToRepresentation.toRepresentation(model));
+		}
+		return result;
+	}
 
-        try {
-            firstResult = firstResult != null ? firstResult : -1;
-            maxResults = maxResults != null ? maxResults : -1;
+	@Override
+	public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(SearchCriteriaRepresentation criteria) {
+		if (!auth.hasPermission(PermissionType.personaView))
+			throw ExceptionFactory.notAuthorizedException();
 
-            List<PersonaJuridicaModel> models;
-            if (filterText != null) {
-                models = personaJuridicaProvider.search(filterText.trim(), firstResult, maxResults);
-            } else if (tipoDocumento != null || numeroDocumento != null) {
-                TipoDocumentoModel tipoDocumentoModel = tipoDocumentoProvider
-                        .findByAbreviatura(tipoDocumento);
-                PersonaJuridicaModel personaJuridica = personaJuridicaProvider
-                        .findByTipoNumeroDocumento(tipoDocumentoModel, numeroDocumento);
-                models = new ArrayList<>();
-                models.add(personaJuridica);
-            } else if (razonSocial != null || nombreComercial != null || numeroDocumento != null) {
-                Map<String, String> attributes = new HashMap<String, String>();
-                if (razonSocial != null) {
-                    attributes.put(PersonaJuridicaModel.RAZON_SOCIAL, razonSocial);
-                }
-                if (nombreComercial != null) {
-                    attributes.put(PersonaJuridicaModel.NOMBRE_COMERCIAL, nombreComercial);
-                }
-                if (numeroDocumento != null) {
-                    attributes.put(PersonaJuridicaModel.NUMERO_DOCUMENTO, numeroDocumento);
-                }
-                models = personaJuridicaProvider.searchByAttributes(attributes, firstResult, maxResults);
-            } else {
-                models = personaJuridicaProvider.getAll(firstResult, maxResults);
-            }
+		SearchCriteriaUtil.validateSearchCriteria(criteria);
+		SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
 
-            List<PersonaJuridicaRepresentation> result = new ArrayList<>();
-            for (PersonaJuridicaModel model : models) {
-                result.add(ModelToRepresentation.toRepresentation(model));
-            }
-            return result;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		// extract filterText
+		String filterText = criteria.getFilterText();
 
-    @Override
-    public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(
-            SearchCriteriaRepresentation criteria)
-                    throws InvalidSearchCriteriaException, NotAuthorizedException {
+		// search
+		SearchResultsModel<PersonaJuridicaModel> models = null;
+		if (filterText == null) {
+			models = session.personasJuridicas().search(criteriaModel);
+		} else {
+			models = session.personasJuridicas().search(criteriaModel, filterText);
+		}
 
-        if (!iSecurityContext.hasPermission(PermissionType.personaView))
-            throw ExceptionFactory.notAuthorizedException();
-
-        try {
-            SearchCriteriaUtil.validateSearchCriteria(criteria);
-            SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
-
-            // extract filterText
-            String filterText = criteria.getFilterText();
-
-            // search
-            SearchResultsModel<PersonaJuridicaModel> models = null;
-            if (filterText == null) {
-                models = personaJuridicaProvider.search(criteriaModel);
-            } else {
-                models = personaJuridicaProvider.search(criteriaModel, filterText);
-            }
-
-            SearchResultsRepresentation<PersonaJuridicaRepresentation> result = new SearchResultsRepresentation<>();
-            List<PersonaJuridicaRepresentation> items = new ArrayList<>();
-            for (PersonaJuridicaModel model : models.getModels()) {
-                items.add(ModelToRepresentation.toRepresentation(model));
-            }
-            result.setItems(items);
-            result.setTotalSize(models.getTotalSize());
-            return result;
-        } catch (StorageException e) {
-            throw new SystemErrorException(e);
-        }
-    }
+		SearchResultsRepresentation<PersonaJuridicaRepresentation> result = new SearchResultsRepresentation<>();
+		List<PersonaJuridicaRepresentation> items = new ArrayList<>();
+		for (PersonaJuridicaModel model : models.getModels()) {
+			items.add(ModelToRepresentation.toRepresentation(model));
+		}
+		result.setItems(items);
+		result.setTotalSize(models.getTotalSize());
+		return result;
+	}
 
 }

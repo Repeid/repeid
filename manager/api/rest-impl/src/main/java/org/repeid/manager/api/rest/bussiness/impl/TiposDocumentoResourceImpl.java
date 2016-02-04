@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -51,7 +51,7 @@ import org.repeid.manager.api.security.ISecurityContext;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@ApplicationScoped
+@RequestScoped
 public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 
 	@Inject
