@@ -2,4 +2,6 @@ dependencies {
     // Third Party Dependencies    
     compile( libraries.commons_codec )
     compile( libraries.commons_lang )
+    compile ( libraries.jackson_core_asl )
+	compile ( libraries.jackson_mapper_asl )
 }
