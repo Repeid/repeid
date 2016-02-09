@@ -30,6 +30,7 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 
 	private TipoDocumentoEntity tipoDocumento;
 
+	@SuppressWarnings("unused")
 	private EntityManager em;
 
 	public TipoDocumentoAdapter(EntityManager em, TipoDocumentoEntity tipoDocumentoEntity) {

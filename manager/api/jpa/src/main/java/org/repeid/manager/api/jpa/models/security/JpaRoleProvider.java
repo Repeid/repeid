@@ -22,6 +22,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -40,7 +43,10 @@ import org.repeid.manager.api.model.security.RoleProvider;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@Stateless
 @ProviderType(Type.JPA)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider {
 
 	@Override

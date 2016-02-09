@@ -33,6 +33,7 @@ public class RoleAdapter implements RoleModel {
 
 	private RoleEntity roleEntity;
 
+	@SuppressWarnings("unused")
 	private EntityManager em;
 
 	public RoleAdapter(EntityManager em, RoleEntity roleEntity) {

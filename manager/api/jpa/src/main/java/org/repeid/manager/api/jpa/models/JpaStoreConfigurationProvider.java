@@ -20,6 +20,9 @@ package org.repeid.manager.api.jpa.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
@@ -33,7 +36,10 @@ import org.repeid.manager.api.model.provider.ProviderType.Type;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@Stateless
 @ProviderType(Type.JPA)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class JpaStoreConfigurationProvider extends AbstractJpaStorage implements StoreConfigurationProvider {
 
 	@Override

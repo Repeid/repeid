@@ -23,6 +23,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.beans.exceptions.StorageException;
@@ -41,7 +44,10 @@ import org.repeid.manager.api.model.security.UserProvider;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@Stateless
 @ProviderType(Type.JPA)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class JpaUserProvider extends AbstractJpaStorage implements UserProvider {
 
 	@Override

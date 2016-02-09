@@ -39,7 +39,8 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries(value = { @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u"),
+@NamedQueries(value = { 
+		@NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u"),
 		@NamedQuery(name = "UserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username") })
 public class UserEntity implements Serializable {
 

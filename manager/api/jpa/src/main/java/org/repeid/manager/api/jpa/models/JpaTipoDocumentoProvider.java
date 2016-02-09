@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
@@ -40,7 +43,9 @@ import org.repeid.manager.api.model.search.SearchResultsModel;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
+@Stateless
 @ProviderType(Type.JPA)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements TipoDocumentoProvider {
 
 	private static final String ABREVIATURA = "abreviatura";

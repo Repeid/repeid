@@ -19,6 +19,10 @@ package org.repeid.manager.api.jpa.models;
 
 import java.util.UUID;
 
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
 import org.repeid.manager.api.jpa.entities.FileEntity;
 import org.repeid.manager.api.jpa.entities.StoreConfigurationEntity;
@@ -33,7 +37,10 @@ import org.repeid.manager.api.model.provider.ProviderType.Type;
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
+
+@Stateless
 @ProviderType(Type.JPA)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class JpaStoredFileProvider extends AbstractJpaStorage implements StoredFileProvider {
 
 	@Override

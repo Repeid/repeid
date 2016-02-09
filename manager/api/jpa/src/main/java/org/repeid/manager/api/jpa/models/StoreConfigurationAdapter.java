@@ -30,6 +30,7 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
 
 	private StoreConfigurationEntity storeConfiguration;
 
+	@SuppressWarnings("unused")
 	private EntityManager em;
 
 	public StoreConfigurationAdapter(EntityManager em, StoreConfigurationEntity storeConfigurationEntity) {

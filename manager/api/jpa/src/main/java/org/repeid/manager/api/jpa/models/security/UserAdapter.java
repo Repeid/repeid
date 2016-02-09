@@ -31,6 +31,7 @@ public class UserAdapter implements UserModel {
 
 	private UserEntity userEntity;
 
+	@SuppressWarnings("unused")
 	private EntityManager em;
 
 	public UserAdapter(EntityManager em, UserEntity userEntity) {

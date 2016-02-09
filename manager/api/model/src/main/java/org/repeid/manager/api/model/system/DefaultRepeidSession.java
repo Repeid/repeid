@@ -2,9 +2,7 @@ package org.repeid.manager.api.model.system;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.DependsOn;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.core.config.RepeidApplication;
@@ -18,9 +16,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 
-@Startup
-@DependsOn("RepeidApplication")
-@Singleton
+@Stateless
 public class DefaultRepeidSession implements RepeidSession {
 
 	private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);
@@ -30,7 +26,15 @@ public class DefaultRepeidSession implements RepeidSession {
 	@Inject
 	private TipoDocumentoProvider tipoDocumentoProvider;
 
-	// Constructor
+	@Inject
+	private PersonaNaturalProvider personaNaturalProvider;
+
+	@Inject
+	private PersonaJuridicaProvider personaJuridicaProvider;
+
+	/**
+	 * Constructor
+	 */
 	public DefaultRepeidSession() {
 		this.transactionManager = new DefaultRepeidTransactionManager();
 	}
@@ -50,39 +54,19 @@ public class DefaultRepeidSession implements RepeidSession {
 		return transactionManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.repeid.manager.api.model.system.RepeidSession#tipoDocumentos()
-	 */
 	@Override
 	public TipoDocumentoProvider tipoDocumentos() {
-		// TODO Auto-generated method stub
-		return null;
+		return tipoDocumentoProvider;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.repeid.manager.api.model.system.RepeidSession#personasNaturales()
-	 */
 	@Override
 	public PersonaNaturalProvider personasNaturales() {
-		// TODO Auto-generated method stub
-		return null;
+		return personaNaturalProvider;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.repeid.manager.api.model.system.RepeidSession#personasJuridicas()
-	 */
 	@Override
 	public PersonaJuridicaProvider personasJuridicas() {
-		// TODO Auto-generated method stub
-		return null;
+		return personaJuridicaProvider;
 	}
 
 }
