@@ -37,24 +37,24 @@ public class WarCdiModelSecurityFactory {
 	private String realmProvider = Config.getProvider("user");
 
 	@Produces
-	public UserProvider getUserProvider(@ProviderType(Type.JPA) UserProvider jpa,
-			@ProviderType(Type.MONGO) UserProvider mongo) {
+	public UserProvider getUserProvider(@ProviderType(Type.JPA) UserProvider jpa/*,
+			@ProviderType(Type.MONGO) UserProvider mongo*/) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (realmProvider.equalsIgnoreCase("mongo")) {
-			return mongo;
+		/*} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;*/
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
 	}
 
 	@Produces
-	public RoleProvider getRoleProvider(@ProviderType(Type.JPA) RoleProvider jpa,
-			@ProviderType(Type.MONGO) RoleProvider mongo) {
+	public RoleProvider getRoleProvider(@ProviderType(Type.JPA) RoleProvider jpa/*,
+			@ProviderType(Type.MONGO) RoleProvider mongo*/) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (realmProvider.equalsIgnoreCase("mongo")) {
-			return mongo;
+		/*} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;*/
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
