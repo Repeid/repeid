@@ -41,11 +41,8 @@ import org.repeid.manager.api.model.provider.Provider;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.security.UserModel;
 import org.repeid.manager.api.model.system.RepeidTransaction;
-import org.repeid.manager.api.mongo.AbstractMongoStorage;
-import org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity;
-import org.repeid.manager.api.mongo.entities.security.MongoUserEntity;
-import org.repeid.manager.api.mongo.models.MongoTipoDocumentoProvider;
-import org.repeid.manager.api.mongo.models.security.MongoUserProvider;
+import org.repeid.manager.api.war.WarCdiModelFactory;
+import org.repeid.manager.api.war.WarCdiModelSecurityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,22 +53,12 @@ public abstract class AbstractTest {
     protected Logger log = LoggerFactory.getLogger(AbstractTest.class);
 
     @Deployment
-    public static WebArchive createDeployment() {
-    	//File[] dependencies = new File[9];    
-    	//dependencies[0] = Maven.resolver().resolve("org.slf4j:slf4j-simple:1.7.10").withoutTransitivity().asSingleFile();
-    	//dependencies[1] = Maven.resolver().resolve("com.dropbox.core:dropbox-core-sdk:1.8.2").withoutTransitivity().asSingleFile();
-    	//dependencies[2] = Maven.resolver().resolve("com.google.apis:google-api-services-drive:v2-rev173-1.20.0").withoutTransitivity().asSingleFile();
-    	//dependencies[3] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client:1.21.0").withoutTransitivity().asSingleFile();
-    	//dependencies[4] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-java6:1.20.0").withoutTransitivity().asSingleFile();
-    	//dependencies[5] = Maven.resolver().resolve("com.google.oauth-client:google-oauth-client-jetty:1.20.0").withoutTransitivity().asSingleFile();    	
-    	//dependencies[6] = Maven.resolver().resolve("com.google.http-client:google-http-client:1.21.0").withoutTransitivity().asSingleFile();
-    	//dependencies[7] = Maven.resolver().resolve("com.google.http-client:google-http-client-jackson2:1.21.0").withoutTransitivity().asSingleFile();    	    	
-    	//dependencies[8] = Maven.resolver().resolve("com.google.api-client:google-api-client:1.21.0").withoutTransitivity().asSingleFile();
-
+    public static WebArchive createDeployment() {    	
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
                 
                 .addClass(AbstractTest.class)
-                .addClass(CdiFactoryTest.class)                             
+                .addClass(WarCdiModelFactory.class)
+                .addClass(WarCdiModelSecurityFactory.class)
                 
                 /**common-utils*/
                 .addPackage(SystemEnvProperties.class.getPackage())
@@ -103,16 +90,7 @@ public abstract class AbstractTest {
                 .addPackage(JpaTipoDocumentoProvider.class.getPackage())
                 
                 .addPackage(UserEntity.class.getPackage())                
-                .addPackage(JpaUserProvider.class.getPackage())
-                
-                /** model-jpa **/
-                .addPackage(AbstractMongoStorage.class.getPackage())
-                
-                .addPackage(MongoTipoDocumentoEntity.class.getPackage())
-                .addPackage(MongoTipoDocumentoProvider.class.getPackage())
-                
-                .addPackage(MongoUserEntity.class.getPackage())                
-                .addPackage(MongoUserProvider.class.getPackage())
+                .addPackage(JpaUserProvider.class.getPackage())                             
                 
                 /**Config**/
                 .addAsResource("META-INF/repeid-server.json", "META-INF/repeid-server.json")               
@@ -122,8 +100,6 @@ public abstract class AbstractTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 
                 .addAsWebInfResource("test-ds.xml");
-
-		//war.addAsLibraries( dependencies );
 
         return war;
     }    

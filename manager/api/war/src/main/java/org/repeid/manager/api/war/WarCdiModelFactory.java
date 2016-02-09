@@ -18,6 +18,15 @@
 package org.repeid.manager.api.war;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+import org.repeid.manager.api.core.config.Config;
+import org.repeid.manager.api.model.AccionistaProvider;
+import org.repeid.manager.api.model.PersonaJuridicaProvider;
+import org.repeid.manager.api.model.PersonaNaturalProvider;
+import org.repeid.manager.api.model.TipoDocumentoProvider;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
 
 /**
  * Attempt to create producer methods for CDI beans.
@@ -27,7 +36,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class WarCdiModelFactory {
 
-	/*private String realmProvider = Config.getProvider("realm");
+	private String realmProvider = Config.getProvider("realm");
 
 	@Produces
 	public TipoDocumentoProvider getTipoDocumentoProvider(@ProviderType(Type.JPA) TipoDocumentoProvider jpa,
@@ -75,6 +84,6 @@ public class WarCdiModelFactory {
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
-	}*/
+	}
 
 }

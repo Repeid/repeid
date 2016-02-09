@@ -7,24 +7,14 @@ dependencies {
     
     compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-war')
     compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-war:repeid-manager-api-war-wildfly8')
-        
+    
+    // Third Dependencies
 	provided ( libraries.jboss_logging )
-}
-
-subprojects {	
-    dependencies {
-	    // Third Party Dependencies
-	    testCompile ( libraries.junit )
-	    testCompile ( libraries.arquillian_junit_container )
-	    testCompile ( libraries.wildfly_arquillian_container_managed )
-		    
-		//testCompile ( libraries.arquillian_container_chameleon )
-		testCompile ( libraries.hamcrest_all )
-		//testCompile ( libraries.rest_assured )
-		//testCompile ( libraries.shrinkwrap_descriptors_impl_javaee )
-		testCompile ( libraries.arquillian_persistence_api )
-		testCompile ( libraries.arquillian_persistence_impl )			
-	}
+	
+	// Test
+	testCompile ( libraries.undertow_core )
+	testCompile ( libraries.undertow_servlet )
+	testCompile ( libraries.resteasy_undertow )
 }
 
 tasks.withType(Test) {

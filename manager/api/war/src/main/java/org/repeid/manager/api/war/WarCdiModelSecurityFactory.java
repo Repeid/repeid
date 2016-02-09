@@ -18,6 +18,13 @@
 package org.repeid.manager.api.war;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+import org.repeid.manager.api.core.config.Config;
+import org.repeid.manager.api.model.provider.ProviderType;
+import org.repeid.manager.api.model.provider.ProviderType.Type;
+import org.repeid.manager.api.model.security.RoleProvider;
+import org.repeid.manager.api.model.security.UserProvider;
 
 /**
  * Attempt to create producer methods for CDI beans.
@@ -27,11 +34,11 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class WarCdiModelSecurityFactory {
 
-	/*private String realmProvider = Config.getProvider("user");
+	private String realmProvider = Config.getProvider("user");
 
 	@Produces
-	public UserProvider getUserProvider(@ProviderFactory(ProviderType.JPA) UserProvider jpa,
-			@ProviderFactory(ProviderType.MONGO) UserProvider mongo) {
+	public UserProvider getUserProvider(@ProviderType(Type.JPA) UserProvider jpa,
+			@ProviderType(Type.MONGO) UserProvider mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
@@ -42,8 +49,8 @@ public class WarCdiModelSecurityFactory {
 	}
 
 	@Produces
-	public RoleProvider getRoleProvider(@ProviderFactory(ProviderType.JPA) RoleProvider jpa,
-			@ProviderFactory(ProviderType.MONGO) RoleProvider mongo) {
+	public RoleProvider getRoleProvider(@ProviderType(Type.JPA) RoleProvider jpa,
+			@ProviderType(Type.MONGO) RoleProvider mongo) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
 		} else if (realmProvider.equalsIgnoreCase("mongo")) {
@@ -51,6 +58,6 @@ public class WarCdiModelSecurityFactory {
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
-	}*/
+	}
 
 }
