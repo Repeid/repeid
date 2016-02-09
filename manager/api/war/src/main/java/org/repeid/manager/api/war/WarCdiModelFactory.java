@@ -39,48 +39,48 @@ public class WarCdiModelFactory {
 	private String realmProvider = Config.getProvider("realm");
 
 	@Produces
-	public TipoDocumentoProvider getTipoDocumentoProvider(@ProviderType(Type.JPA) TipoDocumentoProvider jpa,
-			@ProviderType(Type.MONGO) TipoDocumentoProvider mongo) {
+	public TipoDocumentoProvider getTipoDocumentoProvider(@ProviderType(Type.JPA) TipoDocumentoProvider jpa/*,
+			@ProviderType(Type.MONGO) TipoDocumentoProvider mongo*/) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (realmProvider.equalsIgnoreCase("mongo")) {
-			return mongo;
+		/*} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;*/
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
 	}
 
 	@Produces
-	public PersonaNaturalProvider getPersonaNaturalProvider(@ProviderType(Type.JPA) PersonaNaturalProvider jpa,
-			@ProviderType(Type.MONGO) PersonaNaturalProvider mongo) {
+	public PersonaNaturalProvider getPersonaNaturalProvider(@ProviderType(Type.JPA) PersonaNaturalProvider jpa/*,
+			@ProviderType(Type.MONGO) PersonaNaturalProvider mongo*/) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (realmProvider.equalsIgnoreCase("mongo")) {
-			return mongo;
+		/*} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;*/
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
 	}
 
 	@Produces
-	public PersonaJuridicaProvider getPersonaJuridicaProvider(@ProviderType(Type.JPA) PersonaJuridicaProvider jpa,
-			@ProviderType(Type.MONGO) PersonaJuridicaProvider mongo) {
+	public PersonaJuridicaProvider getPersonaJuridicaProvider(@ProviderType(Type.JPA) PersonaJuridicaProvider jpa/*,
+			@ProviderType(Type.MONGO) PersonaJuridicaProvider mongo*/) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (realmProvider.equalsIgnoreCase("mongo")) {
-			return mongo;
+		/*} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;*/
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
 	}
 
 	@Produces
-	public AccionistaProvider getAccionistaProvider(@ProviderType(Type.JPA) AccionistaProvider jpa,
-			@ProviderType(Type.MONGO) AccionistaProvider mongo) {
+	public AccionistaProvider getAccionistaProvider(@ProviderType(Type.JPA) AccionistaProvider jpa/*,
+			@ProviderType(Type.MONGO) AccionistaProvider mongo*/) {
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			return jpa;
-		} else if (realmProvider.equalsIgnoreCase("mongo")) {
-			return mongo;
+		/*} else if (realmProvider.equalsIgnoreCase("mongo")) {
+			return mongo;*/
 		} else {
 			throw new RuntimeException("Provider type desconocido");
 		}
