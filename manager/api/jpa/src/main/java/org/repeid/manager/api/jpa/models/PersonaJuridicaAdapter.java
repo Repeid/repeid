@@ -231,11 +231,6 @@ public class PersonaJuridicaAdapter implements PersonaJuridicaModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(personaJuridica);
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

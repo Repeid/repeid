@@ -49,11 +49,6 @@ public class StoreConfigurationAdapter implements StoreConfigurationModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(storeConfiguration);
-	}
-
-	@Override
 	public String getId() {
 		return storeConfiguration.getId();
 	}

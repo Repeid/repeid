@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,6 +39,7 @@ import org.hibernate.jpa.AvailableSettings;
 import org.jboss.logging.Logger;
 import org.repeid.manager.api.core.config.Config;
 import org.repeid.manager.api.jpa.utils.JpaUtils;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -48,17 +50,23 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProvider.class);
 
 	private EntityManagerFactory emf;
+	private EntityManager em;
 
 	private Config.Scope config;
-
 	private Map<String, String> operationalInfo;
+
+	@Inject
+	private RepeidSession session;
 
 	@PostConstruct
 	public void init() {
 		String realmProvider = Config.getProvider("realm");
 		if (realmProvider.equalsIgnoreCase("jpa")) {
 			config = Config.scope("connectionsJpa", "default");
-			lazyInit();
+			lazyInit(session);
+
+			this.em = emf.createEntityManager();
+			session.getTransaction().enlist(new JpaRepeidTransaction(em));
 		}
 	}
 
@@ -72,10 +80,10 @@ public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
 	@Override
 	public EntityManager getEntityManager() {
-		return emf.createEntityManager();
+		return em;
 	}
 
-	private void lazyInit() {
+	private void lazyInit(RepeidSession session) {
 		if (emf == null) {
 			logger.debug("Initializing JPA connections");
 

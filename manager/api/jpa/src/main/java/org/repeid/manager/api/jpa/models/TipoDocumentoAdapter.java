@@ -49,11 +49,6 @@ public class TipoDocumentoAdapter implements TipoDocumentoModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(tipoDocumento);
-	}
-
-	@Override
 	public String getId() {
 		return tipoDocumento.getId();
 	}

@@ -25,7 +25,8 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 import org.repeid.common.util.SystemEnvProperties;
 import org.slf4j.Logger;
@@ -38,7 +39,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@ApplicationScoped
+@Startup
+@Singleton
 public class RepeidApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);

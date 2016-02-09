@@ -50,11 +50,6 @@ public class UserAdapter implements UserModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(userEntity);
-	}
-
-	@Override
 	public String getId() {
 		return userEntity.getId();
 	}

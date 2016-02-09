@@ -7,7 +7,12 @@ import java.util.Properties;
  */
 public class SystemEnvProperties extends Properties {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
     public String getProperty(String key) {
         if (key.startsWith("env.")) {
             return System.getenv().get(key.substring(4));

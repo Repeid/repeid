@@ -52,11 +52,6 @@ public class RoleAdapter implements RoleModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(roleEntity);
-	}
-
-	@Override
 	public String getId() {
 		return roleEntity.getId();
 	}

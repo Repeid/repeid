@@ -55,11 +55,6 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(personaNatural);
-	}
-
-	@Override
 	public String getId() {
 		return personaNatural.getId();
 	}

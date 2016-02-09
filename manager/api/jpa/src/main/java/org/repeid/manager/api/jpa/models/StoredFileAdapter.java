@@ -50,11 +50,6 @@ public class StoredFileAdapter implements StoredFileModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(storedFile);
-	}
-
-	@Override
 	public String getId() {
 		return storedFile.getId();
 	}

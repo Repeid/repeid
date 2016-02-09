@@ -77,11 +77,6 @@ public class AccionistaAdapter implements AccionistaModel {
 	}
 
 	@Override
-	public void commit() {
-		em.merge(accionista);
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
