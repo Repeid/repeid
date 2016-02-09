@@ -18,13 +18,6 @@
 package org.repeid.manager.api.war;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-
-import org.repeid.manager.api.core.config.Config;
-import org.repeid.manager.api.model.provider.ProviderType;
-import org.repeid.manager.api.model.provider.ProviderType.Type;
-import org.repeid.manager.api.model.security.RoleProvider;
-import org.repeid.manager.api.model.security.UserProvider;
 
 /**
  * Attempt to create producer methods for CDI beans.

@@ -1,11 +1,14 @@
 dependencies {
 	// Project Dependencies
 	compile project(':repeid-common:repeid-common-util')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
+	
+	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-core')
+	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')	
+	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-security')	
+	
 	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-rest')
 	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-rest-impl')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-security')
-	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-core')
+	
 	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-model')
 	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-jpa')
 	compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-mongo')
