@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 
-	<persistence-unit name="repeid-defaultJpa" transaction-type="JTA">
+	<persistence-unit name="repeid-default" transaction-type="RESOURCE_LOCAL">
 		<class>org.repeid.manager.api.jpa.entities.PersonaEntity</class>
 		<class>org.repeid.manager.api.jpa.entities.PersonaNaturalEntity</class>
 		<class>org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity</class>
@@ -26,30 +26,6 @@
 			<property name="jboss.as.jpa.managed" value="false" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
 		</properties>
-	</persistence-unit>
-
-	<persistence-unit name="repeid-defaultMongo" transaction-type="JTA">
-		<class>org.repeid.manager.api.mongo.entities.MongoPersonaEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.MongoPersonaNaturalEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.MongoPersonaJuridicaEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.MongoAccionistaEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.MongoTipoDocumentoEntity</class>
-		<!-- File storage -->
-		<class>org.repeid.manager.api.mongo.entities.MongoFileEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.MongoStoredFileEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.MongoStoreConfigurationEntity</class>
-		<!-- Security -->
-		<class>org.repeid.manager.api.mongo.entities.security.MongoRoleEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.security.MongoUserEntity</class>
-		<class>org.repeid.manager.api.mongo.entities.security.MongoRoleMembershipEntity</class>
-
-		<exclude-unlisted-classes>true</exclude-unlisted-classes>
-
-		<properties>
-			<!-- Properties for Hibernate -->
-			<property name="jboss.as.jpa.managed" value="false" />
-			<property name="hibernate.id.new_generator_mappings" value="true" />
-		</properties>
-	</persistence-unit>
+	</persistence-unit>	
 
 </persistence>
