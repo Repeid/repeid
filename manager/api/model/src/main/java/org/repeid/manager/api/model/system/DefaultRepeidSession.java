@@ -3,6 +3,8 @@ package org.repeid.manager.api.model.system;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
 import org.repeid.manager.api.core.config.RepeidApplication;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 
 @Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
 public class DefaultRepeidSession implements RepeidSession {
 
 	private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);
