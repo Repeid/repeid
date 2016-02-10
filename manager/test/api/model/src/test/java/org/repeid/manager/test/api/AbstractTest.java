@@ -47,7 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(Arquillian.class)
-@UsingDataSet("empty.xml")
+//@UsingDataSet("empty.xml")
 public abstract class AbstractTest {
 
     protected Logger log = LoggerFactory.getLogger(AbstractTest.class);

@@ -34,8 +34,8 @@ import org.repeid.manager.test.api.AbstractTest;
 
 public class TipoDocumentoProviderTest extends AbstractTest {
 
-	//@Inject
-	//private RepeidSession session;
+	@Inject
+	private RepeidSession session;
 
 	/*@Test
 	public void findByAbreviatura() throws StorageException {
@@ -50,18 +50,15 @@ public class TipoDocumentoProviderTest extends AbstractTest {
 
 	@Test
 	public void create() throws StorageException {
-		assertThat(true, is(true));
-		//TipoDocumentoProvider provider = session.tipoDocumentos();
-		//assertThat(provider, is(notNullValue()));
-		/*TipoDocumentoModel model = session.tipoDocumentos().create("DNI", "Documento nacional de identidad", 8,
+		TipoDocumentoModel model = session.tipoDocumentos().create("DNI", "Documento nacional de identidad", 8,
 				TipoPersona.NATURAL);
 		
 		if (session.getTransaction().isActive()) {
 			session.getTransaction().commit();
-		}*/
+		}
 
-		/*assertThat("model no debe ser null", model, is(notNullValue()));
-		assertThat("estado debe ser true", model.getEstado(), is(true));*/
+		assertThat("model no debe ser null", model, is(notNullValue()));
+		assertThat("estado debe ser true", model.getEstado(), is(true));
 	}
 
 }
