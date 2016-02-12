@@ -610,6 +610,23 @@
                 <version>${aesh.version}</version>
             </dependency>
 
+			<!--  Repeid -->
+			<dependency>
+                <groupId>org.repeid</groupId>
+                <artifactId>repeid-manager-api-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.repeid</groupId>
+                <artifactId>repeid-manager-api-beans</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+			<dependency>
+                <groupId>org.repeid</groupId>
+                <artifactId>repeid-manager-api-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            
             <!-- keycloak -->
             <dependency>
                 <groupId>org.keycloak</groupId>

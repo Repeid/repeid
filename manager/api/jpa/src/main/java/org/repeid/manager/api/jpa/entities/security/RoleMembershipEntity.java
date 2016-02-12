@@ -64,7 +64,7 @@ public class RoleMembershipEntity implements Serializable {
 	@JoinColumn(foreignKey = @ForeignKey , name = "user_id")
 	private UserEntity user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey , name = "role_id")
 	private RoleEntity role;
 
