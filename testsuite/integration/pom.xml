@@ -15,6 +15,19 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-mongo</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 		</dependency>
