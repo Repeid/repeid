@@ -15,8 +15,6 @@
 		<class>org.repeid.manager.api.jpa.entities.StoreConfigurationEntity</class>
 		<!-- Security -->
 		<class>org.repeid.manager.api.jpa.entities.security.RoleEntity</class>
-		<class>org.repeid.manager.api.jpa.entities.security.UserEntity</class>
-		<class>org.repeid.manager.api.jpa.entities.security.RoleMembershipEntity</class>
 		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
