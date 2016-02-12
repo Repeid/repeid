@@ -14,35 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.keycloak.testsuite.pages;
 
-import org.keycloak.testsuite.OAuthClient;
-import org.keycloak.testsuite.rule.WebResource;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+package org.repeid.testsuite;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class InfoPage extends AbstractPage {
+public class Retry {
 
-    @WebResource
-    protected OAuthClient oauth;
-
-    @FindBy(className = "instruction")
-    private WebElement infoMessage;
-
-    public String getInfo() {
-        return infoMessage.getText();
-    }
-
-    public boolean isCurrent() {
-        return driver.getPageSource().contains("kc-info-message");
-    }
-
-    @Override
-    public void open() {
-        throw new UnsupportedOperationException();
-    }
+	public static void execute(Runnable runnable, int retry, long interval) throws InterruptedException {
+		while (true) {
+			try {
+				runnable.run();
+				return;
+			} catch (RuntimeException e) {
+				retry--;
+				if (retry > 0) {
+					Thread.sleep(interval);
+				} else {
+					throw e;
+				}
+			}
+		}
+	}
 
 }

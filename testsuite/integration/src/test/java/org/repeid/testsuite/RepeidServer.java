@@ -36,6 +36,7 @@ import io.undertow.servlet.api.DeploymentInfo;
 /**
  * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
+@SuppressWarnings("deprecation")
 public class RepeidServer {
 
 	private static final Logger log = Logger.getLogger(RepeidServer.class);
@@ -159,10 +160,10 @@ public class RepeidServer {
 	public UndertowJaxrsServer getServer() {
 		return server;
 	}
-	
+
 	public RepeidServerConfig getConfig() {
-        return config;
-    }
+		return config;
+	}
 
 	public void start() throws Throwable {
 		long start = System.currentTimeMillis();
