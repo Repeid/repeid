@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>repeid-testsuite-pom</artifactId>
+    <artifactId>repeid-tools-pom</artifactId>
     <packaging>pom</packaging>
-    <name>Repeid TestSuite</name>
+    <name>Repeid Tools</name>
     <description />
 
 </project>

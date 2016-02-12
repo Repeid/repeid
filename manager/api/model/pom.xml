@@ -6,12 +6,12 @@
         <artifactId>repeid-parent</artifactId>
         <groupId>org.repeid</groupId>
         <version>1.0.0.Alpha5-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>repeid-testsuite-pom</artifactId>
-    <packaging>pom</packaging>
-    <name>Repeid TestSuite</name>
-    <description />
+    <artifactId>repeid-manager-api-model</artifactId>
+    <name>Repeid Manager Api Model</name>
+    <description/>
 
 </project>

@@ -27,9 +27,8 @@
         </plugins>
     </build>
     <modules>
-        <module>jpa</module>
-        <module>mongo</module>
-        <module>infinispan</module>
+        <module>api</module>
+        <module>ui</module>
     </modules>
 
 </project>

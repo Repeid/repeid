@@ -158,10 +158,11 @@
     </contributors>
 
     <modules>
-        <module>common</module>
+    	<module>docbook</module>
+    	<module>examples</module>
+        <module>common</module>        
         <module>manager</module>
         <module>tools</module>
-        <module>examples</module>
         <module>testsuite</module>
     </modules>
 
