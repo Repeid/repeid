@@ -18,13 +18,12 @@
 
 package org.repeid.manager.api.jpa;
 
-import javax.persistence.EntityManagerFactory;
+import org.repeid.manager.api.model.provider.ProviderFactory;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
-public interface JpaConnectionProviderFactory {
 
-	EntityManagerFactory getEntityManagerFactory();
+public interface JpaConnectionProviderFactory extends ProviderFactory<JpaConnectionProvider> {
 
 }

@@ -17,45 +17,28 @@
  *******************************************************************************/
 package org.repeid.manager.api.jpa;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Stateless
 public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
-	@Inject
-	private JpaConnectionProviderFactory cpf;
+	private final EntityManager em;
 
-	private EntityManager em;
-
-	@Inject
-	private RepeidSession session;
-
-	@PostConstruct
-	public void init() {
-		em = cpf.getEntityManagerFactory().createEntityManager();
-		em = PersistenceExceptionConverter.create(em);
-		session.getTransaction().enlist(new JpaRepeidTransaction(em));
-	}
-
-	@Override
-	@PreDestroy
-	public void close() {
-
+	public DefaultJpaConnectionProvider(EntityManager em) {
+		this.em = em;
 	}
 
 	@Override
 	public EntityManager getEntityManager() {
 		return em;
+	}
+
+	@Override
+	public void close() {
+		em.close();
 	}
 
 }

@@ -19,6 +19,7 @@ import javax.ejb.Startup;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.naming.InitialContext;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
@@ -26,16 +27,15 @@ import javax.sql.DataSource;
 import org.hibernate.jpa.AvailableSettings;
 import org.jboss.logging.Logger;
 import org.repeid.manager.api.core.config.Config;
+import org.repeid.manager.api.core.config.Config.Scope;
 import org.repeid.manager.api.jpa.utils.JpaUtils;
+import org.repeid.manager.api.model.provider.RepeidSessionFactory;
+import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Startup
-@Singleton
-@DependsOn("RepeidApplication")
-@TransactionManagement(TransactionManagementType.BEAN)
 public class DefaultJpaConnectionProviderFactory implements JpaConnectionProviderFactory {
 
 	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProviderFactory.class);
@@ -45,6 +45,38 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 	private Config.Scope config;
 
 	private Map<String, String> operationalInfo;
+
+	@Override
+	public JpaConnectionProvider create(RepeidSession session) {
+		lazyInit(session);
+
+		EntityManager em = emf.createEntityManager();
+		em = PersistenceExceptionConverter.create(em);
+		session.getTransaction().enlist(new JpaRepeidTransaction(em));
+		return new DefaultJpaConnectionProvider(em);
+	}
+
+	@Override
+	public void close() {
+		if (emf != null) {
+			emf.close();
+		}
+	}
+
+	@Override
+	public String getId() {
+		return "default";
+	}
+
+	@Override
+	public void init(Config.Scope config) {
+		this.config = config;
+	}
+
+	@Override
+	public void postInit(RepeidSessionFactory factory) {
+
+	}
 
 	@PostConstruct
 	public void init() {
@@ -59,17 +91,12 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 		}
 	}
 
-	@PreDestroy
-	public void close() {
-		logger.info("Stopping: JpaConnectionProviderFactory");
-	}
-
 	@Override
 	public EntityManagerFactory getEntityManagerFactory() {
 		return emf;
 	}
 
-	private void lazyInit() {
+	private void lazyInit(RepeidSession session) {
 		if (emf == null) {
 			synchronized (this) {
 				if (emf == null) {
