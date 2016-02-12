@@ -95,12 +95,4 @@ public interface PersonaNaturalModel extends Model {
 
 	void setEmail(String email);
 
-	StoredFileModel getFoto();
-
-	void setFoto(StoredFileModel foto);
-
-	StoredFileModel getFirma();
-
-	void setFirma(StoredFileModel firma);
-
 }

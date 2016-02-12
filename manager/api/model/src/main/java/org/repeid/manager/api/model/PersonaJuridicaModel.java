@@ -18,7 +18,6 @@
 package org.repeid.manager.api.model;
 
 import java.util.Date;
-import java.util.List;
 
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 
@@ -37,8 +36,6 @@ public interface PersonaJuridicaModel extends Model {
 	PersonaNaturalModel getRepresentanteLegal();
 
 	void setRepresentanteLegal(PersonaNaturalModel representanteLegal);
-
-	List<AccionistaModel> getAccionistas();
 
 	String getCodigoPais();
 

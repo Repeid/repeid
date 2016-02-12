@@ -24,8 +24,6 @@ package org.repeid.manager.api.model.provider;
 
 public interface Provider {
 
-	public void init();
-
 	public void close();
 
 }
