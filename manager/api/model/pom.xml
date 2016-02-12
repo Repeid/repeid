@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<artifactId>repeid-parent</artifactId>
+		<artifactId>repeid</artifactId>
 		<groupId>org.repeid</groupId>
 		<version>1.0.0.Alpha5-SNAPSHOT</version>
 		<relativePath>../../../pom.xml</relativePath>
@@ -14,6 +14,20 @@
 	<description />
 
 	<dependencies>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-beans</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
@@ -27,16 +41,6 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.repeid</groupId>
-			<artifactId>repeid-manager-api-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.repeid</groupId>
-			<artifactId>repeid-manager-api-beans</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

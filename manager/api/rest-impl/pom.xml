@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<artifactId>repeid-parent</artifactId>
+		<artifactId>repeid</artifactId>
 		<groupId>org.repeid</groupId>
 		<version>1.0.0.Alpha5-SNAPSHOT</version>
 		<relativePath>../../../pom.xml</relativePath>
@@ -15,12 +15,16 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-beans</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcpkix-jdk15on</artifactId>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.repeid</groupId>
@@ -29,7 +33,16 @@
 		<dependency>
 			<groupId>org.repeid</groupId>
 			<artifactId>repeid-manager-api-model</artifactId>
-		</dependency>		
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -122,6 +135,7 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>

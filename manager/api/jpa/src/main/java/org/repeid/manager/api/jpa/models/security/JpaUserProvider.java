@@ -124,7 +124,7 @@ public class JpaUserProvider extends AbstractJpaStorage implements UserProvider 
 
 		Set<PermissionType> result = new HashSet<>();
 		for (RoleMembershipEntity membership : roleMemberships) {
-			result.addAll(membership.getRole().getPermissions());
+			// result.addAll(membership.getRole().getPermissions());
 		}
 		return result;
 	}

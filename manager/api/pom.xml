@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>repeid-parent</artifactId>
-        <groupId>org.repeid</groupId>
-        <version>1.0.0.Alpha5-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>repeid</artifactId>
+		<groupId>org.repeid</groupId>
+		<version>1.0.0.Alpha5-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>repeid-manager-api</artifactId>
-    <packaging>pom</packaging>
-    <name>Repeid Manager Api</name>
-    <description/>
+	<artifactId>repeid-manager-api</artifactId>
+	<packaging>pom</packaging>
+	<name>Repeid Manager Api</name>
+	<description />
 
-    <modules>
-        <module>beans</module>
-        <module>config</module>
-        <module>core</module>
-        <module>jpa</module>
-        <module>model</module>
-        <module>mongo</module>
-        <module>rest</module>
-        <module>rest-impl</module>
-        <module>security</module>
-        <module>war</module>
-    </modules>
+	<modules>
+		<module>beans</module>
+		<module>config</module>
+		<module>core</module>
+		<module>jpa</module>
+		<module>model</module>
+		<module>mongo</module>
+		<module>rest</module>
+		<module>rest-impl</module>
+		<module>security</module>
+		<module>war</module>
+	</modules>
 
 </project>

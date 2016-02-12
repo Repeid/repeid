@@ -34,7 +34,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.repeid.manager.api.beans.representations.security.PermissionType;
 
 /**
  * A role definition. The definition of the role determines whether the role is
@@ -75,7 +74,7 @@ public class RoleEntity implements Serializable {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "permissions", joinColumns = @JoinColumn(name = "role_id") )
-	private Set<PermissionType> permissions;
+	private Set<String> permissions;
 
 	/**
 	 * Constructor.
@@ -116,7 +115,7 @@ public class RoleEntity implements Serializable {
 	/**
 	 * @return the permissions
 	 */
-	public Set<PermissionType> getPermissions() {
+	public Set<String> getPermissions() {
 		return permissions;
 	}
 
@@ -124,7 +123,7 @@ public class RoleEntity implements Serializable {
 	 * @param permissions
 	 *            the permissions to set
 	 */
-	public void setPermissions(Set<PermissionType> permissions) {
+	public void setPermissions(Set<String> permissions) {
 		this.permissions = permissions;
 	}
 

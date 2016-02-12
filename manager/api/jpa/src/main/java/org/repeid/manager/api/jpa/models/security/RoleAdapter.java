@@ -18,6 +18,7 @@
 package org.repeid.manager.api.jpa.models.security;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -94,12 +95,20 @@ public class RoleAdapter implements RoleModel {
 
 	@Override
 	public Set<PermissionType> getPermissions() {
-		return roleEntity.getPermissions();
+		Set<PermissionType> permissions = new HashSet<>();
+		for (String str : roleEntity.getPermissions()) {
+			permissions.add(PermissionType.valueOf(str));
+		}
+		return permissions;
 	}
 
 	@Override
 	public void setPermissions(Set<PermissionType> permissions) {
-		roleEntity.setPermissions(permissions);
+		Set<String> str = new HashSet<>();
+		for (PermissionType permissionType : permissions) {
+			str.add(permissionType.toString());
+		}
+		roleEntity.setPermissions(str);
 	}
 
 	@Override

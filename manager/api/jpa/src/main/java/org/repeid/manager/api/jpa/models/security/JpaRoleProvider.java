@@ -71,7 +71,7 @@ public class JpaRoleProvider extends AbstractJpaStorage implements RoleProvider 
 		roleEntity.setName(name);
 		roleEntity.setDescription(description);
 		roleEntity.setAutoGrant(autoGrant);
-		roleEntity.setPermissions(permissions);
+		// roleEntity.setPermissions(permissions);
 		roleEntity.setCreatedOn(Calendar.getInstance().getTime());
 		roleEntity.setCreatedBy(createdBy);
 		getEntityManager().persist(roleEntity);

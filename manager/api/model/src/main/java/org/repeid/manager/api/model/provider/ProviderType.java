@@ -27,7 +27,6 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.METHOD;
 
-import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
 
 /**
@@ -40,9 +39,6 @@ import javax.inject.Qualifier;
 public @interface ProviderType {
 
 	Type value() default Type.JPA;
-
-	@Nonbinding
-	String description() default "";
 
 	enum Type {
 		JPA, MONGO
