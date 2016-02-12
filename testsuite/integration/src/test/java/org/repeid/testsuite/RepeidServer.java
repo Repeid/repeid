@@ -16,335 +16,225 @@
  */
 package org.repeid.testsuite;
 
-import io.undertow.Undertow;
-import io.undertow.Undertow.Builder;
-import io.undertow.servlet.Servlets;
-import io.undertow.servlet.api.DefaultServletConfig;
-import io.undertow.servlet.api.DeploymentInfo;
-import io.undertow.servlet.api.FilterInfo;
-import org.jboss.logging.Logger;
-import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
-import org.jboss.resteasy.spi.ResteasyDeployment;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.models.RealmModel;
-import org.keycloak.representations.idm.RealmRepresentation;
-import org.keycloak.services.filters.KeycloakSessionServletFilter;
-import org.keycloak.services.managers.ApplianceBootstrap;
-import org.keycloak.services.managers.RealmManager;
-import org.keycloak.services.resources.KeycloakApplication;
-import org.keycloak.testsuite.util.cli.InfinispanCLI;
-import org.keycloak.util.JsonSerialization;
-import org.repeid.manager.api.model.system.RepeidSession;
-
-import javax.servlet.DispatcherType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.jboss.logging.Logger;
+import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
+import org.jboss.resteasy.spi.ResteasyDeployment;
+import org.repeid.common.util.system.JsonSerialization;
+import org.repeid.manager.api.rest.RepeidApplication;
+
+import io.undertow.Undertow;
+import io.undertow.Undertow.Builder;
+import io.undertow.servlet.api.DefaultServletConfig;
+import io.undertow.servlet.api.DeploymentInfo;
+
 /**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:carlosthe19916@gmail.com">Carlos Feria</a>
  */
 public class RepeidServer {
 
-    private static final Logger log = Logger.getLogger(RepeidServer.class);
+	private static final Logger log = Logger.getLogger(RepeidServer.class);
 
-    private boolean sysout = false;
+	private boolean sysout = false;
 
-    public static class RepeidServerConfig {
-        private String host = "localhost";
-        private int port = 8081;
-        private int workerThreads = Math.max(Runtime.getRuntime().availableProcessors(), 2) * 8;
-        private String resourcesHome;
+	private UndertowJaxrsServer server;
 
-        public String getHost() {
-            return host;
-        }
+	private RepeidServerConfig config;
 
-        public int getPort() {
-            return port;
-        }
+	public static class RepeidServerConfig {
+		private String host = "localhost";
+		private int port = 8081;
+		private int workerThreads = Math.max(Runtime.getRuntime().availableProcessors(), 2) * 8;
+		private String resourcesHome;
 
-        public String getResourcesHome() {
-            return resourcesHome;
-        }
+		public String getHost() {
+			return host;
+		}
 
-        public void setHost(String host) {
-            this.host = host;
-        }
+		public int getPort() {
+			return port;
+		}
 
-        public void setPort(int port) {
-            this.port = port;
-        }
+		public String getResourcesHome() {
+			return resourcesHome;
+		}
 
-        public void setResourcesHome(String resourcesHome) {
-            this.resourcesHome = resourcesHome;
-        }
+		public void setHost(String host) {
+			this.host = host;
+		}
 
-        public int getWorkerThreads() {
-            return workerThreads;
-        }
+		public void setPort(int port) {
+			this.port = port;
+		}
 
-        public void setWorkerThreads(int workerThreads) {
-            this.workerThreads = workerThreads;
-        }
-    }
-  
-    public static void main(String[] args) throws Throwable {
-        bootstrapKeycloakServer(args);
-    }
+		public void setResourcesHome(String resourcesHome) {
+			this.resourcesHome = resourcesHome;
+		}
 
-    public static RepeidServer bootstrapKeycloakServer(String[] args) throws Throwable {
-        File f = new File(System.getProperty("user.home"), ".repeid-server.properties");
-        if (f.isFile()) {
-            Properties p = new Properties();
-            p.load(new FileInputStream(f));
-            System.getProperties().putAll(p);
-        }
+		public int getWorkerThreads() {
+			return workerThreads;
+		}
 
-        RepeidServerConfig config = new RepeidServerConfig();
+		public void setWorkerThreads(int workerThreads) {
+			this.workerThreads = workerThreads;
+		}
+	}
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-b")) {
-                config.setHost(args[++i]);
-            }
+	public RepeidServer() {
+		this(new RepeidServerConfig());
+	}
 
-            if (args[i].equals("-p")) {
-                config.setPort(Integer.valueOf(args[++i]));
-            }
-        }
+	public RepeidServer(RepeidServerConfig config) {
+		this.config = config;
+	}
 
-        if (System.getProperty("repeid.port") != null) {
-            config.setPort(Integer.valueOf(System.getProperty("repeid.port")));
-        }
+	public static <T> T loadJson(InputStream is, Class<T> type) {
+		try {
+			return JsonSerialization.readValue(is, type);
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to parse json", e);
+		}
+	}
 
-        if (System.getProperty("repeid.bind.address") != null) {
-            config.setHost(System.getProperty("repeid.bind.address"));
-        }
+	public static void main(String[] args) throws Throwable {
+		bootstrapRepeidServer(args);
+	}
 
-        if (System.getenv("REPEID_DEV_PORT") != null) {
-            config.setPort(Integer.valueOf(System.getenv("REPEID_DEV_PORT")));
-        }
+	public static RepeidServer bootstrapRepeidServer(String[] args) throws Throwable {
+		File f = new File(System.getProperty("user.home"), ".repeid-server.properties");
+		if (f.isFile()) {
+			Properties p = new Properties();
+			p.load(new FileInputStream(f));
+			System.getProperties().putAll(p);
+		}
 
-        if (System.getProperties().containsKey("resources")) {
-            String resources = System.getProperty("resources");
-            if (resources == null || resources.equals("") || resources.equals("true")) {
-                if (System.getProperties().containsKey("maven.home")) {
-                    resources = System.getProperty("user.dir").replaceFirst("testsuite.integration.*", "");
-                } else {
-                    for (String c : System.getProperty("java.class.path").split(File.pathSeparator)) {
-                        if (c.contains(File.separator + "testsuite" + File.separator + "integration")) {
-                            resources = c.replaceFirst("testsuite.integration.*", "");
-                        }
-                    }
-                }
-            }
+		RepeidServerConfig config = new RepeidServerConfig();
 
-            File dir = new File(resources).getAbsoluteFile();
-            if (!dir.isDirectory()) {
-                throw new RuntimeException("Invalid base resources directory");
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals("-b")) {
+				config.setHost(args[++i]);
+			}
 
-            }
-            if (!new File(dir, "themes").isDirectory()) {
-                throw new RuntimeException("Invalid resources forms directory");
-            }
+			if (args[i].equals("-p")) {
+				config.setPort(Integer.valueOf(args[++i]));
+			}
+		}
 
-            if (!System.getProperties().containsKey("repeid.theme.dir")) {
-                System.setProperty("repeid.theme.dir", file(dir.getAbsolutePath(), "themes", "src", "main", "resources", "theme").getAbsolutePath());
-            } else {
-                String foo = System.getProperty("repeid.theme.dir");
-                System.out.println(foo);
-            }
+		if (System.getProperty("repeid.port") != null) {
+			config.setPort(Integer.valueOf(System.getProperty("repeid.port")));
+		}
 
-            if (!System.getProperties().containsKey("repeid.theme.cacheTemplates")) {
-                System.setProperty("repeid.theme.cacheTemplates", "false");
-            }
+		if (System.getProperty("repeid.bind.address") != null) {
+			config.setHost(System.getProperty("repeid.bind.address"));
+		}
 
-            if (!System.getProperties().containsKey("repeid.theme.cacheThemes")) {
-                System.setProperty("repeid.theme.cacheThemes", "false");
-            }
+		if (System.getenv("REPEID_DEV_PORT") != null) {
+			config.setPort(Integer.valueOf(System.getenv("REPEID_DEV_PORT")));
+		}
 
-            if (!System.getProperties().containsKey("repeid.theme.staticMaxAge")) {
-                System.setProperty("repeid.theme.staticMaxAge", "-1");
-            }
+		if (System.getProperties().containsKey("undertowWorkerThreads")) {
+			int undertowWorkerThreads = Integer.parseInt(System.getProperty("undertowWorkerThreads"));
+			config.setWorkerThreads(undertowWorkerThreads);
+		}
 
-            config.setResourcesHome(dir.getAbsolutePath());
-        }
+		final RepeidServer repeid = new RepeidServer(config);
+		repeid.sysout = true;
+		repeid.start();
 
-        if (System.getProperties().containsKey("undertowWorkerThreads")) {
-            int undertowWorkerThreads = Integer.parseInt(System.getProperty("undertowWorkerThreads"));
-            config.setWorkerThreads(undertowWorkerThreads);
-        }
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				repeid.stop();
+			}
+		});
 
-        final RepeidServer repeid = new RepeidServer(config);
-        repeid.sysout = true;
-        repeid.start();
+		return repeid;
+	}
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-import")) {
-                repeid.importRealm(new FileInputStream(args[++i]));
-            }
-        }
-
-        if (System.getProperties().containsKey("import")) {
-            repeid.importRealm(new FileInputStream(System.getProperty("import")));
-        }
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                repeid.stop();
-            }
-        });
-
-        /*if (System.getProperties().containsKey("startInfinispanCLI")) {
-            new InfinispanCLI(repeid).start();
-        }*/
-
-        return repeid;
-    }
-
-    private RepeidServerConfig config;
-
-    private KeycloakSessionFactory sessionFactory;
-
-    private UndertowJaxrsServer server;
-
-    public RepeidServer() {
-        this(new RepeidServerConfig());
-    }
-
-    public RepeidServer(RepeidServerConfig config) {
-        this.config = config;
-    }
-
-    public KeycloakSessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public UndertowJaxrsServer getServer() {
-        return server;
-    }
-
-    public RepeidServerConfig getConfig() {
+	public UndertowJaxrsServer getServer() {
+		return server;
+	}
+	
+	public RepeidServerConfig getConfig() {
         return config;
     }
 
-    public void importRealm(InputStream realm) {
-        RealmRepresentation rep = loadJson(realm, RealmRepresentation.class);
-        importRealm(rep);
-    }
+	public void start() throws Throwable {
+		long start = System.currentTimeMillis();
 
-    public void importRealm(RealmRepresentation rep) {
-        KeycloakSession session = sessionFactory.create();;
-        session.getTransaction().begin();
+		ResteasyDeployment deployment = new ResteasyDeployment();
+		deployment.setApplicationClass(RepeidApplication.class.getName());
 
-        try {
-            RealmManager manager = new RealmManager(session);
+		Builder builder = Undertow.builder().addHttpListener(config.getPort(), config.getHost())
+				.setWorkerThreads(config.getWorkerThreads()).setIoThreads(config.getWorkerThreads() / 8);
 
-            if (rep.getId() != null && manager.getRealm(rep.getId()) != null) {
-                info("Not importing realm " + rep.getRealm() + " realm already exists");
-                return;
-            }
+		server = new UndertowJaxrsServer();
+		try {
+			server.start(builder);
 
-            if (manager.getRealmByName(rep.getRealm()) != null) {
-                info("Not importing realm " + rep.getRealm() + " realm already exists");
-                return;
-            }
-            manager.setContextPath("/auth");
-            RealmModel realm = manager.importRealm(rep);
+			DeploymentInfo di = server.undertowDeployment(deployment, "");
+			di.setClassLoader(getClass().getClassLoader());
+			di.setContextPath("/repeid");
+			di.setDeploymentName("Repeid");
+			di.setDefaultEncoding("UTF-8");
 
-            info("Imported realm " + realm.getName());
+			di.setDefaultServletConfig(new DefaultServletConfig(true));
 
-            session.getTransaction().commit();
-        } finally {
-            session.close();
-        }
-    }
+			// FilterInfo filter = Servlets.filter("SessionFilter",
+			// RepeidSessionServletFilter.class);
+			// di.addFilter(filter);
+			// di.addFilterUrlMapping("SessionFilter", "/*",
+			// DispatcherType.REQUEST);
 
-    protected void setupDevConfig() {
-        if (System.getProperty("keycloak.createAdminUser", "true").equals("true")) {
-            KeycloakSession session = sessionFactory.create();
-            try {
-                session.getTransaction().begin();
-                if (new ApplianceBootstrap(session).isNoMasterUser()) {
-                    new ApplianceBootstrap(session).createMasterRealmUser("admin", "admin");
-                }
-                session.getTransaction().commit();
-            } finally {
-                session.close();
-            }
-        }
-    }
+			server.deploy(di);
 
-    public void start() throws Throwable {
-        long start = System.currentTimeMillis();
+			// sessionFactory = ((KeycloakApplication)
+			// deployment.getApplication()).getSessionFactory();
 
-        ResteasyDeployment deployment = new ResteasyDeployment();        
-        //deployment.setApplicationClass(KeycloakApplication.class.getName());
+			setupDevConfig();
 
-        Builder builder = Undertow.builder()
-                .addHttpListener(config.getPort(), config.getHost())
-                .setWorkerThreads(config.getWorkerThreads())
-                .setIoThreads(config.getWorkerThreads() / 8);
+			if (config.getResourcesHome() != null) {
+				info("Loading resources from " + config.getResourcesHome());
+			}
 
-        server = new UndertowJaxrsServer();
-        try {
-            server.start(builder);
+			info("Started Repeid (http://" + config.getHost() + ":" + config.getPort() + "/repeid) in "
+					+ (System.currentTimeMillis() - start) + " ms\n");
+		} catch (RuntimeException e) {
+			server.stop();
+			throw e;
+		}
+	}
 
-            DeploymentInfo di = server.undertowDeployment(deployment, "");
-            di.setClassLoader(getClass().getClassLoader());
-            di.setContextPath("/auth");
-            di.setDeploymentName("Repeid");
-            di.setDefaultEncoding("UTF-8");
+	protected void setupDevConfig() {
 
-            di.setDefaultServletConfig(new DefaultServletConfig(true));
+	}
 
-            FilterInfo filter = Servlets.filter("SessionFilter", RepeidSessionServletFilter.class);
-            di.addFilter(filter);
-            di.addFilterUrlMapping("SessionFilter", "/*", DispatcherType.REQUEST);
+	public void stop() {
+		server.stop();
 
-            server.deploy(di);
+		info("Stopped Repeid");
+	}
 
-            sessionFactory = ((KeycloakApplication) deployment.getApplication()).getSessionFactory();
+	private void info(String message) {
+		if (sysout) {
+			System.out.println(message);
+		} else {
+			log.info(message);
+		}
+	}
 
-            setupDevConfig();
-
-            if (config.getResourcesHome() != null) {
-                info("Loading resources from " + config.getResourcesHome());
-            }
-
-            info("Started Keycloak (http://" + config.getHost() + ":" + config.getPort() + "/auth) in "
-                    + (System.currentTimeMillis() - start) + " ms\n");
-        } catch (RuntimeException e) {
-            server.stop();
-            throw e;
-        }
-    }
-
-    private void info(String message) {
-        if (sysout) {
-            System.out.println(message);
-        } else {
-            log.info(message);
-        }
-    }
-
-    public void stop() {       
-        server.stop();
-
-        info("Stopped Repeid");
-    }
-
-    private static File file(String... path) {
-        StringBuilder s = new StringBuilder();
-        for (String p : path) {
-            s.append(File.separator);
-            s.append(p);
-        }
-        return new File(s.toString());
-    }
-
+	@SuppressWarnings("unused")
+	private static File file(String... path) {
+		StringBuilder s = new StringBuilder();
+		for (String p : path) {
+			s.append(File.separator);
+			s.append(p);
+		}
+		return new File(s.toString());
+	}
 }

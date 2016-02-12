@@ -7,7 +7,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
-import org.repeid.manager.api.core.config.RepeidApplication;
+import org.repeid.manager.api.core.config.RepeidConfigStarter;
 import org.repeid.manager.api.model.PersonaJuridicaProvider;
 import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoProvider;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class DefaultRepeidSession implements RepeidSession {
 
-	private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(RepeidConfigStarter.class);
 
 	private RepeidTransactionManager transactionManager;
 

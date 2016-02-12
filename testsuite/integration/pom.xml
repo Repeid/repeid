@@ -16,6 +16,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.repeid</groupId>
+			<artifactId>repeid-common-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-rest-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
 			<artifactId>repeid-manager-api-model</artifactId>
 		</dependency>
 		<dependency>

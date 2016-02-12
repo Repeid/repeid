@@ -41,9 +41,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Startup
 @Singleton
-public class RepeidApplication {
+public class RepeidConfigStarter {
 
-	private static final Logger log = LoggerFactory.getLogger(RepeidApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(RepeidConfigStarter.class);
 
 	@PostConstruct
 	public void init() {
