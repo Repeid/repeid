@@ -26,7 +26,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.repeid.common.util.system.JsonSerialization;
-import org.repeid.manager.api.rest.RepeidApplication;
+import org.repeid.manager.api.rest.KeycloakApplication;
 
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
@@ -169,7 +169,7 @@ public class RepeidServer {
 		long start = System.currentTimeMillis();
 
 		ResteasyDeployment deployment = new ResteasyDeployment();
-		deployment.setApplicationClass(RepeidApplication.class.getName());
+		deployment.setApplicationClass(KeycloakApplication.class.getName());
 
 		Builder builder = Undertow.builder().addHttpListener(config.getPort(), config.getHost())
 				.setWorkerThreads(config.getWorkerThreads()).setIoThreads(config.getWorkerThreads() / 8);
