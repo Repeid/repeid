@@ -21,11 +21,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.keycloak.messages.MessagesProvider;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.ModelException;
-import org.keycloak.services.ErrorResponse;
-import org.keycloak.services.ServicesLogger;
+import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.provider.KeycloakSession;
+import org.repeid.manager.api.rest.messages.MessagesProvider;
+import org.repeid.manager.api.rest.services.ServicesLogger;
 
 /**
  * @author <a href="mailto:leonardo.zanivan@gmail.com">Leonardo Zanivan</a>
@@ -33,17 +32,17 @@ import org.keycloak.services.ServicesLogger;
 @Provider
 public class ModelExceptionMapper implements ExceptionMapper<ModelException> {
 
-    private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-    @Context
-    private KeycloakSession session;
+	@Context
+	private KeycloakSession session;
 
-    @Override
-    public Response toResponse(ModelException ex) {
-        String message = session.getProvider(MessagesProvider.class, "admin")
-                .getMessage(ex.getMessage(), ex.getParameters());
+	@Override
+	public Response toResponse(ModelException ex) {
+		String message = session.getProvider(MessagesProvider.class, "admin").getMessage(ex.getMessage(),
+				ex.getParameters());
 
-        logger.error(message, ex);
-        return ErrorResponse.error(message, Response.Status.BAD_REQUEST);
-    }
+		logger.error(message, ex);
+		return ErrorResponse.error(message, Response.Status.BAD_REQUEST);
+	}
 }

@@ -15,7 +15,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.keycloak.services.filters.KeycloakTransactionCommitter;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.common.util.system.JsonSerialization;
 import org.repeid.manager.api.core.config.Config;
@@ -24,7 +23,12 @@ import org.repeid.manager.api.model.migration.MigrationModelManager;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.provider.KeycloakSessionFactory;
 import org.repeid.manager.api.model.utils.PostMigrationEvent;
+import org.repeid.manager.api.rest.admin.MaestroResourceImpl;
+import org.repeid.manager.api.rest.admin.PersonaJuridicaResourceImpl;
+import org.repeid.manager.api.rest.admin.PersonaNaturalResourceImpl;
+import org.repeid.manager.api.rest.admin.TipoDocumentoResourceImpl;
 import org.repeid.manager.api.rest.exportimport.ExportImportManager;
+import org.repeid.manager.api.rest.filters.KeycloakTransactionCommitter;
 import org.repeid.manager.api.rest.impl.util.ObjectMapperResolver;
 import org.repeid.manager.api.rest.managers.ApplianceBootstrap;
 import org.repeid.manager.api.rest.services.ServicesLogger;
@@ -55,13 +59,12 @@ public class KeycloakApplication extends Application {
 																				// injection
 		context.setAttribute(KeycloakSessionFactory.class.getName(), this.sessionFactory);
 
-		singletons.add(new ServerVersionResource());
-		singletons.add(new RealmsResource());
-		singletons.add(new AdminRoot());
+		singletons.add(new ServerVersionResourceImpl());
+		singletons.add(new MaestroResourceImpl());
+		singletons.add(new TipoDocumentoResourceImpl());
+		singletons.add(new PersonaNaturalResourceImpl());
+		singletons.add(new PersonaJuridicaResourceImpl());
 		singletons.add(new ModelExceptionMapper());
-		classes.add(QRCodeResource.class);
-		classes.add(ThemeResource.class);
-		classes.add(JsResource.class);
 
 		classes.add(KeycloakTransactionCommitter.class);
 
