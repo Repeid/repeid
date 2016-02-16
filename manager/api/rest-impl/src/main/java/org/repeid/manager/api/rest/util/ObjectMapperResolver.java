@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.repeid.manager.api.rest.impl.util;
+package org.repeid.manager.api.rest.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

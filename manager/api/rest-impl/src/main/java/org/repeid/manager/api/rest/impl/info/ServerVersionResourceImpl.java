@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.impl.info;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
@@ -28,6 +28,7 @@ import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.HttpResponse;
 import org.repeid.manager.api.beans.representations.VersionRepresentation;
 import org.repeid.manager.api.rest.info.ServerVersionResource;
+import org.repeid.manager.api.rest.resources.Cors;
 import org.repeid.manager.api.rest.services.ServicesLogger;
 
 /**

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.admin;
+package org.repeid.manager.api.rest.impl.admin;
 
 import java.util.ArrayList;
 import java.util.List;

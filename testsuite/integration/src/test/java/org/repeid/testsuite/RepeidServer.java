@@ -26,7 +26,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.repeid.common.util.system.JsonSerialization;
-import org.repeid.manager.api.rest.KeycloakApplication;
+import org.repeid.manager.api.rest.resources.KeycloakApplication;
 
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;

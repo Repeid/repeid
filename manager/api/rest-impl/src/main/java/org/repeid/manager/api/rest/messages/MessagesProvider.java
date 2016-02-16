@@ -24,6 +24,6 @@ import org.repeid.manager.api.model.provider.Provider;
  */
 public interface MessagesProvider extends Provider {
 
-    String getMessage(String messageKey, Object... parameters);
+	String getMessage(String messageKey, Object... parameters);
 
 }

@@ -27,14 +27,14 @@ import javax.ws.rs.core.Response;
  */
 public class ErrorResponse {
 
-    public static Response exists(String message) {
-        return ErrorResponse.error(message, Response.Status.CONFLICT);
-    }
+	public static Response exists(String message) {
+		return ErrorResponse.error(message, Response.Status.CONFLICT);
+	}
 
-    public static Response error(String message, Response.Status status) {
-        ErrorRepresentation error = new ErrorRepresentation();
-        error.setErrorMessage(message);
-        return Response.status(status).entity(error).type(MediaType.APPLICATION_JSON).build();
-    }
+	public static Response error(String message, Response.Status status) {
+		ErrorRepresentation error = new ErrorRepresentation();
+		error.setErrorMessage(message);
+		return Response.status(status).entity(error).type(MediaType.APPLICATION_JSON).build();
+	}
 
 }

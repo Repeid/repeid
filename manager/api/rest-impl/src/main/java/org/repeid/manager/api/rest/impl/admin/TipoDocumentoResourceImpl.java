@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.admin;
+package org.repeid.manager.api.rest.impl.admin;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -31,8 +31,8 @@ import org.repeid.manager.api.model.utils.ModelToRepresentation;
 import org.repeid.manager.api.rest.admin.TipoDocumentoResource;
 import org.repeid.manager.api.rest.admin.TiposDocumentoResource;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
 import org.repeid.manager.api.rest.managers.TipoDocumentoManager;
+import org.repeid.manager.api.rest.util.ExceptionFactory;
 import org.repeid.manager.api.security.ISecurityContext;
 
 @RequestScoped

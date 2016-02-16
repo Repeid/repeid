@@ -20,7 +20,7 @@ package org.repeid.manager.api.rest.listeners;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class PersonaListener implements ServletContextListener {
+public class RepeidListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

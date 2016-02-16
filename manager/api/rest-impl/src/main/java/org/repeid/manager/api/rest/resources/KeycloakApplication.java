@@ -1,4 +1,4 @@
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.resources;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,15 +23,16 @@ import org.repeid.manager.api.model.migration.MigrationModelManager;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.provider.KeycloakSessionFactory;
 import org.repeid.manager.api.model.utils.PostMigrationEvent;
-import org.repeid.manager.api.rest.admin.MaestroResourceImpl;
-import org.repeid.manager.api.rest.admin.PersonaJuridicaResourceImpl;
-import org.repeid.manager.api.rest.admin.PersonaNaturalResourceImpl;
-import org.repeid.manager.api.rest.admin.TipoDocumentoResourceImpl;
 import org.repeid.manager.api.rest.exportimport.ExportImportManager;
 import org.repeid.manager.api.rest.filters.KeycloakTransactionCommitter;
-import org.repeid.manager.api.rest.impl.util.ObjectMapperResolver;
+import org.repeid.manager.api.rest.impl.admin.MaestroResourceImpl;
+import org.repeid.manager.api.rest.impl.admin.PersonaJuridicaResourceImpl;
+import org.repeid.manager.api.rest.impl.admin.PersonaNaturalResourceImpl;
+import org.repeid.manager.api.rest.impl.admin.TipoDocumentoResourceImpl;
+import org.repeid.manager.api.rest.impl.info.ServerVersionResourceImpl;
 import org.repeid.manager.api.rest.managers.ApplianceBootstrap;
 import org.repeid.manager.api.rest.services.ServicesLogger;
+import org.repeid.manager.api.rest.util.ObjectMapperResolver;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Application;

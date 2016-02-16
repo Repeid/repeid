@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.repeid.manager.api.rest;
+package org.repeid.manager.api.rest.resources;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -23,6 +23,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.provider.KeycloakSession;
+import org.repeid.manager.api.rest.ErrorResponse;
 import org.repeid.manager.api.rest.messages.MessagesProvider;
 import org.repeid.manager.api.rest.services.ServicesLogger;
 

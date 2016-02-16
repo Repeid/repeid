@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.impl.util;
+package org.repeid.manager.api.rest.util;
 
 import java.util.HashSet;
 import java.util.Set;

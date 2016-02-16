@@ -15,35 +15,36 @@
  * limitations under the License.
  */
 
-package org.keycloak.messages;
+package org.repeid.manager.api.rest.messages;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.repeid.manager.api.model.provider.Provider;
+import org.repeid.manager.api.model.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.Spi;
 
 /**
  * @author <a href="mailto:leonardo.zanivan@gmail.com">Leonardo Zanivan</a>
  */
 public class MessagesSpi implements Spi {
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
+	@Override
+	public boolean isInternal() {
+		return true;
+	}
 
-    @Override
-    public String getName() {
-        return "messages";
-    }
+	@Override
+	public String getName() {
+		return "messages";
+	}
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return MessagesProvider.class;
-    }
+	@Override
+	public Class<? extends Provider> getProviderClass() {
+		return MessagesProvider.class;
+	}
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return MessagesProviderFactory.class;
-    }
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Class<? extends ProviderFactory> getProviderFactoryClass() {
+		return MessagesProviderFactory.class;
+	}
 
 }

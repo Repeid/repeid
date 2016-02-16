@@ -15,34 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.admin;
+package org.repeid.manager.api.rest.impl.admin;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
-import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.beans.representations.security.PermissionType;
-import org.repeid.manager.api.model.PersonaNaturalModel;
+import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
 import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
-import org.repeid.manager.api.rest.admin.PersonaNaturalResource;
-import org.repeid.manager.api.rest.admin.PersonasNaturalesResource;
+import org.repeid.manager.api.rest.admin.PersonaJuridicaResource;
+import org.repeid.manager.api.rest.admin.PersonasJuridicasResource;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
-import org.repeid.manager.api.rest.managers.PersonaNaturalManager;
+import org.repeid.manager.api.rest.impl.admin.AccionistasResource;
+import org.repeid.manager.api.rest.managers.PersonaJuridicaManager;
+import org.repeid.manager.api.rest.util.ExceptionFactory;
 import org.repeid.manager.api.security.ISecurityContext;
 
 @RequestScoped
-public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
+public class PersonaJuridicaResourceImpl implements PersonaJuridicaResource {
 
-	@PathParam(PersonasNaturalesResource.PERSONA_NATURAL_ID)
-	private String personaNaturalId;
+	@PathParam(PersonasJuridicasResource.PERSONA_JURIDICA_ID)
+	private String personaJuridicaId;
 
 	@Inject
 	private RepeidSession session;
@@ -50,56 +48,39 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
 	@Inject
 	private ISecurityContext auth;
 
-	private PersonaNaturalModel getPersonaNaturalModel() {
-		return session.personasNaturales().findById(personaNaturalId);
+	@Inject
+	private AccionistasResource accionistasResource;
+
+	private PersonaJuridicaModel getPersonaJuridicaModel() {
+		return session.personasJuridicas().findById(personaJuridicaId);
 	}
 
 	@Override
-	public PersonaNaturalRepresentation toRepresentation() {
+	public PersonaJuridicaRepresentation toRepresentation() {
 		if (!auth.hasPermission(PermissionType.personaView))
 			throw ExceptionFactory.notAuthorizedException();
 
-		PersonaNaturalModel personaNatural = getPersonaNaturalModel();
-		if (personaNatural == null) {
-			throw ExceptionFactory.personaNaturalNotFoundException(personaNaturalId);
+		PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
+		if (personaJuridica == null) {
+			throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
 		}
-		return ModelToRepresentation.toRepresentation(personaNatural);
+		return ModelToRepresentation.toRepresentation(personaJuridica);
 	}
 
 	@Override
-	public void update(PersonaNaturalRepresentation rep) {
-		if (!auth.hasPermission(PermissionType.documentoEdit))
+	public void update(PersonaJuridicaRepresentation rep) {
+		if (!auth.hasPermission(PermissionType.personaEdit))
 			throw ExceptionFactory.notAuthorizedException();
 
-		PersonaNaturalModel personaNatural = getPersonaNaturalModel();
-		if (personaNatural == null) {
-			throw ExceptionFactory.personaNaturalNotFoundException(personaNaturalId);
+		PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
+		if (personaJuridica == null) {
+			throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
 		}
 
-		boolean result = new PersonaNaturalManager(session).update(personaNatural, rep);
+		boolean result = new PersonaJuridicaManager(session).update(personaJuridica, rep);
 		if (!result) {
-			throw ExceptionFactory.tipoDocumentoLockedException(personaNaturalId);
+			throw ExceptionFactory.tipoDocumentoLockedException(personaJuridicaId);
 		}
-	}
-
-	@Override
-	public Response getFoto() {
-		return null;
-	}
-
-	@Override
-	public Response getFirma() {
-		return null;
-	}
-
-	@Override
-	public StoredFileRepresentation setFoto(MultipartFormDataInput input) {
-		return null;
-	}
-
-	@Override
-	public StoredFileRepresentation setFirma(MultipartFormDataInput input) {
-		return null;
 	}
 
 	@Override
@@ -107,13 +88,13 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
 		if (!auth.hasPermission(PermissionType.documentoAdmin))
 			throw ExceptionFactory.notAuthorizedException();
 
-		PersonaNaturalModel personaNatural = getPersonaNaturalModel();
-		if (personaNatural == null) {
-			throw ExceptionFactory.personaNaturalNotFoundException(personaNaturalId);
+		PersonaJuridicaModel personaJuridica = getPersonaJuridicaModel();
+		if (personaJuridica == null) {
+			throw ExceptionFactory.personaJuridicaNotFoundException(personaJuridicaId);
 		}
 
 		try {
-			session.personasNaturales().remove(personaNatural);
+			session.personasJuridicas().remove(personaJuridica);
 
 			if (session.getTransaction().isActive()) {
 				session.getTransaction().commit();
@@ -129,6 +110,11 @@ public class PersonaNaturalResourceImpl implements PersonaNaturalResource {
 			}
 			throw new SystemErrorException(e);
 		}
+	}
+
+	@Override
+	public AccionistasResource accionistas() {
+		return accionistasResource;
 	}
 
 }

@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.keycloak.messages;
+package org.repeid.manager.api.rest.messages;
 
-import org.keycloak.provider.ProviderFactory;
+import org.repeid.manager.api.model.provider.ProviderFactory;
 
 /**
  * @author <a href="mailto:leonardo.zanivan@gmail.com">Leonardo Zanivan</a>

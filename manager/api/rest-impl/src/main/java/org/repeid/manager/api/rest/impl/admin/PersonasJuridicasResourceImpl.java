@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.admin;
+package org.repeid.manager.api.rest.impl.admin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +46,8 @@ import org.repeid.manager.api.model.utils.RepresentationToModel;
 import org.repeid.manager.api.rest.admin.PersonaJuridicaResource;
 import org.repeid.manager.api.rest.admin.PersonasJuridicasResource;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
-import org.repeid.manager.api.rest.impl.util.SearchCriteriaUtil;
+import org.repeid.manager.api.rest.util.ExceptionFactory;
+import org.repeid.manager.api.rest.util.SearchCriteriaUtil;
 import org.repeid.manager.api.security.ISecurityContext;
 
 @RequestScoped

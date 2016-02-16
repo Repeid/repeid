@@ -27,7 +27,7 @@ import org.repeid.manager.api.model.exceptions.ModelException;
 import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
 import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.impl.util.ExceptionFactory;
+import org.repeid.manager.api.rest.util.ExceptionFactory;
 
 public class PersonaJuridicaManager {
 
