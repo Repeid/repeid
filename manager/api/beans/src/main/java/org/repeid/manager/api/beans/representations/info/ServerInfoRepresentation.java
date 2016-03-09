@@ -17,11 +17,11 @@
 
 package org.repeid.manager.api.beans.representations.info;
 
-import org.keycloak.representations.idm.ProtocolMapperRepresentation;
-import org.keycloak.representations.idm.ProtocolMapperTypeRepresentation;
-
 import java.util.List;
 import java.util.Map;
+
+import org.repeid.manager.api.beans.representations.idm.ProtocolMapperRepresentation;
+import org.repeid.manager.api.beans.representations.idm.ProtocolMapperTypeRepresentation;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

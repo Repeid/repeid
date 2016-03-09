@@ -15,15 +15,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.repeid</groupId>
-			<artifactId>repeid-manager-api-beans</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.repeid</groupId>
-			<artifactId>repeid-manager-api-model</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.jboss.spec.javax.servlet</groupId>
 			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
 		</dependency>

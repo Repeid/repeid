@@ -17,15 +17,11 @@
  *******************************************************************************/
 package org.repeid.manager.api.model.utils;
 
-import org.repeid.manager.api.beans.representations.AccionistaRepresentation;
 import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
-import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
-import org.repeid.manager.api.model.AccionistaModel;
 import org.repeid.manager.api.model.PersonaJuridicaModel;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 
 /**
@@ -121,33 +117,6 @@ public class ModelToRepresentation {
 		rep.setCelular(model.getCelular());
 		rep.setEmail(model.getEmail());
 
-		return rep;
-	}
-
-	public static AccionistaRepresentation toRepresentation(AccionistaModel model) {
-		if (model == null)
-			return null;
-
-		AccionistaRepresentation rep = new AccionistaRepresentation();
-
-		rep.setId(model.getId());
-		rep.setPorcentajeParticipacion(model.getPorcentajeParticipacion());
-
-		PersonaNaturalRepresentation personaNaturalRepresentation = ModelToRepresentation
-				.toRepresentation(model.getPersonaNatural());
-		rep.setPersonaNatural(personaNaturalRepresentation);
-
-		return rep;
-	}
-
-	public static StoredFileRepresentation toRepresentation(StoredFileModel model) {
-		if (model == null)
-			return null;
-		StoredFileRepresentation rep = new StoredFileRepresentation();
-
-		rep.setId(model.getId());
-		rep.setFileId(model.getFileId());
-		rep.setUrl(model.getUrl());
 		return rep;
 	}
 

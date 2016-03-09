@@ -19,20 +19,15 @@ package org.repeid.manager.api.jpa.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -104,10 +99,6 @@ public class PersonaJuridicaEntity extends PersonaEntity implements Serializable
 	@JoinColumn(name = "representante_legal_id", foreignKey = @ForeignKey )
 	private PersonaNaturalEntity representanteLegal;
 
-	@OneToMany(mappedBy = "personaJuridica", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
-			CascadeType.REMOVE })
-	private Set<AccionistaEntity> accionistas = new HashSet<AccionistaEntity>(0);
-
 	public PersonaJuridicaEntity() {
 		super();
 	}
@@ -174,14 +165,6 @@ public class PersonaJuridicaEntity extends PersonaEntity implements Serializable
 
 	public void setRepresentanteLegal(PersonaNaturalEntity representanteLegal) {
 		this.representanteLegal = representanteLegal;
-	}
-
-	public Set<AccionistaEntity> getAccionistas() {
-		return accionistas;
-	}
-
-	public void setAccionistas(Set<AccionistaEntity> accionistas) {
-		this.accionistas = accionistas;
 	}
 
 	@Override

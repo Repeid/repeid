@@ -25,149 +25,165 @@ import java.util.Set;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public interface ClientModel extends RoleContainerModel,  ProtocolMapperContainerModel, ScopeContainerModel {
+public interface ClientModel {
 
-    // COMMON ATTRIBUTES
+	// COMMON ATTRIBUTES
 
-    String PRIVATE_KEY = "privateKey";
-    String PUBLIC_KEY = "publicKey";
-    String X509CERTIFICATE = "X509Certificate";
+	String PRIVATE_KEY = "privateKey";
+	String PUBLIC_KEY = "publicKey";
+	String X509CERTIFICATE = "X509Certificate";
 
-    void updateClient();
+	void updateClient();
 
-    String getId();
+	String getId();
 
-    String getClientId();
+	String getClientId();
 
-    void setClientId(String clientId);
+	void setClientId(String clientId);
 
-    String getName();
+	String getName();
 
-    void setName(String name);
+	void setName(String name);
 
-    String getDescription();
+	String getDescription();
 
-    void setDescription(String description);
+	void setDescription(String description);
 
-    boolean isEnabled();
+	boolean isEnabled();
 
-    void setEnabled(boolean enabled);
+	void setEnabled(boolean enabled);
 
-    boolean isSurrogateAuthRequired();
+	boolean isSurrogateAuthRequired();
 
-    void setSurrogateAuthRequired(boolean surrogateAuthRequired);
+	void setSurrogateAuthRequired(boolean surrogateAuthRequired);
 
-    Set<String> getWebOrigins();
+	Set<String> getWebOrigins();
 
-    void setWebOrigins(Set<String> webOrigins);
+	void setWebOrigins(Set<String> webOrigins);
 
-    void addWebOrigin(String webOrigin);
+	void addWebOrigin(String webOrigin);
 
-    void removeWebOrigin(String webOrigin);
+	void removeWebOrigin(String webOrigin);
 
-    Set<String> getRedirectUris();
+	Set<String> getRedirectUris();
 
-    void setRedirectUris(Set<String> redirectUris);
+	void setRedirectUris(Set<String> redirectUris);
 
-    void addRedirectUri(String redirectUri);
+	void addRedirectUri(String redirectUri);
 
-    void removeRedirectUri(String redirectUri);
+	void removeRedirectUri(String redirectUri);
 
-    String getManagementUrl();
+	String getManagementUrl();
 
-    void setManagementUrl(String url);
+	void setManagementUrl(String url);
 
-    String getRootUrl();
+	String getRootUrl();
 
-    void setRootUrl(String url);
+	void setRootUrl(String url);
 
-    String getBaseUrl();
+	String getBaseUrl();
 
-    void setBaseUrl(String url);
+	void setBaseUrl(String url);
 
-    List<String> getDefaultRoles();
+	List<String> getDefaultRoles();
 
-    void addDefaultRole(String name);
+	void addDefaultRole(String name);
 
-    void updateDefaultRoles(String[] defaultRoles);
+	void updateDefaultRoles(String[] defaultRoles);
 
+	boolean isBearerOnly();
 
-    boolean isBearerOnly();
-    void setBearerOnly(boolean only);
+	void setBearerOnly(boolean only);
 
-    int getNodeReRegistrationTimeout();
+	int getNodeReRegistrationTimeout();
 
-    void setNodeReRegistrationTimeout(int timeout);
+	void setNodeReRegistrationTimeout(int timeout);
 
-    String getClientAuthenticatorType();
-    void setClientAuthenticatorType(String clientAuthenticatorType);
+	String getClientAuthenticatorType();
 
-    boolean validateSecret(String secret);
-    String getSecret();
-    public void setSecret(String secret);
+	void setClientAuthenticatorType(String clientAuthenticatorType);
 
-    String getRegistrationToken();
-    void setRegistrationToken(String registrationToken);
+	boolean validateSecret(String secret);
 
-    String getProtocol();
-    void setProtocol(String protocol);
+	String getSecret();
 
-    void setAttribute(String name, String value);
-    void removeAttribute(String name);
-    String getAttribute(String name);
-    Map<String, String> getAttributes();
+	public void setSecret(String secret);
 
-    boolean isFrontchannelLogout();
-    void setFrontchannelLogout(boolean flag);
+	String getRegistrationToken();
 
+	void setRegistrationToken(String registrationToken);
 
-    boolean isPublicClient();
-    void setPublicClient(boolean flag);
+	String getProtocol();
 
-    boolean isConsentRequired();
-    void setConsentRequired(boolean consentRequired);
+	void setProtocol(String protocol);
 
-    boolean isStandardFlowEnabled();
-    void setStandardFlowEnabled(boolean standardFlowEnabled);
+	void setAttribute(String name, String value);
 
-    boolean isImplicitFlowEnabled();
-    void setImplicitFlowEnabled(boolean implicitFlowEnabled);
+	void removeAttribute(String name);
 
-    boolean isDirectAccessGrantsEnabled();
-    void setDirectAccessGrantsEnabled(boolean directAccessGrantsEnabled);
+	String getAttribute(String name);
 
-    boolean isServiceAccountsEnabled();
-    void setServiceAccountsEnabled(boolean serviceAccountsEnabled);
+	Map<String, String> getAttributes();
 
-    RealmModel getRealm();
+	boolean isFrontchannelLogout();
 
-    ClientTemplateModel getClientTemplate();
-    void setClientTemplate(ClientTemplateModel template);
-    boolean useTemplateScope();
-    void setUseTemplateScope(boolean flag);
-    boolean useTemplateMappers();
-    void setUseTemplateMappers(boolean flag);
-    boolean useTemplateConfig();
-    void setUseTemplateConfig(boolean flag);
+	void setFrontchannelLogout(boolean flag);
 
-    /**
-     * Time in seconds since epoc
-     *
-     * @return
-     */
-    int getNotBefore();
+	boolean isPublicClient();
 
-    void setNotBefore(int notBefore);
+	void setPublicClient(boolean flag);
 
-     Map<String, Integer> getRegisteredNodes();
+	boolean isConsentRequired();
 
-    /**
-     * Register node or just update the 'lastReRegistration' time if this node is already registered
-     *
-     * @param nodeHost
-     * @param registrationTime
-     */
-    void registerNode(String nodeHost, int registrationTime);
+	void setConsentRequired(boolean consentRequired);
 
-    void unregisterNode(String nodeHost);
+	boolean isStandardFlowEnabled();
+
+	void setStandardFlowEnabled(boolean standardFlowEnabled);
+
+	boolean isImplicitFlowEnabled();
+
+	void setImplicitFlowEnabled(boolean implicitFlowEnabled);
+
+	boolean isDirectAccessGrantsEnabled();
+
+	void setDirectAccessGrantsEnabled(boolean directAccessGrantsEnabled);
+
+	boolean isServiceAccountsEnabled();
+
+	void setServiceAccountsEnabled(boolean serviceAccountsEnabled);
+
+	boolean useTemplateScope();
+
+	void setUseTemplateScope(boolean flag);
+
+	boolean useTemplateMappers();
+
+	void setUseTemplateMappers(boolean flag);
+
+	boolean useTemplateConfig();
+
+	void setUseTemplateConfig(boolean flag);
+
+	/**
+	 * Time in seconds since epoc
+	 *
+	 * @return
+	 */
+	int getNotBefore();
+
+	void setNotBefore(int notBefore);
+
+	Map<String, Integer> getRegisteredNodes();
+
+	/**
+	 * Register node or just update the 'lastReRegistration' time if this node
+	 * is already registered
+	 *
+	 * @param nodeHost
+	 * @param registrationTime
+	 */
+	void registerNode(String nodeHost, int registrationTime);
+
+	void unregisterNode(String nodeHost);
 }

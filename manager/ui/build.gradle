@@ -1,4 +1,0 @@
-dependencies {
-	// Project Dependencies
-    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-model')
-}

@@ -17,7 +17,7 @@
 
 package org.repeid.manager.api.mode.events;
 
-import org.keycloak.events.admin.AdminEventQuery;
+import org.repeid.manager.api.mode.events.admin.AdminEventQuery;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

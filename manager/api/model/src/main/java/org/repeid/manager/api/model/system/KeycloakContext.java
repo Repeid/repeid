@@ -17,43 +17,34 @@
 
 package org.repeid.manager.api.model.system;
 
-import org.keycloak.common.ClientConnection;
-import org.keycloak.models.utils.RealmImporter;
+import java.net.URI;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
-import java.util.Locale;
+
+import org.repeid.manager.api.model.provider.ClientConnection;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public interface KeycloakContext {
 
-    URI getAuthServerUrl();
+	URI getAuthServerUrl();
 
-    String getContextPath();
+	String getContextPath();
 
-    UriInfo getUri();
+	UriInfo getUri();
 
-    HttpHeaders getRequestHeaders();
+	HttpHeaders getRequestHeaders();
 
-    <T> T getContextObject(Class<T> clazz);
+	<T> T getContextObject(Class<T> clazz);
 
-    RealmModel getRealm();
+	ClientModel getClient();
 
-    void setRealm(RealmModel realm);
+	void setClient(ClientModel client);
 
-    ClientModel getClient();
+	ClientConnection getConnection();
 
-    void setClient(ClientModel client);
-
-    ClientConnection getConnection();
-
-    void setConnection(ClientConnection connection);
-
-    RealmImporter getRealmManager();
-
-    Locale resolveLocale(UserModel user);
+	void setConnection(org.repeid.manager.api.model.provider.ClientConnection connection);
 
 }

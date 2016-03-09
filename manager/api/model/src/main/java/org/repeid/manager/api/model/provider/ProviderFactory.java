@@ -18,7 +18,6 @@
 package org.repeid.manager.api.model.provider;
 
 import org.repeid.manager.api.core.config.Config;
-import org.repeid.manager.api.model.system.RepeidSession;
 
 /**
  * At boot time, keycloak discovers all factories. For each discovered factory,
@@ -31,7 +30,7 @@ import org.repeid.manager.api.model.system.RepeidSession;
  */
 public interface ProviderFactory<T extends Provider> {
 
-	public T create(RepeidSession session);
+	public T create(KeycloakSession session);
 
 	/**
 	 * Only called once when the factory is first created. This config is pulled
@@ -44,7 +43,7 @@ public interface ProviderFactory<T extends Provider> {
 	/**
 	 * Called after all provider factories have been initialized
 	 */
-	public void postInit(RepeidSessionFactory factory);
+	public void postInit(KeycloakSessionFactory factory);
 
 	/**
 	 * This is called when the server shuts down.

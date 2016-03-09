@@ -23,7 +23,10 @@ package org.repeid.manager.api.model.system;
  */
 public interface KeycloakTransactionManager extends KeycloakTransaction {
 
-    void enlist(KeycloakTransaction transaction);
-    void enlistAfterCompletion(KeycloakTransaction transaction);
+	void enlist(KeycloakTransaction transaction);
+
+	void enlistAfterCompletion(KeycloakTransaction transaction);
+
+	void enlistPrepare(KeycloakTransaction transaction);
 
 }

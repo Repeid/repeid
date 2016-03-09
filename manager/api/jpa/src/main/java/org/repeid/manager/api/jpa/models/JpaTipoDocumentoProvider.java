@@ -51,12 +51,7 @@ public class JpaTipoDocumentoProvider extends AbstractJpaStorage implements Tipo
 	private static final String ABREVIATURA = "abreviatura";
 	private static final String DENOMINACION = "denominacion";
 	private static final String TIPO_PERSONA = "tipoPersona";
-	private static final String ESTADO = "estado";
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-	}
+	private static final String ESTADO = "estado";	
 
 	@Override
 	public void close() {

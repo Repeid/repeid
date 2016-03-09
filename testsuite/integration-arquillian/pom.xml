@@ -18,8 +18,7 @@
 	<name>Repeid Arquillian Integration TestSuite</name>
 
 	<modules>
-		<module>servers</module>
-		<module>tests</module>
+
 	</modules>
 
 	<build>

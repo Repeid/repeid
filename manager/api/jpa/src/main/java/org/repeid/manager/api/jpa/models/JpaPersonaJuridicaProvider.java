@@ -56,11 +56,6 @@ public class JpaPersonaJuridicaProvider extends AbstractJpaStorage implements Pe
 	private final static String NUMERO_DOCUMENTO = "numeroDocumento";
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void close() {
 		// TODO Auto-generated method stub
 	}

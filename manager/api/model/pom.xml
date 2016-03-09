@@ -22,6 +22,10 @@
 			<groupId>org.repeid</groupId>
 			<artifactId>repeid-manager-api-beans</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-rest</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.enterprise</groupId>

@@ -18,29 +18,28 @@
 package org.repeid.manager.api.beans.representations;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.keycloak.common.Version;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
 public class VersionRepresentation {
-    public static final VersionRepresentation SINGLETON;
+	public static final VersionRepresentation SINGLETON;
 
-    private final String version = Version.VERSION;
-    private final String buildTime = Version.BUILD_TIME;
+	private final String version = Version.VERSION;
+	private final String buildTime = Version.BUILD_TIME;
 
-    static {
-         SINGLETON = new VersionRepresentation();
-    }
+	static {
+		SINGLETON = new VersionRepresentation();
+	}
 
-    @JsonProperty("version")
-    public String getVersion() {
-        return version;
-    }
+	@JsonProperty("version")
+	public String getVersion() {
+		return version;
+	}
 
-    @JsonProperty("build-time")
-    public String getBuildTime() {
-        return buildTime;
-    }
+	@JsonProperty("build-time")
+	public String getBuildTime() {
+		return buildTime;
+	}
 }

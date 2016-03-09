@@ -17,8 +17,8 @@
 
 package org.repeid.manager.api.mode.events;
 
-import org.keycloak.events.admin.AdminEvent;
-import org.keycloak.provider.Provider;
+import org.repeid.manager.api.mode.events.admin.AdminEvent;
+import org.repeid.manager.api.model.provider.Provider;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

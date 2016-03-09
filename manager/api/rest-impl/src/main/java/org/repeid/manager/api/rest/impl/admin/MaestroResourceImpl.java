@@ -20,16 +20,10 @@ package org.repeid.manager.api.rest.impl.admin;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriInfo;
-
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
 import org.repeid.manager.api.model.enums.TipoEmpresa;
 import org.repeid.manager.api.model.enums.TipoPersona;
-import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.rest.admin.MaestroResource;
 import org.repeid.manager.api.rest.services.ServicesLogger;
 
@@ -37,31 +31,9 @@ public class MaestroResourceImpl implements MaestroResource {
 
 	protected static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-	protected RealmModel realm;
-
-	private RealmAuth auth;
-
-	private AdminEventBuilder adminEvent;
-
-	@Context
-	protected ClientConnection clientConnection;
-
-	@Context
-	protected UriInfo uriInfo;
-
-	@Context
-	protected KeycloakSession session;
-
-	@Context
-	protected HttpHeaders headers;
-
-	public UsersResource(RealmModel realm, RealmAuth auth, TokenManager tokenManager, AdminEventBuilder adminEvent) {
-        this.auth = auth;
-        this.realm = realm;
-        this.adminEvent = adminEvent;
-
-        auth.init(RealmAuth.Resource.USER);
-    }
+	public MaestroResourceImpl() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public List<String> getAllTipoPersonas() {

@@ -17,10 +17,6 @@
 
 package org.repeid.manager.api.model.provider;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderEventManager;
-import org.keycloak.provider.ProviderFactory;
-
 import java.util.List;
 
 /**
@@ -28,15 +24,15 @@ import java.util.List;
  * @version $Revision: 1 $
  */
 public interface KeycloakSessionFactory extends ProviderEventManager {
-    KeycloakSession create();
+	KeycloakSession create();
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+	<T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
+	<T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
 
-    List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
-    
-    long getServerStartupTimestamp();
+	List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
 
-    void close();
+	long getServerStartupTimestamp();
+
+	void close();
 }

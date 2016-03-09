@@ -45,7 +45,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @NamedQueries(value = {
 		@NamedQuery(name = "TipoDocumentoEntity.findAll", query = "SELECT t FROM TipoDocumentoEntity t"),
 		@NamedQuery(name = "TipoDocumentoEntity.findByAbreviatura", query = "SELECT t FROM TipoDocumentoEntity t WHERE t.abreviatura = :abreviatura"),
-		@NamedQuery(name = "TipoDocumentoEntity.findByFilterText", query = "SELECT t FROM TipoDocumentoEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText)") })
+		@NamedQuery(name = "TipoDocumentoEntity.findByFilterText", query = "SELECT t FROM TipoDocumentoEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText") })
 public class TipoDocumentoEntity implements Serializable {
 
 	/**

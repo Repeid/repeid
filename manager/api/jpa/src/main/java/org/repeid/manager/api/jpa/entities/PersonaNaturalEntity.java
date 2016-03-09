@@ -22,12 +22,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -99,15 +95,7 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
 	@Size(min = 0, max = 70)
 	@Column(name = "ocupacion")
 	private String ocupacion;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "stored_file_foto_id", foreignKey = @ForeignKey )
-	private StoredFileEntity foto;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "stored_file_firma_id", foreignKey = @ForeignKey )
-	private StoredFileEntity firma;
-
+	
 	public PersonaNaturalEntity() {
 		super();
 	}
@@ -183,23 +171,7 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
 
 	public void setOcupacion(String ocupacion) {
 		this.ocupacion = ocupacion;
-	}
-
-	public StoredFileEntity getFoto() {
-		return foto;
-	}
-
-	public void setFoto(StoredFileEntity foto) {
-		this.foto = foto;
-	}
-
-	public StoredFileEntity getFirma() {
-		return firma;
-	}
-
-	public void setFirma(StoredFileEntity firma) {
-		this.firma = firma;
-	}
+	}	
 
 	@Override
 	public String toString() {

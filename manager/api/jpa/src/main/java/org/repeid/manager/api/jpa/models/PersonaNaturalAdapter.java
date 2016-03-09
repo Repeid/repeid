@@ -22,9 +22,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
-import org.repeid.manager.api.jpa.entities.StoredFileEntity;
 import org.repeid.manager.api.model.PersonaNaturalModel;
-import org.repeid.manager.api.model.StoredFileModel;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.EstadoCivil;
 import org.repeid.manager.api.model.enums.Sexo;
@@ -217,46 +215,6 @@ public class PersonaNaturalAdapter implements PersonaNaturalModel {
 	@Override
 	public void setEmail(String email) {
 		personaNatural.setEmail(email);
-	}
-
-	@Override
-	public StoredFileModel getFoto() {
-		StoredFileEntity storedFileEntity = personaNatural.getFoto();
-		if (storedFileEntity != null) {
-			return new StoredFileAdapter(em, storedFileEntity);
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public StoredFileModel getFirma() {
-		StoredFileEntity storedFileEntity = personaNatural.getFirma();
-		if (storedFileEntity != null) {
-			return new StoredFileAdapter(em, storedFileEntity);
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public void setFoto(StoredFileModel foto) {
-		if (foto != null) {
-			StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(foto, em);
-			personaNatural.setFoto(storedFileEntity);
-		} else {
-			personaNatural.setFoto(null);
-		}
-	}
-
-	@Override
-	public void setFirma(StoredFileModel firma) {
-		if (firma != null) {
-			StoredFileEntity storedFileEntity = StoredFileAdapter.toStoredFileEntity(firma, em);
-			personaNatural.setFirma(storedFileEntity);
-		} else {
-			personaNatural.setFirma(null);
-		}
 	}
 
 	@Override

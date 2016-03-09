@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -31,57 +29,43 @@ import javax.ws.rs.core.UriInfo;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
-import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.TipoDocumentoModel;
+import org.repeid.manager.api.model.enums.TipoPersona;
 import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
-import org.repeid.manager.api.model.system.RepeidSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
-import org.repeid.manager.api.model.utils.RepresentationToModel;
+import org.repeid.manager.api.rest.ErrorResponse;
 import org.repeid.manager.api.rest.admin.TipoDocumentoResource;
 import org.repeid.manager.api.rest.admin.TiposDocumentoResource;
-import org.repeid.manager.api.rest.util.ExceptionFactory;
+import org.repeid.manager.api.rest.services.ServicesLogger;
 import org.repeid.manager.api.rest.util.SearchCriteriaUtil;
-import org.repeid.manager.api.security.ISecurityContext;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@RequestScoped
 public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 
-	@Inject
-	private RepeidSession session;
+	protected static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-	@Inject
-	private ISecurityContext auth;
+	@Context
+	protected KeycloakSession session;
 
 	@Context
 	private UriInfo uriInfo;
 
-	@Inject
-	private TipoDocumentoResource tipoDocumentoResource;
-
 	@Override
 	public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
-		return tipoDocumentoResource;
+		return new TipoDocumentoResourceImpl(tipoDocumentoId);
 	}
 
 	@Override
 	public Response create(TipoDocumentoRepresentation rep) {
-		if (!auth.hasPermission(PermissionType.documentoAdmin))
-			throw ExceptionFactory.notAuthorizedException();
-
-		// Check duplicated abreviatura
-		if (session.tipoDocumentos().findByAbreviatura(rep.getAbreviatura()) != null) {
-			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-		}
-
 		try {
-			TipoDocumentoModel tipoDocumento = RepresentationToModel.createTipoDocumento(session, rep);
+			TipoDocumentoModel tipoDocumento = session.tipoDocumentos().create(rep.getAbreviatura(),
+					rep.getDenominacion(), rep.getCantidadCaracteres(), TipoPersona.valueOf(rep.getTipoPersona()));
 
 			if (session.getTransaction().isActive()) {
 				session.getTransaction().commit();
@@ -92,20 +76,13 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 			if (session.getTransaction().isActive()) {
 				session.getTransaction().setRollbackOnly();
 			}
-			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-		} catch (ModelException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw new SystemErrorException(e);
+			return ErrorResponse.exists("TipoDocumento ya existente");
 		}
 	}
 
 	@Override
 	public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion, String tipoPersona,
 			Boolean estado, String filterText, Integer firstResult, Integer maxResults) {
-		if (!auth.hasPermission(PermissionType.documentoView))
-			throw ExceptionFactory.notAuthorizedException();
 
 		firstResult = firstResult != null ? firstResult : -1;
 		maxResults = maxResults != null ? maxResults : -1;
@@ -137,15 +114,12 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 			results.add(ModelToRepresentation.toRepresentation(model));
 		}
 
+		logger.debug(("search()"));
 		return results;
 	}
 
 	@Override
 	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria) {
-		if (!auth.hasPermission(PermissionType.documentoView))
-			throw ExceptionFactory.notAuthorizedException();
-
-		SearchCriteriaUtil.validateSearchCriteria(criteria);
 		SearchCriteriaModel criteriaModel = SearchCriteriaUtil.getSearchCriteriaModel(criteria);
 
 		// extract filterText
@@ -167,6 +141,7 @@ public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
 		result.setItems(items);
 		result.setTotalSize(models.getTotalSize());
 
+		logger.debug(("search()"));
 		return result;
 	}
 

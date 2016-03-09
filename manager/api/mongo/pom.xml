@@ -15,13 +15,14 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-model</artifactId>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.repeid</groupId>
-			<artifactId>repeid-manager-api-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.logging</groupId>

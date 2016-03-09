@@ -17,35 +17,31 @@
  *******************************************************************************/
 package org.repeid.manager.api.rest.impl.admin;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
-import org.repeid.manager.api.beans.representations.security.PermissionType;
 import org.repeid.manager.api.model.TipoDocumentoModel;
-import org.repeid.manager.api.model.exceptions.ModelException;
+import org.repeid.manager.api.model.enums.TipoPersona;
+import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
 import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
-import org.repeid.manager.api.model.system.RepeidSession;
+import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.utils.ModelToRepresentation;
+import org.repeid.manager.api.rest.ErrorResponse;
 import org.repeid.manager.api.rest.admin.TipoDocumentoResource;
-import org.repeid.manager.api.rest.admin.TiposDocumentoResource;
-import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
 import org.repeid.manager.api.rest.managers.TipoDocumentoManager;
-import org.repeid.manager.api.rest.util.ExceptionFactory;
-import org.repeid.manager.api.security.ISecurityContext;
 
-@RequestScoped
 public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
 
-	@PathParam(TiposDocumentoResource.TIPO_DOCUMENTO_ID)
 	private String tipoDocumentoId;
 
-	@Inject
-	private RepeidSession session;
+	@Context
+	private KeycloakSession session;
 
-	@Inject
-	private ISecurityContext auth;
+	public TipoDocumentoResourceImpl(String tipoDocumentoId) {
+		this.tipoDocumentoId = tipoDocumentoId;
+	}
 
 	private TipoDocumentoModel getTipoDocumentoModel() {
 		return session.tipoDocumentos().findById(tipoDocumentoId);
@@ -53,90 +49,90 @@ public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
 
 	@Override
 	public TipoDocumentoRepresentation toRepresentation() {
-		if (!auth.hasPermission(PermissionType.documentoView))
-			throw ExceptionFactory.notAuthorizedException();
-
 		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
 		if (tipoDocumento == null) {
-			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
+			throw new NotFoundException("TipoDocumento no encontrado");
 		}
 		return ModelToRepresentation.toRepresentation(tipoDocumento);
 	}
 
 	@Override
-	public void update(TipoDocumentoRepresentation rep) {
-		if (!auth.hasPermission(PermissionType.documentoEdit))
-			throw ExceptionFactory.notAuthorizedException();
-
-		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-		if (tipoDocumento == null) {
-			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-		}
-
-		boolean result = new TipoDocumentoManager(session).update(tipoDocumento, rep);
-		if (!result) {
-			throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
-		}
-	}
-
-	@Override
-	public void enable() {
-		if (!auth.hasPermission(PermissionType.documentoEdit))
-			throw ExceptionFactory.notAuthorizedException();
-
-		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-		if (tipoDocumento == null) {
-			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-		}
-
-		boolean result = new TipoDocumentoManager(session).enable(tipoDocumento);
-		if (!result) {
-			throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
-		}
-	}
-
-	@Override
-	public void disable() {
-		if (!auth.hasPermission(PermissionType.documentoEdit))
-			throw ExceptionFactory.notAuthorizedException();
-
-		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-		if (tipoDocumento == null) {
-			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-		}
-
-		boolean result = new TipoDocumentoManager(session).disable(tipoDocumento);
-		if (!result) {
-			throw ExceptionFactory.tipoDocumentoLockedException(tipoDocumentoId);
-		}
-	}
-
-	@Override
-	public void remove() {
-		if (!auth.hasPermission(PermissionType.documentoAdmin))
-			throw ExceptionFactory.notAuthorizedException();
-
-		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
-		if (tipoDocumento == null) {
-			throw ExceptionFactory.tipoDocumentoNotFoundException(tipoDocumentoId);
-		}
-
+	public Response update(TipoDocumentoRepresentation rep) {
 		try {
-			session.tipoDocumentos().remove(tipoDocumento);
+			TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+			if (tipoDocumento == null) {
+				throw new NotFoundException("TipoDocumento no encontrado");
+			}
+
+			tipoDocumento.setDenominacion(rep.getDenominacion());
+			tipoDocumento.setCantidadCaracteres(rep.getCantidadCaracteres());
+			tipoDocumento.setTipoPersona(TipoPersona.valueOf(rep.getTipoPersona()));
 
 			if (session.getTransaction().isActive()) {
 				session.getTransaction().commit();
 			}
-		} catch (ModelReadOnlyException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
+			return Response.noContent().build();
+		} catch (ModelDuplicateException e) {
+			return ErrorResponse.exists("TipoDocumento ya existe");
+		} catch (ModelReadOnlyException re) {
+			return ErrorResponse.exists("TipoDocumento es de solo lectura!");
+		}
+	}
+
+	@Override
+	public Response enable() {
+		try {
+			TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+			if (tipoDocumento == null) {
+				throw new NotFoundException("TipoDocumento no encontrado");
 			}
-			throw new SystemErrorException(e);
-		} catch (ModelException e) {
+
+			tipoDocumento.setEstado(true);
+
 			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
+				session.getTransaction().commit();
 			}
-			throw new SystemErrorException(e);
+			return Response.noContent().build();
+		} catch (ModelDuplicateException e) {
+			return ErrorResponse.exists("TipoDocumento ya existe");
+		} catch (ModelReadOnlyException re) {
+			return ErrorResponse.exists("TipoDocumento es de solo lectura!");
+		}
+	}
+
+	@Override
+	public Response disable() {
+		try {
+			TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+			if (tipoDocumento == null) {
+				throw new NotFoundException("TipoDocumento no encontrado");
+			}
+
+			tipoDocumento.setEstado(false);
+
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().commit();
+			}
+			return Response.noContent().build();
+		} catch (ModelDuplicateException e) {
+			return ErrorResponse.exists("TipoDocumento ya existe");
+		} catch (ModelReadOnlyException re) {
+			return ErrorResponse.exists("TipoDocumento es de solo lectura!");
+		}
+	}
+
+	@Override
+	public Response remove() {
+		TipoDocumentoModel tipoDocumento = getTipoDocumentoModel();
+		if (tipoDocumento == null) {
+			throw new NotFoundException("TipoDocumento no encontrado");
+		}
+
+		boolean removed = new TipoDocumentoManager(session).removeTipoDocumento(tipoDocumento);
+		if (removed) {
+			return Response.noContent().build();
+		} else {
+			return ErrorResponse.error("TipoDocumento no pudo ser eliminado", Response.Status.BAD_REQUEST);
 		}
 	}
 

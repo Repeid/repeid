@@ -23,7 +23,6 @@ import javax.ws.rs.core.HttpHeaders;
 import org.repeid.manager.api.rest.admin.MaestroResource;
 import org.repeid.manager.api.rest.admin.PersonasResource;
 import org.repeid.manager.api.rest.admin.TiposDocumentoResource;
-import org.repeid.manager.api.rest.info.ServerInfoAdminResource;
 
 /**
  * Root resource for admin console and admin REST API

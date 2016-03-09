@@ -17,95 +17,27 @@
  *******************************************************************************/
 package org.repeid.manager.api.rest.managers;
 
-import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.model.TipoDocumentoModel;
-import org.repeid.manager.api.model.enums.TipoPersona;
-import org.repeid.manager.api.model.exceptions.ModelDuplicateException;
-import org.repeid.manager.api.model.exceptions.ModelException;
-import org.repeid.manager.api.model.exceptions.ModelReadOnlyException;
-import org.repeid.manager.api.model.system.RepeidSession;
-import org.repeid.manager.api.rest.contract.exceptions.SystemErrorException;
-import org.repeid.manager.api.rest.util.ExceptionFactory;
+import org.repeid.manager.api.model.TipoDocumentoProvider;
+import org.repeid.manager.api.model.provider.KeycloakSession;
 
 public class TipoDocumentoManager {
 
-	private RepeidSession session;
+	private KeycloakSession session;
 
-	public TipoDocumentoManager(RepeidSession session) {
+	public TipoDocumentoManager(KeycloakSession session) {
 		this.session = session;
 	}
 
-	public boolean update(TipoDocumentoModel model, TipoDocumentoRepresentation rep) {
-		model.setDenominacion(rep.getDenominacion());
-		model.setCantidadCaracteres(rep.getCantidadCaracteres());
-		model.setTipoPersona(TipoPersona.valueOf(rep.getTipoPersona()));
-
-		try {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().commit();
-			}
-		} catch (ModelReadOnlyException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getAbreviatura());
-		} catch (ModelDuplicateException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(rep.getAbreviatura());
-		} catch (ModelException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw new SystemErrorException(e);
-		}
-
-		return true;
+	public boolean removeTipoDocumento(TipoDocumentoModel tipoDocumento) {
+		return removeTipoDocumento(tipoDocumento, session.tipoDocumentos());
 	}
 
-	public boolean enable(TipoDocumentoModel model) {
-		model.setEstado(true);
-
-		try {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().commit();
-			}
-		} catch (ModelReadOnlyException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getAbreviatura());
-		} catch (ModelException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw new SystemErrorException(e);
+	public boolean removeTipoDocumento(TipoDocumentoModel tipoDocumento, TipoDocumentoProvider tipoDocumentoProvider) {
+		if (tipoDocumentoProvider.remove(tipoDocumento)) {
+			return true;
 		}
-
-		return true;
-	}
-
-	public boolean disable(TipoDocumentoModel model) {
-		model.setEstado(false);
-
-		try {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().commit();
-			}
-		} catch (ModelReadOnlyException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw ExceptionFactory.tipoDocumentoAlreadyExistsException(model.getAbreviatura());
-		} catch (ModelException e) {
-			if (session.getTransaction().isActive()) {
-				session.getTransaction().setRollbackOnly();
-			}
-			throw new SystemErrorException(e);
-		}
-
-		return true;
+		return false;
 	}
 
 }

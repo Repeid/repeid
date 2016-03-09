@@ -1,7 +1,0 @@
-dependencies {
-    // Third Party Dependencies
-    compile ( libraries.jackson_core_asl )
-    compile ( libraries.jackson_mapper_asl )
-    compile ( libraries.commons_codec )
-    compile ( libraries.slf4j_api )
-}

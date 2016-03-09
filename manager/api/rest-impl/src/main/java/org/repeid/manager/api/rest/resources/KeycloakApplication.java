@@ -6,14 +6,15 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+
 import org.jboss.resteasy.core.Dispatcher;
-import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.common.util.system.JsonSerialization;
@@ -22,22 +23,23 @@ import org.repeid.manager.api.core.config.JsonConfigProvider;
 import org.repeid.manager.api.model.migration.MigrationModelManager;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.provider.KeycloakSessionFactory;
+import org.repeid.manager.api.model.provider.TimerProvider;
 import org.repeid.manager.api.model.utils.PostMigrationEvent;
-import org.repeid.manager.api.rest.exportimport.ExportImportManager;
 import org.repeid.manager.api.rest.filters.KeycloakTransactionCommitter;
 import org.repeid.manager.api.rest.impl.admin.MaestroResourceImpl;
-import org.repeid.manager.api.rest.impl.admin.PersonaJuridicaResourceImpl;
-import org.repeid.manager.api.rest.impl.admin.PersonaNaturalResourceImpl;
-import org.repeid.manager.api.rest.impl.admin.TipoDocumentoResourceImpl;
+import org.repeid.manager.api.rest.impl.admin.TiposDocumentoResourceImpl;
 import org.repeid.manager.api.rest.impl.info.ServerVersionResourceImpl;
 import org.repeid.manager.api.rest.managers.ApplianceBootstrap;
+import org.repeid.manager.api.rest.managers.UsersSyncManager;
+import org.repeid.manager.api.rest.services.DefaultKeycloakSessionFactory;
 import org.repeid.manager.api.rest.services.ServicesLogger;
+import org.repeid.manager.api.rest.services.sheduled.ClearExpiredEvents;
+import org.repeid.manager.api.rest.services.sheduled.ClearExpiredUserSessions;
+import org.repeid.manager.api.rest.services.sheduled.ScheduledTaskRunner;
 import org.repeid.manager.api.rest.util.ObjectMapperResolver;
 
-import javax.servlet.ServletContext;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class KeycloakApplication extends Application {
 
@@ -62,9 +64,7 @@ public class KeycloakApplication extends Application {
 
 		singletons.add(new ServerVersionResourceImpl());
 		singletons.add(new MaestroResourceImpl());
-		singletons.add(new TipoDocumentoResourceImpl());
-		singletons.add(new PersonaNaturalResourceImpl());
-		singletons.add(new PersonaJuridicaResourceImpl());
+		singletons.add(new TiposDocumentoResourceImpl());
 		singletons.add(new ModelExceptionMapper());
 
 		classes.add(KeycloakTransactionCommitter.class);
@@ -77,17 +77,19 @@ public class KeycloakApplication extends Application {
 		boolean bootstrapAdminUser = false;
 
 		KeycloakSession session = sessionFactory.create();
-		ExportImportManager exportImportManager;
+		// ExportImportManager exportImportManager;
 		try {
 			session.getTransaction().begin();
 
 			ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
-			exportImportManager = new ExportImportManager(session);
+			// exportImportManager = new ExportImportManager(session);
 
 			boolean createMasterRealm = applianceBootstrap.isNewInstall();
-			if (exportImportManager.isRunImport() && exportImportManager.isImportMasterIncluded()) {
-				createMasterRealm = false;
-			}
+			/*
+			 * if (exportImportManager.isRunImport() &&
+			 * exportImportManager.isImportMasterIncluded()) { createMasterRealm
+			 * = false; }
+			 */
 
 			if (createMasterRealm) {
 				applianceBootstrap.createMasterRealm(contextPath);
@@ -97,17 +99,17 @@ public class KeycloakApplication extends Application {
 			session.close();
 		}
 
-		if (exportImportManager.isRunImport()) {
-			exportImportManager.runImport();
-		} else {
-			importRealms();
-		}
+		/*
+		 * if (exportImportManager.isRunImport()) {
+		 * exportImportManager.runImport(); } else { importRealms(); }
+		 */
 
-		importAddUser();
+		// importAddUser();
 
-		if (exportImportManager.isRunExport()) {
-			exportImportManager.runExport();
-		}
+		/*
+		 * if (exportImportManager.isRunExport()) {
+		 * exportImportManager.runExport(); }
+		 */
 
 		session = sessionFactory.create();
 		try {
@@ -121,7 +123,7 @@ public class KeycloakApplication extends Application {
 
 		sessionFactory.publish(new PostMigrationEvent());
 
-		singletons.add(new WelcomeResource(bootstrapAdminUser));
+		// singletons.add(new WelcomeResource(bootstrapAdminUser));
 
 		setupScheduledTasks(sessionFactory);
 	}
@@ -222,112 +224,6 @@ public class KeycloakApplication extends Application {
 	@Override
 	public Set<Object> getSingletons() {
 		return singletons;
-	}
-
-	public void importRealms() {
-		String files = System.getProperty("keycloak.import");
-		if (files != null) {
-			StringTokenizer tokenizer = new StringTokenizer(files, ",");
-			while (tokenizer.hasMoreTokens()) {
-				String file = tokenizer.nextToken().trim();
-				RealmRepresentation rep;
-				try {
-					rep = loadJson(new FileInputStream(file), RealmRepresentation.class);
-				} catch (FileNotFoundException e) {
-					throw new RuntimeException(e);
-				}
-				importRealm(rep, "file " + file);
-			}
-		}
-	}
-
-	public void importRealm(RealmRepresentation rep, String from) {
-		KeycloakSession session = sessionFactory.create();
-		boolean exists = false;
-		try {
-			session.getTransaction().begin();
-
-			try {
-				RealmManager manager = new RealmManager(session);
-				manager.setContextPath(getContextPath());
-
-				if (rep.getId() != null && manager.getRealm(rep.getId()) != null) {
-					logger.realmExists(rep.getRealm(), from);
-					exists = true;
-				}
-
-				if (manager.getRealmByName(rep.getRealm()) != null) {
-					logger.realmExists(rep.getRealm(), from);
-					exists = true;
-				}
-				if (!exists) {
-					RealmModel realm = manager.importRealm(rep);
-					logger.importedRealm(realm.getName(), from);
-				}
-				session.getTransaction().commit();
-			} catch (Throwable t) {
-				session.getTransaction().rollback();
-				if (!exists) {
-					logger.unableToImportRealm(t, rep.getRealm(), from);
-				}
-			}
-		} finally {
-			session.close();
-		}
-	}
-
-	public void importAddUser() {
-		String configDir = System.getProperty("jboss.server.config.dir");
-		if (configDir != null) {
-			File addUserFile = new File(configDir + File.separator + "keycloak-add-user.json");
-			if (addUserFile.isFile()) {
-				logger.imprtingUsersFrom(addUserFile);
-
-				List<RealmRepresentation> realms;
-				try {
-					realms = JsonSerialization.readValue(new FileInputStream(addUserFile),
-							new TypeReference<List<RealmRepresentation>>() {
-							});
-				} catch (IOException e) {
-					logger.failedToLoadUsers(e);
-					return;
-				}
-
-				for (RealmRepresentation realmRep : realms) {
-					for (UserRepresentation userRep : realmRep.getUsers()) {
-						KeycloakSession session = sessionFactory.create();
-						try {
-							session.getTransaction().begin();
-
-							RealmModel realm = session.realms().getRealmByName(realmRep.getRealm());
-							if (realm == null) {
-								logger.addUserFailedRealmNotFound(userRep.getUsername(), realmRep.getRealm());
-							} else {
-								UserModel user = session.users().addUser(realm, userRep.getUsername());
-								user.setEnabled(userRep.isEnabled());
-								RepresentationToModel.createCredentials(userRep, user);
-								RepresentationToModel.createRoleMappings(userRep, user, realm);
-							}
-
-							session.getTransaction().commit();
-							logger.addUserSuccess(userRep.getUsername(), realmRep.getRealm());
-						} catch (ModelDuplicateException e) {
-							session.getTransaction().rollback();
-							logger.addUserFailedUserExists(userRep.getUsername(), realmRep.getRealm());
-						} catch (Throwable t) {
-							session.getTransaction().rollback();
-							logger.addUserFailed(t, userRep.getUsername(), realmRep.getRealm());
-						} finally {
-							session.close();
-						}
-					}
-				}
-
-				if (!addUserFile.delete()) {
-					logger.failedToDeleteFile(addUserFile.getAbsolutePath());
-				}
-			}
-		}
 	}
 
 	private static <T> T loadJson(InputStream is, Class<T> type) {

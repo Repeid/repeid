@@ -28,7 +28,6 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
-import org.repeid.manager.api.jpa.entities.AccionistaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
 import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
 import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
@@ -54,12 +53,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 	private static final String APELLIDO_PATERNO = "apellidoPaterno";
 	private static final String APELLIDO_MATERNO = "apellidoMaterno";
 	private static final String NOMBRES = "nombres";
-	private static final String NUMERO_DOCUMENTO = "numeroDocumento";
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-	}
+	private static final String NUMERO_DOCUMENTO = "numeroDocumento";	
 
 	@Override
 	public void close() {
@@ -93,15 +87,7 @@ public class JpaPersonaNaturalProvider extends AbstractJpaStorage implements Per
 	}
 
 	@Override
-	public boolean remove(PersonaNaturalModel personaNaturalModel) {
-		TypedQuery<AccionistaEntity> query1 = getEntityManager()
-				.createNamedQuery("AccionistaEntity.findByIdPersonaNatural", AccionistaEntity.class);
-		query1.setParameter("idPersonaNatural", personaNaturalModel.getId());
-		query1.setMaxResults(1);
-		if (!query1.getResultList().isEmpty()) {
-			return false;
-		}
-
+	public boolean remove(PersonaNaturalModel personaNaturalModel) {		
 		TypedQuery<PersonaJuridicaEntity> query2 = getEntityManager().createNamedQuery(
 				"PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", PersonaJuridicaEntity.class);
 		query2.setParameter("idPersonaNaturalRepresentanteLegal", personaNaturalModel.getId());

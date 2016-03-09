@@ -38,7 +38,6 @@ import org.repeid.manager.api.beans.representations.search.SearchResultsRepresen
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 
-@Path("tipoDocumentos")
 @Consumes(MediaType.APPLICATION_JSON)
 public interface TiposDocumentoResource {
 
