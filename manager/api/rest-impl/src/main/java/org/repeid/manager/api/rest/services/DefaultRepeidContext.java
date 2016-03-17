@@ -28,12 +28,12 @@ import org.repeid.manager.api.model.provider.ClientConnection;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.system.ClientModel;
 import org.repeid.manager.api.model.system.KeycloakContext;
-import org.repeid.manager.api.rest.resources.KeycloakApplication;
+import org.repeid.manager.api.rest.resources.RepeidApplication;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DefaultKeycloakContext implements KeycloakContext {
+public class DefaultRepeidContext implements KeycloakContext {
 
 	private ClientModel client;
 
@@ -41,20 +41,20 @@ public class DefaultKeycloakContext implements KeycloakContext {
 
 	private KeycloakSession session;
 
-	public DefaultKeycloakContext(KeycloakSession session) {
+	public DefaultRepeidContext(KeycloakSession session) {
 		this.session = session;
 	}
 
 	@Override
 	public URI getAuthServerUrl() {
 		UriInfo uri = getUri();
-		KeycloakApplication keycloakApplication = getContextObject(KeycloakApplication.class);
+		RepeidApplication keycloakApplication = getContextObject(RepeidApplication.class);
 		return keycloakApplication.getBaseUri(uri);
 	}
 
 	@Override
 	public String getContextPath() {
-		KeycloakApplication app = getContextObject(KeycloakApplication.class);
+		RepeidApplication app = getContextObject(RepeidApplication.class);
 		return app.getContextPath();
 	}
 

@@ -38,6 +38,8 @@ public class ProviderManager {
 	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
 	private List<ProviderLoader> loaders = new LinkedList<ProviderLoader>();
+
+	@SuppressWarnings("rawtypes")
 	private Map<String, List<ProviderFactory>> cache = new HashMap<String, List<ProviderFactory>>();
 
 	public ProviderManager(ClassLoader baseClassLoader, String... resources) {
@@ -70,6 +72,7 @@ public class ProviderManager {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public synchronized List<ProviderFactory> load(Spi spi) {
 		List<ProviderFactory> factories = cache.get(spi.getName());
 		if (factories == null) {
@@ -91,6 +94,7 @@ public class ProviderManager {
 		return factories;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public synchronized ProviderFactory load(Spi spi, String providerId) {
 		for (ProviderFactory f : load(spi)) {
 			if (f.getId().equals(providerId)) {

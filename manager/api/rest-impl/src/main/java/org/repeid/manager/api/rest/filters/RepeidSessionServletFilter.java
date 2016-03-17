@@ -37,7 +37,7 @@ import org.repeid.manager.api.model.system.KeycloakTransaction;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class KeycloakSessionServletFilter implements Filter {
+public class RepeidSessionServletFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

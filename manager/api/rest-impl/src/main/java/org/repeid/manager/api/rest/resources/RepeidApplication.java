@@ -25,13 +25,13 @@ import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.provider.KeycloakSessionFactory;
 import org.repeid.manager.api.model.provider.TimerProvider;
 import org.repeid.manager.api.model.utils.PostMigrationEvent;
-import org.repeid.manager.api.rest.filters.KeycloakTransactionCommitter;
+import org.repeid.manager.api.rest.filters.RepeidTransactionCommitter;
 import org.repeid.manager.api.rest.impl.admin.MaestroResourceImpl;
 import org.repeid.manager.api.rest.impl.admin.TiposDocumentoResourceImpl;
 import org.repeid.manager.api.rest.impl.info.ServerVersionResourceImpl;
 import org.repeid.manager.api.rest.managers.ApplianceBootstrap;
 import org.repeid.manager.api.rest.managers.UsersSyncManager;
-import org.repeid.manager.api.rest.services.DefaultKeycloakSessionFactory;
+import org.repeid.manager.api.rest.services.DefaultRepeidSessionFactory;
 import org.repeid.manager.api.rest.services.ServicesLogger;
 import org.repeid.manager.api.rest.services.sheduled.ClearExpiredEvents;
 import org.repeid.manager.api.rest.services.sheduled.ClearExpiredUserSessions;
@@ -41,7 +41,7 @@ import org.repeid.manager.api.rest.util.ObjectMapperResolver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class KeycloakApplication extends Application {
+public class RepeidApplication extends Application {
 
 	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
@@ -51,15 +51,15 @@ public class KeycloakApplication extends Application {
 	protected KeycloakSessionFactory sessionFactory;
 	protected String contextPath;
 
-	public KeycloakApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
+	public RepeidApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
 		loadConfig();
 
 		this.contextPath = context.getContextPath();
 		this.sessionFactory = createSessionFactory();
 
-		dispatcher.getDefaultContextObjects().put(KeycloakApplication.class, this);
-		ResteasyProviderFactory.pushContext(KeycloakApplication.class, this); // for
-																				// injection
+		dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
+		ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for
+																			// injection
 		context.setAttribute(KeycloakSessionFactory.class.getName(), this.sessionFactory);
 
 		singletons.add(new ServerVersionResourceImpl());
@@ -67,13 +67,14 @@ public class KeycloakApplication extends Application {
 		singletons.add(new TiposDocumentoResourceImpl());
 		singletons.add(new ModelExceptionMapper());
 
-		classes.add(KeycloakTransactionCommitter.class);
+		classes.add(RepeidTransactionCommitter.class);
 
 		singletons.add(new ObjectMapperResolver(
 				Boolean.parseBoolean(System.getProperty("keycloak.jsonPrettyPrint", "false"))));
 
 		migrateModel();
 
+		@SuppressWarnings("unused")
 		boolean bootstrapAdminUser = false;
 
 		KeycloakSession session = sessionFactory.create();
@@ -191,7 +192,7 @@ public class KeycloakApplication extends Application {
 	}
 
 	public static KeycloakSessionFactory createSessionFactory() {
-		DefaultKeycloakSessionFactory factory = new DefaultKeycloakSessionFactory();
+		DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
 		factory.init();
 		return factory;
 	}
@@ -226,6 +227,7 @@ public class KeycloakApplication extends Application {
 		return singletons;
 	}
 
+	@SuppressWarnings("unused")
 	private static <T> T loadJson(InputStream is, Class<T> type) {
 		try {
 			return JsonSerialization.readValue(is, type);

@@ -25,7 +25,7 @@ import org.repeid.manager.api.model.system.KeycloakTransactionManager;
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DefaultKeycloakTransactionManager implements KeycloakTransactionManager {
+public class DefaultRepeidTransactionManager implements KeycloakTransactionManager {
 
 	public static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 

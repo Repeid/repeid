@@ -32,7 +32,7 @@ import org.repeid.manager.api.model.system.KeycloakTransaction;
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class KeycloakTransactionCommitter implements ContainerResponseFilter {
+public class RepeidTransactionCommitter implements ContainerResponseFilter {
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {

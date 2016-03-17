@@ -35,20 +35,20 @@ import org.repeid.manager.api.model.system.KeycloakTransactionManager;
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DefaultKeycloakSession implements KeycloakSession {
+public class DefaultRepeidSession implements KeycloakSession {
 
-	private final DefaultKeycloakSessionFactory factory;
+	private final DefaultRepeidSessionFactory factory;
 	private final Map<Integer, Provider> providers = new HashMap<>();
 	private final List<Provider> closable = new LinkedList<Provider>();
-	private final DefaultKeycloakTransactionManager transactionManager;
+	private final DefaultRepeidTransactionManager transactionManager;
 	private TipoDocumentoProvider model;
 	private KeycloakContext context;
 
-	public DefaultKeycloakSession(DefaultKeycloakSessionFactory factory) {
+	public DefaultRepeidSession(DefaultRepeidSessionFactory factory) {
 		this.factory = factory;
-		this.transactionManager = new DefaultKeycloakTransactionManager();
+		this.transactionManager = new DefaultRepeidTransactionManager();
 		// federationManager = new UserFederationManager(this);
-		context = new DefaultKeycloakContext(this);
+		context = new DefaultRepeidContext(this);
 	}
 
 	@Override

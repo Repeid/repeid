@@ -34,7 +34,7 @@ import org.repeid.manager.api.model.provider.ProviderFactory;
 import org.repeid.manager.api.model.provider.Spi;
 import org.repeid.manager.api.rest.managers.ProviderManager;
 
-public class DefaultKeycloakSessionFactory implements org.repeid.manager.api.model.provider.KeycloakSessionFactory {
+public class DefaultRepeidSessionFactory implements org.repeid.manager.api.model.provider.KeycloakSessionFactory {
 
 	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
@@ -130,7 +130,7 @@ public class DefaultKeycloakSessionFactory implements org.repeid.manager.api.mod
 	}
 
 	public KeycloakSession create() {
-		return new DefaultKeycloakSession(this);
+		return new DefaultRepeidSession(this);
 	}
 
 	<T extends Provider> String getDefaultProvider(Class<T> clazz) {

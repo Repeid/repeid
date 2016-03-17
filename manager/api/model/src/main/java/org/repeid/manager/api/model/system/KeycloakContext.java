@@ -45,6 +45,6 @@ public interface KeycloakContext {
 
 	ClientConnection getConnection();
 
-	void setConnection(org.repeid.manager.api.model.provider.ClientConnection connection);
+	void setConnection(ClientConnection connection);
 
 }

@@ -7,7 +7,7 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.HttpResponse;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.keycloak.common.ClientConnection;
+import org.repeid.manager.api.model.provider.ClientConnection;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.rest.AdminRoot;
 import org.repeid.manager.api.rest.ServerInfoAdminResource;

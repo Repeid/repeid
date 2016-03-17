@@ -17,6 +17,7 @@
 package org.repeid.manager.api.rest.managers;
 
 import org.repeid.manager.api.model.provider.KeycloakSession;
+import org.repeid.manager.api.rest.services.ServicesLogger;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -24,7 +25,9 @@ import org.repeid.manager.api.model.provider.KeycloakSession;
  */
 public class ApplianceBootstrap {
 
-	// private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+	@SuppressWarnings("unused")
+	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+
 	@SuppressWarnings("unused")
 	private final KeycloakSession session;
 

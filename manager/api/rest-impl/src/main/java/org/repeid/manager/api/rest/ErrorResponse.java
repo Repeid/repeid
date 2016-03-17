@@ -17,10 +17,10 @@
 
 package org.repeid.manager.api.rest;
 
-import org.keycloak.representations.idm.ErrorRepresentation;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.repeid.manager.api.beans.representations.idm.ErrorRepresentation;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

@@ -35,7 +35,6 @@ public class UsersSyncManager {
 	 */
 	public void bootstrapPeriodic(final KeycloakSessionFactory sessionFactory,
 			final org.repeid.manager.api.model.provider.TimerProvider timer) {
-
 	}
 
 }
