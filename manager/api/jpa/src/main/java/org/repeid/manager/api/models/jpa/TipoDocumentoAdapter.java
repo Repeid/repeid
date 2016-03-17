@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.jpa.models;
+package org.repeid.manager.api.models.jpa;
 
 import javax.persistence.EntityManager;
 
-import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.model.TipoDocumentoModel;
 import org.repeid.manager.api.model.enums.TipoPersona;
+import org.repeid.manager.api.models.jpa.entities.TipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

@@ -4,10 +4,10 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
 	<persistence-unit name="repeid-defaultJpa" transaction-type="RESOURCE_LOCAL">
-		<class>org.repeid.manager.api.jpa.entities.PersonaEntity</class>
-		<class>org.repeid.manager.api.jpa.entities.PersonaNaturalEntity</class>
-		<class>org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity</class>
-		<class>org.repeid.manager.api.jpa.entities.TipoDocumentoEntity</class>
+		<class>org.repeid.manager.api.models.jpa.entities.PersonaEntity</class>
+		<class>org.repeid.manager.api.models.jpa.entities.PersonaNaturalEntity</class>
+		<class>org.repeid.manager.api.models.jpa.entities.PersonaJuridicaEntity</class>
+		<class>org.repeid.manager.api.models.jpa.entities.TipoDocumentoEntity</class>
 		<!-- File storage -->
 		<!-- Security -->
 		

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.jpa.models;
+package org.repeid.manager.api.models.jpa;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,9 +28,6 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.TypedQuery;
 
 import org.repeid.manager.api.jpa.AbstractJpaStorage;
-import org.repeid.manager.api.jpa.entities.PersonaJuridicaEntity;
-import org.repeid.manager.api.jpa.entities.PersonaNaturalEntity;
-import org.repeid.manager.api.jpa.entities.TipoDocumentoEntity;
 import org.repeid.manager.api.model.PersonaNaturalModel;
 import org.repeid.manager.api.model.PersonaNaturalProvider;
 import org.repeid.manager.api.model.TipoDocumentoModel;
@@ -40,6 +37,9 @@ import org.repeid.manager.api.model.provider.ProviderType;
 import org.repeid.manager.api.model.provider.ProviderType.Type;
 import org.repeid.manager.api.model.search.SearchCriteriaModel;
 import org.repeid.manager.api.model.search.SearchResultsModel;
+import org.repeid.manager.api.models.jpa.entities.PersonaJuridicaEntity;
+import org.repeid.manager.api.models.jpa.entities.PersonaNaturalEntity;
+import org.repeid.manager.api.models.jpa.entities.TipoDocumentoEntity;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>

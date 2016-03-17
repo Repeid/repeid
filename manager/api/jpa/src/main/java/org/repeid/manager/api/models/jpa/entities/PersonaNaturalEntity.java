@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.jpa.entities;
+package org.repeid.manager.api.models.jpa.entities;
 
 import java.io.Serializable;
 import java.util.Date;
