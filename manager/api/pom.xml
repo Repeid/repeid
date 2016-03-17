@@ -25,6 +25,8 @@
 		<module>rest-impl</module>
 		<module>security</module>
 		<module>war</module>
+		
+		<module>server-spi</module>
 	</modules>
 
 </project>

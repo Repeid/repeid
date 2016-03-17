@@ -5,29 +5,33 @@
 		<artifactId>repeid</artifactId>
 		<groupId>org.repeid</groupId>
 		<version>1.0.0.Alpha5-SNAPSHOT</version>
-		<relativePath>../../../pom.xml</relativePath>
+		<relativePath>../../../../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>repeid-manager-api-model</artifactId>
-	<name>Repeid Manager Api Model</name>
-	<packaging>pom</packaging>
+	<artifactId>repeid-manager-api-model-infinispan</artifactId>
+	<name>Repeid Manager Api Model infinispan</name>
+	<description />
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<skip>true</skip>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>jpa</module>
-		<module>mongo</module>
-		<module>infinispan</module>
-	</modules>
 
 </project>
