@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.repeid.manager.api.connections.jpa;
+package org.repeid.manager.api.models.jpa;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

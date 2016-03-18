@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa.updater.liquibase.lock;
+package org.repeid.manager.api.connections.jpa.updater.liquibase.lock;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import org.jboss.logging.Logger;
-import org.repeid.manager.api.connections.jpa.JpaConnectionProvider;
-import org.repeid.manager.api.connections.jpa.JpaConnectionProviderFactory;
-import org.repeid.manager.api.connections.jpa.updater.liquibase.conn.LiquibaseConnectionProvider;
-import org.repeid.manager.api.model.provider.KeycloakSession;
 
 import liquibase.Liquibase;
 import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.exception.LockException;
 import liquibase.lockservice.LockService;
+import org.jboss.logging.Logger;
+import org.keycloak.connections.jpa.JpaConnectionProvider;
+import org.keycloak.connections.jpa.JpaConnectionProviderFactory;
+import org.keycloak.connections.jpa.updater.liquibase.conn.LiquibaseConnectionProvider;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.dblock.DBLockProvider;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

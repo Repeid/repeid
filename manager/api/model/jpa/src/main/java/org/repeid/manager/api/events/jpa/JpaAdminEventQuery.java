@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.events.jpa;
+package org.repeid.manager.api.events.jpa;
 
 import java.util.ArrayList;
 import java.util.Date;

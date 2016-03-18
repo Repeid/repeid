@@ -20,6 +20,8 @@ package org.repeid.manager.api.models.jpa.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -59,6 +61,7 @@ public class PersonaJuridicaEntity extends PersonaEntity implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Access(AccessType.PROPERTY) // we do this because relationships often fetch id, but not entity.  This avoids an extra SQL
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@Column(name = "id")

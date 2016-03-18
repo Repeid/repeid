@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.events.jpa;
+package org.repeid.manager.api.events.jpa;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

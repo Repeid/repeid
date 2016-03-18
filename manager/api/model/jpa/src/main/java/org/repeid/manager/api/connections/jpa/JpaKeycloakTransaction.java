@@ -21,16 +21,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import org.repeid.manager.api.model.system.KeycloakTransaction;
+import org.repeid.manager.api.models.jpa.PersistenceExceptionConverter;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class JpaRepeidTransaction implements KeycloakTransaction {
+public class JpaKeycloakTransaction implements KeycloakTransaction {
 
 	protected EntityManager em;
 
-	public JpaRepeidTransaction(EntityManager em) {
+	public JpaKeycloakTransaction(EntityManager em) {
 		this.em = em;
 	}
 

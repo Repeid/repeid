@@ -26,6 +26,6 @@ import org.repeid.manager.api.model.provider.Provider;
  */
 public interface JpaConnectionProvider extends Provider {
 
-    EntityManager getEntityManager();
+	EntityManager getEntityManager();
 
 }

@@ -23,8 +23,8 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.jboss.logging.Logger;
+import org.keycloak.connections.jpa.updater.liquibase.conn.LiquibaseConnectionProvider;
 import org.repeid.manager.api.connections.jpa.updater.JpaUpdaterProvider;
-import org.repeid.manager.api.connections.jpa.updater.liquibase.conn.LiquibaseConnectionProvider;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 
 import liquibase.Contexts;
@@ -37,86 +37,90 @@ import liquibase.changelog.RanChangeSet;
  */
 public class LiquibaseJpaUpdaterProvider implements JpaUpdaterProvider {
 
-    private static final Logger logger = Logger.getLogger(LiquibaseJpaUpdaterProvider.class);
+	private static final Logger logger = Logger.getLogger(LiquibaseJpaUpdaterProvider.class);
 
-    public static final String CHANGELOG = "META-INF/jpa-changelog-master.xml";
-    public static final String DB2_CHANGELOG = "META-INF/db2-jpa-changelog-master.xml";
+	public static final String CHANGELOG = "META-INF/jpa-changelog-master.xml";
+	public static final String DB2_CHANGELOG = "META-INF/db2-jpa-changelog-master.xml";
 
-    private final KeycloakSession session;
+	private final KeycloakSession session;
 
-    public LiquibaseJpaUpdaterProvider(KeycloakSession session) {
-        this.session = session;
-    }
+	public LiquibaseJpaUpdaterProvider(KeycloakSession session) {
+		this.session = session;
+	}
 
-    @Override
-    public String getCurrentVersionSql(String defaultSchema) {
-        return "SELECT ID from " + getTable("DATABASECHANGELOG", defaultSchema) + " ORDER BY DATEEXECUTED DESC LIMIT 1";
-    }
+	@Override
+	public String getCurrentVersionSql(String defaultSchema) {
+		return "SELECT ID from " + getTable("DATABASECHANGELOG", defaultSchema) + " ORDER BY DATEEXECUTED DESC LIMIT 1";
+	}
 
-    @Override
-    public void update(Connection connection, String defaultSchema) {
-        logger.debug("Starting database update");
+	@Override
+	public void update(Connection connection, String defaultSchema) {
+		logger.debug("Starting database update");
 
-        // Need ThreadLocal as liquibase doesn't seem to have API to inject custom objects into tasks
-        ThreadLocalSessionContext.setCurrentSession(session);
+		// Need ThreadLocal as liquibase doesn't seem to have API to inject
+		// custom objects into tasks
+		ThreadLocalSessionContext.setCurrentSession(session);
 
-        try {
-            Liquibase liquibase = getLiquibase(connection, defaultSchema);
+		try {
+			Liquibase liquibase = getLiquibase(connection, defaultSchema);
 
-            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets((Contexts) null);
-            if (!changeSets.isEmpty()) {
-                if (changeSets.get(0).getId().equals(FIRST_VERSION)) {
-                    Statement statement = connection.createStatement();
-                    try {
-                        statement.executeQuery("SELECT id FROM " + getTable("REALM", defaultSchema));
+			List<ChangeSet> changeSets = liquibase.listUnrunChangeSets((Contexts) null);
+			if (!changeSets.isEmpty()) {
+				if (changeSets.get(0).getId().equals(FIRST_VERSION)) {
+					Statement statement = connection.createStatement();
+					try {
+						statement.executeQuery("SELECT id FROM " + getTable("REALM", defaultSchema));
 
-                        logger.infov("Updating database from {0} to {1}", FIRST_VERSION, changeSets.get(changeSets.size() - 1).getId());
-                        liquibase.markNextChangeSetRan(null);
-                    } catch (SQLException e) {
-                        logger.info("Initializing database schema");
-                    }
-                } else {
-                    if (logger.isDebugEnabled()) {
-                        List<RanChangeSet> ranChangeSets = liquibase.getDatabase().getRanChangeSetList();
-                        logger.debugv("Updating database from {0} to {1}", ranChangeSets.get(ranChangeSets.size() - 1).getId(), changeSets.get(changeSets.size() - 1).getId());
-                    } else {
-                        logger.infov("Updating database");
-                    }
-                }
+						logger.infov("Updating database from {0} to {1}", FIRST_VERSION,
+								changeSets.get(changeSets.size() - 1).getId());
+						liquibase.markNextChangeSetRan(null);
+					} catch (SQLException e) {
+						logger.info("Initializing database schema");
+					}
+				} else {
+					if (logger.isDebugEnabled()) {
+						List<RanChangeSet> ranChangeSets = liquibase.getDatabase().getRanChangeSetList();
+						logger.debugv("Updating database from {0} to {1}",
+								ranChangeSets.get(ranChangeSets.size() - 1).getId(),
+								changeSets.get(changeSets.size() - 1).getId());
+					} else {
+						logger.infov("Updating database");
+					}
+				}
 
-                liquibase.update((Contexts) null);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update database", e);
-        } finally {
-            ThreadLocalSessionContext.removeCurrentSession();
-        }
+				liquibase.update((Contexts) null);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to update database", e);
+		} finally {
+			ThreadLocalSessionContext.removeCurrentSession();
+		}
 
-        logger.debug("Completed database update");
-    }
+		logger.debug("Completed database update");
+	}
 
-    @Override
-    public void validate(Connection connection, String defaultSchema) {
-        try {
-            Liquibase liquibase = getLiquibase(connection, defaultSchema);
+	@Override
+	public void validate(Connection connection, String defaultSchema) {
+		try {
+			Liquibase liquibase = getLiquibase(connection, defaultSchema);
 
-            liquibase.validate();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to validate database", e);
-        }
-    }
+			liquibase.validate();
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to validate database", e);
+		}
+	}
 
-    private Liquibase getLiquibase(Connection connection, String defaultSchema) throws Exception {
-        LiquibaseConnectionProvider liquibaseProvider = session.getProvider(LiquibaseConnectionProvider.class);
-        return liquibaseProvider.getLiquibase(connection, defaultSchema);
-    }
+	private Liquibase getLiquibase(Connection connection, String defaultSchema) throws Exception {
+		LiquibaseConnectionProvider liquibaseProvider = session.getProvider(LiquibaseConnectionProvider.class);
+		return liquibaseProvider.getLiquibase(connection, defaultSchema);
+	}
 
-    @Override
-    public void close() {
-    }
+	@Override
+	public void close() {
+	}
 
-    public static String getTable(String table, String defaultSchema) {
-        return defaultSchema != null ? defaultSchema + "." + table : table;
-    }
+	public static String getTable(String table, String defaultSchema) {
+		return defaultSchema != null ? defaultSchema + "." + table : table;
+	}
 
 }

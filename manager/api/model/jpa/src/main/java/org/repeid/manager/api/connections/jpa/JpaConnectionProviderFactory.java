@@ -26,9 +26,9 @@ import org.repeid.manager.api.model.provider.ProviderFactory;
  */
 public interface JpaConnectionProviderFactory extends ProviderFactory<JpaConnectionProvider> {
 
-    // Caller is responsible for closing connection
-    Connection getConnection();
+	// Caller is responsible for closing connection
+	Connection getConnection();
 
-    String getSchema();
+	String getSchema();
 
 }

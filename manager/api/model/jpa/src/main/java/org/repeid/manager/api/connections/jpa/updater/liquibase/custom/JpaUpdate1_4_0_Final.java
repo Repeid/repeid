@@ -15,15 +15,16 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa.updater.liquibase.custom;
+package org.repeid.manager.api.connections.jpa.updater.liquibase.custom;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.repeid.manager.api.model.utils.KeycloakModelUtils;
+
 import liquibase.exception.CustomChangeException;
 import liquibase.statement.core.UpdateStatement;
 import liquibase.structure.core.Table;
-import org.keycloak.models.utils.KeycloakModelUtils;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

@@ -41,8 +41,7 @@ public class JpaUpdaterSpi implements Spi {
         return JpaUpdaterProvider.class;
     }
 
-    @SuppressWarnings("rawtypes")
-	@Override
+    @Override
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
         return JpaUpdaterProviderFactory.class;
     }

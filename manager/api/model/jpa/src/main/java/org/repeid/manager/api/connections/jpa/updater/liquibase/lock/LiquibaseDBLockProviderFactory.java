@@ -17,12 +17,12 @@
 
 package org.repeid.manager.api.connections.jpa.updater.liquibase.lock;
 
-import java.sql.Time;
-
 import org.jboss.logging.Logger;
-import org.repeid.manager.api.core.config.Config;
-import org.repeid.manager.api.model.provider.KeycloakSession;
-import org.repeid.manager.api.model.provider.KeycloakSessionFactory;
+import org.keycloak.Config;
+import org.keycloak.common.util.Time;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.KeycloakSessionFactory;
+import org.keycloak.models.dblock.DBLockProviderFactory;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

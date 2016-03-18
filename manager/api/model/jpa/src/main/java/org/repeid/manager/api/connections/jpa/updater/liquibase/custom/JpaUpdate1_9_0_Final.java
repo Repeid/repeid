@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa.updater.liquibase.custom;
+package org.repeid.manager.api.connections.jpa.updater.liquibase.custom;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

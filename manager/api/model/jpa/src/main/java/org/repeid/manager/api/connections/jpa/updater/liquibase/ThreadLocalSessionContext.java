@@ -24,17 +24,17 @@ import org.repeid.manager.api.model.provider.KeycloakSession;
  */
 public class ThreadLocalSessionContext {
 
-    private static final ThreadLocal<KeycloakSession> currentSession = new ThreadLocal<KeycloakSession>();
+	private static final ThreadLocal<KeycloakSession> currentSession = new ThreadLocal<KeycloakSession>();
 
-    public static KeycloakSession getCurrentSession() {
-        return currentSession.get();
-    }
+	public static KeycloakSession getCurrentSession() {
+		return currentSession.get();
+	}
 
-    public static void setCurrentSession(KeycloakSession session) {
-        currentSession.set(session);
-    }
+	public static void setCurrentSession(KeycloakSession session) {
+		currentSession.set(session);
+	}
 
-    public static void removeCurrentSession() {
-        currentSession.remove();
-    }
+	public static void removeCurrentSession() {
+		currentSession.remove();
+	}
 }

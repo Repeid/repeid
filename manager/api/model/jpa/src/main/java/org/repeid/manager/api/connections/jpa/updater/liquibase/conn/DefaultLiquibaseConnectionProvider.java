@@ -23,7 +23,6 @@ import org.jboss.logging.Logger;
 import org.repeid.manager.api.connections.jpa.updater.liquibase.LiquibaseJpaUpdaterProvider;
 import org.repeid.manager.api.connections.jpa.updater.liquibase.PostgresPlusDatabase;
 import org.repeid.manager.api.connections.jpa.updater.liquibase.lock.CustomInsertLockRecordGenerator;
-import org.repeid.manager.api.connections.jpa.updater.liquibase.lock.DummyLockService;
 import org.repeid.manager.api.core.config.Config;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.provider.KeycloakSessionFactory;

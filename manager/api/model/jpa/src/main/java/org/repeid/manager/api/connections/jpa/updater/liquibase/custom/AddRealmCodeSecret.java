@@ -15,7 +15,14 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa.updater.liquibase.custom;
+package org.repeid.manager.api.connections.jpa.updater.liquibase.custom;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import org.repeid.manager.api.connections.jpa.updater.liquibase.LiquibaseJpaUpdaterProvider;
+import org.repeid.manager.api.model.utils.KeycloakModelUtils;
 
 import liquibase.change.custom.CustomSqlChange;
 import liquibase.database.Database;
@@ -28,12 +35,6 @@ import liquibase.snapshot.SnapshotGeneratorFactory;
 import liquibase.statement.SqlStatement;
 import liquibase.statement.core.UpdateStatement;
 import liquibase.structure.core.Table;
-import org.keycloak.connections.jpa.updater.liquibase.LiquibaseJpaUpdaterProvider;
-import org.keycloak.models.utils.KeycloakModelUtils;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

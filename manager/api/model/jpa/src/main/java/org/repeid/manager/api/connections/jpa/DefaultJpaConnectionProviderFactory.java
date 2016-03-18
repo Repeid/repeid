@@ -40,252 +40,255 @@ import org.repeid.manager.api.core.config.Config;
 import org.repeid.manager.api.model.provider.KeycloakSession;
 import org.repeid.manager.api.model.provider.KeycloakSessionFactory;
 import org.repeid.manager.api.model.provider.ServerInfoAwareProviderFactory;
+import org.repeid.manager.api.models.jpa.PersistenceExceptionConverter;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 @SuppressWarnings("deprecation")
-public class DefaultJpaConnectionProviderFactory implements JpaConnectionProviderFactory, ServerInfoAwareProviderFactory {
+public class DefaultJpaConnectionProviderFactory
+		implements JpaConnectionProviderFactory, ServerInfoAwareProviderFactory {
 
-    private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProviderFactory.class);
+	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProviderFactory.class);
 
-    private volatile EntityManagerFactory emf;
+	private volatile EntityManagerFactory emf;
 
-    private Config.Scope config;
-    
-    private Map<String,String> operationalInfo;
+	private Config.Scope config;
 
-    @Override
-    public JpaConnectionProvider create(KeycloakSession session) {
-        lazyInit(session);
+	private Map<String, String> operationalInfo;
 
-        EntityManager em = emf.createEntityManager();
-        em = PersistenceExceptionConverter.create(em);
-        session.getTransaction().enlist(new JpaRepeidTransaction(em));
-        return new DefaultJpaConnectionProvider(em);
-    }
+	@Override
+	public JpaConnectionProvider create(KeycloakSession session) {
+		lazyInit(session);
 
-    @Override
-    public void close() {
-        if (emf != null) {
-            emf.close();
-        }
-    }
+		EntityManager em = emf.createEntityManager();
+		em = PersistenceExceptionConverter.create(em);
+		session.getTransaction().enlist(new JpaKeycloakTransaction(em));
+		return new DefaultJpaConnectionProvider(em);
+	}
 
-    @Override
-    public String getId() {
-        return "default";
-    }
+	@Override
+	public void close() {
+		if (emf != null) {
+			emf.close();
+		}
+	}
 
-    @Override
-    public void init(Config.Scope config) {
-        this.config = config;
-    }
+	@Override
+	public String getId() {
+		return "default";
+	}
 
-    @Override
-    public void postInit(KeycloakSessionFactory factory) {
+	@Override
+	public void init(Config.Scope config) {
+		this.config = config;
+	}
 
-    }
+	@Override
+	public void postInit(KeycloakSessionFactory factory) {
 
-    private void lazyInit(KeycloakSession session) {
-        if (emf == null) {
-            synchronized (this) {
-                if (emf == null) {
-                    logger.debug("Initializing JPA connections");
+	}
 
-                    Connection connection = null;
+	private void lazyInit(KeycloakSession session) {
+		if (emf == null) {
+			synchronized (this) {
+				if (emf == null) {
+					logger.debug("Initializing JPA connections");
 
-                    String databaseSchema = config.get("databaseSchema");
+					Connection connection = null;
 
-                    Map<String, Object> properties = new HashMap<String, Object>();
+					String databaseSchema = config.get("databaseSchema");
 
-                    String unitName = "keycloak-default";
+					Map<String, Object> properties = new HashMap<String, Object>();
 
-                    String dataSource = config.get("dataSource");
-                    if (dataSource != null) {
-                        if (config.getBoolean("jta", false)) {
-                            properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
-                        } else {
-                            properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
-                        }
-                    } else {
-                        properties.put(AvailableSettings.JDBC_URL, config.get("url"));
-                        properties.put(AvailableSettings.JDBC_DRIVER, config.get("driver"));
+					String unitName = "keycloak-default";
 
-                        String user = config.get("user");
-                        if (user != null) {
-                            properties.put(AvailableSettings.JDBC_USER, user);
-                        }
-                        String password = config.get("password");
-                        if (password != null) {
-                            properties.put(AvailableSettings.JDBC_PASSWORD, password);
-                        }
-                    }
+					String dataSource = config.get("dataSource");
+					if (dataSource != null) {
+						if (config.getBoolean("jta", false)) {
+							properties.put(AvailableSettings.JTA_DATASOURCE, dataSource);
+						} else {
+							properties.put(AvailableSettings.NON_JTA_DATASOURCE, dataSource);
+						}
+					} else {
+						properties.put(AvailableSettings.JDBC_URL, config.get("url"));
+						properties.put(AvailableSettings.JDBC_DRIVER, config.get("driver"));
 
-                    String schema = getSchema();
-                    if (schema != null) {
-                        properties.put(JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
-                    }
+						String user = config.get("user");
+						if (user != null) {
+							properties.put(AvailableSettings.JDBC_USER, user);
+						}
+						String password = config.get("password");
+						if (password != null) {
+							properties.put(AvailableSettings.JDBC_PASSWORD, password);
+						}
+					}
 
-                    if (databaseSchema != null) {
-                        if (databaseSchema.equals("development-update")) {
-                            properties.put("hibernate.hbm2ddl.auto", "update");
-                            databaseSchema = null;
-                        } else if (databaseSchema.equals("development-validate")) {
-                            properties.put("hibernate.hbm2ddl.auto", "validate");
-                            databaseSchema = null;
-                        }
-                    }
+					String schema = getSchema();
+					if (schema != null) {
+						properties.put(JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
+					}
 
-                    properties.put("hibernate.show_sql", config.getBoolean("showSql", false));
-                    properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
+					if (databaseSchema != null) {
+						if (databaseSchema.equals("development-update")) {
+							properties.put("hibernate.hbm2ddl.auto", "update");
+							databaseSchema = null;
+						} else if (databaseSchema.equals("development-validate")) {
+							properties.put("hibernate.hbm2ddl.auto", "validate");
+							databaseSchema = null;
+						}
+					}
 
-                    connection = getConnection();
-                    try{ 
-	                    prepareOperationalInfo(connection);
+					properties.put("hibernate.show_sql", config.getBoolean("showSql", false));
+					properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
 
-                        String driverDialect = detectDialect(connection);
-                        if (driverDialect != null) {
-                            properties.put("hibernate.dialect", driverDialect);
-                        }
-	                    
-	                    if (databaseSchema != null) {
-	                        logger.trace("Updating database");
-	
-	                        JpaUpdaterProvider updater = session.getProvider(JpaUpdaterProvider.class);
-	                        if (updater == null) {
-	                            throw new RuntimeException("Can't update database: JPA updater provider not found");
-	                        }
-	
-	                        if (databaseSchema.equals("update")) {
-	                            String currentVersion = null;
-	                            try {
-	                                ResultSet resultSet = connection.createStatement().executeQuery(updater.getCurrentVersionSql(schema));
-	                                if (resultSet.next()) {
-	                                    currentVersion = resultSet.getString(1);
-	                                }
-	                            } catch (SQLException e) {
-	                            }
-	
-	                            if (currentVersion == null || !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion)) {
-	                                updater.update(connection, schema);
-	                            } else {
-	                                logger.debug("Database is up to date");
-	                            }
-	                        } else if (databaseSchema.equals("validate")) {
-	                            updater.validate(connection, schema);
-	                        } else {
-	                            throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
-	                        }
-	
-	                        logger.trace("Database update completed");
-	                    }
-	
-	                    logger.trace("Creating EntityManagerFactory");
-	                    emf = Persistence.createEntityManagerFactory(unitName, properties);
-	                    logger.trace("EntityManagerFactory created");
+					connection = getConnection();
+					try {
+						prepareOperationalInfo(connection);
 
-                    } catch (Exception e) {
-                        // Safe rollback
-                        if (connection != null) {
-                            try {
-                                connection.rollback();
-                            } catch (SQLException e2) {
-                                logger.warn("Can't rollback connection", e2);
-                            }
-                        }
+						String driverDialect = detectDialect(connection);
+						if (driverDialect != null) {
+							properties.put("hibernate.dialect", driverDialect);
+						}
 
-                        throw e;
-                    } finally {
-	                    // Close after creating EntityManagerFactory to prevent in-mem databases from closing
-	                    if (connection != null) {
-	                        try {
-	                            connection.close();
-	                        } catch (SQLException e) {
-	                            logger.warn("Can't close connection", e);
-	                        }
-	                    }
-                    }
-                }
-            }
-        }
-    }
+						if (databaseSchema != null) {
+							logger.trace("Updating database");
 
-    protected void prepareOperationalInfo(Connection connection) {
-  		try {
-  			operationalInfo = new LinkedHashMap<>();
-  			DatabaseMetaData md = connection.getMetaData();
-  			operationalInfo.put("databaseUrl",md.getURL());
-  			operationalInfo.put("databaseUser", md.getUserName());
-  			operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
-  			operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
+							JpaUpdaterProvider updater = session.getProvider(JpaUpdaterProvider.class);
+							if (updater == null) {
+								throw new RuntimeException("Can't update database: JPA updater provider not found");
+							}
 
-            logger.debugf("Database info: %s", operationalInfo.toString());
-  		} catch (SQLException e) {
-  			logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
-  		}
-  	}
+							if (databaseSchema.equals("update")) {
+								String currentVersion = null;
+								try {
+									ResultSet resultSet = connection.createStatement()
+											.executeQuery(updater.getCurrentVersionSql(schema));
+									if (resultSet.next()) {
+										currentVersion = resultSet.getString(1);
+									}
+								} catch (SQLException e) {
+								}
 
+								if (currentVersion == null || !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion)) {
+									updater.update(connection, schema);
+								} else {
+									logger.debug("Database is up to date");
+								}
+							} else if (databaseSchema.equals("validate")) {
+								updater.validate(connection, schema);
+							} else {
+								throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
+							}
 
-    protected String detectDialect(Connection connection) {
-        String driverDialect = config.get("driverDialect");
-        if (driverDialect != null && driverDialect.length() > 0) {
-            return driverDialect;
-        } else {
-            try {
-                String dbProductName = connection.getMetaData().getDatabaseProductName();
-                String dbProductVersion = connection.getMetaData().getDatabaseProductVersion();
+							logger.trace("Database update completed");
+						}
 
-                // For MSSQL2014, we may need to fix the autodetected dialect by hibernate
-                if (dbProductName.equals("Microsoft SQL Server")) {
-                    String topVersionStr = dbProductVersion.split("\\.")[0];
-                    boolean shouldSet2012Dialect = true;
-                    try {
-                        int topVersion = Integer.parseInt(topVersionStr);
-                        if (topVersion < 12) {
-                            shouldSet2012Dialect = false;
-                        }
-                    } catch (NumberFormatException nfe) {
-                    }
-                    if (shouldSet2012Dialect) {
-                        String sql2012Dialect = "org.hibernate.dialect.SQLServer2012Dialect";
-                        logger.debugf("Manually override hibernate dialect to %s", sql2012Dialect);
-                        return sql2012Dialect;
-                    }
-                }
-            } catch (SQLException e) {
-                logger.warnf("Unable to detect hibernate dialect due database exception : %s", e.getMessage());
-            }
+						logger.trace("Creating EntityManagerFactory");
+						emf = Persistence.createEntityManagerFactory(unitName, properties);
+						logger.trace("EntityManagerFactory created");
 
-            return null;
-        }
-    }
+					} catch (Exception e) {
+						// Safe rollback
+						if (connection != null) {
+							try {
+								connection.rollback();
+							} catch (SQLException e2) {
+								logger.warn("Can't rollback connection", e2);
+							}
+						}
 
+						throw e;
+					} finally {
+						// Close after creating EntityManagerFactory to prevent
+						// in-mem databases from closing
+						if (connection != null) {
+							try {
+								connection.close();
+							} catch (SQLException e) {
+								logger.warn("Can't close connection", e);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-    @Override
-    public Connection getConnection() {
-        try {
-            String dataSourceLookup = config.get("dataSource");
-            if (dataSourceLookup != null) {
-                DataSource dataSource = (DataSource) new InitialContext().lookup(dataSourceLookup);
-                return dataSource.getConnection();
-            } else {
-                Class.forName(config.get("driver"));
-                return DriverManager.getConnection(config.get("url"), config.get("user"), config.get("password"));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to connect to database", e);
-        }
-    }
+	protected void prepareOperationalInfo(Connection connection) {
+		try {
+			operationalInfo = new LinkedHashMap<>();
+			DatabaseMetaData md = connection.getMetaData();
+			operationalInfo.put("databaseUrl", md.getURL());
+			operationalInfo.put("databaseUser", md.getUserName());
+			operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
+			operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
 
-    @Override
-    public String getSchema() {
-        return config.get("schema");
-    }
-    
-    @Override
-  	public Map<String,String> getOperationalInfo() {
-  		return operationalInfo;
-  	}
+			logger.debugf("Database info: %s", operationalInfo.toString());
+		} catch (SQLException e) {
+			logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
+		}
+	}
+
+	protected String detectDialect(Connection connection) {
+		String driverDialect = config.get("driverDialect");
+		if (driverDialect != null && driverDialect.length() > 0) {
+			return driverDialect;
+		} else {
+			try {
+				String dbProductName = connection.getMetaData().getDatabaseProductName();
+				String dbProductVersion = connection.getMetaData().getDatabaseProductVersion();
+
+				// For MSSQL2014, we may need to fix the autodetected dialect by
+				// hibernate
+				if (dbProductName.equals("Microsoft SQL Server")) {
+					String topVersionStr = dbProductVersion.split("\\.")[0];
+					boolean shouldSet2012Dialect = true;
+					try {
+						int topVersion = Integer.parseInt(topVersionStr);
+						if (topVersion < 12) {
+							shouldSet2012Dialect = false;
+						}
+					} catch (NumberFormatException nfe) {
+					}
+					if (shouldSet2012Dialect) {
+						String sql2012Dialect = "org.hibernate.dialect.SQLServer2012Dialect";
+						logger.debugf("Manually override hibernate dialect to %s", sql2012Dialect);
+						return sql2012Dialect;
+					}
+				}
+			} catch (SQLException e) {
+				logger.warnf("Unable to detect hibernate dialect due database exception : %s", e.getMessage());
+			}
+
+			return null;
+		}
+	}
+
+	@Override
+	public Connection getConnection() {
+		try {
+			String dataSourceLookup = config.get("dataSource");
+			if (dataSourceLookup != null) {
+				DataSource dataSource = (DataSource) new InitialContext().lookup(dataSourceLookup);
+				return dataSource.getConnection();
+			} else {
+				Class.forName(config.get("driver"));
+				return DriverManager.getConnection(config.get("url"), config.get("user"), config.get("password"));
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to connect to database", e);
+		}
+	}
+
+	@Override
+	public String getSchema() {
+		return config.get("schema");
+	}
+
+	@Override
+	public Map<String, String> getOperationalInfo() {
+		return operationalInfo;
+	}
 
 }
