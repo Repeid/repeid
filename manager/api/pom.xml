@@ -5,28 +5,33 @@
 		<artifactId>repeid</artifactId>
 		<groupId>org.repeid</groupId>
 		<version>1.0.0.Alpha5-SNAPSHOT</version>
-		<relativePath>../../pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
+	<name>Repeid Manager Api</name>
+	<description />
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>repeid-manager-api</artifactId>
 	<packaging>pom</packaging>
-	<name>Repeid Manager Api</name>
-	<description />
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<modules>
-		<module>beans</module>
-		<module>config</module>
+		<module>common</module>
 		<module>core</module>
-		<module>jpa</module>
-		<module>model</module>
-		<module>mongo</module>
-		<module>rest</module>
-		<module>rest-impl</module>
-		<module>security</module>
-		<module>war</module>
-		
 		<module>server-spi</module>
+		<module>services</module>
+		<module>saml-core</module>
+		<module>model</module>
 	</modules>
 
 </project>
