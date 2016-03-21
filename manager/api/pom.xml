@@ -5,7 +5,7 @@
 		<artifactId>repeid</artifactId>
 		<groupId>org.repeid</groupId>
 		<version>1.0.0.Alpha5-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<name>Repeid Manager Api</name>
 	<description />
@@ -32,6 +32,7 @@
 		<module>services</module>
 		<module>saml-core</module>
 		<module>model</module>
+		<module>war</module>
 	</modules>
 
 </project>

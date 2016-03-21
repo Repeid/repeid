@@ -15,15 +15,37 @@
 		<artifactId>repeid</artifactId>
 		<groupId>org.repeid</groupId>
 		<version>1.0.0.Alpha5-SNAPSHOT</version>
-		<relativePath>../../../../pom.xml</relativePath>
+		<relativePath>../../../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>repeid-manager-api-model-infinispan</artifactId>
-	<name>Repeid Model Infinispan</name>
+	<artifactId>repeid-manager-api-war</artifactId>
+	<name>Repeid War</name>
 	<description />
+	<packaging>war</packaging>
 
 	<dependencies>
+		<!-- Project JARs -->
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-model-infinispan</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-model-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-model-mongo</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.repeid</groupId>
 			<artifactId>repeid-manager-api-core</artifactId>
@@ -31,28 +53,45 @@
 		<dependency>
 			<groupId>org.repeid</groupId>
 			<artifactId>repeid-manager-api-server-spi</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.infinispan</groupId>
-			<artifactId>infinispan-core</artifactId>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-services</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-manager-api-saml-core</artifactId>
 		</dependency>
+		<!-- Third Party Dependencies -->
+
+		<!-- Provided Dependencies -->
+
 	</dependencies>
+
 	<build>
+		<finalName>repeid</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<artifactId>maven-deploy-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<attachClasses>true</attachClasses>
+					<classesClassifier>classes</classesClassifier>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

@@ -615,6 +615,26 @@
 				<artifactId>repeid-manager-api-saml-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.repeid</groupId>
+				<artifactId>repeid-manager-api-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.repeid</groupId>
+				<artifactId>repeid-manager-api-model-infinispan</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.repeid</groupId>
+				<artifactId>repeid-manager-api-model-jpa</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.repeid</groupId>
+				<artifactId>repeid-manager-api-model-mongo</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
