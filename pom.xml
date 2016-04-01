@@ -34,6 +34,7 @@
 		<resteasy.version>3.0.14.Final</resteasy.version>
 		<hibernate.entitymanager.version>5.0.7.Final</hibernate.entitymanager.version>
 		<hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
+		<hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
 		<jboss-jaxrs-api_2.0_spec>1.0.0.Final</jboss-jaxrs-api_2.0_spec>
 		<jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec.version>1.0.4.Final</jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec.version>
 		<jboss.logging.version>3.3.0.Final</jboss.logging.version>
@@ -133,6 +134,11 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibernate.entitymanager.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate.validator.version}</version>
 			</dependency>
 
 			<dependency>
