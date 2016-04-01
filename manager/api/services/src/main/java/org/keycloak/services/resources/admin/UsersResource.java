@@ -173,7 +173,7 @@ public class UsersResource {
                 }
             }
 
-            updateUserFromRep(user, rep, attrsToRemove, realm, session);
+            updateUserFromRep(user, rep, attrsToRemove, realm, session, true);
             adminEvent.operation(OperationType.UPDATE).resourcePath(uriInfo).representation(rep).success();
 
             if (session.getTransaction().isActive()) {
@@ -212,7 +212,7 @@ public class UsersResource {
         try {
             UserModel user = session.users().addUser(realm, rep.getUsername());
             Set<String> emptySet = Collections.emptySet();
-            updateUserFromRep(user, rep, emptySet, realm, session);
+            updateUserFromRep(user, rep, emptySet, realm, session, false);
 
             adminEvent.operation(OperationType.CREATE).resourcePath(uriInfo, user.getId()).representation(rep).success();
 
@@ -229,7 +229,7 @@ public class UsersResource {
         }
     }
 
-    public static void updateUserFromRep(UserModel user, UserRepresentation rep, Set<String> attrsToRemove, RealmModel realm, KeycloakSession session) {
+    public static void updateUserFromRep(UserModel user, UserRepresentation rep, Set<String> attrsToRemove, RealmModel realm, KeycloakSession session, boolean removeMissingRequiredActions) {
         if (rep.getUsername() != null && realm.isEditUsernameAllowed()) {
             user.setUsername(rep.getUsername());
         }
@@ -251,7 +251,7 @@ public class UsersResource {
             for (String action : allActions) {
                 if (reqActions.contains(action)) {
                     user.addRequiredAction(action);
-                } else {
+                } else if (removeMissingRequiredActions) {
                     user.removeRequiredAction(action);
                 }
             }
@@ -939,7 +939,14 @@ public class UsersResource {
         if (group == null) {
             throw new NotFoundException("Group not found");
         }
-        if (user.isMemberOf(group)) user.leaveGroup(group);
+
+        try {
+            if (user.isMemberOf(group)) user.leaveGroup(group);
+        } catch (ModelException me) {
+            Properties messages = AdminRoot.getMessages(session, realm, auth.getAuth().getToken().getLocale());
+            throw new ErrorResponseException(me.getMessage(), MessageFormat.format(messages.getProperty(me.getMessage(), me.getMessage()), me.getParameters()),
+                    Response.Status.BAD_REQUEST);
+        }
     }
 
     @PUT

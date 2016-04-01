@@ -15,24 +15,15 @@
  * limitations under the License.
  */
 
-package org.keycloak.services.scheduled;
+package org.keycloak.timer;
 
 import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.RealmModel;
-import org.keycloak.models.UserSessionProvider;
-import org.keycloak.timer.ScheduledTask;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class ClearExpiredUserSessions implements ScheduledTask {
+public interface ScheduledTask {
 
-    @Override
-    public void run(KeycloakSession session) {
-        UserSessionProvider sessions = session.sessions();
-        for (RealmModel realm : session.realms().getRealms()) {
-            sessions.removeExpired(realm);
-        }
-    }
+    public void run(KeycloakSession session);
 
 }
