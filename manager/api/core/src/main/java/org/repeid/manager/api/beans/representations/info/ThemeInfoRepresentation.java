@@ -15,25 +15,32 @@
  * limitations under the License.
  */
 
-package org.keycloak.models;
+/*
+ */
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-
-import java.util.List;
+package org.repeid.manager.api.beans.representations.info;
 
 /**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public interface KeycloakSessionFactory {
-    KeycloakSession create();
+public class ThemeInfoRepresentation {
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+    private String name;
+    private String[] locales;
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
+    public String getName() {
+        return name;
+    }
 
-    List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    void close();
+    public String[] getLocales() {
+        return locales;
+    }
+
+    public void setLocales(String[] locales) {
+        this.locales = locales;
+    }
 }

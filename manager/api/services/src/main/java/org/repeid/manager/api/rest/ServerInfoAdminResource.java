@@ -15,25 +15,24 @@
  * limitations under the License.
  */
 
-package org.keycloak.models;
+package org.repeid.manager.api.rest;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
+import javax.ws.rs.GET;
 
-import java.util.List;
+import org.repeid.manager.api.beans.representations.info.ServerInfoRepresentation;
 
 /**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public interface KeycloakSessionFactory {
-    KeycloakSession create();
+public interface ServerInfoAdminResource {
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+	/**
+	 * Get themes, social providers, auth providers, and event listeners
+	 * available on this server
+	 *
+	 * @return
+	 */
+	@GET
+	public ServerInfoRepresentation getInfo();
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
-
-    List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
-
-    void close();
 }

@@ -15,25 +15,20 @@
  * limitations under the License.
  */
 
-package org.keycloak.models;
+package org.repeid.manager.api.beans.representations.info;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
+import java.util.Map;
 
-import java.util.List;
+public class ProviderRepresentation {
 
-/**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
- */
-public interface KeycloakSessionFactory {
-    KeycloakSession create();
+    private Map<String, String> operationalInfo;
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+    public Map<String, String> getOperationalInfo() {
+        return operationalInfo;
+    }
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
+    public void setOperationalInfo(Map<String, String> operationalInfo) {
+        this.operationalInfo = operationalInfo;
+    }
 
-    List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
-
-    void close();
 }

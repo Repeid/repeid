@@ -15,25 +15,33 @@
  * limitations under the License.
  */
 
-package org.keycloak.models;
+package org.repeid.manager.api.beans.representations.info;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-
-import java.util.List;
+import java.util.Map;
 
 /**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public interface KeycloakSessionFactory {
-    KeycloakSession create();
+public class SpiInfoRepresentation {
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+    private boolean internal;
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
+    private Map<String, ProviderRepresentation> providers;
 
-    List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
+    public boolean isInternal() {
+        return internal;
+    }
 
-    void close();
+    public void setInternal(boolean internal) {
+        this.internal = internal;
+    }
+
+    public Map<String, ProviderRepresentation> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(Map<String, ProviderRepresentation> providers) {
+        this.providers = providers;
+    }
+
 }

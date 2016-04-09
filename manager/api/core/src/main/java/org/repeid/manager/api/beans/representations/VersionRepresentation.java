@@ -15,25 +15,27 @@
  * limitations under the License.
  */
 
-package org.keycloak.models;
-
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-
-import java.util.List;
+package org.repeid.manager.api.beans.representations;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public interface KeycloakSessionFactory {
-    KeycloakSession create();
+public class VersionRepresentation {
+    public static final VersionRepresentation SINGLETON;
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz);
+    private final String version = Version.VERSION;
+    private final String buildTime = Version.BUILD_TIME;
 
-    <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id);
+    static {
+        SINGLETON = new VersionRepresentation();
+    }
 
-    List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz);
+    public String getVersion() {
+        return version;
+    }
 
-    void close();
+    public String getBuildTime() {
+        return buildTime;
+    }
 }
