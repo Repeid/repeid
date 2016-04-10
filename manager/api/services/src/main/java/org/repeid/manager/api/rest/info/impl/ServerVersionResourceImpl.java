@@ -30,8 +30,7 @@ public class ServerVersionResourceImpl implements ServerVersionResource {
 
     @Override
     public Response getVersionPreflight() {
-        // TODO Auto-generated method stub
-        return null;
+        return Response.ok().entity("hola").build();
     }
 
     @Override

@@ -32,7 +32,7 @@ import org.repeid.manager.api.rest.admin.TiposDocumentoResource;
  */
 @Path("/admin")
 public interface AdminRoot {
-
+    
 	/**
 	 * Base Path to tipoDocumento admin REST interface
 	 *

@@ -1,5 +1,6 @@
 package org.repeid.manager.api.rest.impl;
 
+import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import org.repeid.manager.api.rest.AdminRoot;
@@ -15,6 +16,7 @@ import org.repeid.manager.api.rest.admin.TiposDocumentoResource;
  * @version $Revision: 1 $
  */
 
+@Path("/admin")
 public class AdminRootImpl implements AdminRoot {
 
     @Override
