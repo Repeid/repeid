@@ -10,10 +10,11 @@
             <module name="org.jboss.resteasy.resteasy-jackson2-provider"/>
 
             <!-- Exclude keycloak modules -->
+            <!-- 
             <module name="org.keycloak.keycloak-core" />
             <module name="org.keycloak.keycloak-adapter-core" />
             <module name="org.keycloak.keycloak-undertow-adapter" />
-            <module name="org.keycloak.keycloak-as7-adapter" />
+            <module name="org.keycloak.keycloak-as7-adapter" /> -->
         </exclusions>
     </deployment>
 </jboss-deployment-structure>

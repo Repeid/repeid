@@ -25,36 +25,38 @@ public interface KeycloakSession {
     KeycloakSessionFactory getKeycloakSessionFactory();
 
     /**
-     * Returns a managed provider instance.  Will start a provider transaction.  This transaction is managed by the KeycloakSession
-     * transaction.
+     * Returns a managed provider instance. Will start a provider transaction.
+     * This transaction is managed by the KeycloakSession transaction.
      *
      * @return
-     * @throws IllegalStateException if transaction is not active
+     * @throws IllegalStateException
+     *             if transaction is not active
      */
-    RealmProvider realms();
+    // RealmProvider realms();
 
     /**
-     * Returns a managed provider instance.  Will start a provider transaction.  This transaction is managed by the KeycloakSession
-     * transaction.
+     * Returns a managed provider instance. Will start a provider transaction.
+     * This transaction is managed by the KeycloakSession transaction.
      *
      * @return
-     * @throws IllegalStateException if transaction is not active
+     * @throws IllegalStateException
+     *             if transaction is not active
      */
-    UserSessionProvider sessions();
-
-
+    // UserSessionProvider sessions();
 
     void close();
 
     /**
-     * Possibly both cached and federated view of users depending on configuration.
+     * Possibly both cached and federated view of users depending on
+     * configuration.
      *
      * @return
      */
-    UserFederationManager users();
+    // UserFederationManager users();
 
     /**
-     *  Keycloak user storage.  Non-federated, but possibly cache (if it is on) view of users.
+     * Keycloak user storage. Non-federated, but possibly cache (if it is on)
+     * view of users.
      */
-    UserProvider userStorage();
+    // UserProvider userStorage();
 }

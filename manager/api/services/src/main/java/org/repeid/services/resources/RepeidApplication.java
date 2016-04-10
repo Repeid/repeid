@@ -73,6 +73,7 @@ public class RepeidApplication extends Application {
         this.sessionFactory = createSessionFactory();
 
         // for injection
+
         dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
         ResteasyProviderFactory.pushContext(RepeidApplication.class, this);
         context.setAttribute(KeycloakSessionFactory.class.getName(), this.sessionFactory);
