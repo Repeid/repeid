@@ -18,7 +18,6 @@ import org.keycloak.provider.Spi;
 public class DefaultRepeidSessionFactory implements KeycloakSessionFactory {
 
 	private Map<Class<? extends Provider>, String> provider = new HashMap<Class<? extends Provider>, String>();
-	@SuppressWarnings("rawtypes")
 	private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
 
 	public void init() {

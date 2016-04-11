@@ -51,6 +51,12 @@ public class RepeidApplication extends Application {
 		singletons.add(new AdminRootImpl());
 	}
 
+	public static KeycloakSessionFactory createSessionFactory() {
+		DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
+		factory.init();
+		return factory;
+	}
+
 	public static void loadConfig() {
 		try {
 			JsonNode node = null;
@@ -82,12 +88,6 @@ public class RepeidApplication extends Application {
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to load config", e);
 		}
-	}
-
-	public static KeycloakSessionFactory createSessionFactory() {
-		DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
-		factory.init();
-		return factory;
 	}
 
 }

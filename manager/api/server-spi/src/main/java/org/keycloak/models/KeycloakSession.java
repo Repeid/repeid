@@ -32,7 +32,7 @@ public interface KeycloakSession {
      * @throws IllegalStateException
      *             if transaction is not active
      */
-    // RealmProvider realms();
+     RealmProvider realms();
 
     /**
      * Returns a managed provider instance. Will start a provider transaction.
