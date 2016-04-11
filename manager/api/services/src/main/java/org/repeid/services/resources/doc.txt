@@ -1,0 +1,30 @@
+/**
+	 * @javax.servlet.ServletContext. The attributes stored in the
+	 *                                ServletContext are available to all
+	 *                                servlets in your application, and between
+	 *                                requests and sessions. The ServletContext
+	 *                                attributes are still stored in the memory
+	 *                                of the servlet container. That means that
+	 *                                the same problems exists as does with the
+	 *                                session attributes, in server clusters.
+	 * @example context.setAttribute("someValue", "aValue");
+	 * @example context.getAttribute("someValue");
+	 **/
+
+	/**
+	 * @org.jboss.resteasy.core.Dispatcher. Admin context objects that can be
+	 *                                      injectec
+	 *                                      using @javax.ws.rs.core.Context
+	 * @example dispatcher.getDefaultContextObjects().put(class, object); Now
+	 *          you can inject class using @javax.ws.rs.core.Context
+	 * 
+	 **/
+
+	/**
+	 * ResteasyProviderFactory. Many times we get into situation where we have
+	 * to pass data from-to multiple layers in our application. An example can
+	 * be application using interceptors. Suppose we have two interceptors in
+	 * our application, one for login check and second for putting audit
+	 * information in database. We want to use the User object from first
+	 * interceptor, into second interceptor.
+	 */

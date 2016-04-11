@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.admin;
+package org.repeid.services.resources.admin;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;

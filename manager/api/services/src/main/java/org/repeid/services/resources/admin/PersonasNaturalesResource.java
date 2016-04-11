@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.repeid.manager.api.rest.admin;
+package org.repeid.services.resources.admin;
 
 import java.util.List;
 
@@ -30,60 +30,61 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
 
 /**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
+ * @author carlosthe19916@gmail.com
  */
 
 @Consumes(MediaType.APPLICATION_JSON)
-public interface TiposDocumentoResource {
+public interface PersonasNaturalesResource {
 
-	public static final String TIPO_DOCUMENTO_ID = "tipoDocumentoId";
+	public static final String PERSONA_NATURAL_ID = "personaNaturalId";
 
 	/**
-	 * @param tipoDocumentoId
-	 *            El ID del TipoDocumento.
+	 * @param personaNaturalId
+	 *            El ID de la PersonaNatural.
 	 */
-	@Path("{" + TIPO_DOCUMENTO_ID + "}")
-	public TipoDocumentoResource tipoDocumento(@PathParam(TIPO_DOCUMENTO_ID) String tipoDocumentoId);
+	@Path("{" + PERSONA_NATURAL_ID + "}")
+	public PersonaNaturalResource personaNatural(@PathParam(PERSONA_NATURAL_ID) String personaNaturalId);
 
 	/**
-	 * Use este endpoint para crear un nuevo tipoDocumento. Un TipoDocumento
-	 * representa el documento con el que se identifica una persona en un
-	 * determinado pais.
+	 * Use este endpoint para crear una nueva personaNatural. Una PersonaNatural
+	 * representa una persona sin razon social.
 	 * 
-	 * @summary Create TipoDocumento
+	 * @summary Create PersonaNatural
 	 * @servicetag admin
 	 * @param rep
-	 *            El nuevo TipoDocumento.
-	 * @statuscode 200 Si el tipoDocumento fue creado satisfactoriamente.
-	 * @return La informacion completa del tipoDocumento creado.
-	 * @throws TipoDocumentoAlreadyExistsException
-	 *             cuando el tipoDocumento ya existe.
+	 *            La nueva PersonaNatural.
+	 * @statuscode 200 Si la personaNatural fue creada satisfactoriamente.
+	 * @return La informacion completa de la personaNatural creada.
+	 * @throws PersonaNaturalAlreadyExistsException
+	 *             cuando la personaNatural ya existe.
 	 * @throws NotAuthorizedException
 	 *             cuando no esta autorizado para invocar este metodo.
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(TipoDocumentoRepresentation rep);
+	public Response create(PersonaNaturalRepresentation rep);
 
 	/**
-	 * Este endpoint provee una forma de buscar tipoDocumentos. Los criterios de
-	 * busqueda estan definidos por los parametros enviados.
+	 * Este endpoint provee una forma de buscar personaNaturales. Los criterios
+	 * de busqueda estan definidos por los parametros enviados.
 	 * 
-	 * @summary Search for TipoDocumento
+	 * @summary Search for PersonaNatural
 	 * 
-	 * @param abreviatura
-	 *            Abreviatura de tipoDocumento.
-	 * @param denominacion
-	 *            Denominacion de tipoDocumento.
-	 * @param tipoPersona
-	 *            TipoPersona puede ser NATURAL o JURIDICA.
-	 * @param estado
-	 *            Estado puede ser True o False.
+	 * @param tipoDocumento
+	 *            TipoDocumento de personaNatural.
+	 * @param numeroDocumento
+	 *            NumeroDocumento de personaNatural.
+	 * @param apellidoPaterno
+	 *            ApellidoPaterno de personaNatural.
+	 * @param apellidoMaterno
+	 *            ApellidoMaterno de personaNatural.
+	 * @param nombres
+	 *            Nombres de personaNatural.
 	 * @param filterText
 	 *            FilterText representa el patron de busqueda.
 	 * @param first
@@ -93,26 +94,28 @@ public interface TiposDocumentoResource {
 	 *            busqueda.
 	 * 
 	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
-	 * @return Los resultados de la busqueda (una pagina de tipoDocumentos).
+	 * @return Los resultados de la busqueda (una pagina de personaNaturales).
 	 * @throws NotAuthorizedException
 	 *             cuando no esta autorizado para invocar este metodo.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<TipoDocumentoRepresentation> search(@QueryParam("abreviatura") String abreviatura,
-													@QueryParam("denominacion") String denominacion, @QueryParam("tipoPersona") String tipoPersona,
-													@QueryParam("estado") Boolean estado, @QueryParam("filterText") String filterText,
-													@QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
+	public List<PersonaNaturalRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
+													 @QueryParam("numeroDocumento") String numeroDocumento,
+													 @QueryParam("apellidoPaterno") String apellidoPaterno,
+													 @QueryParam("apellidoMaterno") String apellidoMaterno, @QueryParam("nombres") String nombres,
+													 @QueryParam("filterText") String filterText, @QueryParam("first") Integer firstResult,
+													 @QueryParam("max") Integer maxResults);
 
 	/**
-	 * Este endpoint provee una forma de buscar tipoDocumentos. Los criterios de
-	 * busqueda estan definidos por los parametros enviados.
+	 * Este endpoint provee una forma de buscar personaNaturales. Los criterios
+	 * de busqueda estan definidos por los parametros enviados.
 	 * 
-	 * @summary Search for TipoDocumento
+	 * @summary Search for PersonaNatural
 	 * @param criteria
 	 *            Criterio de busqueda.
 	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
-	 * @return Los resultados de la busqueda (una pagina de tipoDocumentos).
+	 * @return Los resultados de la busqueda (una pagina de personaNaturales).
 	 * @throws InvalidSearchCriteriaException
 	 *             cuando el criterio de busqueda no es valido.
 	 * @throws NotAuthorizedException
@@ -121,6 +124,6 @@ public interface TiposDocumentoResource {
 	@POST
 	@Path("search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria);
+	public SearchResultsRepresentation<PersonaNaturalRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

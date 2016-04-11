@@ -1,7 +1,4 @@
-/**
- * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
- */
-package org.repeid.manager.api.rest.info;
+package org.repeid.services.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
@@ -12,11 +9,6 @@ import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.repeid.manager.api.beans.representations.VersionRepresentation;
-
-/**
- * @author huertas
- *
- */
 
 @Path("/version")
 public interface ServerVersionResource {
