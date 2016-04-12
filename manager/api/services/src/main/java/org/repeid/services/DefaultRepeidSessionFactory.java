@@ -20,6 +20,9 @@ public class DefaultRepeidSessionFactory implements KeycloakSessionFactory {
 	private Map<Class<? extends Provider>, String> provider = new HashMap<Class<? extends Provider>, String>();
 	private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
 
+	/**
+	 * Load providers factory classes and init them
+	 */
 	public void init() {
 		for (Spi spi : ServiceLoader.load(Spi.class)) {
 			Map<String, ProviderFactory> factories = new HashMap<String, ProviderFactory>();

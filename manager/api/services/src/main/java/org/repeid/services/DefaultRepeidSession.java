@@ -11,6 +11,7 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.KeycloakTransactionManager;
 import org.keycloak.models.RealmProvider;
+import org.keycloak.models.cache.CacheRealmProvider;
 import org.keycloak.provider.Provider;
 import org.keycloak.provider.ProviderFactory;
 
@@ -22,7 +23,7 @@ public class DefaultRepeidSession implements KeycloakSession {
 	private final DefaultRepeidTransactionManager transactionManager;
 
 	private RealmProvider realmProvider;
-	
+
 	public DefaultRepeidSession(DefaultRepeidSessionFactory factory) {
 		this.factory = factory;
 		this.transactionManager = new DefaultRepeidTransactionManager();
@@ -115,24 +116,26 @@ public class DefaultRepeidSession implements KeycloakSession {
 	public KeycloakSessionFactory getKeycloakSessionFactory() {
 		return factory;
 	}
-	
+
+	/**
+	 * @return RealmProvider
+	 */
 	@Override
-    public RealmProvider realms() {
-        if (realmProvider == null) {
-            realmProvider = getRealmProvider();
-        }
-        return realmProvider;
-    }
+	public RealmProvider realms() {
+		if (realmProvider == null) {
+			realmProvider = getRealmProvider();
+		}
+		return realmProvider;
+	}
 
+	private RealmProvider getRealmProvider() {
+		if (factory.getDefaultProvider(CacheRealmProvider.class) != null) {
+			return getProvider(CacheRealmProvider.class);
+		} else {
+			return getProvider(RealmProvider.class);
+		}
+	}
 
-    private RealmProvider getRealmProvider() {
-        if (factory.getDefaultProvider(CacheRealmProvider.class) != null) {
-            return getProvider(CacheRealmProvider.class);
-        } else {
-            return getProvider(RealmProvider.class);
-        }
-    }
-    
 	/**
 	 * This method is invoked on destroy this method.
 	 */
