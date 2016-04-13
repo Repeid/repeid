@@ -1,4 +1,4 @@
-package org.keycloak.models.jpa;
+package org.repeid.models.jpa;
 
 import org.keycloak.Config;
 import org.repeid.models.RealmProvider;
