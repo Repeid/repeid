@@ -9,13 +9,13 @@ import java.util.ServiceLoader;
 import java.util.Set;
 
 import org.keycloak.Config;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.repeid.models.RepeidSession;
+import org.repeid.models.RepeidSessionFactory;
+import org.repeid.provider.Provider;
+import org.repeid.provider.ProviderFactory;
+import org.repeid.provider.Spi;
 
-public class DefaultRepeidSessionFactory implements KeycloakSessionFactory {
+public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
 
 	private Map<Class<? extends Provider>, String> provider = new HashMap<Class<? extends Provider>, String>();
 	private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
@@ -62,7 +62,7 @@ public class DefaultRepeidSessionFactory implements KeycloakSessionFactory {
 		throw new RuntimeException("Failed to find provider " + id + " for " + spi.getName());
 	}
 
-	public KeycloakSession create() {
+	public RepeidSession create() {
 		return new DefaultRepeidSession(this);
 	}
 

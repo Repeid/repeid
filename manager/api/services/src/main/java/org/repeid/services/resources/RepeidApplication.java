@@ -19,7 +19,7 @@ import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.keycloak.Config;
 import org.keycloak.common.util.SystemEnvProperties;
-import org.keycloak.models.KeycloakSessionFactory;
+import org.repeid.models.RepeidSessionFactory;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.resources.admin.impl.AdminRootImpl;
 import org.repeid.services.resources.impl.ServerVersionResourceImpl;
@@ -33,7 +33,7 @@ public class RepeidApplication extends Application {
 	protected Set<Object> singletons = new HashSet<>();
 	protected Set<Class<?>> classes = new HashSet<>();
 
-	protected KeycloakSessionFactory sessionFactory;
+	protected RepeidSessionFactory sessionFactory;
 	protected String contextPath;
 
 	public RepeidApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
@@ -45,13 +45,13 @@ public class RepeidApplication extends Application {
 		// for injection
 		dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
 		ResteasyProviderFactory.pushContext(RepeidApplication.class, this);
-		context.setAttribute(KeycloakSessionFactory.class.getName(), this.sessionFactory);
+		context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
 		singletons.add(new ServerVersionResourceImpl());
 		singletons.add(new AdminRootImpl());
 	}
 
-	public static KeycloakSessionFactory createSessionFactory() {
+	public static RepeidSessionFactory createSessionFactory() {
 		DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
 		factory.init();
 		return factory;

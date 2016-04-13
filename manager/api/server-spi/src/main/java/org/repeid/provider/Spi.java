@@ -1,4 +1,4 @@
-package org.keycloak.provider;
+package org.repeid.provider;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

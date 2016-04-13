@@ -1,6 +1,6 @@
-package org.keycloak.models;
+package org.repeid.models;
 
-import org.keycloak.provider.ProviderFactory;
+import org.repeid.provider.ProviderFactory;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>

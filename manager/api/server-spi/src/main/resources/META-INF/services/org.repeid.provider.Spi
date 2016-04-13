@@ -1,0 +1,2 @@
+org.repeid.models.RealmSpi
+org.repeid.models.cache.CacheRealmProviderSpi

@@ -1,8 +1,8 @@
-package org.keycloak.models.cache;
+package org.repeid.models.cache;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.repeid.provider.Provider;
+import org.repeid.provider.ProviderFactory;
+import org.repeid.provider.Spi;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>

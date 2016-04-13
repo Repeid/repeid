@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.models.KeycloakTransactionManager;
-import org.keycloak.models.RealmProvider;
-import org.keycloak.models.cache.CacheRealmProvider;
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
+import org.repeid.models.RealmProvider;
+import org.repeid.models.RepeidSession;
+import org.repeid.models.RepeidSessionFactory;
+import org.repeid.models.RepeidTransactionManager;
+import org.repeid.models.cache.CacheRealmProvider;
+import org.repeid.provider.Provider;
+import org.repeid.provider.ProviderFactory;
 
-public class DefaultRepeidSession implements KeycloakSession {
+public class DefaultRepeidSession implements RepeidSession {
 
 	private final DefaultRepeidSessionFactory factory;
 	private final Map<Integer, Provider> providers = new HashMap<Integer, Provider>();
@@ -34,7 +34,7 @@ public class DefaultRepeidSession implements KeycloakSession {
 	 *         the session.
 	 */
 	@Override
-	public KeycloakTransactionManager getTransaction() {
+	public RepeidTransactionManager getTransaction() {
 		return transactionManager;
 	}
 
@@ -113,7 +113,7 @@ public class DefaultRepeidSession implements KeycloakSession {
 	 * @return the current RepeidSessionFactory.
 	 */
 	@Override
-	public KeycloakSessionFactory getKeycloakSessionFactory() {
+	public RepeidSessionFactory getRepeidSessionFactory() {
 		return factory;
 	}
 

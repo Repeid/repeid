@@ -1,20 +1,20 @@
 package org.repeid.services;
 
-import org.keycloak.models.KeycloakTransaction;
-import org.keycloak.models.KeycloakTransactionManager;
-
 import java.util.LinkedList;
 import java.util.List;
 
-public class DefaultRepeidTransactionManager implements KeycloakTransactionManager {
+import org.repeid.models.RepeidTransaction;
+import org.repeid.models.RepeidTransactionManager;
 
-	private List<KeycloakTransaction> transactions = new LinkedList<KeycloakTransaction>();
-	private List<KeycloakTransaction> afterCompletion = new LinkedList<KeycloakTransaction>();
+public class DefaultRepeidTransactionManager implements RepeidTransactionManager {
+
+	private List<RepeidTransaction> transactions = new LinkedList<RepeidTransaction>();
+	private List<RepeidTransaction> afterCompletion = new LinkedList<RepeidTransaction>();
 	private boolean active;
 	private boolean rollback;
 
 	@Override
-	public void enlist(KeycloakTransaction transaction) {
+	public void enlist(RepeidTransaction transaction) {
 		if (active && !transaction.isActive()) {
 			transaction.begin();
 		}
@@ -23,7 +23,7 @@ public class DefaultRepeidTransactionManager implements KeycloakTransactionManag
 	}
 
 	@Override
-	public void enlistAfterCompletion(KeycloakTransaction transaction) {
+	public void enlistAfterCompletion(RepeidTransaction transaction) {
 		if (active && !transaction.isActive()) {
 			transaction.begin();
 		}
@@ -37,7 +37,7 @@ public class DefaultRepeidTransactionManager implements KeycloakTransactionManag
 			throw new IllegalStateException("Transaction already active");
 		}
 
-		for (KeycloakTransaction tx : transactions) {
+		for (RepeidTransaction tx : transactions) {
 			tx.begin();
 		}
 
@@ -47,14 +47,14 @@ public class DefaultRepeidTransactionManager implements KeycloakTransactionManag
 	@Override
 	public void commit() {
 		RuntimeException exception = null;
-		for (KeycloakTransaction tx : transactions) {
+		for (RepeidTransaction tx : transactions) {
 			try {
 				tx.commit();
 			} catch (RuntimeException e) {
 				exception = exception == null ? e : exception;
 			}
 		}
-		for (KeycloakTransaction tx : afterCompletion) {
+		for (RepeidTransaction tx : afterCompletion) {
 			try {
 				tx.commit();
 			} catch (RuntimeException e) {
@@ -70,14 +70,14 @@ public class DefaultRepeidTransactionManager implements KeycloakTransactionManag
 	@Override
 	public void rollback() {
 		RuntimeException exception = null;
-		for (KeycloakTransaction tx : transactions) {
+		for (RepeidTransaction tx : transactions) {
 			try {
 				tx.rollback();
 			} catch (RuntimeException e) {
 				exception = exception != null ? e : exception;
 			}
 		}
-		for (KeycloakTransaction tx : afterCompletion) {
+		for (RepeidTransaction tx : afterCompletion) {
 			try {
 				tx.rollback();
 			} catch (RuntimeException e) {
@@ -101,7 +101,7 @@ public class DefaultRepeidTransactionManager implements KeycloakTransactionManag
 			return true;
 		}
 
-		for (KeycloakTransaction tx : transactions) {
+		for (RepeidTransaction tx : transactions) {
 			if (tx.getRollbackOnly()) {
 				return true;
 			}

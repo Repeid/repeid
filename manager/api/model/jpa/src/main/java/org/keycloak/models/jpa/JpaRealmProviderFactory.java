@@ -1,9 +1,9 @@
 package org.keycloak.models.jpa;
 
 import org.keycloak.Config;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.RealmProvider;
-import org.keycloak.models.RealmProviderFactory;
+import org.repeid.models.RealmProvider;
+import org.repeid.models.RealmProviderFactory;
+import org.repeid.models.RepeidSession;
 
 import javax.persistence.EntityManager;
 
@@ -23,7 +23,7 @@ public class JpaRealmProviderFactory implements RealmProviderFactory {
     }
 
     @Override
-    public RealmProvider create(KeycloakSession session) {
+    public RealmProvider create(RepeidSession session) {
         /*
          * EntityManager em =
          * session.getProvider(JpaConnectionProvider.class).getEntityManager();
