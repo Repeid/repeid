@@ -30,64 +30,64 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RepeidApplication extends Application {
 
-	protected Set<Object> singletons = new HashSet<>();
-	protected Set<Class<?>> classes = new HashSet<>();
+    protected Set<Object> singletons = new HashSet<>();
+    protected Set<Class<?>> classes = new HashSet<>();
 
-	protected RepeidSessionFactory sessionFactory;
-	protected String contextPath;
+    protected RepeidSessionFactory sessionFactory;
+    protected String contextPath;
 
-	public RepeidApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
-		loadConfig();
+    public RepeidApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
+        loadConfig();
 
-		this.contextPath = context.getContextPath();
-		this.sessionFactory = createSessionFactory();
+        this.contextPath = context.getContextPath();
+        this.sessionFactory = createSessionFactory();
 
-		// for injection
-		dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
-		ResteasyProviderFactory.pushContext(RepeidApplication.class, this);
-		context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
+        // for injection
+        dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
+        ResteasyProviderFactory.pushContext(RepeidApplication.class, this);
+        context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
-		singletons.add(new ServerVersionResourceImpl());
-		singletons.add(new AdminRootImpl());
-	}
+        singletons.add(new ServerVersionResourceImpl());
+        singletons.add(new AdminRootImpl());
+    }
 
-	public static RepeidSessionFactory createSessionFactory() {
-		DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
-		factory.init();
-		return factory;
-	}
+    public static RepeidSessionFactory createSessionFactory() {
+        DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
+        factory.init();
+        return factory;
+    }
 
-	public static void loadConfig() {
-		try {
-			JsonNode node = null;
+    public static void loadConfig() {
+        try {
+            JsonNode node = null;
 
-			String configDir = System.getProperty("jboss.server.config.dir");
-			if (configDir != null) {
-				FileSystem fs = FileSystems.getDefault();
-				Path path = Paths.get(configDir + fs.getSeparator() + "repeid-server.json");
-				if (Files.exists(path) && Files.isRegularFile(path)) {
-					node = new ObjectMapper().readTree(Files.newInputStream(path));
-				}
-			}
+            String configDir = System.getProperty("jboss.server.config.dir");
+            if (configDir != null) {
+                FileSystem fs = FileSystems.getDefault();
+                Path path = Paths.get(configDir + fs.getSeparator() + "repeid-server.json");
+                if (Files.exists(path) && Files.isRegularFile(path)) {
+                    node = new ObjectMapper().readTree(Files.newInputStream(path));
+                }
+            }
 
-			if (node == null) {
-				String s = "META-INF/repeid-server.json";
-				URL resource = Thread.currentThread().getContextClassLoader().getResource(s);
-				if (resource != null) {
-					node = new ObjectMapper().readTree(resource);
-				}
-			}
+            if (node == null) {
+                String s = "META-INF/repeid-server.json";
+                URL resource = Thread.currentThread().getContextClassLoader().getResource(s);
+                if (resource != null) {
+                    node = new ObjectMapper().readTree(resource);
+                }
+            }
 
-			if (node != null) {
-				Properties properties = new SystemEnvProperties();
-				Config.init(new JsonConfigProvider(node, properties));
-				return;
-			} else {
-				throw new RuntimeException("Config 'repeid-server.json' not found");
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to load config", e);
-		}
-	}
+            if (node != null) {
+                Properties properties = new SystemEnvProperties();
+                Config.init(new JsonConfigProvider(node, properties));
+                return;
+            } else {
+                throw new RuntimeException("Config 'repeid-server.json' not found");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load config", e);
+        }
+    }
 
 }
