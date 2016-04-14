@@ -15,5 +15,10 @@
 /admin/index.{html:html}
 /admin/{realm}/console
 /admin/realms
+/admin/realms/{realm}
+/admin/realms/{realm}/tiposDocumentos
+/admin/realms/{realm}/personas
+/admin/realms/{realm}/personas/naturales
+/admin/realms/{realm}/personas/juridicas
 /admin/commons													// CommonsResource
 /admin/serverinfo   
