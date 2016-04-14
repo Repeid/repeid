@@ -49,6 +49,7 @@ public class RepeidApplication extends Application {
 
         singletons.add(new ServerVersionResourceImpl());
         singletons.add(new AdminRootImpl());
+        singletons.add(new MessageRestServiceTest());
     }
 
     public static RepeidSessionFactory createSessionFactory() {
