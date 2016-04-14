@@ -52,6 +52,16 @@ public class RepeidApplication extends Application {
         singletons.add(new MessageRestServiceTest());
     }
 
+    @Override
+    public Set<Class<?>> getClasses() {
+        return classes;
+    }
+
+    @Override
+    public Set<Object> getSingletons() {
+        return singletons;
+    }
+    
     public static RepeidSessionFactory createSessionFactory() {
         DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
         factory.init();
