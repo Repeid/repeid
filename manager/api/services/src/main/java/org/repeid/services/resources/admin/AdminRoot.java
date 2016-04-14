@@ -57,7 +57,7 @@ public interface AdminRoot {
      * @return
      */
     @Path("utils")
-    public MaestroResource getUtilsResource(@Context final HttpHeaders headers);
+    public CommonsResource getUtilsResource(@Context final HttpHeaders headers);
 
     /**
      * General information about the server

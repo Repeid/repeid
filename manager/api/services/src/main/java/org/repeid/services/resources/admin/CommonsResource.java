@@ -7,9 +7,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/utils")
+@Path("/commons")
 @Produces(MediaType.APPLICATION_JSON)
-public interface MaestroResource {
+public interface CommonsResource {
 
 	/**
 	 * Este endpoint retorna todos los tipos de persona soportados por repeid.

@@ -2,9 +2,9 @@ package org.repeid.services.resources.admin.impl;
 
 import java.util.List;
 
-import org.repeid.services.resources.admin.MaestroResource;
+import org.repeid.services.resources.admin.CommonsResource;
 
-public class MaestroResourceImpl implements MaestroResource {
+public class CommonsResourceImpl implements CommonsResource {
 
 	@Override
 	public List<String> getAllTipoPersonas() {

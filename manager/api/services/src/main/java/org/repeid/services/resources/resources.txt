@@ -1,0 +1,19 @@
+/version
+
+/robots.txt
+
+/resources
+/resources/{version}/{themeType}/{themeName}/{path:.*}			// ThemeResource
+
+/js
+/js/repeid.js
+/js/{version}/repeid.js
+/js/repeid.min.js")
+/js/{version}/repeid.min.js
+
+/admin
+/admin/index.{html:html}
+/admin/{realm}/console
+/admin/realms
+/admin/commons													// CommonsResource
+/admin/serverinfo   

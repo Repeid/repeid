@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response;
 
 import org.repeid.services.resources.admin.AdminConsole;
 import org.repeid.services.resources.admin.AdminRoot;
-import org.repeid.services.resources.admin.MaestroResource;
+import org.repeid.services.resources.admin.CommonsResource;
 import org.repeid.services.resources.admin.RealmsAdminResource;
 import org.repeid.services.resources.admin.ServerInfoAdminResource;
 
@@ -36,7 +36,7 @@ public class AdminRootImpl implements AdminRoot {
     }
 
     @Override
-    public MaestroResource getUtilsResource(HttpHeaders headers) {
+    public CommonsResource getUtilsResource(HttpHeaders headers) {
         // TODO Auto-generated method stub
         return null;
     }
