@@ -13,7 +13,11 @@
 
 /admin
 /admin/index.{html:html}
-/admin/{organization}/console
+/admin/{organization}/console/config
+/admin/{organization}/console/whoami
+/admin/{organization}/console/logout
+/admin/{organization}/console/{indexhtml: index.html}
+/admin/{organization}/console/messages.json
 /admin/organizations
 /admin/organizations/{organization}
 /admin/organizations/{organization}/tiposDocumentos
