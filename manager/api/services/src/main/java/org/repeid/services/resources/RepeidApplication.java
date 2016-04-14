@@ -21,8 +21,12 @@ import org.keycloak.Config;
 import org.keycloak.common.util.SystemEnvProperties;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.services.DefaultRepeidSessionFactory;
+import org.repeid.services.filters.RepeidTransactionCommitter;
 import org.repeid.services.resources.admin.impl.AdminRootImpl;
+import org.repeid.services.resources.impl.JsResourceImpl;
+import org.repeid.services.resources.impl.RobotsResourceImpl;
 import org.repeid.services.resources.impl.ServerVersionResourceImpl;
+import org.repeid.services.resources.impl.ThemeResourceImpl;
 import org.repeid.services.util.JsonConfigProvider;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -42,14 +46,18 @@ public class RepeidApplication extends Application {
         this.contextPath = context.getContextPath();
         this.sessionFactory = createSessionFactory();
 
-        // for injection
         dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
-        ResteasyProviderFactory.pushContext(RepeidApplication.class, this);
+        ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for injection
         context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
         singletons.add(new ServerVersionResourceImpl());
+        singletons.add(new RobotsResourceImpl());
+        //singletons.add(new RealmsResource()); for public access
         singletons.add(new AdminRootImpl());
-        singletons.add(new MessageRestServiceTest());
+        classes.add(ThemeResourceImpl.class);
+        classes.add(JsResourceImpl.class);
+
+        classes.add(RepeidTransactionCommitter.class);
     }
 
     @Override
@@ -61,7 +69,7 @@ public class RepeidApplication extends Application {
     public Set<Object> getSingletons() {
         return singletons;
     }
-    
+
     public static RepeidSessionFactory createSessionFactory() {
         DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
         factory.init();
