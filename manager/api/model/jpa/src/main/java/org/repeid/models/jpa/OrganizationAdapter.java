@@ -19,14 +19,14 @@ package org.repeid.models.jpa;
 
 import java.util.List;
 
-import org.repeid.models.RealmModel;
+import org.repeid.models.OrganizationModel;
 import org.repeid.models.jpa.entities.OrganizationEntity;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class OrganizationAdapter implements RealmModel, JpaModel<OrganizationEntity> {
+public class OrganizationAdapter implements OrganizationModel, JpaModel<OrganizationEntity> {
 
     @Override
     public OrganizationEntity getEntity() {

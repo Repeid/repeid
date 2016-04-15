@@ -2,10 +2,13 @@ package org.repeid.models;
 
 import java.util.Set;
 
+import org.keycloak.models.RepeidContext;
 import org.repeid.provider.Provider;
 
 public interface RepeidSession {
 
+    RepeidContext getContext();
+    
 	RepeidTransactionManager getTransaction();
 
 	<T extends Provider> T getProvider(Class<T> clazz);
@@ -22,14 +25,17 @@ public interface RepeidSession {
 
 	/**
 	 * Returns a managed provider instance. Will start a provider transaction.
-	 * This transaction is managed by the KeycloakSession transaction.
+	 * This transaction is managed by the RepeidSession transaction.
 	 *
 	 * @return
 	 * @throws IllegalStateException
 	 *             if transaction is not active
 	 */
-	RealmProvider realms();
-
+	OrganizationProvider organizations();
+	DocumentProvider documents();
+	NaturalPersonProvider naturalPersons();
+	LegalPersonProvider legalPersons();
+	
 	void close();
 
 }

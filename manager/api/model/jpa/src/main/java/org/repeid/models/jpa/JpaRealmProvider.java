@@ -17,35 +17,35 @@
 
 package org.repeid.models.jpa;
 
-import org.repeid.models.RealmModel;
-import org.repeid.models.RealmProvider;
+import org.repeid.models.OrganizationModel;
+import org.repeid.models.OrganizationProvider;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class JpaRealmProvider implements RealmProvider {
+public class JpaRealmProvider implements OrganizationProvider {
 
     @Override
-    public RealmModel createRealm(String name) {
+    public OrganizationModel createRealm(String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RealmModel createRealm(String id, String name) {
+    public OrganizationModel createRealm(String id, String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RealmModel getRealm(String id) {
+    public OrganizationModel getRealm(String id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RealmModel getRealmByName(String name) {
+    public OrganizationModel getRealmByName(String name) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -1,7 +1,7 @@
 package org.repeid.models.jpa;
 
 import org.keycloak.Config;
-import org.repeid.models.RealmProvider;
+import org.repeid.models.OrganizationProvider;
 import org.repeid.models.RealmProviderFactory;
 import org.repeid.models.RepeidSession;
 
@@ -23,7 +23,7 @@ public class JpaOrganizationProviderFactory implements RealmProviderFactory {
     }
 
     @Override
-    public RealmProvider create(RepeidSession session) {
+    public OrganizationProvider create(RepeidSession session) {
         /*
          * EntityManager em =
          * session.getProvider(JpaConnectionProvider.class).getEntityManager();

@@ -1,9 +1,9 @@
 package org.repeid.models.cache;
 
-import org.repeid.models.RealmProvider;
+import org.repeid.models.OrganizationProvider;
 
-public interface CacheRealmProvider extends RealmProvider {
-	RealmProvider getDelegate();
+public interface CacheOrganizationProvider extends OrganizationProvider {
+	OrganizationProvider getDelegate();
 
 	boolean isEnabled();
 

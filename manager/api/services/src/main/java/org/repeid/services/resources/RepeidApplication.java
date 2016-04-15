@@ -1,6 +1,7 @@
 package org.repeid.services.resources;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -14,6 +15,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
@@ -76,6 +78,20 @@ public class RepeidApplication extends Application {
         return factory;
     }
 
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    /**
+     * Get base URI of WAR distribution, not JAX-RS
+     *
+     * @param uriInfo
+     * @return
+     */
+    public URI getBaseUri(UriInfo uriInfo) {
+        return uriInfo.getBaseUriBuilder().replacePath(getContextPath()).build();
+    }
+    
     public static void loadConfig() {
         try {
             JsonNode node = null;

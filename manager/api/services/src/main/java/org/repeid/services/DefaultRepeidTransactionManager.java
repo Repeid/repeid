@@ -8,111 +8,152 @@ import org.repeid.models.RepeidTransactionManager;
 
 public class DefaultRepeidTransactionManager implements RepeidTransactionManager {
 
-	private List<RepeidTransaction> transactions = new LinkedList<RepeidTransaction>();
-	private List<RepeidTransaction> afterCompletion = new LinkedList<RepeidTransaction>();
-	private boolean active;
-	private boolean rollback;
+    public static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-	@Override
-	public void enlist(RepeidTransaction transaction) {
-		if (active && !transaction.isActive()) {
-			transaction.begin();
-		}
+    private List<RepeidTransaction> prepare = new LinkedList<RepeidTransaction>();
+    private List<RepeidTransaction> transactions = new LinkedList<RepeidTransaction>();
+    private List<RepeidTransaction> afterCompletion = new LinkedList<RepeidTransaction>();
+    private boolean active;
+    private boolean rollback;
 
-		transactions.add(transaction);
-	}
+    @Override
+    public void enlist(RepeidTransaction transaction) {
+        if (active && !transaction.isActive()) {
+            transaction.begin();
+        }
 
-	@Override
-	public void enlistAfterCompletion(RepeidTransaction transaction) {
-		if (active && !transaction.isActive()) {
-			transaction.begin();
-		}
+        transactions.add(transaction);
+    }
 
-		afterCompletion.add(transaction);
-	}
+    @Override
+    public void enlistAfterCompletion(RepeidTransaction transaction) {
+        if (active && !transaction.isActive()) {
+            transaction.begin();
+        }
 
-	@Override
-	public void begin() {
-		if (active) {
-			throw new IllegalStateException("Transaction already active");
-		}
+        afterCompletion.add(transaction);
+    }
 
-		for (RepeidTransaction tx : transactions) {
-			tx.begin();
-		}
+    @Override
+    public void enlistPrepare(RepeidTransaction transaction) {
+        if (active && !transaction.isActive()) {
+            transaction.begin();
+        }
 
-		active = true;
-	}
+        prepare.add(transaction);
+    }
 
-	@Override
-	public void commit() {
-		RuntimeException exception = null;
-		for (RepeidTransaction tx : transactions) {
-			try {
-				tx.commit();
-			} catch (RuntimeException e) {
-				exception = exception == null ? e : exception;
-			}
-		}
-		for (RepeidTransaction tx : afterCompletion) {
-			try {
-				tx.commit();
-			} catch (RuntimeException e) {
-				exception = exception == null ? e : exception;
-			}
-		}
-		active = false;
-		if (exception != null) {
-			throw exception;
-		}
-	}
+    @Override
+    public void begin() {
+        if (active) {
+            throw new IllegalStateException("Transaction already active");
+        }
 
-	@Override
-	public void rollback() {
-		RuntimeException exception = null;
-		for (RepeidTransaction tx : transactions) {
-			try {
-				tx.rollback();
-			} catch (RuntimeException e) {
-				exception = exception != null ? e : exception;
-			}
-		}
-		for (RepeidTransaction tx : afterCompletion) {
-			try {
-				tx.rollback();
-			} catch (RuntimeException e) {
-				exception = exception != null ? e : exception;
-			}
-		}
-		active = false;
-		if (exception != null) {
-			throw exception;
-		}
-	}
+        for (RepeidTransaction tx : transactions) {
+            tx.begin();
+        }
 
-	@Override
-	public void setRollbackOnly() {
-		rollback = true;
-	}
+        active = true;
+    }
 
-	@Override
-	public boolean getRollbackOnly() {
-		if (rollback) {
-			return true;
-		}
+    @Override
+    public void commit() {
+        RuntimeException exception = null;
+        for (RepeidTransaction tx : prepare) {
+            try {
+                tx.commit();
+            } catch (RuntimeException e) {
+                exception = exception == null ? e : exception;
+            }
+        }
+        if (exception != null) {
+            rollback(exception);
+            return;
+        }
+        for (RepeidTransaction tx : transactions) {
+            try {
+                tx.commit();
+            } catch (RuntimeException e) {
+                exception = exception == null ? e : exception;
+            }
+        }
 
-		for (RepeidTransaction tx : transactions) {
-			if (tx.getRollbackOnly()) {
-				return true;
-			}
-		}
+        // Don't commit "afterCompletion" if commit of some main transaction
+        // failed
+        if (exception == null) {
+            for (RepeidTransaction tx : afterCompletion) {
+                try {
+                    tx.commit();
+                } catch (RuntimeException e) {
+                    exception = exception == null ? e : exception;
+                }
+            }
+        } else {
+            for (RepeidTransaction tx : afterCompletion) {
+                try {
+                    tx.rollback();
+                } catch (RuntimeException e) {
+                    logger.exceptionDuringRollback(e);
+                }
+            }
+        }
 
-		return false;
-	}
+        active = false;
+        if (exception != null) {
+            throw exception;
+        }
+    }
 
-	@Override
-	public boolean isActive() {
-		return active;
-	}
+    @Override
+    public void rollback() {
+        RuntimeException exception = null;
+        rollback(exception);
+    }
+
+    protected void rollback(RuntimeException exception) {
+        for (RepeidTransaction tx : transactions) {
+            try {
+                tx.rollback();
+            } catch (RuntimeException e) {
+                exception = exception != null ? e : exception;
+            }
+        }
+        for (RepeidTransaction tx : afterCompletion) {
+            try {
+                tx.rollback();
+            } catch (RuntimeException e) {
+                exception = exception != null ? e : exception;
+            }
+        }
+        active = false;
+        if (exception != null) {
+            throw exception;
+        }
+    }
+
+    @Override
+    public void setRollbackOnly() {
+        rollback = true;
+    }
+
+    @Override
+    public boolean getRollbackOnly() {
+        if (rollback) {
+            return true;
+        }
+
+        for (RepeidTransaction tx : transactions) {
+            if (tx.getRollbackOnly()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
 
 }

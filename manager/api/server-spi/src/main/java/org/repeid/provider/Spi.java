@@ -5,8 +5,12 @@ package org.repeid.provider;
  */
 public interface Spi {
 
-    public String getName();
-    public Class<? extends Provider> getProviderClass();
-    public Class<? extends ProviderFactory> getProviderFactoryClass();
+    boolean isInternal();
+
+    String getName();
+
+    Class<? extends Provider> getProviderClass();
+
+    Class<? extends ProviderFactory> getProviderFactoryClass();
 
 }

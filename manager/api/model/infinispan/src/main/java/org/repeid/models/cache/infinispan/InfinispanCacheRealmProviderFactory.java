@@ -22,17 +22,17 @@ import org.jboss.logging.Logger;
 import org.keycloak.Config;
 import org.keycloak.Config.Scope;
 import org.repeid.models.RepeidSession;
-import org.repeid.models.cache.CacheRealmProvider;
-import org.repeid.models.cache.CacheRealmProviderFactory;
+import org.repeid.models.cache.CacheOrganizationProvider;
+import org.repeid.models.cache.CacheOrganizationProviderFactory;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class InfinispanCacheRealmProviderFactory implements CacheRealmProviderFactory {
+public class InfinispanCacheRealmProviderFactory implements CacheOrganizationProviderFactory {
 
     @Override
-    public CacheRealmProvider create(RepeidSession session) {
+    public CacheOrganizationProvider create(RepeidSession session) {
         // TODO Auto-generated method stub
         return null;
     }

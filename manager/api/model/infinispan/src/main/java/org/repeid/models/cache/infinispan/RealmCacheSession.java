@@ -17,9 +17,9 @@
 
 package org.repeid.models.cache.infinispan;
 
-import org.repeid.models.RealmModel;
-import org.repeid.models.RealmProvider;
-import org.repeid.models.cache.CacheRealmProvider;
+import org.repeid.models.OrganizationModel;
+import org.repeid.models.OrganizationProvider;
+import org.repeid.models.cache.CacheOrganizationProvider;
 
 
 /**
@@ -80,28 +80,28 @@ import org.repeid.models.cache.CacheRealmProvider;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class RealmCacheSession implements CacheRealmProvider {
+public class RealmCacheSession implements CacheOrganizationProvider {
 
     @Override
-    public RealmModel createRealm(String name) {
+    public OrganizationModel createRealm(String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RealmModel createRealm(String id, String name) {
+    public OrganizationModel createRealm(String id, String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RealmModel getRealm(String id) {
+    public OrganizationModel getRealm(String id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RealmModel getRealmByName(String name) {
+    public OrganizationModel getRealmByName(String name) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -119,7 +119,7 @@ public class RealmCacheSession implements CacheRealmProvider {
     }
 
     @Override
-    public RealmProvider getDelegate() {
+    public OrganizationProvider getDelegate() {
         // TODO Auto-generated method stub
         return null;
     }

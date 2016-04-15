@@ -16,7 +16,7 @@ public class RealmSpi implements Spi {
 
     @Override
     public Class<? extends Provider> getProviderClass() {
-        return RealmProvider.class;
+        return OrganizationProvider.class;
     }
 
     @Override

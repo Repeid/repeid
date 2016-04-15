@@ -7,11 +7,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.repeid.models.RealmProvider;
+import org.keycloak.models.RepeidContext;
+import org.repeid.models.DocumentProvider;
+import org.repeid.models.LegalPersonProvider;
+import org.repeid.models.NaturalPersonProvider;
+import org.repeid.models.OrganizationProvider;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.RepeidTransactionManager;
-import org.repeid.models.cache.CacheRealmProvider;
+import org.repeid.models.cache.CacheDocumentProvider;
+import org.repeid.models.cache.CacheLegalPersonProvider;
+import org.repeid.models.cache.CacheNaturalPersonProvider;
+import org.repeid.models.cache.CacheOrganizationProvider;
 import org.repeid.provider.Provider;
 import org.repeid.provider.ProviderFactory;
 
@@ -22,13 +29,24 @@ public class DefaultRepeidSession implements RepeidSession {
     private final List<Provider> closable = new LinkedList<Provider>();
     private final DefaultRepeidTransactionManager transactionManager;
 
-    private RealmProvider realmProvider;
+    private OrganizationProvider organizationProvider;
+    private DocumentProvider documentProvider;
+    private NaturalPersonProvider naturalPersonProvider;
+    private LegalPersonProvider legalPersonProvider;
 
+    private RepeidContext context;
+    
     public DefaultRepeidSession(DefaultRepeidSessionFactory factory) {
         this.factory = factory;
         this.transactionManager = new DefaultRepeidTransactionManager();
+        context = new DefaultRepeidContext(this);
     }
 
+    @Override
+    public RepeidContext getContext() {
+        return context;
+    }
+    
     /**
      * @return RepeidTransactionManager return transaction manager associate to
      *         the session.
@@ -118,21 +136,73 @@ public class DefaultRepeidSession implements RepeidSession {
     }
 
     /**
-     * @return RealmProvider
+     * @return OrganizationProvider
      */
     @Override
-    public RealmProvider realms() {
-        if (realmProvider == null) {
-            realmProvider = getRealmProvider();
+    public OrganizationProvider organizations() {
+        if (organizationProvider == null) {
+            organizationProvider = getOrganizationProvider();
         }
-        return realmProvider;
+        return organizationProvider;
     }
 
-    private RealmProvider getRealmProvider() {
-        if (factory.getDefaultProvider(CacheRealmProvider.class) != null) {
-            return getProvider(CacheRealmProvider.class);
+    private OrganizationProvider getOrganizationProvider() {
+        CacheOrganizationProvider cache = getProvider(CacheOrganizationProvider.class);
+        if (cache != null) {
+            return cache;
         } else {
-            return getProvider(RealmProvider.class);
+            return getProvider(OrganizationProvider.class);
+        }
+    }
+
+    @Override
+    public DocumentProvider documents() {
+        if (documentProvider == null) {
+            documentProvider = getDocumentProvider();
+        }
+        return documentProvider;
+    }
+
+    private DocumentProvider getDocumentProvider() {
+        CacheDocumentProvider cache = getProvider(CacheDocumentProvider.class);
+        if (cache != null) {
+            return cache;
+        } else {
+            return getProvider(DocumentProvider.class);
+        }
+    }
+
+    @Override
+    public NaturalPersonProvider naturalPersons() {
+        if (naturalPersonProvider == null) {
+            naturalPersonProvider = getNaturalPersonProvider();
+        }
+        return naturalPersonProvider;
+    }
+
+    private NaturalPersonProvider getNaturalPersonProvider() {
+        CacheNaturalPersonProvider cache = getProvider(CacheNaturalPersonProvider.class);
+        if (cache != null) {
+            return cache;
+        } else {
+            return getProvider(NaturalPersonProvider.class);
+        }
+    }
+
+    @Override
+    public LegalPersonProvider legalPersons() {
+        if (legalPersonProvider == null) {
+            legalPersonProvider = getLegalPersonProvider();
+        }
+        return legalPersonProvider;
+    }
+
+    private LegalPersonProvider getLegalPersonProvider() {
+        CacheLegalPersonProvider cache = getProvider(CacheLegalPersonProvider.class);
+        if (cache != null) {
+            return cache;
+        } else {
+            return getProvider(LegalPersonProvider.class);
         }
     }
 
