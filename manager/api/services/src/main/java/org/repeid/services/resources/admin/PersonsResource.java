@@ -27,12 +27,12 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/personas")
 @Consumes(MediaType.APPLICATION_JSON)
-public interface PersonasResource {
+public interface PersonsResource {
 
 	@Path("/naturales")
-	public PersonasNaturalesResource getPersonasNaturalesResource();
+	public NaturalPersonsResource getPersonasNaturalesResource();
 
 	@Path("/juridicas")
-	public PersonasJuridicasResource getPersonasJuridicasResource();
+	public LegalPersonsResource getPersonasJuridicasResource();
 
 }

@@ -20,7 +20,7 @@ import org.repeid.theme.FreeMarkerException;
 public interface AdminConsole {
 
     /**
-     * Adapter configuration for the admin console for this realm
+     * Adapter configuration for the admin console for this organization
      *
      * @return
      */
@@ -53,7 +53,7 @@ public interface AdminConsole {
     public Response logout();
 
     /**
-     * Main page of this realm's admin console
+     * Main page of this organization's admin console
      *
      * @return
      * @throws URISyntaxException

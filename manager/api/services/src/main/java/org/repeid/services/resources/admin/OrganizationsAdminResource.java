@@ -17,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.keycloak.representations.idm.RealmRepresentation;
 
-public interface RealmsAdminResource {
+public interface OrganizationsAdminResource {
 
     @GET
     @NoCache
@@ -48,7 +48,7 @@ public interface RealmsAdminResource {
      * @return
      */
     @Path("{realm}")
-    public RealmAdminResource getRealmAdmin(@Context final HttpHeaders headers,
+    public OrganizationAdminResource getRealmAdmin(@Context final HttpHeaders headers,
             @PathParam("realm") final String name);
 
 }

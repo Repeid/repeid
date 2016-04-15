@@ -3,9 +3,9 @@ package org.repeid.services.resources.admin.impl;
 import javax.ws.rs.core.Response;
 
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
-import org.repeid.services.resources.admin.TipoDocumentoResource;
+import org.repeid.services.resources.admin.DocumentResource;
 
-public class TipoDocumentoResourceImpl implements TipoDocumentoResource {
+public class DocumentResourceImpl implements DocumentResource {
 
 	@Override
 	public TipoDocumentoRepresentation toRepresentation() {

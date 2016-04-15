@@ -21,7 +21,7 @@ import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
  * 
  * @author carlosthe19916@gmail.com
  */
-public interface PersonaNaturalResource {
+public interface NaturalPersonResource {
 
 	/**
 	 * Use este endpoint para obtener informacion hacerca de una PersonaNatural

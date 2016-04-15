@@ -20,7 +20,7 @@ public interface CommonsResource {
 	 * @return Los tipos de persona soportados por repeid.
 	 */
 	@GET
-	@Path("tiposPersona")
+	@Path("personTypes")
 	public List<String> getAllTipoPersonas();
 
 	/**
@@ -32,7 +32,7 @@ public interface CommonsResource {
 	 * @return Los estado civiles soportados por repeid.
 	 */
 	@GET
-	@Path("estadosCiviles")
+	@Path("maritalStatus")
 	public List<String> getAllEstadosCiviles();
 
 	/**
@@ -44,7 +44,7 @@ public interface CommonsResource {
 	 * @return Los sexos soportados por repeid.
 	 */
 	@GET
-	@Path("sexos")
+	@Path("genders")
 	public List<String> getAllSexos();
 
 	/**
@@ -56,7 +56,7 @@ public interface CommonsResource {
 	 * @return Los tipos de empresa soportados por repeid.
 	 */
 	@GET
-	@Path("tiposEmpresa")
+	@Path("bussinessTypes")
 	public List<String> getAllTiposEmpresa();
 
 }

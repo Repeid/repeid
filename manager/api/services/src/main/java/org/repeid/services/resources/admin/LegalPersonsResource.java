@@ -30,7 +30,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
+import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
 
@@ -39,52 +39,52 @@ import org.repeid.manager.api.beans.representations.search.SearchResultsRepresen
  */
 
 @Consumes(MediaType.APPLICATION_JSON)
-public interface PersonasNaturalesResource {
+public interface LegalPersonsResource {
 
-	public static final String PERSONA_NATURAL_ID = "personaNaturalId";
+	public static final String PERSONA_JURIDICA_ID = "personaJuridicaId";
 
 	/**
-	 * @param personaNaturalId
-	 *            El ID de la PersonaNatural.
+	 * @param personaJuridicaId
+	 *            El ID de la PersonaJuridica.
 	 */
-	@Path("{" + PERSONA_NATURAL_ID + "}")
-	public PersonaNaturalResource personaNatural(@PathParam(PERSONA_NATURAL_ID) String personaNaturalId);
+	@Path("{" + PERSONA_JURIDICA_ID + "}")
+	public LegalPersonResource personaJuridica(@PathParam(PERSONA_JURIDICA_ID) String personaJuridicaId);
 
 	/**
-	 * Use este endpoint para crear una nueva personaNatural. Una PersonaNatural
-	 * representa una persona sin razon social.
+	 * Use este endpoint para crear una nueva personaJuridica. Una
+	 * PersonaJuridica representa una persona con razon social.
 	 * 
-	 * @summary Create PersonaNatural
+	 * @summary Create PersonaJuridica
 	 * @servicetag admin
 	 * @param rep
-	 *            La nueva PersonaNatural.
-	 * @statuscode 200 Si la personaNatural fue creada satisfactoriamente.
-	 * @return La informacion completa de la personaNatural creada.
-	 * @throws PersonaNaturalAlreadyExistsException
-	 *             cuando la personaNatural ya existe.
+	 *            La nueva PersonaJuridica.
+	 * @statuscode 200 Si la personaJuridica fue creada satisfactoriamente.
+	 * @return La informacion completa de la personaJuridica creada.
+	 * @throws PersonaJuridicaAlreadyExistsException
+	 *             cuando la personaJuridica ya existe.
 	 * @throws NotAuthorizedException
 	 *             cuando no esta autorizado para invocar este metodo.
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(PersonaNaturalRepresentation rep);
+	public Response create(PersonaJuridicaRepresentation rep);
 
 	/**
-	 * Este endpoint provee una forma de buscar personaNaturales. Los criterios
+	 * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
 	 * de busqueda estan definidos por los parametros enviados.
 	 * 
-	 * @summary Search for PersonaNatural
+	 * @summary Search for PersonaJuridica
 	 * 
 	 * @param tipoDocumento
-	 *            TipoDocumento de personaNatural.
+	 *            TipoDocumento de personaJuridica.
 	 * @param numeroDocumento
-	 *            NumeroDocumento de personaNatural.
-	 * @param apellidoPaterno
-	 *            ApellidoPaterno de personaNatural.
-	 * @param apellidoMaterno
-	 *            ApellidoMaterno de personaNatural.
+	 *            NumeroDocumento de personaJuridica.
+	 * @param razonSocial
+	 *            RazonSocial de personaJuridica.
+	 * @param nombreComercial
+	 *            NombreComercial de personaJuridica.
 	 * @param nombres
-	 *            Nombres de personaNatural.
+	 *            Nombres de personaJuridica.
 	 * @param filterText
 	 *            FilterText representa el patron de busqueda.
 	 * @param first
@@ -94,28 +94,26 @@ public interface PersonasNaturalesResource {
 	 *            busqueda.
 	 * 
 	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
-	 * @return Los resultados de la busqueda (una pagina de personaNaturales).
+	 * @return Los resultados de la busqueda (una pagina de personaJuridicas).
 	 * @throws NotAuthorizedException
 	 *             cuando no esta autorizado para invocar este metodo.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<PersonaNaturalRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
-													 @QueryParam("numeroDocumento") String numeroDocumento,
-													 @QueryParam("apellidoPaterno") String apellidoPaterno,
-													 @QueryParam("apellidoMaterno") String apellidoMaterno, @QueryParam("nombres") String nombres,
-													 @QueryParam("filterText") String filterText, @QueryParam("first") Integer firstResult,
-													 @QueryParam("max") Integer maxResults);
+	public List<PersonaJuridicaRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
+													  @QueryParam("numeroDocumento") String numeroDocumento, @QueryParam("razonSocial") String razonSocial,
+													  @QueryParam("nombreComercial") String nombreComercial, @QueryParam("filterText") String filterText,
+													  @QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
 
 	/**
-	 * Este endpoint provee una forma de buscar personaNaturales. Los criterios
+	 * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
 	 * de busqueda estan definidos por los parametros enviados.
 	 * 
-	 * @summary Search for PersonaNatural
+	 * @summary Search for PersonaJuridica
 	 * @param criteria
 	 *            Criterio de busqueda.
 	 * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
-	 * @return Los resultados de la busqueda (una pagina de personaNaturales).
+	 * @return Los resultados de la busqueda (una pagina de personaJuridicas).
 	 * @throws InvalidSearchCriteriaException
 	 *             cuando el criterio de busqueda no es valido.
 	 * @throws NotAuthorizedException
@@ -124,6 +122,6 @@ public interface PersonasNaturalesResource {
 	@POST
 	@Path("search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public SearchResultsRepresentation<PersonaNaturalRepresentation> search(SearchCriteriaRepresentation criteria);
+	public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

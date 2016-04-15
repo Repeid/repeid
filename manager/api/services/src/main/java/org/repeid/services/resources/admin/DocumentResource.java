@@ -37,7 +37,7 @@ import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
  * 
  * @author carlosthe19916@gmail.com
  */
-public interface TipoDocumentoResource {
+public interface DocumentResource {
 
 	/**
 	 * Use este endpoint para obtener informacion hacerca de un TipoDocumento

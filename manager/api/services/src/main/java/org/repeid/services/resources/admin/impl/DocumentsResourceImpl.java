@@ -7,13 +7,13 @@ import javax.ws.rs.core.Response;
 import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
 import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
-import org.repeid.services.resources.admin.TipoDocumentoResource;
-import org.repeid.services.resources.admin.TiposDocumentoResource;
+import org.repeid.services.resources.admin.DocumentResource;
+import org.repeid.services.resources.admin.DocumentsResource;
 
-public class TiposDocumentoResourceImpl implements TiposDocumentoResource {
+public class DocumentsResourceImpl implements DocumentsResource {
 
 	@Override
-	public TipoDocumentoResource tipoDocumento(String tipoDocumentoId) {
+	public DocumentResource tipoDocumento(String tipoDocumentoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

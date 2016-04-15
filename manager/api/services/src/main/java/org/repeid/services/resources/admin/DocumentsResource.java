@@ -39,7 +39,7 @@ import org.repeid.manager.api.beans.representations.search.SearchResultsRepresen
  */
 
 @Consumes(MediaType.APPLICATION_JSON)
-public interface TiposDocumentoResource {
+public interface DocumentsResource {
 
 	public static final String TIPO_DOCUMENTO_ID = "tipoDocumentoId";
 
@@ -48,7 +48,7 @@ public interface TiposDocumentoResource {
 	 *            El ID del TipoDocumento.
 	 */
 	@Path("{" + TIPO_DOCUMENTO_ID + "}")
-	public TipoDocumentoResource tipoDocumento(@PathParam(TIPO_DOCUMENTO_ID) String tipoDocumentoId);
+	public DocumentResource tipoDocumento(@PathParam(TIPO_DOCUMENTO_ID) String tipoDocumentoId);
 
 	/**
 	 * Use este endpoint para crear un nuevo tipoDocumento. Un TipoDocumento

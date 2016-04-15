@@ -16,7 +16,7 @@ import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentatio
  * 
  * @author carlosthe19916@gmail.com
  */
-public interface PersonaJuridicaResource {
+public interface LegalPersonResource {
 
 	/**
 	 * Use este endpoint para obtener informacion hacerca de una PersonaJuridica

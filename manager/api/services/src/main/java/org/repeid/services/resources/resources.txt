@@ -20,7 +20,7 @@
 /admin/{organization}/console/messages.json
 /admin/organizations
 /admin/organizations/{organization}
-/admin/organizations/{organization}/tiposDocumentos
+/admin/organizations/{organization}/documents
 /admin/organizations/{organization}/persons
 /admin/organizations/{organization}/persons/naturals
 /admin/organizations/{organization}/persons/legals

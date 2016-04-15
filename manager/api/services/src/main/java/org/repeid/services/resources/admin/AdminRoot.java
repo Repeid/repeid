@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 public interface AdminRoot {
 
     /**
-     * Convenience path to master realm admin console
+     * Convenience path to master organization admin console
      *
      * @exclude
      * @return
@@ -20,7 +20,7 @@ public interface AdminRoot {
     public Response masterRealmAdminConsoleRedirect();
 
     /**
-     * Convenience path to master realm admin console
+     * Convenience path to master organization admin console
      *
      * @exclude
      * @return
@@ -31,24 +31,24 @@ public interface AdminRoot {
     public Response masterRealmAdminConsoleRedirectHtml();
 
     /**
-     * path to realm admin console ui
+     * path to organization admin console ui
      *
      * @exclude
      * @param name
-     *            Realm name (not id!)
+     *            Organizacion name (not id!)
      * @return
      */
-    @Path("{realm}/console")
-    public AdminConsole getAdminConsole(final @PathParam("realm") String name);
+    @Path("{organization}/console")
+    public AdminConsole getAdminConsole(final @PathParam("organization") String name);
 
     /**
-     * Base Path to realm admin REST interface
+     * Base Path to organization admin REST interface
      *
      * @param headers
      * @return
      */
-    @Path("realms")
-    public RealmsAdminResource getRealmsAdmin(@Context final HttpHeaders headers);
+    @Path("organizations")
+    public OrganizationsAdminResource getRealmsAdmin(@Context final HttpHeaders headers);
 
     /**
      * Base Path to utils admin REST interface
@@ -56,7 +56,7 @@ public interface AdminRoot {
      * @param headers
      * @return
      */
-    @Path("utils")
+    @Path("commons")
     public CommonsResource getUtilsResource(@Context final HttpHeaders headers);
 
     /**
