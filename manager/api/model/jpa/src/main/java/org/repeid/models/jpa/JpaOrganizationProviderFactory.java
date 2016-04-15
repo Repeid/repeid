@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class JpaRealmProviderFactory implements RealmProviderFactory {
+public class JpaOrganizationProviderFactory implements RealmProviderFactory {
 
     @Override
     public void init(Config.Scope config) {

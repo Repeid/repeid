@@ -15,14 +15,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.keycloak.representations.idm.RealmRepresentation;
+import org.keycloak.representations.idm.OrganizationRepresentation;
 
 public interface OrganizationsAdminResource {
 
     @GET
     @NoCache
     @Produces(MediaType.APPLICATION_JSON)
-    public List<RealmRepresentation> getRealms();
+    public List<OrganizationRepresentation> getRealms();
 
     /**
      * Import a realm
@@ -37,7 +37,7 @@ public interface OrganizationsAdminResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response importRealm(@Context final UriInfo uriInfo, final RealmRepresentation rep);
+    public Response importRealm(@Context final UriInfo uriInfo, final OrganizationRepresentation rep);
 
     /**
      * Base path for the admin REST API for one particular realm.
