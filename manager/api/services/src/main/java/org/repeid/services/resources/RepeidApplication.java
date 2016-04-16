@@ -25,13 +25,19 @@ import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.keycloak.Config;
 import org.keycloak.common.util.SystemEnvProperties;
+import org.keycloak.models.dblock.DBLockProvider;
+import org.keycloak.models.utils.PostMigrationEvent;
+import org.keycloak.services.resources.WelcomeResource;
 import org.keycloak.util.JsonSerialization;
+import org.repeid.exportimport.ExportImportManager;
 import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.filters.RepeidTransactionCommitter;
+import org.repeid.services.managers.ApplianceBootstrap;
+import org.repeid.services.managers.DBLockManager;
 import org.repeid.services.resources.admin.impl.AdminRootImpl;
 import org.repeid.services.resources.impl.JsResourceImpl;
 import org.repeid.services.resources.impl.RobotsResourceImpl;
@@ -60,8 +66,7 @@ public class RepeidApplication extends Application {
         this.sessionFactory = createSessionFactory();
 
         dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
-        ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for
-                                                                            // injection
+        ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for injection
         context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
         singletons.add(new ServerVersionResourceImpl());
@@ -73,8 +78,7 @@ public class RepeidApplication extends Application {
 
         classes.add(RepeidTransactionCommitter.class);
 
-        singletons.add(new ObjectMapperResolver(
-                Boolean.parseBoolean(System.getProperty("repeid.jsonPrettyPrint", "false"))));
+        singletons.add(new ObjectMapperResolver(Boolean.parseBoolean(System.getProperty("repeid.jsonPrettyPrint", "false"))));
 
         ExportImportManager exportImportManager;
 
@@ -85,7 +89,7 @@ public class RepeidApplication extends Application {
         try {
             migrateModel();
 
-            KeycloakSession session = sessionFactory.create();
+            RepeidSession session = sessionFactory.create();
             try {
                 session.getTransaction().begin();
 
@@ -136,27 +140,11 @@ public class RepeidApplication extends Application {
             session.close();
         }
 
-        // sessionFactory.publish(new PostMigrationEvent());
+        sessionFactory.publish(new PostMigrationEvent());
 
         singletons.add(new WelcomeResource(bootstrapAdminUser));
 
         setupScheduledTasks(sessionFactory);
-    }
-
-    @Override
-    public Set<Class<?>> getClasses() {
-        return classes;
-    }
-
-    @Override
-    public Set<Object> getSingletons() {
-        return singletons;
-    }
-
-    public static RepeidSessionFactory createSessionFactory() {
-        DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
-        factory.init();
-        return factory;
     }
 
     protected void migrateModel() {
@@ -222,13 +210,13 @@ public class RepeidApplication extends Application {
         }
     }
 
-    public static KeycloakSessionFactory createSessionFactory() {
-        DefaultKeycloakSessionFactory factory = new DefaultKeycloakSessionFactory();
+    public static RepeidSessionFactory createSessionFactory() {
+        DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
         factory.init();
         return factory;
     }
 
-    public static void setupScheduledTasks(final KeycloakSessionFactory sessionFactory) {
+    public static void setupScheduledTasks(final RepeidSessionFactory sessionFactory) {
         long interval = Config.scope("scheduled").getLong("interval", 60L) * 1000;
 
         KeycloakSession session = sessionFactory.create();
