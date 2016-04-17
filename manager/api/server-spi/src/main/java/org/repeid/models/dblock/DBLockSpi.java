@@ -15,41 +15,34 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
+package org.repeid.models.dblock;
 
 import org.repeid.provider.Provider;
 import org.repeid.provider.ProviderFactory;
 import org.repeid.provider.Spi;
 
 /**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  */
-public class JpaConnectionSpi implements Spi {
+public class DBLockSpi implements Spi {
 
-    /*@Override
+    @Override
     public boolean isInternal() {
         return true;
-    }*/
+    }
 
     @Override
     public String getName() {
-        return "connectionsJpa";
+        return "dblock";
     }
 
     @Override
     public Class<? extends Provider> getProviderClass() {
-        return JpaConnectionProvider.class;
+        return DBLockProvider.class;
     }
 
     @Override
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return JpaConnectionProviderFactory.class;
+        return DBLockProviderFactory.class;
     }
-
-    @Override
-    public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 }

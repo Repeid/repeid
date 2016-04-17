@@ -10,13 +10,13 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.keycloak.Config;
-import org.keycloak.provider.ProviderManager;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.provider.Provider;
 import org.repeid.provider.ProviderEvent;
 import org.repeid.provider.ProviderEventListener;
 import org.repeid.provider.ProviderFactory;
+import org.repeid.provider.ProviderManager;
 import org.repeid.provider.Spi;
 
 public class DefaultRepeidSessionFactory implements RepeidSessionFactory {

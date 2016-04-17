@@ -16,7 +16,7 @@ import org.jboss.logging.annotations.Cause;
 import org.jboss.logging.annotations.LogMessage;
 import org.jboss.logging.annotations.Message;
 import org.jboss.logging.annotations.MessageLogger;
-import org.keycloak.events.EventListenerProvider;
+import org.repeid.events.EventListenerProvider;
 import org.repeid.models.ModelDuplicateException;
 
 @MessageLogger(projectCode="RP-SERVICES", length=4)

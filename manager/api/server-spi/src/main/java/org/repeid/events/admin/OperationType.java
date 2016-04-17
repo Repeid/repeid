@@ -15,41 +15,16 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
-
-import org.repeid.provider.Provider;
-import org.repeid.provider.ProviderFactory;
-import org.repeid.provider.Spi;
+package org.repeid.events.admin;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class JpaConnectionSpi implements Spi {
+public enum OperationType {
 
-    /*@Override
-    public boolean isInternal() {
-        return true;
-    }*/
-
-    @Override
-    public String getName() {
-        return "connectionsJpa";
-    }
-
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return JpaConnectionProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return JpaConnectionProviderFactory.class;
-    }
-
-    @Override
-    public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    CREATE,
+    UPDATE,
+    DELETE,
+    ACTION;
 
 }

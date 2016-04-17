@@ -17,12 +17,12 @@
 package org.repeid.services.managers;
 
 import org.keycloak.Config;
-import org.keycloak.common.Version;
-import org.keycloak.common.enums.SslRequired;
 import org.keycloak.models.*;
-import org.keycloak.models.utils.KeycloakModelUtils;
-import org.keycloak.representations.idm.CredentialRepresentation;
+import org.repeid.common.Version;
+import org.repeid.common.enums.SslRequired;
 import org.repeid.models.RepeidSession;
+import org.repeid.models.utils.KeycloakModelUtils;
+import org.repeid.representations.idm.CredentialRepresentation;
 import org.repeid.services.ServicesLogger;
 
 /**

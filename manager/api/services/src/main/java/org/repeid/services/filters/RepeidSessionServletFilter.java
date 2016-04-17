@@ -18,7 +18,7 @@
 package org.repeid.services.filters;
 
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.keycloak.common.ClientConnection;
+import org.repeid.common.ClientConnection;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.RepeidTransaction;

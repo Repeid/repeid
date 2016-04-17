@@ -6,7 +6,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.keycloak.representations.idm.OrganizationRepresentation;
+import org.repeid.representations.idm.OrganizationRepresentation;
 import org.repeid.services.resources.admin.OrganizationAdminResource;
 import org.repeid.services.resources.admin.OrganizationsAdminResource;
 

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.keycloak.models.RepeidContext;
 import org.repeid.models.DocumentProvider;
 import org.repeid.models.LegalPersonProvider;
 import org.repeid.models.NaturalPersonProvider;
 import org.repeid.models.OrganizationProvider;
+import org.repeid.models.RepeidContext;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.RepeidTransactionManager;

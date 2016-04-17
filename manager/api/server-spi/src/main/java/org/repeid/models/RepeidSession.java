@@ -2,7 +2,6 @@ package org.repeid.models;
 
 import java.util.Set;
 
-import org.keycloak.models.RepeidContext;
 import org.repeid.provider.Provider;
 
 public interface RepeidSession {

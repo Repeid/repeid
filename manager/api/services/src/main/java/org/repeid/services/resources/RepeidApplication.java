@@ -1,18 +1,11 @@
 package org.repeid.services.resources;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -24,15 +17,13 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.keycloak.Config;
-import org.keycloak.common.util.SystemEnvProperties;
-import org.keycloak.models.dblock.DBLockProvider;
-import org.keycloak.models.utils.PostMigrationEvent;
 import org.keycloak.services.resources.WelcomeResource;
-import org.keycloak.util.JsonSerialization;
+import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.exportimport.ExportImportManager;
-import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
+import org.repeid.models.dblock.DBLockProvider;
+import org.repeid.models.utils.PostMigrationEvent;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.filters.RepeidTransactionCommitter;
@@ -45,6 +36,7 @@ import org.repeid.services.resources.impl.ServerVersionResourceImpl;
 import org.repeid.services.resources.impl.ThemeResourceImpl;
 import org.repeid.services.util.JsonConfigProvider;
 import org.repeid.services.util.ObjectMapperResolver;
+import org.repeid.util.JsonSerialization;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -148,7 +140,7 @@ public class RepeidApplication extends Application {
     }
 
     protected void migrateModel() {
-        KeycloakSession session = sessionFactory.create();
+        /*RepeidSession session = sessionFactory.create();
         try {
             session.getTransaction().begin();
             MigrationModelManager.migrate(session);
@@ -159,7 +151,7 @@ public class RepeidApplication extends Application {
             throw e;
         } finally {
             session.close();
-        }
+        }*/
     }
 
     public String getContextPath() {
@@ -217,9 +209,9 @@ public class RepeidApplication extends Application {
     }
 
     public static void setupScheduledTasks(final RepeidSessionFactory sessionFactory) {
-        long interval = Config.scope("scheduled").getLong("interval", 60L) * 1000;
+        /*long interval = Config.scope("scheduled").getLong("interval", 60L) * 1000;
 
-        KeycloakSession session = sessionFactory.create();
+        RepeidSession session = sessionFactory.create();
         try {
             TimerProvider timer = session.getProvider(TimerProvider.class);
             timer.schedule(
@@ -230,10 +222,10 @@ public class RepeidApplication extends Application {
             new UsersSyncManager().bootstrapPeriodic(sessionFactory, timer);
         } finally {
             session.close();
-        }
+        }*/
     }
 
-    public KeycloakSessionFactory getSessionFactory() {
+    public RepeidSessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
@@ -248,7 +240,7 @@ public class RepeidApplication extends Application {
     }
 
     public void importRealms() {
-        String files = System.getProperty("keycloak.import");
+        /*String files = System.getProperty("keycloak.import");
         if (files != null) {
             StringTokenizer tokenizer = new StringTokenizer(files, ",");
             while (tokenizer.hasMoreTokens()) {
@@ -261,11 +253,11 @@ public class RepeidApplication extends Application {
                 }
                 importRealm(rep, "file " + file);
             }
-        }
+        }*/
     }
 
-    public void importRealm(RealmRepresentation rep, String from) {
-        KeycloakSession session = sessionFactory.create();
+    /*public void importRealm(RealmRepresentation rep, String from) {
+        RepeidSession session = sessionFactory.create();
         boolean exists = false;
         try {
             session.getTransaction().begin();
@@ -297,10 +289,10 @@ public class RepeidApplication extends Application {
         } finally {
             session.close();
         }
-    }
+    }*/
 
     public void importAddUser() {
-        String configDir = System.getProperty("jboss.server.config.dir");
+        /*String configDir = System.getProperty("jboss.server.config.dir");
         if (configDir != null) {
             File addUserFile = new File(configDir + File.separator + "keycloak-add-user.json");
             if (addUserFile.isFile()) {
@@ -350,7 +342,7 @@ public class RepeidApplication extends Application {
                     logger.failedToDeleteFile(addUserFile.getAbsolutePath());
                 }
             }
-        }
+        }*/
     }
 
     private static <T> T loadJson(InputStream is, Class<T> type) {

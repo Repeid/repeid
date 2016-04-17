@@ -24,4 +24,10 @@ public class CacheOrganizationProviderSpi implements Spi {
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
         return CacheOrganizationProviderFactory.class;
     }
+
+    @Override
+    public boolean isInternal() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

@@ -15,41 +15,51 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
-
-import org.repeid.provider.Provider;
-import org.repeid.provider.ProviderFactory;
-import org.repeid.provider.Spi;
+package org.repeid.events.admin;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class JpaConnectionSpi implements Spi {
+public class AuthDetails {
 
-    /*@Override
-    public boolean isInternal() {
-        return true;
-    }*/
+    private String realmId;
 
-    @Override
-    public String getName() {
-        return "connectionsJpa";
+    private String clientId;
+
+    private String userId;
+
+    private String ipAddress;
+
+    public String getRealmId() {
+        return realmId;
     }
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return JpaConnectionProvider.class;
+    public void setRealmId(String realmId) {
+        this.realmId = realmId;
     }
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return JpaConnectionProviderFactory.class;
+    public String getClientId() {
+        return clientId;
     }
 
-    @Override
-    public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
 }

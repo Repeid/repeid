@@ -20,7 +20,6 @@ package org.keycloak.connections.jpa;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,7 +32,7 @@ import javax.sql.DataSource;
 
 import org.hibernate.ejb.AvailableSettings;
 import org.jboss.logging.Logger;
-import org.keycloak.Config;
+import org.repeid.Config;
 import org.repeid.connections.jpa.util.JpaUtils;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
@@ -294,6 +293,12 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
     @Override
     public String getSchema() {
         return config.get("schema");
+    }
+
+    @Override
+    public void postInit(RepeidSessionFactory factory) {
+        // TODO Auto-generated method stub
+        
     }
     
     /*@Override

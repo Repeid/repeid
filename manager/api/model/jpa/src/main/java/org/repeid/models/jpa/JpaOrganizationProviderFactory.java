@@ -1,11 +1,10 @@
 package org.repeid.models.jpa;
 
-import org.keycloak.Config;
+import org.repeid.Config;
 import org.repeid.models.OrganizationProvider;
 import org.repeid.models.RealmProviderFactory;
 import org.repeid.models.RepeidSession;
-
-import javax.persistence.EntityManager;
+import org.repeid.models.RepeidSessionFactory;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -34,6 +33,12 @@ public class JpaOrganizationProviderFactory implements RealmProviderFactory {
 
     @Override
     public void close() {
+    }
+
+    @Override
+    public void postInit(RepeidSessionFactory factory) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

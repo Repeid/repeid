@@ -15,41 +15,30 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
+package org.repeid.provider;
 
-import org.repeid.provider.Provider;
-import org.repeid.provider.ProviderFactory;
-import org.repeid.provider.Spi;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ServiceLoader;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class JpaConnectionSpi implements Spi {
+public class DefaultProviderLoader implements ProviderLoader {
 
-    /*@Override
-    public boolean isInternal() {
-        return true;
-    }*/
+    private ClassLoader classLoader;
 
-    @Override
-    public String getName() {
-        return "connectionsJpa";
+    public DefaultProviderLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 
     @Override
-    public Class<? extends Provider> getProviderClass() {
-        return JpaConnectionProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return JpaConnectionProviderFactory.class;
-    }
-
-    @Override
-    public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
+    public List<ProviderFactory> load(Spi spi) {
+        LinkedList<ProviderFactory> list = new LinkedList<ProviderFactory>();
+        for (ProviderFactory f : ServiceLoader.load(spi.getProviderFactoryClass(), classLoader)) {
+            list.add(f);
+        }
+        return list;
     }
 
 }

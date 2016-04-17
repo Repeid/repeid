@@ -6,7 +6,7 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 
 import org.keycloak.Config;
-import org.keycloak.common.Version;
+import org.repeid.common.Version;
 import org.repeid.services.resources.JsResource;
 
 public class JsResourceImpl implements JsResource {

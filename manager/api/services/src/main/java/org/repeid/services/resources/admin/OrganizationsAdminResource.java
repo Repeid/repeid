@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.keycloak.representations.idm.OrganizationRepresentation;
+import org.repeid.representations.idm.OrganizationRepresentation;
 
 public interface OrganizationsAdminResource {
 

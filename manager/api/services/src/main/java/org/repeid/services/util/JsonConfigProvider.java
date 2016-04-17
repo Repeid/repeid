@@ -2,7 +2,7 @@ package org.repeid.services.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.keycloak.Config;
-import org.keycloak.common.util.StringPropertyReplacer;
+import org.repeid.common.util.StringPropertyReplacer;
 
 import java.util.Properties;
 

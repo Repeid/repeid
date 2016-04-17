@@ -6,9 +6,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.keycloak.common.ClientConnection;
-import org.keycloak.models.RepeidContext;
+import org.repeid.common.ClientConnection;
 import org.repeid.models.OrganizationModel;
+import org.repeid.models.RepeidContext;
 import org.repeid.models.RepeidSession;
 import org.repeid.services.resources.RepeidApplication;
 

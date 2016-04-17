@@ -1,6 +1,6 @@
 package org.repeid.provider;
 
-import org.keycloak.Config;
+import org.repeid.Config;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 

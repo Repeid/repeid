@@ -24,4 +24,10 @@ public class RealmSpi implements Spi {
         return RealmProviderFactory.class;
     }
 
+    @Override
+    public boolean isInternal() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

@@ -17,10 +17,10 @@
 
 package org.repeid.services.managers;
 
-import org.keycloak.models.dblock.DBLockProvider;
-import org.keycloak.models.dblock.DBLockProviderFactory;
 import org.repeid.models.RealmProviderFactory;
 import org.repeid.models.RepeidSession;
+import org.repeid.models.dblock.DBLockProvider;
+import org.repeid.models.dblock.DBLockProviderFactory;
 import org.repeid.services.ServicesLogger;
 
 /**

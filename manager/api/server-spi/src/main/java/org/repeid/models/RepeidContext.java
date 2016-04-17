@@ -15,41 +15,45 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
+package org.repeid.models;
 
-import org.repeid.provider.Provider;
-import org.repeid.provider.ProviderFactory;
-import org.repeid.provider.Spi;
+import java.net.URI;
+import java.util.Locale;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.UriInfo;
+
+import org.repeid.common.ClientConnection;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class JpaConnectionSpi implements Spi {
+public interface RepeidContext {
 
-    /*@Override
-    public boolean isInternal() {
-        return true;
-    }*/
+    URI getAuthServerUrl();
 
-    @Override
-    public String getName() {
-        return "connectionsJpa";
-    }
+    String getContextPath();
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return JpaConnectionProvider.class;
-    }
+    UriInfo getUri();
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return JpaConnectionProviderFactory.class;
-    }
+    HttpHeaders getRequestHeaders();
 
-    @Override
-    public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    <T> T getContextObject(Class<T> clazz);
+
+    OrganizationModel getOrganization();
+
+    void setOrganization(OrganizationModel organization);
+
+    //ClientModel getClient();
+
+    //void setClient(ClientModel client);
+
+    ClientConnection getConnection();
+
+    void setConnection(ClientConnection connection);
+
+    //RealmImporter getRealmManager();
+
+    //Locale resolveLocale(UserModel user);
 
 }
