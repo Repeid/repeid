@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -61,7 +66,7 @@ public class RepeidApplication extends Application {
         ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for injection
         context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
-        singletons.add(new ServerVersionResourceImpl());
+        /*singletons.add(new ServerVersionResourceImpl());
         singletons.add(new RobotsResourceImpl());
         // singletons.add(new RealmsResource()); for public access
         singletons.add(new AdminRootImpl());
@@ -136,7 +141,7 @@ public class RepeidApplication extends Application {
 
         singletons.add(new WelcomeResource(bootstrapAdminUser));
 
-        setupScheduledTasks(sessionFactory);
+        setupScheduledTasks(sessionFactory);*/
     }
 
     protected void migrateModel() {
@@ -174,16 +179,15 @@ public class RepeidApplication extends Application {
 
             String configDir = System.getProperty("jboss.server.config.dir");
             if (configDir != null) {
-                File f = new File(configDir + File.separator + "keycloak-server.json");
-                if (f.isFile()) {
-                    logger.loadingFrom(f.getAbsolutePath());
-                    node = new ObjectMapper().readTree(f);
+            	Path path = Paths.get(configDir + FileSystems.getDefault().getSeparator() + "repeid-server.json");                
+                if (Files.isRegularFile(path)) {
+                    logger.loadingFrom(path.toAbsolutePath().toString());
+                    node = new ObjectMapper().readTree(Files.newInputStream(path));
                 }
             }
 
             if (node == null) {
-                URL resource = Thread.currentThread().getContextClassLoader()
-                        .getResource("META-INF/keycloak-server.json");
+                URL resource = Thread.currentThread().getContextClassLoader().getResource("META-INF/repeid-server.json");
                 if (resource != null) {
                     logger.loadingFrom(resource);
                     node = new ObjectMapper().readTree(resource);
@@ -195,7 +199,7 @@ public class RepeidApplication extends Application {
                 Config.init(new JsonConfigProvider(node, properties));
                 return;
             } else {
-                throw new RuntimeException("Config 'keycloak-server.json' not found");
+                throw new RuntimeException("Config 'repeid-server.json' not found");
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config", e);
