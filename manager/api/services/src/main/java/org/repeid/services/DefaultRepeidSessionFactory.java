@@ -21,164 +21,174 @@ import org.repeid.provider.Spi;
 
 public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
 
-    private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-    private Set<Spi> spis = new HashSet<>();
-    private Map<Class<? extends Provider>, String> provider = new HashMap<Class<? extends Provider>, String>();
-    private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
-    protected CopyOnWriteArrayList<ProviderEventListener> listeners = new CopyOnWriteArrayList<ProviderEventListener>();
+	private Set<Spi> spis = new HashSet<>();
+	private Map<Class<? extends Provider>, String> provider = new HashMap<Class<? extends Provider>, String>();
+	private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
+	protected CopyOnWriteArrayList<ProviderEventListener> listeners = new CopyOnWriteArrayList<ProviderEventListener>();
 
-    // TODO: Likely should be changed to int and use Time.currentTime() to be
-    // compatible with all our "time" reps
-    protected long serverStartupTimestamp;
+	// TODO: Likely should be changed to int and use Time.currentTime() to be
+	// compatible with all our "time" reps
+	protected long serverStartupTimestamp;
 
-    @Override
-    public void register(ProviderEventListener listener) {
-        listeners.add(listener);
-    }
+	@Override
+	public void register(ProviderEventListener listener) {
+		listeners.add(listener);
+	}
 
-    @Override
-    public void unregister(ProviderEventListener listener) {
-        listeners.remove(listener);
-    }
+	@Override
+	public void unregister(ProviderEventListener listener) {
+		listeners.remove(listener);
+	}
 
-    @Override
-    public void publish(ProviderEvent event) {
-        for (ProviderEventListener listener : listeners) {
-            listener.onEvent(event);
-        }
-    }
+	@Override
+	public void publish(ProviderEvent event) {
+		for (ProviderEventListener listener : listeners) {
+			listener.onEvent(event);
+		}
+	}
 
-    /**
-     * Load providers factory classes and init them
-     */
-    public void init() {
-        serverStartupTimestamp = System.currentTimeMillis();
+	/**
+	 * Load providers factory classes and init them
+	 */
+	public void init() {
+		serverStartupTimestamp = System.currentTimeMillis();
 
-        ProviderManager pm = new ProviderManager(getClass().getClassLoader(), Config.scope().getArray("providers"));
+		ProviderManager pm = new ProviderManager(getClass().getClassLoader(), Config.scope().getArray("providers"));
 
-        ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());
-        loadSPIs(pm, load);
-        for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
-            for (ProviderFactory factory : factories.values()) {
-                factory.postInit(this);
-            }
-        }                
-    }
+		ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());
+		loadSPIs(pm, load);
+		for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
+			for (ProviderFactory factory : factories.values()) {
+				factory.postInit(this);
+			}
+		}
+	}
 
-    protected void loadSPIs(ProviderManager pm, ServiceLoader<Spi> load) {                    
-        for (Spi spi : load) {
-            spis.add(spi);
+	/**
+	 * */
+	protected void loadSPIs(ProviderManager pm, ServiceLoader<Spi> load) {
+		for (Spi spi : load) {
+			spis.add(spi);
 
-            Map<String, ProviderFactory> factories = new HashMap<String, ProviderFactory>();
-            factoriesMap.put(spi.getProviderClass(), factories);
+			Map<String, ProviderFactory> factories = new HashMap<String, ProviderFactory>();
+			factoriesMap.put(spi.getProviderClass(), factories);
 
-            String provider = Config.getProvider(spi.getName());
-            if (provider != null) {
-                this.provider.put(spi.getProviderClass(), provider);
+			String provider = Config.getProvider(spi.getName());
+			if (provider != null) {
+				this.provider.put(spi.getProviderClass(), provider);
 
-                ProviderFactory factory = pm.load(spi, provider);
-                if (factory == null) {
-                    throw new RuntimeException("Failed to find provider " + provider + " for " + spi.getName());
-                }
+				ProviderFactory factory = pm.load(spi, provider);
+				if (factory == null) {
+					throw new RuntimeException("Failed to find provider " + provider + " for " + spi.getName());
+				}
 
-                Config.Scope scope = Config.scope(spi.getName(), provider);
-                factory.init(scope);
+				Config.Scope scope = Config.scope(spi.getName(), provider);
+				factory.init(scope);
 
-                if (spi.isInternal() && !isInternal(factory)) {
-                    logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
-                }
+				if (spi.isInternal() && !isInternal(factory)) {
+					logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
+				}
 
-                factories.put(factory.getId(), factory);
+				factories.put(factory.getId(), factory);
 
-                logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
-            } else {
-                for (ProviderFactory factory : pm.load(spi)) {
-                    Config.Scope scope = Config.scope(spi.getName(), factory.getId());
-                    if (scope.getBoolean("enabled", true)) {
-                        factory.init(scope);
+				logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
+			} else {
+				for (ProviderFactory factory : pm.load(spi)) {
+					Config.Scope scope = Config.scope(spi.getName(), factory.getId());
+					if (scope.getBoolean("enabled", true)) {
+						factory.init(scope);
 
-                        if (spi.isInternal() && !isInternal(factory)) {
-                            logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
-                        }
+						if (spi.isInternal() && !isInternal(factory)) {
+							logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
+						}
 
-                        factories.put(factory.getId(), factory);
-                    } else {
-                        logger.debugv("SPI {0} provider {1} disabled", spi.getName(), factory.getId());
-                    }
-                }
+						factories.put(factory.getId(), factory);
+					} else {
+						logger.debugv("SPI {0} provider {1} disabled", spi.getName(), factory.getId());
+					}
+				}
 
-                if (factories.size() == 1) {
-                    provider = factories.values().iterator().next().getId();
-                    this.provider.put(spi.getProviderClass(), provider);
+				if (factories.size() == 1) {
+					provider = factories.values().iterator().next().getId();
+					this.provider.put(spi.getProviderClass(), provider);
 
-                    logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
-                } else {
-                    logger.debugv("Loaded SPI {0} (providers = {1})", spi.getName(), factories.keySet());
-                }
-            }
-        }
-    }      
+					logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
+				} else {
+					logger.debugv("Loaded SPI {0} (providers = {1})", spi.getName(), factories.keySet());
+				}
+			}
+		}
+	}
 
-    public RepeidSession create() {
-        return new DefaultRepeidSession(this);
-    }
+	/**
+	 * @return new DefaultRepeidSession using this object as factory
+	 */
+	public RepeidSession create() {
+		return new DefaultRepeidSession(this);
+	}
 
-    <T extends Provider> String getDefaultProvider(Class<T> clazz) {
-        return provider.get(clazz);
-    }
+	<T extends Provider> String getDefaultProvider(Class<T> clazz) {
+		return provider.get(clazz);
+	}
 
-    @Override
-    public Set<Spi> getSpis() {
-        return spis;
-    }
-    
-    @Override
-    public <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz) {
-        return getProviderFactory(clazz, provider.get(clazz));
-    }
+	/**
+	 * @return Set<Spi> detected on init()
+	 */
+	@Override
+	public Set<Spi> getSpis() {
+		return spis;
+	}
 
-    @Override
-    public <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id) {
-        return factoriesMap.get(clazz).get(id);
-    }
+	@Override
+	public <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz) {
+		return getProviderFactory(clazz, provider.get(clazz));
+	}
 
-    @Override
-    public List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz) {
-        List<ProviderFactory> list = new LinkedList<ProviderFactory>();
-        if (factoriesMap == null) return list;
-        Map<String, ProviderFactory> providerFactoryMap = factoriesMap.get(clazz);
-        if (providerFactoryMap == null) return list;
-        list.addAll(providerFactoryMap.values());
-        return list;
-    }
+	@Override
+	public <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id) {
+		return factoriesMap.get(clazz).get(id);
+	}
 
-    <T extends Provider> Set<String> getAllProviderIds(Class<T> clazz) {
-        Set<String> ids = new HashSet<String>();
-        for (ProviderFactory f : factoriesMap.get(clazz).values()) {
-            ids.add(f.getId());
-        }
-        return ids;
-    }
+	@Override
+	public List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz) {
+		List<ProviderFactory> list = new LinkedList<ProviderFactory>();
+		if (factoriesMap == null)
+			return list;
+		Map<String, ProviderFactory> providerFactoryMap = factoriesMap.get(clazz);
+		if (providerFactoryMap == null)
+			return list;
+		list.addAll(providerFactoryMap.values());
+		return list;
+	}
 
-    public void close() {
-        for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
-            for (ProviderFactory factory : factories.values()) {
-                factory.close();
-            }
-        }
-    }
-    
-    private boolean isInternal(ProviderFactory<?> factory) {
-        return factory.getClass().getPackage().getName().startsWith("org.repeid");
-    }
-    
-    /**
-     * @return timestamp of repeid server startup
-     */
-    @Override
-    public long getServerStartupTimestamp() {
-        return serverStartupTimestamp;
-    }
+	<T extends Provider> Set<String> getAllProviderIds(Class<T> clazz) {
+		Set<String> ids = new HashSet<String>();
+		for (ProviderFactory f : factoriesMap.get(clazz).values()) {
+			ids.add(f.getId());
+		}
+		return ids;
+	}
+
+	public void close() {
+		for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
+			for (ProviderFactory factory : factories.values()) {
+				factory.close();
+			}
+		}
+	}
+
+	private boolean isInternal(ProviderFactory<?> factory) {
+		return factory.getClass().getPackage().getName().startsWith("org.repeid");
+	}
+
+	/**
+	 * @return timestamp of repeid server startup
+	 */
+	@Override
+	public long getServerStartupTimestamp() {
+		return serverStartupTimestamp;
+	}
 
 }

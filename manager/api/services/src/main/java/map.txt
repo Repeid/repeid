@@ -1,0 +1,6 @@
+private Set<Spi> spis = new HashSet<>();
+private Map<Class<? extends Provider>, String> provider = new HashMap<Class<? extends Provider>, String>();
+private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
+protected CopyOnWriteArrayList<ProviderEventListener> listeners = new CopyOnWriteArrayList<ProviderEventListener>();
+
+
