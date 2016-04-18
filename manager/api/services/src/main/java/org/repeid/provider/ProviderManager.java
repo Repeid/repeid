@@ -16,7 +16,7 @@
  */
 package org.repeid.provider;
 
-import org.keycloak.services.ServicesLogger;
+import org.repeid.services.ServicesLogger;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;

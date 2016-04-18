@@ -16,8 +16,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.keycloak.Config;
-import org.keycloak.services.resources.WelcomeResource;
+import org.repeid.Config;
+import org.repeid.services.resources.WelcomeResource;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.exportimport.ExportImportManager;
 import org.repeid.models.RepeidSession;

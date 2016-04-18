@@ -17,6 +17,7 @@
 
 package org.repeid.services.managers;
 
+import org.repeid.models.OrganizationProvider;
 import org.repeid.models.RealmProviderFactory;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.dblock.DBLockProvider;
@@ -58,11 +59,11 @@ public class DBLockManager {
 
     public DBLockProviderFactory getDBLockFactory() {
         String realmProviderId = getRealmProviderId();
-        return (DBLockProviderFactory) session.getKeycloakSessionFactory().getProviderFactory(DBLockProvider.class, realmProviderId);
+        return (DBLockProviderFactory) session.getRepeidSessionFactory().getProviderFactory(DBLockProvider.class, realmProviderId);
     }
 
     private String getRealmProviderId() {
-        RealmProviderFactory realmProviderFactory = (RealmProviderFactory) session.getKeycloakSessionFactory().getProviderFactory(RealmProvider.class);
+        RealmProviderFactory realmProviderFactory = (RealmProviderFactory) session.getRepeidSessionFactory().getProviderFactory(OrganizationProvider.class);
         return realmProviderFactory.getId();
     }
 
