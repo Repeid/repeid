@@ -44,11 +44,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "DOCUMENT")
-@NamedQueries(value = {
-		@NamedQuery(name = "DocumentEntity.findAll", query = "SELECT document FROM DocumentEntity document"),
-		@NamedQuery(name = "DocumentEntity.findByAbbreviation", query = "SELECT document FROM DocumentEntity document WHERE document.abbreviation = :abbreviation"),
-		@NamedQuery(name = "DocumentEntity.findByFilterText", query = "SELECT document FROM DocumentEntity document WHERE LOWER(document.abbreviation) LIKE :filterText OR LOWER(document.name) LIKE :filterText") })
-public class DocumentEntity implements Serializable {
+public class DocumentEntity {
 
 	@Id
 	@Access(AccessType.PROPERTY) // we do this because relationships often fetch id, but not entity.  This avoids an extra SQL

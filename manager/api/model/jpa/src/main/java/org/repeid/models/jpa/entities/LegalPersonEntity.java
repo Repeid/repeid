@@ -18,17 +18,19 @@
 package org.repeid.models.jpa.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,14 +39,15 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Entity
-@Table(name = "NATURAL_PERSON")
-public class NaturalPersonEntity extends PersonEntity {
+@Table(name = "LEGAL_PERSON")
+public class LegalPersonEntity extends PersonEntity {
 
 	@Id
 	@Access(AccessType.PROPERTY) // we do this because relationships often fetch id, but not entity.  This avoids an extra SQL
@@ -56,41 +59,19 @@ public class NaturalPersonEntity extends PersonEntity {
 	@NotNull
 	@Size(min = 1, max = 70)
 	@NotBlank
-	@Column(name = "first_name")
-	private String firstName;
+	@Column(name = "name")
+	private String name;
 
-	@NotNull
-	@Size(min = 1, max = 70)
-	@NotBlank
-	@Column(name = "middle_name")
-	private String middleName;
-
-	@NotNull
-	@Size(min = 1, max = 70)
-	@NotBlank
-	@Column(name = "last_name")
-	private String lastName;
-
-	@NotNull
-	@Past
-	@Column(name = "date_birth")
-	private LocalDate date_bith;
-
-	@NotNull
-	@Size(min = 1, max = 50)
-	@Column(name = "gender")
-	private String gender;
-
-	@Size(min = 1, max = 50)
-	@Column(name = "marriage_status")
-	private String marriageStatus;
-
-	@Size(min = 0, max = 70)
-	@Column(name = "job")
-	private String job;
-
-	public NaturalPersonEntity() {
+	public LegalPersonEntity() {
 		super();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getId() {
@@ -99,62 +80,6 @@ public class NaturalPersonEntity extends PersonEntity {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public LocalDate getDate_bith() {
-		return date_bith;
-	}
-
-	public void setDate_bith(LocalDate date_bith) {
-		this.date_bith = date_bith;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getMarriageStatus() {
-		return marriageStatus;
-	}
-
-	public void setMarriageStatus(String marriageStatus) {
-		this.marriageStatus = marriageStatus;
-	}
-
-	public String getJob() {
-		return job;
-	}
-
-	public void setJob(String job) {
-		this.job = job;
 	}
 
 }

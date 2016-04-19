@@ -6,8 +6,6 @@ import java.util.Collection;
 
 @Table(name = "ORGANIZATION")
 @Entity
-@NamedQueries(value = {
-        @NamedQuery(name = "OrganizationEntity.findAll", query = "SELECT organization FROM OrganizationEntity organization") })
 public class OrganizationEntity {
 
     @Id
@@ -16,10 +14,10 @@ public class OrganizationEntity {
                                  // id, but not entity. This avoids an extra SQL
     protected String id;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "name", unique = true)
     protected String name;
 
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     protected boolean enabled;
 
     @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")

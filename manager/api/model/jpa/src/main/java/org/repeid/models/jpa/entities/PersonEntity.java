@@ -36,7 +36,12 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @MappedSuperclass
-public abstract class PersonEntity implements Serializable {
+public abstract class PersonEntity {
+
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey )
+	protected OrganizationEntity organization;
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -68,20 +73,80 @@ public abstract class PersonEntity implements Serializable {
 	@Column(name = "phoneNumber")
 	protected String phoneNumber;
 
-	@Size(min = 0, max = 20)
-	@Column(name = "cellPhoneNumber")
-	protected String cellPhoneNumber;
-
 	@Email
 	@Column(name = "email")
 	protected String email;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public OrganizationEntity getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(OrganizationEntity organization) {
+		this.organization = organization;
+	}
+
+	public DocumentEntity getDocument() {
+		return document;
+	}
+
+	public void setDocument(DocumentEntity document) {
+		this.document = document;
+	}
+
+	public String getDocumentNumber() {
+		return documentNumber;
+	}
+
+	public void setDocumentNumber(String documentNumber) {
+		this.documentNumber = documentNumber;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((numeroDocumento == null) ? 0 : numeroDocumento.hashCode());
-		result = prime * result + ((tipoDocumento == null) ? 0 : tipoDocumento.hashCode());
+		result = prime * result + ((documentNumber == null) ? 0 : documentNumber.hashCode());
+		result = prime * result + ((document == null) ? 0 : document.hashCode());
 		return result;
 	}
 
@@ -94,15 +159,15 @@ public abstract class PersonEntity implements Serializable {
 		if (!(obj instanceof PersonEntity))
 			return false;
 		PersonEntity other = (PersonEntity) obj;
-		if (numeroDocumento == null) {
-			if (other.numeroDocumento != null)
+		if (documentNumber == null) {
+			if (other.documentNumber != null)
 				return false;
-		} else if (!numeroDocumento.equals(other.numeroDocumento))
+		} else if (!documentNumber.equals(other.documentNumber))
 			return false;
-		if (tipoDocumento == null) {
-			if (other.tipoDocumento != null)
+		if (document == null) {
+			if (other.document != null)
 				return false;
-		} else if (!tipoDocumento.equals(other.tipoDocumento))
+		} else if (!document.equals(other.document))
 			return false;
 		return true;
 	}
