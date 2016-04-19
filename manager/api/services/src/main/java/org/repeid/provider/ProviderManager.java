@@ -1,8 +1,5 @@
 package org.repeid.provider;
 
-import org.repeid.services.ServicesLogger;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
@@ -11,6 +8,8 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.repeid.services.ServicesLogger;
 
 public class ProviderManager {
 
