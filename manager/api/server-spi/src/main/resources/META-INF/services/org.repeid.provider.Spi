@@ -1,2 +1,2 @@
-org.repeid.models.RealmSpi
+org.repeid.models.OrganizationSpi
 org.repeid.models.cache.CacheRealmProviderSpi

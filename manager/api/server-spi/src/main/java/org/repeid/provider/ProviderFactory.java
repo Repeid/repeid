@@ -4,9 +4,6 @@ import org.repeid.Config;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 
-/**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
- */
 public interface ProviderFactory<T extends Provider> {
 
     public T create(RepeidSession session);

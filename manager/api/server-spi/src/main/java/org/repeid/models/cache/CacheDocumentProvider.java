@@ -1,6 +1,5 @@
 package org.repeid.models.cache;
 
-import org.repeid.models.DocumentProvider;
 import org.repeid.models.OrganizationProvider;
 
 public interface CacheDocumentProvider extends DocumentProvider {

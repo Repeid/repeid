@@ -4,14 +4,11 @@ import org.repeid.provider.Provider;
 import org.repeid.provider.ProviderFactory;
 import org.repeid.provider.Spi;
 
-/**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
- */
-public class RealmSpi implements Spi {
+public class NaturalPersonSpi implements Spi {
 
     @Override
     public String getName() {
-        return "realm";
+        return "naturalPerson";
     }
 
     @Override

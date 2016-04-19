@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.repeid.models.DocumentProvider;
 import org.repeid.models.LegalPersonProvider;
 import org.repeid.models.NaturalPersonProvider;
 import org.repeid.models.OrganizationProvider;

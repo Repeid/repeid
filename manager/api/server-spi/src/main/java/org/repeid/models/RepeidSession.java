@@ -31,7 +31,6 @@ public interface RepeidSession {
 	 *             if transaction is not active
 	 */
 	OrganizationProvider organizations();
-	DocumentProvider documents();
 	NaturalPersonProvider naturalPersons();
 	LegalPersonProvider legalPersons();
 	
