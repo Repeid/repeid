@@ -1,36 +1,13 @@
-/*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.repeid.models.jpa.entities;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-/**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
- */
 @Table(name = "ORGANIZATION")
 @Entity
 public class OrganizationEntity {
+
     @Id
     @Column(name = "ID", length = 36)
     @Access(AccessType.PROPERTY) // we do this because relationships often fetch
@@ -42,6 +19,15 @@ public class OrganizationEntity {
 
     @Column(name = "ENABLED")
     protected boolean enabled;
+
+    @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
+    protected Collection<DocumentEntity> documents = new ArrayList<>();
+
+    @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
+    protected Collection<PersonaNaturalEntity> naturalPersons = new ArrayList<>();
+
+    @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
+    protected Collection<PersonaNaturalEntity> legalPersons = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -67,6 +53,35 @@ public class OrganizationEntity {
         this.enabled = enabled;
     }
 
+    public Collection<DocumentEntity> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Collection<DocumentEntity> documents) {
+        this.documents = documents;
+    }
+
+    public Collection<PersonaNaturalEntity> getNaturalPersons() {
+        return naturalPersons;
+    }
+
+    public void setNaturalPersons(Collection<PersonaNaturalEntity> naturalPersons) {
+        this.naturalPersons = naturalPersons;
+    }
+
+    public Collection<PersonaNaturalEntity> getLegalPersons() {
+        return legalPersons;
+    }
+
+    public void setLegalPersons(Collection<PersonaNaturalEntity> legalPersons) {
+        this.legalPersons = legalPersons;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -82,11 +97,6 @@ public class OrganizationEntity {
             return false;
 
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
     }
 
 }

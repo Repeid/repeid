@@ -46,7 +46,7 @@ public abstract class PersonaEntity implements Serializable {
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tipo_documento_id", foreignKey = @ForeignKey )
-	protected TipoDocumentoEntity tipoDocumento;
+	protected DocumentEntity tipoDocumento;
 
 	@NotNull
 	@Size(min = 1, max = 20)
@@ -92,16 +92,16 @@ public abstract class PersonaEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PersonaEntity(TipoDocumentoEntity tipoDocumento, String numeroDocumento) {
+	public PersonaEntity(DocumentEntity tipoDocumento, String numeroDocumento) {
 		this.tipoDocumento = tipoDocumento;
 		this.numeroDocumento = numeroDocumento;
 	}
 
-	public TipoDocumentoEntity getTipoDocumento() {
+	public DocumentEntity getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(TipoDocumentoEntity tipoDocumento) {
+	public void setTipoDocumento(DocumentEntity tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
 

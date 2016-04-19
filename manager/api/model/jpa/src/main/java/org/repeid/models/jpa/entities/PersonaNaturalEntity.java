@@ -108,7 +108,7 @@ public class PersonaNaturalEntity extends PersonaEntity implements Serializable 
 		this.id = id;
 	}
 
-	public PersonaNaturalEntity(TipoDocumentoEntity tipoDocumento, String numeroDocumento) {
+	public PersonaNaturalEntity(DocumentEntity tipoDocumento, String numeroDocumento) {
 		super(tipoDocumento, numeroDocumento);
 	}
 

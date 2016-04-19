@@ -43,12 +43,12 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Entity
-@Table(name = "TIPO_DOCUMENTO")
+@Table(name = "DOCUMENT")
 @NamedQueries(value = {
-		@NamedQuery(name = "TipoDocumentoEntity.findAll", query = "SELECT t FROM TipoDocumentoEntity t"),
-		@NamedQuery(name = "TipoDocumentoEntity.findByAbreviatura", query = "SELECT t FROM TipoDocumentoEntity t WHERE t.abreviatura = :abreviatura"),
-		@NamedQuery(name = "TipoDocumentoEntity.findByFilterText", query = "SELECT t FROM TipoDocumentoEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText") })
-public class TipoDocumentoEntity implements Serializable {
+		@NamedQuery(name = "DocumentEntity.findAll", query = "SELECT t FROM DocumentEntity t"),
+		@NamedQuery(name = "DocumentEntity.findByAbbreviation", query = "SELECT t FROM DocumentEntity t WHERE t.abreviatura = :abreviatura"),
+		@NamedQuery(name = "DocumentEntity.findByFilterText", query = "SELECT t FROM DocumentEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText") })
+public class DocumentEntity implements Serializable {
 
 	/**
 	 * 
@@ -64,14 +64,14 @@ public class TipoDocumentoEntity implements Serializable {
 
 	@NaturalId(mutable = true)
 	@Size(min = 1, max = 20)
-	@Column(name = "abreviatura")
-	private String abreviatura;
+	@Column(name = "abbreviation")
+	private String abbreviation;
 
 	@NotNull
-	@Size(min = 1, max = 60)
+	@Size(min = 1, max = 100)
 	@NotBlank
-	@Column(name = "denominacion")
-	private String denominacion;
+	@Column(name = "name")
+	private String name;
 
 	@NotNull
 	@Min(value = 1)
@@ -150,7 +150,7 @@ public class TipoDocumentoEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "(TipoDocumentoEntity abreviatura=" + this.abreviatura + ")";
+		return "(DocumentEntity abreviatura=" + this.abreviatura + ")";
 	}
 
 	@Override
@@ -167,9 +167,9 @@ public class TipoDocumentoEntity implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof TipoDocumentoEntity))
+		if (!(obj instanceof DocumentEntity))
 			return false;
-		TipoDocumentoEntity other = (TipoDocumentoEntity) obj;
+		DocumentEntity other = (DocumentEntity) obj;
 		if (abreviatura == null) {
 			if (other.abreviatura != null)
 				return false;
