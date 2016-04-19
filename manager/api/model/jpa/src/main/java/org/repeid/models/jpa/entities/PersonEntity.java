@@ -36,7 +36,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @MappedSuperclass
-public abstract class PersonaEntity implements Serializable {
+public abstract class PersonEntity implements Serializable {
 
 	/**
 	 * 
@@ -88,11 +88,11 @@ public abstract class PersonaEntity implements Serializable {
 	@Version
 	protected Integer optlk;
 
-	public PersonaEntity() {
+	public PersonEntity() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PersonaEntity(DocumentEntity tipoDocumento, String numeroDocumento) {
+	public PersonEntity(DocumentEntity tipoDocumento, String numeroDocumento) {
 		this.tipoDocumento = tipoDocumento;
 		this.numeroDocumento = numeroDocumento;
 	}
@@ -179,7 +179,7 @@ public abstract class PersonaEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "(PersonaEntity tipoDocumento=" + this.tipoDocumento.getAbreviatura() + " numeroDocumento="
+		return "(PersonEntity tipoDocumento=" + this.tipoDocumento.getAbreviatura() + " numeroDocumento="
 				+ this.numeroDocumento + ")";
 	}
 
@@ -198,9 +198,9 @@ public abstract class PersonaEntity implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof PersonaEntity))
+		if (!(obj instanceof PersonEntity))
 			return false;
-		PersonaEntity other = (PersonaEntity) obj;
+		PersonEntity other = (PersonEntity) obj;
 		if (numeroDocumento == null) {
 			if (other.numeroDocumento != null)
 				return false;

@@ -53,7 +53,7 @@ import org.hibernate.validator.constraints.NotBlank;
 		@NamedQuery(name = "PersonaJuridicaEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
 		@NamedQuery(name = "PersonaJuridicaEntity.findByIdPersonaNaturalRepresentanteLegal", query = "SELECT p FROM PersonaJuridicaEntity p INNER JOIN p.representanteLegal rl WHERE rl.id = :idPersonaNaturalRepresentanteLegal"),
 		@NamedQuery(name = "PersonaJuridicaEntity.findByFilterText", query = "SELECT p FROM PersonaJuridicaEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.razonSocial) LIKE :filterText OR LOWER(p.nombreComercial) LIKE :filterText") })
-public class PersonaJuridicaEntity extends PersonaEntity implements Serializable {
+public class PersonaJuridicaEntity extends PersonEntity implements Serializable {
 
 	/**
 	 * 

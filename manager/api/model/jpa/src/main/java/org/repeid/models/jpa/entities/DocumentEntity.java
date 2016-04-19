@@ -45,9 +45,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "DOCUMENT")
 @NamedQueries(value = {
-		@NamedQuery(name = "DocumentEntity.findAll", query = "SELECT t FROM DocumentEntity t"),
-		@NamedQuery(name = "DocumentEntity.findByAbbreviation", query = "SELECT t FROM DocumentEntity t WHERE t.abreviatura = :abreviatura"),
-		@NamedQuery(name = "DocumentEntity.findByFilterText", query = "SELECT t FROM DocumentEntity t WHERE LOWER(t.abreviatura) LIKE :filterText OR LOWER(t.denominacion) LIKE :filterText") })
+		@NamedQuery(name = "DocumentEntity.findAll", query = "SELECT document FROM DocumentEntity document"),
+		@NamedQuery(name = "DocumentEntity.findByAbbreviation", query = "SELECT document FROM DocumentEntity document WHERE t.abbreviation = :abbreviation"),
+		@NamedQuery(name = "DocumentEntity.findByFilterText", query = "SELECT document FROM DocumentEntity document WHERE LOWER(t.abbreviation) LIKE :filterText OR LOWER(t.name) LIKE :filterText") })
 public class DocumentEntity implements Serializable {
 
 	/**
@@ -76,21 +76,18 @@ public class DocumentEntity implements Serializable {
 	@NotNull
 	@Min(value = 1)
 	@Max(value = 20)
-	@Column(name = "cantidad_caracteres")
-	private int cantidadCaracteres;
+	@Column(name = "size")
+	private int size;
 
 	@NotNull
 	@Size(min = 1, max = 60)
-	@Column(name = "tipo_persona")
-	private String tipoPersona;
+	@Column(name = "person_type")
+	private String personType;
 
 	@NotNull
 	@Type(type = "org.hibernate.type.TrueFalseType")
-	@Column(name = "estado")
-	private boolean estado;
-
-	@Version
-	private Integer optlk;
+	@Column(name = "enabled")
+	private boolean enabled;
 
 	public String getId() {
 		return id;
@@ -100,64 +97,56 @@ public class DocumentEntity implements Serializable {
 		this.id = id;
 	}
 
-	public String getAbreviatura() {
-		return abreviatura;
+	public String getAbbreviation() {
+		return abbreviation;
 	}
 
-	public void setAbreviatura(String abreviatura) {
-		this.abreviatura = abreviatura;
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
 	}
 
-	public String getDenominacion() {
-		return denominacion;
+	public String getName() {
+		return name;
 	}
 
-	public void setDenominacion(String denominacion) {
-		this.denominacion = denominacion;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getCantidadCaracteres() {
-		return cantidadCaracteres;
+	public int getSize() {
+		return size;
 	}
 
-	public void setCantidadCaracteres(int cantidadCaracteres) {
-		this.cantidadCaracteres = cantidadCaracteres;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public String getTipoPersona() {
-		return tipoPersona;
+	public String getPersonType() {
+		return personType;
 	}
 
-	public void setTipoPersona(String tipoPersona) {
-		this.tipoPersona = tipoPersona;
+	public void setPersonType(String personType) {
+		this.personType = personType;
 	}
 
-	public boolean isEstado() {
-		return estado;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
-
-	public Integer getOptlk() {
-		return optlk;
-	}
-
-	public void setOptlk(Integer optlk) {
-		this.optlk = optlk;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@Override
 	public String toString() {
-		return "(DocumentEntity abreviatura=" + this.abreviatura + ")";
+		return "(DocumentEntity abbreviation=" + this.abbreviation + ")";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((abreviatura == null) ? 0 : abreviatura.hashCode());
+		result = prime * result + ((abbreviation == null) ? 0 : abbreviation.hashCode());
 		return result;
 	}
 
@@ -170,10 +159,10 @@ public class DocumentEntity implements Serializable {
 		if (!(obj instanceof DocumentEntity))
 			return false;
 		DocumentEntity other = (DocumentEntity) obj;
-		if (abreviatura == null) {
-			if (other.abreviatura != null)
+		if (abbreviation == null) {
+			if (other.abbreviation != null)
 				return false;
-		} else if (!abreviatura.equals(other.abreviatura))
+		} else if (!abbreviation.equals(other.abbreviation))
 			return false;
 		return true;
 	}

@@ -6,6 +6,8 @@ import java.util.Collection;
 
 @Table(name = "ORGANIZATION")
 @Entity
+@NamedQueries(value = {
+        @NamedQuery(name = "OrganizationEntity.findAll", query = "SELECT organization FROM OrganizationEntity organization") })
 public class OrganizationEntity {
 
     @Id
