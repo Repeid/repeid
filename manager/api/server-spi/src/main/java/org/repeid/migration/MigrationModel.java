@@ -15,15 +15,19 @@
  * limitations under the License.
  */
 
-package org.keycloak.models.jpa.entities;
+package org.repeid.migration;
+
 
 /**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
+ * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
+ * @version $Revision: 1 $
  */
-public interface RealmAttributes {
+public interface MigrationModel {
+    /**
+     * Must have the form of major.minor.micro as the version is parsed and numbers are compared
+     */
+    String LATEST_VERSION = "1.9.2";
 
-    String DISPLAY_NAME = "displayName";
-
-    String DISPLAY_NAME_HTML = "displayNameHtml";
-
+    String getStoredVersion();
+    void setStoredVersion(String version);
 }

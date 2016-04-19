@@ -2,14 +2,14 @@ package org.repeid.models.jpa;
 
 import org.repeid.Config;
 import org.repeid.connections.jpa.JpaConnectionProvider;
-import org.repeid.models.OrganizationProvider;
-import org.repeid.models.OrganizationProviderFactory;
+import org.repeid.models.LegalPersonProvider;
+import org.repeid.models.LegalPersonProviderFactory;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 
 import javax.persistence.EntityManager;
 
-public class JpaOrganizationProviderFactory implements OrganizationProviderFactory {
+public class JpaLegalPersonProviderFactory implements LegalPersonProviderFactory {
 
     @Override
     public void init(Config.Scope config) {
@@ -26,9 +26,9 @@ public class JpaOrganizationProviderFactory implements OrganizationProviderFacto
     }
 
     @Override
-    public OrganizationProvider create(RepeidSession session) {
+    public LegalPersonProvider create(RepeidSession session) {
         EntityManager em = session.getProvider(JpaConnectionProvider.class).getEntityManager();
-        return new JpaOrganizationProvider(session, em);
+        return new JpaLegalPersonProvider(session, em);
     }
 
     @Override

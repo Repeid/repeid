@@ -6,5 +6,5 @@ import org.repeid.provider.ProviderFactory;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public interface RealmProviderFactory extends ProviderFactory<OrganizationProvider> {
+public interface OrganizationProviderFactory extends ProviderFactory<OrganizationProvider> {
 }
