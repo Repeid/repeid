@@ -163,13 +163,6 @@ public class NaturalPersonEntity extends PersonEntity implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "(PersonaNaturalEntity id=" + this.id + " tipoDocumento=" + this.tipoDocumento.getAbreviatura()
-				+ " numeroDocumento" + this.numeroDocumento + " apellidoPaterno=" + this.apellidoPaterno
-				+ " apellidoMaterno=" + this.apellidoMaterno + " nombres=" + this.nombres + ")";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

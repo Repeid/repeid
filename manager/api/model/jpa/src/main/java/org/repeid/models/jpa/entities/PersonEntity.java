@@ -38,150 +38,43 @@ import org.hibernate.validator.constraints.NotBlank;
 @MappedSuperclass
 public abstract class PersonEntity implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tipo_documento_id", foreignKey = @ForeignKey )
-	protected DocumentEntity tipoDocumento;
+	@JoinColumn(name = "document_id", foreignKey = @ForeignKey )
+	protected DocumentEntity document;
 
 	@NotNull
 	@Size(min = 1, max = 20)
 	@NotBlank
-	@Column(name = "numero_documento")
-	protected String numeroDocumento;
+	@Column(name = "document_number")
+	protected String documentNumber;
 
-	// nacionalidad
+	// Nationality
 	@NotNull
 	@Size(min = 3, max = 3)
 	@NotBlank
-	@Column(name = "codigo_pais")
-	protected String codigoPais;
-
-	@Size(min = 0, max = 6)
-	@Column(name = "ubigeo")
-	protected String ubigeo;
+	@Column(name = "country")
+	protected String country;
 
 	@Size(min = 0, max = 100)
-	@Column(name = "direccion")
-	protected String direccion;
+	@Column(name = "address")
+	protected String address;
 
 	@Size(min = 0, max = 70)
-	@Column(name = "referencia")
-	protected String referencia;
+	@Column(name = "reference")
+	protected String reference;
 
 	@Size(min = 0, max = 20)
-	@Column(name = "telefono")
-	protected String telefono;
+	@Column(name = "phoneNumber")
+	protected String phoneNumber;
 
 	@Size(min = 0, max = 20)
-	@Column(name = "celular")
-	protected String celular;
+	@Column(name = "cellPhoneNumber")
+	protected String cellPhoneNumber;
 
 	@Email
 	@Column(name = "email")
 	protected String email;
-
-	@Version
-	protected Integer optlk;
-
-	public PersonEntity() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public PersonEntity(DocumentEntity tipoDocumento, String numeroDocumento) {
-		this.tipoDocumento = tipoDocumento;
-		this.numeroDocumento = numeroDocumento;
-	}
-
-	public DocumentEntity getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	public void setTipoDocumento(DocumentEntity tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	public String getNumeroDocumento() {
-		return numeroDocumento;
-	}
-
-	public void setNumeroDocumento(String numeroDocumento) {
-		this.numeroDocumento = numeroDocumento;
-	}
-
-	public String getCodigoPais() {
-		return codigoPais;
-	}
-
-	public void setCodigoPais(String codigoPais) {
-		this.codigoPais = codigoPais;
-	}
-
-	public String getUbigeo() {
-		return ubigeo;
-	}
-
-	public void setUbigeo(String ubigeo) {
-		this.ubigeo = ubigeo;
-	}
-
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-	public String getReferencia() {
-		return referencia;
-	}
-
-	public void setReferencia(String referencia) {
-		this.referencia = referencia;
-	}
-
-	public String getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-
-	public String getCelular() {
-		return celular;
-	}
-
-	public void setCelular(String celular) {
-		this.celular = celular;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Integer getOptlk() {
-		return optlk;
-	}
-
-	public void setOptlk(Integer optlk) {
-		this.optlk = optlk;
-	}
-
-	@Override
-	public String toString() {
-		return "(PersonEntity tipoDocumento=" + this.tipoDocumento.getAbreviatura() + " numeroDocumento="
-				+ this.numeroDocumento + ")";
-	}
 
 	@Override
 	public int hashCode() {
