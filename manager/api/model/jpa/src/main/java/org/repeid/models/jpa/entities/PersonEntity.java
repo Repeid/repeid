@@ -17,15 +17,12 @@
  *******************************************************************************/
 package org.repeid.models.jpa.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 

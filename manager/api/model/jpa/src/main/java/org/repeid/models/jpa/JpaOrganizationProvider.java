@@ -1,7 +1,6 @@
 package org.repeid.models.jpa;
 
 import org.jboss.logging.Logger;
-import org.keycloak.models.jpa.JpaRealmProvider;
 import org.repeid.models.OrganizationModel;
 import org.repeid.models.OrganizationProvider;
 import org.repeid.models.RepeidSession;

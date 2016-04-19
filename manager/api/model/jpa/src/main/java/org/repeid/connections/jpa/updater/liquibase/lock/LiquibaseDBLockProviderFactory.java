@@ -1,11 +1,11 @@
 package org.repeid.connections.jpa.updater.liquibase.lock;
 
 import org.jboss.logging.Logger;
-import org.keycloak.Config;
-import org.keycloak.common.util.Time;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.models.dblock.DBLockProviderFactory;
+import org.repeid.Config;
+import org.repeid.common.util.Time;
+import org.repeid.models.RepeidSession;
+import org.repeid.models.RepeidSessionFactory;
+import org.repeid.models.dblock.DBLockProviderFactory;
 
 public class LiquibaseDBLockProviderFactory implements DBLockProviderFactory {
 
@@ -25,12 +25,12 @@ public class LiquibaseDBLockProviderFactory implements DBLockProviderFactory {
     }
 
     @Override
-    public void postInit(KeycloakSessionFactory factory) {
+    public void postInit(RepeidSessionFactory factory) {
 
     }
 
     @Override
-    public LiquibaseDBLockProvider create(KeycloakSession session) {
+    public LiquibaseDBLockProvider create(RepeidSession session) {
         return new LiquibaseDBLockProvider(this, session);
     }
 

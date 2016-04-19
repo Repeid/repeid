@@ -14,25 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.repeid.connections.jpa.updater.liquibase.lock;
 
 import liquibase.Liquibase;
 import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import org.jboss.logging.Logger;
-import org.keycloak.connections.jpa.JpaConnectionProvider;
-import org.keycloak.connections.jpa.JpaConnectionProviderFactory;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.dblock.DBLockProvider;
+import org.repeid.connections.jpa.JpaConnectionProvider;
+import org.repeid.connections.jpa.JpaConnectionProviderFactory;
+import org.repeid.models.RepeidSession;
+import org.repeid.models.dblock.DBLockProvider;
 import org.repeid.connections.jpa.updater.liquibase.conn.LiquibaseConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
- */
 public class LiquibaseDBLockProvider implements DBLockProvider {
 
     private static final Logger logger = Logger.getLogger(LiquibaseDBLockProvider.class);
@@ -42,14 +38,14 @@ public class LiquibaseDBLockProvider implements DBLockProvider {
 
 
     private final LiquibaseDBLockProviderFactory factory;
-    private final KeycloakSession session;
+    private final RepeidSession session;
 
     private CustomLockService lockService;
     private Connection dbConnection;
 
     private int maxAttempts = DEFAULT_MAX_ATTEMPTS;
 
-    public LiquibaseDBLockProvider(LiquibaseDBLockProviderFactory factory, KeycloakSession session) {
+    public LiquibaseDBLockProvider(LiquibaseDBLockProviderFactory factory, RepeidSession session) {
         this.factory = factory;
         this.session = session;
         init();
@@ -57,7 +53,7 @@ public class LiquibaseDBLockProvider implements DBLockProvider {
 
     private void init() {
         LiquibaseConnectionProvider liquibaseProvider = session.getProvider(LiquibaseConnectionProvider.class);
-        JpaConnectionProviderFactory jpaProviderFactory = (JpaConnectionProviderFactory) session.getKeycloakSessionFactory().getProviderFactory(JpaConnectionProvider.class);
+        JpaConnectionProviderFactory jpaProviderFactory = (JpaConnectionProviderFactory) session.getRepeidSessionFactory().getProviderFactory(JpaConnectionProvider.class);
 
         this.dbConnection = jpaProviderFactory.getConnection();
         String defaultSchema = jpaProviderFactory.getSchema();

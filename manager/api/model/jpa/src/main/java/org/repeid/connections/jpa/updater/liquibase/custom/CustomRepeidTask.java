@@ -1,20 +1,3 @@
-/*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.repeid.connections.jpa.updater.liquibase.custom;
 
 import liquibase.change.custom.CustomSqlChange;
@@ -28,8 +11,8 @@ import liquibase.snapshot.SnapshotGeneratorFactory;
 import liquibase.statement.SqlStatement;
 import liquibase.structure.core.Table;
 import org.jboss.logging.Logger;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.services.DefaultKeycloakSessionFactory;
+import org.repeid.models.RepeidSession;
+import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.connections.jpa.updater.liquibase.LiquibaseJpaUpdaterProvider;
 import org.repeid.connections.jpa.updater.liquibase.ThreadLocalSessionContext;
 
@@ -38,14 +21,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
- */
-public abstract class CustomKeycloakTask implements CustomSqlChange {
+public abstract class CustomRepeidTask implements CustomSqlChange {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    protected KeycloakSession kcSession;
+    protected RepeidSession kcSession;
 
     protected Database database;
     protected JdbcConnection jdbcConnection;
@@ -74,10 +54,10 @@ public abstract class CustomKeycloakTask implements CustomSqlChange {
 
         if (this.kcSession == null) {
             // Probably running Liquibase from maven plugin. Try to create kcSession programmatically
-            logger.info("No KeycloakSession provided in ThreadLocal. Initializing KeycloakSessionFactory");
+            logger.info("No RepeidSession provided in ThreadLocal. Initializing RepeidSessionFactory");
 
             try {
-                DefaultKeycloakSessionFactory factory = new DefaultKeycloakSessionFactory();
+                DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
                 factory.init();
                 this.kcSession = factory.create();
             } catch (Exception e) {

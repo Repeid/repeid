@@ -17,18 +17,17 @@
  *******************************************************************************/
 package org.repeid.models.jpa.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -80,6 +79,11 @@ public class DocumentEntity {
 	@Column(name = "enabled")
 	private boolean enabled;
 
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey )
+	protected OrganizationEntity organization;	
+
 	public String getId() {
 		return id;
 	}
@@ -128,6 +132,14 @@ public class DocumentEntity {
 		this.enabled = enabled;
 	}
 
+	public OrganizationEntity getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(OrganizationEntity organization) {
+		this.organization = organization;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
