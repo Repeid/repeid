@@ -59,10 +59,15 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
 
 		ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());		
 		
-		logger.infov("Repeid Spi classes: {0}");
-		load.forEach(f -> logger.debugv("Spi (<? extends Spi>) {0}", f));
-		load.forEach(f -> System.out.println(f));
-		
+		logger.debugv("Spi: ");
+		load.forEach(f -> logger.debugv("Spi (<? extends Spi>): {0}", f));
+
+		logger.warnv(System.getProperty("line.separator"));
+		logger.warnv("===============================================================================");
+		logger.warnv("SPI list: (Need to be removed on the next version):");
+		load.forEach(f -> logger.warnv("Spi (<? extends Spi>): {0}", f));
+		logger.warnv("===============================================================================");
+
 		//loadSPIs(pm, load);
 		/*for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
 			for (ProviderFactory factory : factories.values()) {

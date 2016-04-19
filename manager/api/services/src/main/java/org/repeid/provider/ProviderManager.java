@@ -21,8 +21,14 @@ public class ProviderManager {
 	public ProviderManager(ClassLoader baseClassLoader, String... resources) {
 		ServiceLoader<ProviderLoaderFactory> serviceLoader = ServiceLoader.load(ProviderLoaderFactory.class, getClass().getClassLoader());
 
-		logger.debugv("Repeid Provider factory loaders list: {0}");
-		serviceLoader.forEach(f -> logger.debugv("Provider loader (<? extends ProviderLoaderFactory>) {0}", f));
+		logger.debugv("Provider factory loaders: ");
+		serviceLoader.forEach(f -> logger.debugv("Provider loader factory(<? extends ProviderLoaderFactory>): {0}", f));
+
+		logger.warnv(System.getProperty("line.separator"));
+		logger.warnv("===============================================================================");
+		logger.warnv("PROVIDER LOADER FACTORY list: (Need to be removed on the next version):");
+		serviceLoader.forEach(f -> logger.warnv("Provider loader factory(<? extends ProviderLoaderFactory>): {0}", f));
+		logger.warnv("===============================================================================");
 
 		providerLoaders.add(new DefaultProviderLoader(baseClassLoader));
 
@@ -34,7 +40,8 @@ public class ProviderManager {
 				Iterable<ProviderLoaderFactory> iterable = () -> serviceLoader.iterator();
 				Stream<ProviderLoaderFactory> stream = StreamSupport.stream(iterable.spliterator(), false);
 
-				ProviderLoaderFactory providerLoaderFactory = stream.filter(f -> f.supports(type)).findFirst()
+				ProviderLoaderFactory providerLoaderFactory = stream
+						.filter(f -> f.supports(type)).findFirst()
 						.orElseThrow(() -> new RuntimeException("Provider loader for " + r + " not found"));
 				providerLoaders.add(providerLoaderFactory.create(baseClassLoader, resource));
 			}
