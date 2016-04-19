@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
+package org.repeid.connections.jpa;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.repeid.models.ModelDuplicateException;

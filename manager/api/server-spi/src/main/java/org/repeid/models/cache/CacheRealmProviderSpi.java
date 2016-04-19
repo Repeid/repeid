@@ -8,7 +8,7 @@ import org.repeid.provider.Spi;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class CacheOrganizationProviderSpi implements Spi {
+public class CacheRealmProviderSpi implements Spi {
 
     @Override
     public String getName() {

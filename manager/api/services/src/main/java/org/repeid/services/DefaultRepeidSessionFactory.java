@@ -57,13 +57,16 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
 
 		ProviderManager pm = new ProviderManager(getClass().getClassLoader(), Config.scope().getArray("providers"));
 
-		ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());
-		loadSPIs(pm, load);
-		for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
+		ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());		
+		logger.debugv("Repeid Spi classes: {0}");
+		load.forEach(f -> logger.debugv("Spi (<? extends Spi>) {0}", f));
+		
+		//loadSPIs(pm, load);
+		/*for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
 			for (ProviderFactory factory : factories.values()) {
 				factory.postInit(this);
 			}
-		}
+		}*/
 	}
 
 	/**

@@ -15,21 +15,17 @@
  * limitations under the License.
  */
 
-package org.repeid.provider;
+package org.repeid.connections.jpa;
+
+import javax.persistence.EntityManager;
+
+import org.repeid.provider.Provider;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DefaultProviderLoaderFactory implements ProviderLoaderFactory {
+public interface JpaConnectionProvider extends Provider {
 
-    @Override
-    public boolean supports(String type) {
-        return false;
-    }
-
-    @Override
-    public ProviderLoader create(ClassLoader baseClassLoader, String resource) {
-        return new DefaultProviderLoader(baseClassLoader);
-    }
+    EntityManager getEntityManager();
 
 }

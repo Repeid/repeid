@@ -15,41 +15,29 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
+package org.repeid.connections.jpa;
 
-import org.repeid.provider.Provider;
-import org.repeid.provider.ProviderFactory;
-import org.repeid.provider.Spi;
+import javax.persistence.EntityManager;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class JpaConnectionSpi implements Spi {
+public class DefaultJpaConnectionProvider implements JpaConnectionProvider {
 
-    /*@Override
-    public boolean isInternal() {
-        return true;
-    }*/
+    private final EntityManager em;
 
-    @Override
-    public String getName() {
-        return "connectionsJpa";
+    public DefaultJpaConnectionProvider(EntityManager em) {
+        this.em = em;
     }
 
     @Override
-    public Class<? extends Provider> getProviderClass() {
-        return JpaConnectionProvider.class;
+    public EntityManager getEntityManager() {
+        return em;
     }
 
     @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return JpaConnectionProviderFactory.class;
-    }
-
-    @Override
-    public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
+    public void close() {
+        em.close();
     }
 
 }

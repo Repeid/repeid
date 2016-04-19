@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.connections.jpa;
+package org.repeid.connections.jpa;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
