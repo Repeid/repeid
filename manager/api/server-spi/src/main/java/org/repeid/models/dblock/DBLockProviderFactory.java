@@ -17,7 +17,7 @@
 
 package org.repeid.models.dblock;
 
-import org.repeid.provider.ProviderFactory;
+import org.keycloak.provider.ProviderFactory;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>

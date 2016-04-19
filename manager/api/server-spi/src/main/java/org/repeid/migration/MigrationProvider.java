@@ -15,34 +15,25 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.migration;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.repeid.models.ProtocolMapperModel;
+import org.repeid.models.RealmModel;
+import org.repeid.provider.Provider;
+import org.repeid.representations.idm.ProtocolMapperRepresentation;
 
-/**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
- */
-public class DBLockSpi implements Spi {
+import java.util.List;
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
+public interface MigrationProvider extends Provider {
 
-    @Override
-    public String getName() {
-        return "dblock";
-    }
+    /**
+     * @param claimMask mask used on ClientModel in 1.1.0
+     * @return set of 1.2.0.Beta1 protocol mappers corresponding to given claimMask
+     */
+    List<ProtocolMapperRepresentation> getMappersForClaimMask(Long claimMask);
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
+    List<ProtocolMapperModel> getBuiltinMappers(String protocol);
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
+    void setupAdminCli(RealmModel realm);
+
 }

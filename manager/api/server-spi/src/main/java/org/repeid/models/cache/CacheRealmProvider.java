@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.models.cache;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.keycloak.models.RealmProvider;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
+ * @version $Revision: 1 $
  */
-public class DBLockSpi implements Spi {
+public interface CacheRealmProvider extends RealmProvider {
+    void clear();
+    RealmProvider getDelegate();
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
+    void registerRealmInvalidation(String id);
 
-    @Override
-    public String getName() {
-        return "dblock";
-    }
+    void registerClientInvalidation(String id);
+    void registerClientTemplateInvalidation(String id);
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
+    void registerRoleInvalidation(String id);
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
+    void registerGroupInvalidation(String id);
 }

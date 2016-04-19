@@ -17,7 +17,7 @@
 
 package org.repeid.models.utils;
 
-import org.repeid.provider.ProviderEvent;
+import org.keycloak.provider.ProviderEvent;
 
 /**
  * Executed at startup after model migration is finished

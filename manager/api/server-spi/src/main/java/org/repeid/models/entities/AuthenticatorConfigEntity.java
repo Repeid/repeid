@@ -15,34 +15,31 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.models.entities;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import java.util.Map;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
+ * @version $Revision: 1 $
  */
-public class DBLockSpi implements Spi {
+public class AuthenticatorConfigEntity extends AbstractIdentifiableEntity{
+    protected String alias;
+    protected Map<String, String> config;
 
-    @Override
-    public boolean isInternal() {
-        return true;
+    public String getAlias() {
+        return alias;
     }
 
-    @Override
-    public String getName() {
-        return "dblock";
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
+    public Map<String, String> getConfig() {
+        return config;
     }
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
+    public void setConfig(Map<String, String> config) {
+        this.config = config;
     }
 }

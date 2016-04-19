@@ -15,34 +15,17 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.models.utils;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.keycloak.models.RealmModel;
+import org.keycloak.representations.idm.RealmRepresentation;
 
 /**
+ * Helper interface used just because RealmManager is in keycloak-services and not accessible for ImportUtils
+ *
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  */
-public class DBLockSpi implements Spi {
+public interface RealmImporter {
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
-
-    @Override
-    public String getName() {
-        return "dblock";
-    }
-
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
+    RealmModel importRealm(RealmRepresentation rep);
 }

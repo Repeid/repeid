@@ -15,34 +15,47 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
-
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+package org.repeid.models.entities;
 
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  */
-public class DBLockSpi implements Spi {
+public class RequiredCredentialEntity {
 
-    @Override
-    public boolean isInternal() {
-        return true;
+    private String type;
+    private boolean input;
+    private boolean secret;
+    private String formLabel;
+
+    public String getType() {
+        return type;
     }
 
-    @Override
-    public String getName() {
-        return "dblock";
+    public void setType(String type) {
+        this.type = type;
     }
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
+    public boolean isInput() {
+        return input;
     }
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
+    public void setInput(boolean input) {
+        this.input = input;
+    }
+
+    public boolean isSecret() {
+        return secret;
+    }
+
+    public void setSecret(boolean secret) {
+        this.secret = secret;
+    }
+
+    public String getFormLabel() {
+        return formLabel;
+    }
+
+    public void setFormLabel(String formLabel) {
+        this.formLabel = formLabel;
     }
 }

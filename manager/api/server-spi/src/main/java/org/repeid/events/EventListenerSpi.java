@@ -15,34 +15,35 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.events;
 
 import org.keycloak.provider.Provider;
 import org.keycloak.provider.ProviderFactory;
 import org.keycloak.provider.Spi;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DBLockSpi implements Spi {
+public class EventListenerSpi implements Spi {
 
     @Override
     public boolean isInternal() {
-        return true;
+        return false;
     }
 
     @Override
     public String getName() {
-        return "dblock";
+        return "eventsListener";
     }
 
     @Override
     public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
+        return EventListenerProvider.class;
     }
 
     @Override
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
+        return EventListenerProviderFactory.class;
     }
+
 }

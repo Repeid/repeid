@@ -15,34 +15,26 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.models.utils.reflection;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * A criteria that matches a property based on its annotations
+ *
+ * @see PropertyCriteria
  */
-public class DBLockSpi implements Spi {
+public class AnnotatedPropertyCriteria implements PropertyCriteria {
+    private final Class<? extends Annotation> annotationClass;
 
-    @Override
-    public boolean isInternal() {
-        return true;
+    public AnnotatedPropertyCriteria(Class<? extends Annotation> annotationClass) {
+        this.annotationClass = annotationClass;
     }
 
     @Override
-    public String getName() {
-        return "dblock";
+    public boolean methodMatches(Method m) {
+        return m.isAnnotationPresent(annotationClass);
     }
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
 }

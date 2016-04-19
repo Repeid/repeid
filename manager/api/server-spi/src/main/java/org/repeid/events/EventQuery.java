@@ -15,34 +15,34 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.events;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import java.util.Date;
+import java.util.List;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DBLockSpi implements Spi {
+public interface EventQuery {
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
+    public EventQuery type(EventType... types);
 
-    @Override
-    public String getName() {
-        return "dblock";
-    }
+    public EventQuery realm(String realmId);
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
+    public EventQuery client(String clientId);
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
+    public EventQuery user(String userId);
+
+    public EventQuery fromDate(Date fromDate);
+
+    public EventQuery toDate(Date toDate);
+
+    public EventQuery ipAddress(String ipAddress);
+
+    public EventQuery firstResult(int result);
+
+    public EventQuery maxResults(int results);
+
+    public List<Event> getResultList();
+
 }

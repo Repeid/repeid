@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.models.utils;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.keycloak.models.RealmModel;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class DBLockSpi implements Spi {
+public class RealmInfoUtil {
 
-    @Override
-    public boolean isInternal() {
-        return true;
+    public static int getDettachedClientSessionLifespan(RealmModel realm) {
+        int lifespan = realm.getAccessCodeLifespanLogin();
+        if (realm.getAccessCodeLifespanUserAction() > lifespan) {
+            lifespan = realm.getAccessCodeLifespanUserAction();
+        }
+        if (realm.getAccessCodeLifespan() > lifespan) {
+            lifespan = realm.getAccessCodeLifespan();
+        }
+        return lifespan;
     }
 
-    @Override
-    public String getName() {
-        return "dblock";
-    }
-
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
 }

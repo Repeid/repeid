@@ -14,35 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.repeid.models.dblock;
-
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+package org.repeid.models.entities;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author pedroigor
  */
-public class DBLockSpi implements Spi {
+public class ClientIdentityProviderMappingEntity extends AbstractIdentifiableEntity {
 
-    @Override
-    public boolean isInternal() {
-        return true;
+    protected boolean retrieveToken;
+
+    public boolean isRetrieveToken() {
+        return this.retrieveToken;
     }
 
-    @Override
-    public String getName() {
-        return "dblock";
+    public void setRetrieveToken(boolean retrieveToken) {
+        this.retrieveToken = retrieveToken;
     }
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
 }

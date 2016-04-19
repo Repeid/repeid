@@ -17,7 +17,7 @@
 
 package org.repeid.models.dblock;
 
-import org.repeid.provider.Provider;
+import org.keycloak.provider.Provider;
 
 /**
  * Global database lock to ensure that some actions in DB can be done just be one cluster node at a time.

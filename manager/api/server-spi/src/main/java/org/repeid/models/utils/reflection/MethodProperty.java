@@ -15,34 +15,11 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
+package org.repeid.models.utils.reflection;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import java.lang.reflect.Method;
 
-/**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
- */
-public class DBLockSpi implements Spi {
+public interface MethodProperty<V> extends Property<V> {
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
-
-    @Override
-    public String getName() {
-        return "dblock";
-    }
-
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
+    Method getAnnotatedElement();
 }

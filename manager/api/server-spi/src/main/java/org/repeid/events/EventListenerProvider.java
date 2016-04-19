@@ -17,8 +17,8 @@
 
 package org.repeid.events;
 
-import org.repeid.provider.Provider;
-import org.repeid.events.admin.AdminEvent;
+import org.keycloak.events.admin.AdminEvent;
+import org.keycloak.provider.Provider;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

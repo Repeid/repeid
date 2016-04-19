@@ -15,34 +15,28 @@
  * limitations under the License.
  */
 
-package org.repeid.models.dblock;
-
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+package org.repeid.models.utils.reflection;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * Utilities for working with property queries
+ *
+ * @see PropertyQuery
  */
-public class DBLockSpi implements Spi {
+public class PropertyQueries {
 
-    @Override
-    public boolean isInternal() {
-        return true;
+    private PropertyQueries() {
     }
 
-    @Override
-    public String getName() {
-        return "dblock";
+    /**
+     * Create a new {@link PropertyQuery}
+     *
+     * @param <V>
+     * @param targetClass
+     *
+     * @return
+     */
+    public static <V> PropertyQuery<V> createQuery(Class<?> targetClass) {
+        return new PropertyQuery<V>(targetClass);
     }
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return DBLockProvider.class;
-    }
-
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return DBLockProviderFactory.class;
-    }
 }
