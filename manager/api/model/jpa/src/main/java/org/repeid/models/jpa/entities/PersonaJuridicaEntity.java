@@ -100,7 +100,7 @@ public class PersonaJuridicaEntity extends PersonEntity implements Serializable 
 	@NotNull
 	@OneToOne
 	@JoinColumn(name = "representante_legal_id", foreignKey = @ForeignKey )
-	private PersonaNaturalEntity representanteLegal;
+	private NaturalPersonEntity representanteLegal;
 
 	public PersonaJuridicaEntity() {
 		super();
@@ -162,11 +162,11 @@ public class PersonaJuridicaEntity extends PersonEntity implements Serializable 
 		this.finLucro = finLucro;
 	}
 
-	public PersonaNaturalEntity getRepresentanteLegal() {
+	public NaturalPersonEntity getRepresentanteLegal() {
 		return representanteLegal;
 	}
 
-	public void setRepresentanteLegal(PersonaNaturalEntity representanteLegal) {
+	public void setRepresentanteLegal(NaturalPersonEntity representanteLegal) {
 		this.representanteLegal = representanteLegal;
 	}
 

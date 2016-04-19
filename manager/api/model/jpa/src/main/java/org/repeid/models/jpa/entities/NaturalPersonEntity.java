@@ -18,6 +18,7 @@
 package org.repeid.models.jpa.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -42,18 +43,13 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 @Entity
-@Table(name = "PERSONA_NATURAL")
+@Table(name = "NATURAL_PERSON")
 @NamedQueries(value = {
-		@NamedQuery(name = "PersonaNaturalEntity.findAll", query = "SELECT p FROM PersonaNaturalEntity p"),
-		@NamedQuery(name = "PersonaNaturalEntity.findByTipoDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
-		@NamedQuery(name = "PersonaNaturalEntity.findByTipoNumeroDocumento", query = "SELECT p FROM PersonaNaturalEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
-		@NamedQuery(name = "PersonaNaturalEntity.findByFilterText", query = "SELECT p FROM PersonaNaturalEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.apellidoPaterno) LIKE :filterText OR LOWER(p.apellidoMaterno) LIKE :filterText OR LOWER(p.nombres) LIKE :filterText") })
-public class PersonaNaturalEntity extends PersonEntity implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+		@NamedQuery(name = "NaturalPersonEntity.findAll", query = "SELECT p FROM NaturalPersonEntity p"),
+		@NamedQuery(name = "NaturalPersonEntity.findByTipoDocumento", query = "SELECT p FROM NaturalPersonEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento"),
+		@NamedQuery(name = "NaturalPersonEntity.findByTipoNumeroDocumento", query = "SELECT p FROM NaturalPersonEntity p INNER JOIN p.tipoDocumento t WHERE t.abreviatura = :tipoDocumento AND p.numeroDocumento = :numeroDocumento"),
+		@NamedQuery(name = "NaturalPersonEntity.findByFilterText", query = "SELECT p FROM NaturalPersonEntity p WHERE LOWER(p.numeroDocumento) LIKE :filterText OR LOWER(p.apellidoPaterno) LIKE :filterText OR LOWER(p.apellidoMaterno) LIKE :filterText OR LOWER(p.nombres) LIKE :filterText") })
+public class NaturalPersonEntity extends PersonEntity implements Serializable {
 
 	@Id
 	@Access(AccessType.PROPERTY) // we do this because relationships often fetch id, but not entity.  This avoids an extra SQL
@@ -63,53 +59,43 @@ public class PersonaNaturalEntity extends PersonEntity implements Serializable {
 	private String id;
 
 	@NotNull
-	@Size(min = 1, max = 50)
+	@Size(min = 1, max = 70)
 	@NotBlank
-	@Column(name = "apellido_paterno")
-	private String apellidoPaterno;
-
-	@NotNull
-	@Size(min = 1, max = 50)
-	@NotBlank
-	@Column(name = "apellido_materno")
-	private String apellidoMaterno;
+	@Column(name = "first_name")
+	private String firstName;
 
 	@NotNull
 	@Size(min = 1, max = 70)
 	@NotBlank
-	@Column(name = "nombres")
-	private String nombres;
+	@Column(name = "middle_name")
+	private String middleName;
+
+	@NotNull
+	@Size(min = 1, max = 70)
+	@NotBlank
+	@Column(name = "last_name")
+	private String lastName;
 
 	@NotNull
 	@Past
-	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_nacimiento")
-	private Date fechaNacimiento;
+	@Column(name = "date_birth")
+	private LocalDate date_bith;
 
 	@NotNull
 	@Size(min = 1, max = 50)
-	@Column(name = "sexo")
-	private String sexo;
+	@Column(name = "gender")
+	private String gender;
 
 	@Size(min = 1, max = 50)
-	@Column(name = "estado_civil")
-	private String estadoCivil;
+	@Column(name = "marriage_status")
+	private String marriageStatus;
 
 	@Size(min = 0, max = 70)
-	@Column(name = "ocupacion")
-	private String ocupacion;
-	
-	public PersonaNaturalEntity() {
-		super();
-	}
+	@Column(name = "job")
+	private String job;
 
-	public PersonaNaturalEntity(String id) {
+	public NaturalPersonEntity() {
 		super();
-		this.id = id;
-	}
-
-	public PersonaNaturalEntity(DocumentEntity tipoDocumento, String numeroDocumento) {
-		super(tipoDocumento, numeroDocumento);
 	}
 
 	public String getId() {
@@ -120,61 +106,61 @@ public class PersonaNaturalEntity extends PersonEntity implements Serializable {
 		this.id = id;
 	}
 
-	public String getApellidoPaterno() {
-		return apellidoPaterno;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getApellidoMaterno() {
-		return apellidoMaterno;
+	public String getMiddleName() {
+		return middleName;
 	}
 
-	public void setApellidoMaterno(String apellidoMaterno) {
-		this.apellidoMaterno = apellidoMaterno;
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
-	public String getNombres() {
-		return nombres;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setNombres(String nombres) {
-		this.nombres = nombres;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public Date getFechaNacimiento() {
-		return fechaNacimiento;
+	public LocalDate getDate_bith() {
+		return date_bith;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+	public void setDate_bith(LocalDate date_bith) {
+		this.date_bith = date_bith;
 	}
 
-	public String getSexo() {
-		return sexo;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
-	public String getEstadoCivil() {
-		return estadoCivil;
+	public String getMarriageStatus() {
+		return marriageStatus;
 	}
 
-	public void setEstadoCivil(String estadoCivil) {
-		this.estadoCivil = estadoCivil;
+	public void setMarriageStatus(String marriageStatus) {
+		this.marriageStatus = marriageStatus;
 	}
 
-	public String getOcupacion() {
-		return ocupacion;
+	public String getJob() {
+		return job;
 	}
 
-	public void setOcupacion(String ocupacion) {
-		this.ocupacion = ocupacion;
-	}	
+	public void setJob(String job) {
+		this.job = job;
+	}
 
 	@Override
 	public String toString() {
@@ -198,9 +184,9 @@ public class PersonaNaturalEntity extends PersonEntity implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof PersonaNaturalEntity))
+		if (!(obj instanceof NaturalPersonEntity))
 			return false;
-		PersonaNaturalEntity other = (PersonaNaturalEntity) obj;
+		NaturalPersonEntity other = (NaturalPersonEntity) obj;
 		if (numeroDocumento == null) {
 			if (other.numeroDocumento != null)
 				return false;

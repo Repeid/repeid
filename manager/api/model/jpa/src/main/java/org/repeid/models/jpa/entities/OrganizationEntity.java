@@ -26,10 +26,10 @@ public class OrganizationEntity {
     protected Collection<DocumentEntity> documents = new ArrayList<>();
 
     @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
-    protected Collection<PersonaNaturalEntity> naturalPersons = new ArrayList<>();
+    protected Collection<NaturalPersonEntity> naturalPersons = new ArrayList<>();
 
     @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
-    protected Collection<PersonaNaturalEntity> legalPersons = new ArrayList<>();
+    protected Collection<NaturalPersonEntity> legalPersons = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -63,19 +63,19 @@ public class OrganizationEntity {
         this.documents = documents;
     }
 
-    public Collection<PersonaNaturalEntity> getNaturalPersons() {
+    public Collection<NaturalPersonEntity> getNaturalPersons() {
         return naturalPersons;
     }
 
-    public void setNaturalPersons(Collection<PersonaNaturalEntity> naturalPersons) {
+    public void setNaturalPersons(Collection<NaturalPersonEntity> naturalPersons) {
         this.naturalPersons = naturalPersons;
     }
 
-    public Collection<PersonaNaturalEntity> getLegalPersons() {
+    public Collection<NaturalPersonEntity> getLegalPersons() {
         return legalPersons;
     }
 
-    public void setLegalPersons(Collection<PersonaNaturalEntity> legalPersons) {
+    public void setLegalPersons(Collection<NaturalPersonEntity> legalPersons) {
         this.legalPersons = legalPersons;
     }
 
