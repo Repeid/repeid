@@ -17,13 +17,10 @@
 
 package org.repeid.connections.jpa.updater.liquibase.conn;
 
-import org.keycloak.provider.Provider;
-import org.keycloak.provider.ProviderFactory;
-import org.keycloak.provider.Spi;
+import org.repeid.provider.Provider;
+import org.repeid.provider.ProviderFactory;
+import org.repeid.provider.Spi;
 
-/**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
- */
 public class LiquibaseConnectionSpi implements Spi {
 
     @Override
@@ -45,4 +42,5 @@ public class LiquibaseConnectionSpi implements Spi {
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
         return LiquibaseConnectionProviderFactory.class;
     }
+
 }

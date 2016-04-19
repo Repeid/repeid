@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.hibernate.ejb.AvailableSettings;
 import org.jboss.logging.Logger;
 import org.repeid.Config;
+import org.repeid.connections.jpa.updater.JpaUpdaterProvider;
 import org.repeid.connections.jpa.util.JpaUtils;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
@@ -21,7 +22,7 @@ import org.repeid.timer.TimerProvider;
 
 public class DefaultJpaConnectionProviderFactory implements JpaConnectionProviderFactory, ServerInfoAwareProviderFactory {
 
-    private static final Logger logger = Logger.getLogger(org.keycloak.connections.jpa.DefaultJpaConnectionProviderFactory.class);
+    private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProviderFactory.class);
 
     private volatile EntityManagerFactory emf;
 
@@ -96,7 +97,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 
                     String schema = getSchema();
                     if (schema != null) {
-                        properties.put(org.keycloak.connections.jpa.util.JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
+                        properties.put(JpaUtils.HIBERNATE_DEFAULT_SCHEMA, schema);
                     }
 
 
@@ -163,7 +164,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
                         }
 
                         logger.trace("Creating EntityManagerFactory");
-                        emf = org.keycloak.connections.jpa.util.JpaUtils.createEntityManagerFactory(unitName, properties, getClass().getClassLoader());
+                        emf = JpaUtils.createEntityManagerFactory(unitName, properties, getClass().getClassLoader());
                         logger.trace("EntityManagerFactory created");
 
                         if (globalStatsInterval != -1) {

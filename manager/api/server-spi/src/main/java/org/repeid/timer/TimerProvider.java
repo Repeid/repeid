@@ -17,7 +17,8 @@
 
 package org.repeid.timer;
 
-import org.keycloak.provider.Provider;
+
+import org.repeid.provider.Provider;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>

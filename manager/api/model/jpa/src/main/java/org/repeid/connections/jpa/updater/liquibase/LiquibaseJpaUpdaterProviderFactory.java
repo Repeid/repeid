@@ -1,35 +1,15 @@
-/*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.repeid.connections.jpa.updater.liquibase;
 
-import org.keycloak.Config;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
+import org.repeid.Config;
+import org.repeid.models.RepeidSession;
+import org.repeid.models.RepeidSessionFactory;
 import org.repeid.connections.jpa.updater.JpaUpdaterProvider;
 import org.repeid.connections.jpa.updater.JpaUpdaterProviderFactory;
 
-/**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
- */
 public class LiquibaseJpaUpdaterProviderFactory implements JpaUpdaterProviderFactory {
 
     @Override
-    public JpaUpdaterProvider create(KeycloakSession session) {
+    public JpaUpdaterProvider create(RepeidSession session) {
         return new LiquibaseJpaUpdaterProvider(session);
     }
 
@@ -38,7 +18,7 @@ public class LiquibaseJpaUpdaterProviderFactory implements JpaUpdaterProviderFac
     }
 
     @Override
-    public void postInit(KeycloakSessionFactory factory) {
+    public void postInit(RepeidSessionFactory factory) {
 
     }
 
