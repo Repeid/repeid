@@ -17,70 +17,58 @@
 
 package org.repeid.models.jpa;
 
+
 import java.util.List;
 
+import org.jboss.logging.Logger;
 import org.repeid.models.OrganizationModel;
+import org.repeid.models.RepeidSession;
 import org.repeid.models.jpa.entities.OrganizationEntity;
 
-/**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
- */
+import javax.persistence.EntityManager;
+
 public class OrganizationAdapter implements OrganizationModel, JpaModel<OrganizationEntity> {
+
+    protected static final Logger logger = Logger.getLogger(OrganizationAdapter.class);
+    protected OrganizationEntity organization;
+    protected EntityManager em;
+
+    protected RepeidSession session;
+
+    public OrganizationAdapter(RepeidSession session, EntityManager em, OrganizationEntity realm) {
+        this.session = session;
+        this.em = em;
+        this.organization = organization;
+    }
 
     @Override
     public OrganizationEntity getEntity() {
-        // TODO Auto-generated method stub
-        return null;
+        return organization;
     }
 
     @Override
     public String getId() {
-        // TODO Auto-generated method stub
-        return null;
+       return organization.getId();
     }
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return organization.getName();
     }
 
     @Override
     public void setName(String name) {
-        // TODO Auto-generated method stub
-        
+        organization.setName(name);
     }
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return false;
+        return organization.isEnabled();
     }
 
     @Override
     public void setEnabled(boolean enabled) {
-        // TODO Auto-generated method stub
-        
+        organization.setEnabled(enabled);
     }
-
-    @Override
-    public List<String> getDefaultRoles() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void addDefaultRole(String name) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void updateDefaultRoles(String[] defaultRoles) {
-        // TODO Auto-generated method stub
-        
-    }
-   
 
 }
