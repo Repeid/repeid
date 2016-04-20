@@ -13,8 +13,8 @@ public interface AdminRoot {
     /**
      * Convenience path to master organization admin console
      *
-     * @exclude
      * @return
+     * @exclude
      */
     @GET
     public Response masterRealmAdminConsoleRedirect();
@@ -22,21 +22,20 @@ public interface AdminRoot {
     /**
      * Convenience path to master organization admin console
      *
-     * @exclude
      * @return
+     * @exclude
      */
     @Path("index.{html:html}") // expression is actually "index.html" but this
-                               // is a hack to get around jax-doclet bug
+    // is a hack to get around jax-doclet bug
     @GET
     public Response masterRealmAdminConsoleRedirectHtml();
 
     /**
      * path to organization admin console ui
      *
-     * @exclude
-     * @param name
-     *            Organizacion name (not id!)
+     * @param name Organizacion name (not id!)
      * @return
+     * @exclude
      */
     @Path("{organization}/console")
     public AdminConsole getAdminConsole(final @PathParam("organization") String name);

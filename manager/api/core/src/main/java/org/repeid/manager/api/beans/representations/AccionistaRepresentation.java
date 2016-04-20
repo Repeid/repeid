@@ -1,14 +1,14 @@
 /*******************************************************************************
  * Repeid, Home of Professional Open Source
- *
+ * <p>
  * Copyright 2015 Sistcoop, Inc. and/or its affiliates.
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,37 +25,37 @@ import java.math.BigDecimal;
  */
 public class AccionistaRepresentation implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String id;
-	private PersonaNaturalRepresentation personaNatural;
-	private BigDecimal porcentajeParticipacion;
+    private String id;
+    private PersonaNaturalRepresentation personaNatural;
+    private BigDecimal porcentajeParticipacion;
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public BigDecimal getPorcentajeParticipacion() {
-		return porcentajeParticipacion;
-	}
+    public BigDecimal getPorcentajeParticipacion() {
+        return porcentajeParticipacion;
+    }
 
-	public void setPorcentajeParticipacion(BigDecimal porcentajeParticipacion) {
-		this.porcentajeParticipacion = porcentajeParticipacion;
-	}
+    public void setPorcentajeParticipacion(BigDecimal porcentajeParticipacion) {
+        this.porcentajeParticipacion = porcentajeParticipacion;
+    }
 
-	public PersonaNaturalRepresentation getPersonaNatural() {
-		return personaNatural;
-	}
+    public PersonaNaturalRepresentation getPersonaNatural() {
+        return personaNatural;
+    }
 
-	public void setPersonaNatural(PersonaNaturalRepresentation personaNatural) {
-		this.personaNatural = personaNatural;
-	}
+    public void setPersonaNatural(PersonaNaturalRepresentation personaNatural) {
+        this.personaNatural = personaNatural;
+    }
 
 }

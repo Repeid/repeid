@@ -95,7 +95,6 @@ public interface OrganizationAdminResource {
 
     /**
      * Delete the realm
-     *
      */
     @DELETE
     public void deleteRealm();
@@ -153,7 +152,7 @@ public interface OrganizationAdminResource {
 
     /**
      * Get client session stats
-     *
+     * <p>
      * Returns a JSON map. The key is the client id, the value is the number of
      * sessions that currently are active with that client. Only clients that
      * actually have a session associated with them will be in this map.
@@ -301,7 +300,6 @@ public interface OrganizationAdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("default-groups")
     public List<GroupRepresentation> getDefaultGroups();*/
-
     @PUT
     @NoCache
     @Path("default-groups/{groupId}")
@@ -334,7 +332,6 @@ public interface OrganizationAdminResource {
 
     /**
      * Clear realm cache
-     *
      */
     @Path("clear-realm-cache")
     @POST
@@ -342,7 +339,6 @@ public interface OrganizationAdminResource {
 
     /**
      * Clear user cache
-     *
      */
     @Path("clear-user-cache")
     @POST

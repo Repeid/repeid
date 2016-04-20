@@ -12,29 +12,29 @@ import org.repeid.services.resources.admin.DocumentsResource;
 
 public class DocumentsResourceImpl implements DocumentsResource {
 
-	@Override
-	public DocumentResource tipoDocumento(String tipoDocumentoId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public DocumentResource tipoDocumento(String tipoDocumentoId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Response create(TipoDocumentoRepresentation rep) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Response create(TipoDocumentoRepresentation rep) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion, String tipoPersona,
-			Boolean estado, String filterText, Integer firstResult, Integer maxResults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<TipoDocumentoRepresentation> search(String abreviatura, String denominacion, String tipoPersona,
+                                                    Boolean estado, String filterText, Integer firstResult, Integer maxResults) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

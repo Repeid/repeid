@@ -96,7 +96,7 @@ public class CustomLockService extends StandardLockService {
         while (nextAttempt) {
             locked = acquireLock();
             if (!locked) {
-                int remainingTime = ((int)(timeToGiveUp / 1000)) - Time.currentTime();
+                int remainingTime = ((int) (timeToGiveUp / 1000)) - Time.currentTime();
                 if (remainingTime > 0) {
                     log.debugf("Will try to acquire log another time. Remaining time: %d seconds", remainingTime);
                 } else {
@@ -108,7 +108,7 @@ public class CustomLockService extends StandardLockService {
         }
 
         if (!locked) {
-            int timeout = ((int)(getChangeLogLockWaitTime() / 1000));
+            int timeout = ((int) (getChangeLogLockWaitTime() / 1000));
             throw new IllegalStateException("Could not acquire change log lock within specified timeout " + timeout + " seconds.  Currently locked by other transaction");
         }
     }

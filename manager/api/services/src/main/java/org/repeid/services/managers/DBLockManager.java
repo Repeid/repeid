@@ -39,7 +39,7 @@ public class DBLockManager {
 
 
     public void checkForcedUnlock() {
-        if (Boolean.getBoolean("keycloak.dblock.forceUnlock")) {
+        if (Boolean.getBoolean("repeid.dblock.forceUnlock")) {
             DBLockProvider lock = getDBLock();
             if (lock.supportsForcedUnlock()) {
                 logger.forcedReleaseDBLock();

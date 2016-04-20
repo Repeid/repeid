@@ -23,7 +23,6 @@ public interface ProviderFactory<T extends Provider> {
 
     /**
      * This is called when the server shuts down.
-     *
      */
     public void close();
 

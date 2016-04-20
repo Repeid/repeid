@@ -26,8 +26,8 @@ public class LegalPersonsResourceImpl implements LegalPersonsResource {
 
     @Override
     public List<PersonaJuridicaRepresentation> search(String tipoDocumento, String numeroDocumento,
-            String razonSocial, String nombreComercial, String filterText, Integer firstResult,
-            Integer maxResults) {
+                                                      String razonSocial, String nombreComercial, String filterText, Integer firstResult,
+                                                      Integer maxResults) {
         // TODO Auto-generated method stub
         return null;
     }

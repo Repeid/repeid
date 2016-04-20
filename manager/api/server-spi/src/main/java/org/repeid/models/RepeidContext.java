@@ -32,7 +32,7 @@ public interface RepeidContext {
 
     void setConnection(ClientConnection connection);
 
-    //RealmImporter getRealmManager();
+    //OrganizationImporter getRealmManager();
 
     //Locale resolveLocale(UserModel user);
 

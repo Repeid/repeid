@@ -108,7 +108,7 @@ public class DefaultLiquibaseConnectionProvider implements LiquibaseConnectionPr
             database.setDefaultSchemaName(defaultSchema);
         }
 
-        String changelog = (database instanceof DB2Database) ? LiquibaseJpaUpdaterProvider.DB2_CHANGELOG :  LiquibaseJpaUpdaterProvider.CHANGELOG;
+        String changelog = (database instanceof DB2Database) ? LiquibaseJpaUpdaterProvider.DB2_CHANGELOG : LiquibaseJpaUpdaterProvider.CHANGELOG;
         logger.debugf("Using changelog file: %s", changelog);
 
         return new Liquibase(changelog, new ClassLoaderResourceAccessor(getClass().getClassLoader()), database);

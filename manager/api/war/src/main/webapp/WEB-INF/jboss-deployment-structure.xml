@@ -2,7 +2,7 @@
     <deployment>
         <!-- 
         <dependencies>
-            <module name="org.keycloak.keycloak-server-subsystem.dependencies"/>
+            <module name="org.repeidepeid-server-subsystem.dependencies"/>
         </dependencies> -->
         <exclude-subsystems>
             <subsystem name="webservices"/>

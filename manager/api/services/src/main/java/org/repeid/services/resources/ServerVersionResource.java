@@ -13,13 +13,13 @@ import org.repeid.manager.api.beans.representations.VersionRepresentation;
 @Path("/version")
 public interface ServerVersionResource {
 
-	@OPTIONS
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getVersionPreflight();
+    @OPTIONS
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getVersionPreflight();
 
-	@GET
-	@NoCache
-	@Produces(MediaType.APPLICATION_JSON)
-	public VersionRepresentation getVersion();
+    @GET
+    @NoCache
+    @Produces(MediaType.APPLICATION_JSON)
+    public VersionRepresentation getVersion();
 
 }

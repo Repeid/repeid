@@ -34,7 +34,7 @@ public class DefaultRepeidSession implements RepeidSession {
     private LegalPersonProvider legalPersonProvider;
 
     private RepeidContext context;
-    
+
     public DefaultRepeidSession(DefaultRepeidSessionFactory factory) {
         this.factory = factory;
         this.transactionManager = new DefaultRepeidTransactionManager();
@@ -45,10 +45,10 @@ public class DefaultRepeidSession implements RepeidSession {
     public RepeidContext getContext() {
         return context;
     }
-    
+
     /**
      * @return RepeidTransactionManager return transaction manager associate to
-     *         the session.
+     * the session.
      */
     @Override
     public RepeidTransactionManager getTransaction() {
@@ -56,9 +56,8 @@ public class DefaultRepeidSession implements RepeidSession {
     }
 
     /**
-     * @param provider
-     *            added to invoke close method of the provider on
-     *            DefaultRepeidSession close.
+     * @param provider added to invoke close method of the provider on
+     *                 DefaultRepeidSession close.
      */
     @Override
     public void enlistForClose(Provider provider) {
@@ -66,9 +65,8 @@ public class DefaultRepeidSession implements RepeidSession {
     }
 
     /**
-     * @param clazz
-     *            return provider for the given class. If the provider don't
-     *            exists then this method create it and save on local variable.
+     * @param clazz return provider for the given class. If the provider don't
+     *              exists then this method create it and save on local variable.
      */
     @Override
     public <T extends Provider> T getProvider(Class<T> clazz) {
@@ -86,9 +84,8 @@ public class DefaultRepeidSession implements RepeidSession {
 
     /**
      * @param clazz
-     * @param id
-     *            return provider for the given class. If the provider don't
-     *            exists then this method create it and save on local variable.
+     * @param id    return provider for the given class. If the provider don't
+     *              exists then this method create it and save on local variable.
      */
     @Override
     public <T extends Provider> T getProvider(Class<T> clazz, String id) {
@@ -105,8 +102,7 @@ public class DefaultRepeidSession implements RepeidSession {
     }
 
     /**
-     * @param clazz
-     *            return all the provider's id for the given class.
+     * @param clazz return all the provider's id for the given class.
      */
     @Override
     public <T extends Provider> Set<String> listProviderIds(Class<T> clazz) {
@@ -114,8 +110,7 @@ public class DefaultRepeidSession implements RepeidSession {
     }
 
     /**
-     * @param clazz
-     *            return all the provider's class for the given class.
+     * @param clazz return all the provider's class for the given class.
      */
     @Override
     public <T extends Provider> Set<T> getAllProviders(Class<T> clazz) {

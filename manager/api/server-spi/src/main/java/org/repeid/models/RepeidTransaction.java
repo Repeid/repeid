@@ -1,15 +1,15 @@
 package org.repeid.models;
 
 public interface RepeidTransaction {
-	void begin();
+    void begin();
 
-	void commit();
+    void commit();
 
-	void rollback();
+    void rollback();
 
-	void setRollbackOnly();
+    void setRollbackOnly();
 
-	boolean getRollbackOnly();
+    boolean getRollbackOnly();
 
-	boolean isActive();
+    boolean isActive();
 }

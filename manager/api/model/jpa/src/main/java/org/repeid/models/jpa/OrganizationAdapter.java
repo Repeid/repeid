@@ -48,7 +48,7 @@ public class OrganizationAdapter implements OrganizationModel, JpaModel<Organiza
 
     @Override
     public String getId() {
-       return organization.getId();
+        return organization.getId();
     }
 
     @Override

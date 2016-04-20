@@ -23,7 +23,7 @@ public class CustomLockDatabaseChangeLogGenerator extends LockDatabaseChangeLogG
 
         Sql selectForUpdateSql = generateSelectForUpdate(database);
 
-        return new Sql[] { selectForUpdateSql };
+        return new Sql[]{selectForUpdateSql};
     }
 
 
@@ -33,7 +33,7 @@ public class CustomLockDatabaseChangeLogGenerator extends LockDatabaseChangeLogG
         String rawLockTableName = database.getDatabaseChangeLogLockTableName();
 
         String lockTableName = database.escapeTableName(catalog, schema, rawLockTableName);
-        String idColumnName  = database.escapeColumnName(catalog, schema, rawLockTableName, "ID");
+        String idColumnName = database.escapeColumnName(catalog, schema, rawLockTableName, "ID");
 
         String sqlBase = "SELECT " + idColumnName + " FROM " + lockTableName;
         String sqlWhere = " WHERE " + idColumnName + "=1";
@@ -45,14 +45,14 @@ public class CustomLockDatabaseChangeLogGenerator extends LockDatabaseChangeLogG
         } else if (database instanceof MSSQLDatabase) {
             sql = sqlBase + " WITH (UPDLOCK, ROWLOCK)" + sqlWhere;
         } else if (database instanceof DB2Database) {
-            sql = sqlBase + sqlWhere +  " FOR READ ONLY WITH RS USE AND KEEP UPDATE LOCKS";
+            sql = sqlBase + sqlWhere + " FOR READ ONLY WITH RS USE AND KEEP UPDATE LOCKS";
         } else {
             sql = sqlBase + sqlWhere;
             logger.warnf("No direct support for database %s . Database lock may not work correctly", database.getClass().getName());
         }
 
         logger.debugf("SQL command for pessimistic lock: %s", sql);
-        
+
         return new UnparsedSql(sql);
     }
 

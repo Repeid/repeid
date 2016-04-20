@@ -1,14 +1,14 @@
 /*******************************************************************************
  * Repeid, Home of Professional Open Source
- *
+ * <p>
  * Copyright 2015 Sistcoop, Inc. and/or its affiliates.
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,12 +19,12 @@ package org.repeid.manager.api.beans.representations.security;
 
 /**
  * A list of all the permissions supported by the system.
- * 
+ *
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
  */
 public enum PermissionType {
-    
-	documentoView, documentoEdit,  documentoAdmin,
-	personaView,   personaEdit,    personaAdmin
-    
+
+    documentoView, documentoEdit, documentoAdmin,
+    personaView, personaEdit, personaAdmin
+
 }

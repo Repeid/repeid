@@ -28,7 +28,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 
     private Config.Scope config;
 
-    private Map<String,String> operationalInfo;
+    private Map<String, String> operationalInfo;
 
     @Override
     public JpaConnectionProvider create(RepeidSession session) {
@@ -118,7 +118,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
                     properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
 
                     connection = getConnection();
-                    try{
+                    try {
                         prepareOperationalInfo(connection);
 
                         String driverDialect = detectDialect(connection);
@@ -201,7 +201,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
         try {
             operationalInfo = new LinkedHashMap<>();
             DatabaseMetaData md = connection.getMetaData();
-            operationalInfo.put("databaseUrl",md.getURL());
+            operationalInfo.put("databaseUrl", md.getURL());
             operationalInfo.put("databaseUser", md.getUserName());
             operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
             operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
@@ -276,7 +276,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
     }
 
     @Override
-    public Map<String,String> getOperationalInfo() {
+    public Map<String, String> getOperationalInfo() {
         return operationalInfo;
     }
 

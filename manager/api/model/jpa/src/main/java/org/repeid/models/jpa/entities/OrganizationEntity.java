@@ -11,7 +11,7 @@ public class OrganizationEntity {
     @Id
     @Column(name = "ID", length = 36)
     @Access(AccessType.PROPERTY) // we do this because relationships often fetch
-                                 // id, but not entity. This avoids an extra SQL
+    // id, but not entity. This avoids an extra SQL
     protected String id;
 
     @Column(name = "name", unique = true)
@@ -20,13 +20,13 @@ public class OrganizationEntity {
     @Column(name = "enabled")
     protected boolean enabled;
 
-    @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
     protected Collection<DocumentEntity> documents = new ArrayList<>();
 
-    @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
     protected Collection<NaturalPersonEntity> naturalPersons = new ArrayList<>();
 
-    @OneToMany(cascade ={CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "organization")
     protected Collection<NaturalPersonEntity> legalPersons = new ArrayList<>();
 
     public String getId() {

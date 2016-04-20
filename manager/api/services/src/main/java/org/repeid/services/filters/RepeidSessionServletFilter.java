@@ -42,7 +42,7 @@ public class RepeidSessionServletFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         servletRequest.setCharacterEncoding("UTF-8");
 
-        final HttpServletRequest request = (HttpServletRequest)servletRequest;
+        final HttpServletRequest request = (HttpServletRequest) servletRequest;
 
         RepeidSessionFactory sessionFactory = (RepeidSessionFactory) servletRequest.getServletContext().getAttribute(RepeidSessionFactory.class.getName());
         RepeidSession session = sessionFactory.create();

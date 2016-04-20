@@ -18,9 +18,9 @@
 package org.repeid.manager.api.beans.representations.idm;
 
 /**
-* @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
-* @version $Revision: 1 $
-*/
+ * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
+ * @version $Revision: 1 $
+ */
 public class ConfigPropertyRepresentation {
     protected String name;
     protected String label;

@@ -35,7 +35,7 @@ public class Time {
     }
 
     public static Date toDate(int time) {
-        return new Date(((long) time ) * 1000);
+        return new Date(((long) time) * 1000);
     }
 
     public static long toMillis(int time) {

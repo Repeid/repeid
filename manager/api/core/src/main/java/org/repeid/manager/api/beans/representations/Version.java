@@ -35,7 +35,7 @@ public class Version {
 
     static {
         Properties props = new Properties();
-        InputStream is = Version.class.getResourceAsStream("/keycloak-version.properties");
+        InputStream is = Version.class.getResourceAsStream("/repeid-version.properties");
         try {
             props.load(is);
             Version.NAME = props.getProperty("name");

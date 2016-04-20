@@ -1,12 +1,12 @@
 package org.repeid.provider;
 
 public class ProviderConfigProperty {
-    public static final String BOOLEAN_TYPE="boolean";
-    public static final String STRING_TYPE="String";
-    public static final String ROLE_TYPE="Role";
-    public static final String LIST_TYPE="List";
-    public static final String CLIENT_LIST_TYPE="ClientList";
-    public static final String PASSWORD="Password";
+    public static final String BOOLEAN_TYPE = "boolean";
+    public static final String STRING_TYPE = "String";
+    public static final String ROLE_TYPE = "Role";
+    public static final String LIST_TYPE = "List";
+    public static final String CLIENT_LIST_TYPE = "ClientList";
+    public static final String PASSWORD = "Password";
 
     protected String name;
     protected String label;

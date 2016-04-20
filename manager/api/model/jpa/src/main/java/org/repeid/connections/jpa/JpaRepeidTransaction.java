@@ -39,7 +39,7 @@ public class JpaRepeidTransaction implements RepeidTransaction {
 
     @Override
     public boolean getRollbackOnly() {
-        return  em.getTransaction().getRollbackOnly();
+        return em.getTransaction().getRollbackOnly();
     }
 
     @Override

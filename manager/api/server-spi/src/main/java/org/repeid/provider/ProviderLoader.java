@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ProviderLoader {
 
-	List<ProviderFactory> load(Spi spi);
+    List<ProviderFactory> load(Spi spi);
 
 }

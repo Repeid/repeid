@@ -54,79 +54,79 @@ import java.util.Map;
 @Path("/")
 public class WelcomeResource {
 
-	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+    private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-	private static final String KEYCLOAK_STATE_CHECKER = "KEYCLOAK_STATE_CHECKER";
+    private static final String KEYCLOAK_STATE_CHECKER = "KEYCLOAK_STATE_CHECKER";
 
-	private boolean bootstrap;
+    private boolean bootstrap;
 
-	@Context
-	protected HttpHeaders headers;
+    @Context
+    protected HttpHeaders headers;
 
-	@Context
-	private UriInfo uriInfo;
+    @Context
+    private UriInfo uriInfo;
 
-	@Context
-	private RepeidSession session;
+    @Context
+    private RepeidSession session;
 
-	private String stateChecker;
+    private String stateChecker;
 
-	public WelcomeResource(boolean bootstrap) {
-		this.bootstrap = bootstrap;
-	}
+    public WelcomeResource(boolean bootstrap) {
+        this.bootstrap = bootstrap;
+    }
 
-	/**
-	 * Welcome page of Keycloak
-	 *
-	 * @return
-	 * @throws URISyntaxException
-	 */
-	@GET
-	@Produces(MediaType.TEXT_HTML_UTF_8)
-	public Response getWelcomePage() throws URISyntaxException {
-		checkBootstrap();
+    /**
+     * Welcome page of Keycloak
+     *
+     * @return
+     * @throws URISyntaxException
+     */
+    @GET
+    @Produces(MediaType.TEXT_HTML_UTF_8)
+    public Response getWelcomePage() throws URISyntaxException {
+        checkBootstrap();
 
-		String requestUri = uriInfo.getRequestUri().toString();
-		if (!requestUri.endsWith("/")) {
-			return Response.seeOther(new URI(requestUri + "/")).build();
-		} else {
-			return createWelcomePage(null, null);
-		}
-	}
+        String requestUri = uriInfo.getRequestUri().toString();
+        if (!requestUri.endsWith("/")) {
+            return Response.seeOther(new URI(requestUri + "/")).build();
+        } else {
+            return createWelcomePage(null, null);
+        }
+    }
 
-	@POST
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response createUser(final MultivaluedMap<String, String> formData) {
-		checkBootstrap();
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response createUser(final MultivaluedMap<String, String> formData) {
+        checkBootstrap();
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Resources for welcome page
-	 *
-	 * @param path
-	 * @return
-	 */
-	@GET
-	@Path("/welcome-content/{path}")
-	@Produces(MediaType.TEXT_HTML_UTF_8)
-	public Response getResource(@PathParam("path") String path) {
-		return null;
-	}
+    /**
+     * Resources for welcome page
+     *
+     * @param path
+     * @return
+     */
+    @GET
+    @Path("/welcome-content/{path}")
+    @Produces(MediaType.TEXT_HTML_UTF_8)
+    public Response getResource(@PathParam("path") String path) {
+        return null;
+    }
 
-	private Response createWelcomePage(String successMessage, String errorMessage) {
-		try {
-			return null;
-		} catch (Exception e) {
-			throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-		}
-	}
+    private Response createWelcomePage(String successMessage, String errorMessage) {
+        try {
+            return null;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-	private void checkBootstrap() {
-		if (bootstrap) {
-			bootstrap = new ApplianceBootstrap(session).isNoMasterUser();
-		}
-	}
+    private void checkBootstrap() {
+        if (bootstrap) {
+            bootstrap = new ApplianceBootstrap(session).isNoMasterUser();
+        }
+    }
 
 }

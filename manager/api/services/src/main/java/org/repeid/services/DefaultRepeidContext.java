@@ -85,7 +85,7 @@ public class DefaultRepeidContext implements RepeidContext {
     }
 
     /*@Override
-    public RealmImporter getRealmManager() {
+    public OrganizationImporter getRealmManager() {
         RealmManager manager = new RealmManager(session);
         manager.setContextPath(getContextPath());
         return manager;

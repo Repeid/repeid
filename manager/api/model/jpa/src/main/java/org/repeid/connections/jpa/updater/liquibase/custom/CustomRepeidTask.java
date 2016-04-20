@@ -109,6 +109,6 @@ public abstract class CustomRepeidTask implements CustomSqlChange {
 
     // get Table name for sql selects
     protected String getTableName(String tableName) {
-       return LiquibaseJpaUpdaterProvider.getTable(tableName, database.getDefaultSchemaName());
+        return LiquibaseJpaUpdaterProvider.getTable(tableName, database.getDefaultSchemaName());
     }
 }

@@ -3,19 +3,16 @@ package org.repeid.models.cache;
 import org.repeid.models.OrganizationProvider;
 
 public interface CacheOrganizationProvider extends OrganizationProvider {
-	OrganizationProvider getDelegate();
+    void clear();
 
-	boolean isEnabled();
+    OrganizationProvider getDelegate();
 
-	void setEnabled(boolean enabled);
+    void registerOrganizationInvalidation(String id);
 
-	void registerRealmInvalidation(String id);
+    void registerDocumentInvalidation(String id);
 
-	void registerApplicationInvalidation(String id);
+    void registerNaturalPersonInvalidation(String id);
 
-	void registerRoleInvalidation(String id);
+    void registerLegalPersonInvalidation(String id);
 
-	void registerOAuthClientInvalidation(String id);
-
-	void registerUserInvalidation(String id);
 }

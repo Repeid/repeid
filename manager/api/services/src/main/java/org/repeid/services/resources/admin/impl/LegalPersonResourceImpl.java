@@ -14,15 +14,14 @@ public class LegalPersonResourceImpl implements LegalPersonResource {
     @Override
     public void update(PersonaJuridicaRepresentation rep) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void remove() {
         // TODO Auto-generated method stub
-        
+
     }
 
-  
 
 }

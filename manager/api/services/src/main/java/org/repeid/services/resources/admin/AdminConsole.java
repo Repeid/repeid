@@ -64,8 +64,8 @@ public interface AdminConsole {
 
     @GET
     @Path("{indexhtml: index.html}") // this expression is a hack to get around
-                                     // jaxdoclet generation bug. Doesn't like
-                                     // index.html
+    // jaxdoclet generation bug. Doesn't like
+    // index.html
     public Response getIndexHtmlRedirect();
 
     @GET

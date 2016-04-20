@@ -6,13 +6,13 @@ import org.repeid.manager.api.beans.representations.info.ServerInfoRepresentatio
 
 public interface ServerInfoAdminResource {
 
-	/**
-	 * Get themes, social providers, auth providers, and event listeners
-	 * available on this server
-	 *
-	 * @return
-	 */
-	@GET
-	public ServerInfoRepresentation getInfo();
+    /**
+     * Get themes, social providers, auth providers, and event listeners
+     * available on this server
+     *
+     * @return
+     */
+    @GET
+    public ServerInfoRepresentation getInfo();
 
 }

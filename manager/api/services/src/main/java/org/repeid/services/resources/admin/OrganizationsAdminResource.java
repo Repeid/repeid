@@ -26,13 +26,12 @@ public interface OrganizationsAdminResource {
 
     /**
      * Import a realm
-     *
+     * <p>
      * Imports a realm from a full representation of that realm. Realm name must
      * be unique.
      *
      * @param uriInfo
-     * @param rep
-     *            JSON representation of the realm
+     * @param rep     JSON representation of the realm
      * @return
      */
     @POST
@@ -43,12 +42,11 @@ public interface OrganizationsAdminResource {
      * Base path for the admin REST API for one particular realm.
      *
      * @param headers
-     * @param name
-     *            realm name (not id!)
+     * @param name    realm name (not id!)
      * @return
      */
     @Path("{realm}")
     public OrganizationAdminResource getRealmAdmin(@Context final HttpHeaders headers,
-            @PathParam("realm") final String name);
+                                                   @PathParam("realm") final String name);
 
 }

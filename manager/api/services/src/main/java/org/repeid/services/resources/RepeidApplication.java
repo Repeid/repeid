@@ -179,7 +179,7 @@ public class RepeidApplication extends Application {
 
             String configDir = System.getProperty("jboss.server.config.dir");
             if (configDir != null) {
-            	Path path = Paths.get(configDir + FileSystems.getDefault().getSeparator() + "repeid-server.json");                
+                Path path = Paths.get(configDir + FileSystems.getDefault().getSeparator() + "repeid-server.json");
                 if (Files.isRegularFile(path)) {
                     logger.loadingFrom(path.toAbsolutePath().toString());
                     node = new ObjectMapper().readTree(Files.newInputStream(path));
@@ -244,7 +244,7 @@ public class RepeidApplication extends Application {
     }
 
     public void importRealms() {
-        /*String files = System.getProperty("keycloak.import");
+        /*String files = System.getProperty("repeid.import");
         if (files != null) {
             StringTokenizer tokenizer = new StringTokenizer(files, ",");
             while (tokenizer.hasMoreTokens()) {
@@ -298,7 +298,7 @@ public class RepeidApplication extends Application {
     public void importAddUser() {
         /*String configDir = System.getProperty("jboss.server.config.dir");
         if (configDir != null) {
-            File addUserFile = new File(configDir + File.separator + "keycloak-add-user.json");
+            File addUserFile = new File(configDir + File.separator + "repeid-add-user.json");
             if (addUserFile.isFile()) {
                 logger.imprtingUsersFrom(addUserFile);
 

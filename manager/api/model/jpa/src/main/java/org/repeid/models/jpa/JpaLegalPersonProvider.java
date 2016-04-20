@@ -22,5 +22,5 @@ public class JpaLegalPersonProvider implements LegalPersonProvider {
     public void close() {
 
     }
-    
+
 }

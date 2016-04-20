@@ -19,39 +19,39 @@ public class JpaOrganizationProvider implements OrganizationProvider {
     }
 
     @Override
-    public OrganizationModel createRealm(String name) {
+    public void close() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public OrganizationModel createOrganization(String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public OrganizationModel createRealm(String id, String name) {
+    public OrganizationModel createOrganization(String id, String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public OrganizationModel getRealm(String id) {
+    public OrganizationModel getOrganization(String id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public OrganizationModel getRealmByName(String name) {
+    public OrganizationModel getOrganizationByName(String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public boolean removeRealm(String id) {
+    public boolean removeOrganization(String id) {
         // TODO Auto-generated method stub
         return false;
     }
 
-    @Override
-    public void close() {
-        // TODO Auto-generated method stub
-        
-    }
-   
 }

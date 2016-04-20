@@ -31,7 +31,6 @@ public class Types {
      * Gets the boxed type of a class
      *
      * @param type The type
-     *
      * @return The boxed type
      */
     public static Type boxedType(Type type) {

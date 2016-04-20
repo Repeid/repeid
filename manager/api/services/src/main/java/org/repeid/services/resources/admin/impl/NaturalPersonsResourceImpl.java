@@ -26,8 +26,8 @@ public class NaturalPersonsResourceImpl implements NaturalPersonsResource {
 
     @Override
     public List<PersonaNaturalRepresentation> search(String tipoDocumento, String numeroDocumento,
-            String apellidoPaterno, String apellidoMaterno, String nombres, String filterText,
-            Integer firstResult, Integer maxResults) {
+                                                     String apellidoPaterno, String apellidoMaterno, String nombres, String filterText,
+                                                     Integer firstResult, Integer maxResults) {
         // TODO Auto-generated method stub
         return null;
     }

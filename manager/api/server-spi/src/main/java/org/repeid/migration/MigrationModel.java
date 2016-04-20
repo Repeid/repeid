@@ -7,5 +7,6 @@ public interface MigrationModel {
     String LATEST_VERSION = "1.9.2";
 
     String getStoredVersion();
+
     void setStoredVersion(String version);
 }
