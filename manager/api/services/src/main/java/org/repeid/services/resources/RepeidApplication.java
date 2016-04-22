@@ -1,11 +1,9 @@
 package org.repeid.services.resources;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,25 +20,11 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.repeid.Config;
-import org.repeid.services.resources.WelcomeResource;
 import org.repeid.common.util.SystemEnvProperties;
-import org.repeid.exportimport.ExportImportManager;
-import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
-import org.repeid.models.dblock.DBLockProvider;
-import org.repeid.models.utils.PostMigrationEvent;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
-import org.repeid.services.filters.RepeidTransactionCommitter;
-import org.repeid.services.managers.ApplianceBootstrap;
-import org.repeid.services.managers.DBLockManager;
-import org.repeid.services.resources.admin.impl.AdminRootImpl;
-import org.repeid.services.resources.impl.JsResourceImpl;
-import org.repeid.services.resources.impl.RobotsResourceImpl;
-import org.repeid.services.resources.impl.ServerVersionResourceImpl;
-import org.repeid.services.resources.impl.ThemeResourceImpl;
 import org.repeid.services.util.JsonConfigProvider;
-import org.repeid.services.util.ObjectMapperResolver;
 import org.repeid.util.JsonSerialization;
 
 import com.fasterxml.jackson.databind.JsonNode;

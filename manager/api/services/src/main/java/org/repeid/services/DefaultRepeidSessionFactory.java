@@ -68,7 +68,7 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
         load.forEach(f -> logger.warnv("Spi (<? extends Spi>): {0}", f));
         logger.warnv("===============================================================================");
 
-        //loadSPIs(pm, load);
+        loadSPIs(pm, load);
         /*for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
 			for (ProviderFactory factory : factories.values()) {
 				factory.postInit(this);
@@ -79,6 +79,11 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
     /**
      * */
     protected void loadSPIs(ProviderManager pm, ServiceLoader<Spi> load) {
+        logger.warnv(System.getProperty("line.separator"));
+        logger.warnv("===============================================================================");
+        logger.warnv("_______________________");
+        logger.warnv("loadSPIs:");
+        
         for (Spi spi : load) {
             spis.add(spi);
 
@@ -86,16 +91,24 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
             factoriesMap.put(spi.getProviderClass(), factories);
 
             String provider = Config.getProvider(spi.getName());
+            
+            logger.warnv("_______________________");
+            logger.warnv("SPI name: " + spi.getName() + "  ProviderFactoryClass: " + spi.getProviderFactoryClass());
+            logger.warnv("provider: " + provider);
+            logger.warnv("Map<Provider, String> provider = " + spi.getProviderClass() + ", " + provider);
+            
             if (provider != null) {
                 this.provider.put(spi.getProviderClass(), provider);
 
                 ProviderFactory factory = pm.load(spi, provider);
+                logger.warnv("ProviderFactory factory = " + factory);
                 if (factory == null) {
                     throw new RuntimeException("Failed to find provider " + provider + " for " + spi.getName());
                 }
 
                 Config.Scope scope = Config.scope(spi.getName(), provider);
                 factory.init(scope);
+                logger.warnv("factory.init(scope) / scope = " + scope);
 
                 if (spi.isInternal() && !isInternal(factory)) {
                     logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
@@ -105,6 +118,8 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
 
                 logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
             } else {
+                pm.load(spi).forEach(f -> logger.warnv("ProviderFactory factory = " + f));
+                
                 for (ProviderFactory factory : pm.load(spi)) {
                     Config.Scope scope = Config.scope(spi.getName(), factory.getId());
                     if (scope.getBoolean("enabled", true)) {

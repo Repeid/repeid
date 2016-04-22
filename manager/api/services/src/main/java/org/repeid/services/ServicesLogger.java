@@ -16,7 +16,7 @@ import org.jboss.logging.annotations.Cause;
 import org.jboss.logging.annotations.LogMessage;
 import org.jboss.logging.annotations.Message;
 import org.jboss.logging.annotations.MessageLogger;
-import org.repeid.events.EventListenerProvider;
+//import org.repeid.events.EventListenerProvider;
 import org.repeid.models.ModelDuplicateException;
 
 @MessageLogger(projectCode = "RP-SERVICES", length = 4)
@@ -356,9 +356,9 @@ public interface ServicesLogger extends BasicLogger {
     @Message(id = 84, value = "Failed to save event")
     void failedToSaveEvent(@Cause Throwable t);
 
-    @LogMessage(level = ERROR)
-    @Message(id = 85, value = "Failed to send type to %s")
-    void failedToSendType(@Cause Throwable t, EventListenerProvider listener);
+    //@LogMessage(level = ERROR)
+    //@Message(id = 85, value = "Failed to send type to %s")
+    //void failedToSendType(@Cause Throwable t, EventListenerProvider listener);
 
     @LogMessage(level = INFO)
     @Message(id = 86, value = "Added 'kerberos' to required realm credentials")

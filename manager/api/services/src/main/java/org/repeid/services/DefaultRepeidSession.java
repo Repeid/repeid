@@ -14,7 +14,6 @@ import org.repeid.models.RepeidContext;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.RepeidTransactionManager;
-import org.repeid.models.cache.CacheDocumentProvider;
 import org.repeid.models.cache.CacheLegalPersonProvider;
 import org.repeid.models.cache.CacheNaturalPersonProvider;
 import org.repeid.models.cache.CacheOrganizationProvider;
@@ -29,7 +28,6 @@ public class DefaultRepeidSession implements RepeidSession {
     private final DefaultRepeidTransactionManager transactionManager;
 
     private OrganizationProvider organizationProvider;
-    private DocumentProvider documentProvider;
     private NaturalPersonProvider naturalPersonProvider;
     private LegalPersonProvider legalPersonProvider;
 
@@ -147,24 +145,7 @@ public class DefaultRepeidSession implements RepeidSession {
         } else {
             return getProvider(OrganizationProvider.class);
         }
-    }
-
-    @Override
-    public DocumentProvider documents() {
-        if (documentProvider == null) {
-            documentProvider = getDocumentProvider();
-        }
-        return documentProvider;
-    }
-
-    private DocumentProvider getDocumentProvider() {
-        CacheDocumentProvider cache = getProvider(CacheDocumentProvider.class);
-        if (cache != null) {
-            return cache;
-        } else {
-            return getProvider(DocumentProvider.class);
-        }
-    }
+    }   
 
     @Override
     public NaturalPersonProvider naturalPersons() {

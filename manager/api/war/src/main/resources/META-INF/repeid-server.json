@@ -16,6 +16,15 @@
   "realm": {
     "provider": "jpa"
   },
+  "organization": {
+    "provider": "jpa"
+  },
+  "naturalPerson": {
+    "provider": "jpa"
+  },
+  "legalPerson": {
+    "provider": "jpa"
+  },
   "user": {
     "provider": "jpa"
   },

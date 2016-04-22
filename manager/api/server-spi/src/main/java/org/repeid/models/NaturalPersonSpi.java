@@ -13,18 +13,17 @@ public class NaturalPersonSpi implements Spi {
 
     @Override
     public Class<? extends Provider> getProviderClass() {
-        return OrganizationProvider.class;
+        return NaturalPersonProvider.class;
     }
 
     @Override
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return OrganizationProviderFactory.class;
+        return NaturalPersonProviderFactory.class;
     }
 
     @Override
     public boolean isInternal() {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
 }
