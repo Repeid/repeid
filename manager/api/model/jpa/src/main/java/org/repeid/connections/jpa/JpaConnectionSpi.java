@@ -21,6 +21,7 @@ public class JpaConnectionSpi implements Spi {
         return JpaConnectionProvider.class;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Class<? extends ProviderFactory> getProviderFactoryClass() {
         return JpaConnectionProviderFactory.class;
