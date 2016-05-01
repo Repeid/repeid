@@ -61,8 +61,7 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
 
                 ProviderFactory factory = pm.load(spi, provider);
                 if (factory == null) {
-                    throw new RuntimeException(
-                            "Failed to find provider " + provider + " for " + spi.getName());
+                    throw new RuntimeException("Failed to find provider " + provider + " for " + spi.getName());
                 }
 
                 Config.Scope scope = Config.scope(spi.getName(), provider);
