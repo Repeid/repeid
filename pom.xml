@@ -357,6 +357,11 @@
             </dependency>
             <dependency>
                 <groupId>org.repeid</groupId>
+                <artifactId>repeid-manager-api-services-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.repeid</groupId>
                 <artifactId>repeid-manager-api-services</artifactId>
                 <version>${project.version}</version>
             </dependency>

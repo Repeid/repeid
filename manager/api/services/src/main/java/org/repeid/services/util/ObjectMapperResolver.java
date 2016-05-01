@@ -45,4 +45,5 @@ public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
     public ObjectMapper getContext(Class<?> type) {
         return mapper;
     }
+   
 }

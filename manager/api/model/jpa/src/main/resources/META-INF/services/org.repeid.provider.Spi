@@ -1,3 +1,0 @@
-org.repeid.connections.jpa.JpaConnectionSpi
-org.repeid.connections.jpa.updater.JpaUpdaterSpi
-org.repeid.connections.jpa.updater.liquibase.conn.LiquibaseConnectionSpi

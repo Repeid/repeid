@@ -28,192 +28,72 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
     private Map<Class<? extends Provider>, Map<String, ProviderFactory>> factoriesMap = new HashMap<Class<? extends Provider>, Map<String, ProviderFactory>>();
     protected CopyOnWriteArrayList<ProviderEventListener> listeners = new CopyOnWriteArrayList<ProviderEventListener>();
 
-    // TODO: Likely should be changed to int and use Time.currentTime() to be
-    // compatible with all our "time" reps
-    protected long serverStartupTimestamp;
+    public void init() {
+        // TODO Auto-generated method stub
+    }
+
+    <T extends Provider> Set<String> getAllProviderIds(Class<T> clazz) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public void register(ProviderEventListener listener) {
-        listeners.add(listener);
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void unregister(ProviderEventListener listener) {
-        listeners.remove(listener);
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void publish(ProviderEvent event) {
-        for (ProviderEventListener listener : listeners) {
-            listener.onEvent(event);
-        }
+        // TODO Auto-generated method stub
+
     }
 
-    /**
-     * Load providers factory classes and init them
-     */
-    public void init() {
-        serverStartupTimestamp = System.currentTimeMillis();
-
-        ProviderManager pm = new ProviderManager(getClass().getClassLoader(), Config.scope().getArray("providers"));
-
-        ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());
-
-        logger.debugv("Spi: ");
-        load.forEach(f -> logger.debugv("Spi (<? extends Spi>): {0}", f));
-
-        logger.warnv(System.getProperty("line.separator"));
-        logger.warnv("===============================================================================");
-        logger.warnv("SPI list: (Need to be removed on the next version):");
-        load.forEach(f -> logger.warnv("Spi (<? extends Spi>): {0}", f));
-        logger.warnv("===============================================================================");
-
-        loadSPIs(pm, load);
-        /*for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
-			for (ProviderFactory factory : factories.values()) {
-				factory.postInit(this);
-			}
-		}*/
-    }
-
-    /**
-     * */
-    protected void loadSPIs(ProviderManager pm, ServiceLoader<Spi> load) {
-        logger.warnv(System.getProperty("line.separator"));
-        logger.warnv("===============================================================================");
-        logger.warnv("_______________________");
-        logger.warnv("loadSPIs:");
-        
-        for (Spi spi : load) {
-            spis.add(spi);
-
-            Map<String, ProviderFactory> factories = new HashMap<String, ProviderFactory>();
-            factoriesMap.put(spi.getProviderClass(), factories);
-
-            String provider = Config.getProvider(spi.getName());
-            
-            logger.warnv("_______________________");
-            logger.warnv("SPI name: " + spi.getName() + "  ProviderFactoryClass: " + spi.getProviderFactoryClass());
-            logger.warnv("provider: " + provider);
-            logger.warnv("Map<Provider, String> provider = " + spi.getProviderClass() + ", " + provider);
-            
-            if (provider != null) {
-                this.provider.put(spi.getProviderClass(), provider);
-
-                ProviderFactory factory = pm.load(spi, provider);
-                logger.warnv("ProviderFactory factory = " + factory);
-                if (factory == null) {
-                    throw new RuntimeException("Failed to find provider " + provider + " for " + spi.getName());
-                }
-
-                Config.Scope scope = Config.scope(spi.getName(), provider);
-                factory.init(scope);
-                logger.warnv("factory.init(scope) / scope = " + scope);
-
-                if (spi.isInternal() && !isInternal(factory)) {
-                    logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
-                }
-
-                factories.put(factory.getId(), factory);
-
-                logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
-            } else {
-                pm.load(spi).forEach(f -> logger.warnv("ProviderFactory factory = " + f));
-                
-                for (ProviderFactory factory : pm.load(spi)) {
-                    Config.Scope scope = Config.scope(spi.getName(), factory.getId());
-                    if (scope.getBoolean("enabled", true)) {
-                        factory.init(scope);
-
-                        if (spi.isInternal() && !isInternal(factory)) {
-                            logger.spiMayChange(factory.getId(), factory.getClass().getName(), spi.getName());
-                        }
-
-                        factories.put(factory.getId(), factory);
-                    } else {
-                        logger.debugv("SPI {0} provider {1} disabled", spi.getName(), factory.getId());
-                    }
-                }
-
-                if (factories.size() == 1) {
-                    provider = factories.values().iterator().next().getId();
-                    this.provider.put(spi.getProviderClass(), provider);
-
-                    logger.debugv("Loaded SPI {0} (provider = {1})", spi.getName(), provider);
-                } else {
-                    logger.debugv("Loaded SPI {0} (providers = {1})", spi.getName(), factories.keySet());
-                }
-            }
-        }
-    }
-
-    /**
-     * @return new DefaultRepeidSession using this object as factory
-     */
+    @Override
     public RepeidSession create() {
         return new DefaultRepeidSession(this);
     }
 
-    <T extends Provider> String getDefaultProvider(Class<T> clazz) {
-        return provider.get(clazz);
-    }
-
-    /**
-     * @return Set<Spi> detected on init()
-     */
     @Override
     public Set<Spi> getSpis() {
-        return spis;
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz) {
-        return getProviderFactory(clazz, provider.get(clazz));
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public <T extends Provider> ProviderFactory<T> getProviderFactory(Class<T> clazz, String id) {
-        return factoriesMap.get(clazz).get(id);
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public List<ProviderFactory> getProviderFactories(Class<? extends Provider> clazz) {
-        List<ProviderFactory> list = new LinkedList<ProviderFactory>();
-        if (factoriesMap == null)
-            return list;
-        Map<String, ProviderFactory> providerFactoryMap = factoriesMap.get(clazz);
-        if (providerFactoryMap == null)
-            return list;
-        list.addAll(providerFactoryMap.values());
-        return list;
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    <T extends Provider> Set<String> getAllProviderIds(Class<T> clazz) {
-        Set<String> ids = new HashSet<String>();
-        for (ProviderFactory f : factoriesMap.get(clazz).values()) {
-            ids.add(f.getId());
-        }
-        return ids;
-    }
-
-    public void close() {
-        for (Map<String, ProviderFactory> factories : factoriesMap.values()) {
-            for (ProviderFactory factory : factories.values()) {
-                factory.close();
-            }
-        }
-    }
-
-    private boolean isInternal(ProviderFactory<?> factory) {
-        return factory.getClass().getPackage().getName().startsWith("org.repeid");
-    }
-
-    /**
-     * @return timestamp of repeid server startup
-     */
     @Override
     public long getServerStartupTimestamp() {
-        return serverStartupTimestamp;
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub
+
     }
 
 }

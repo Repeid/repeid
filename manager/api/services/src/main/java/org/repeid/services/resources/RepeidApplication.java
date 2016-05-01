@@ -24,6 +24,7 @@ import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
+import org.repeid.services.resources.admin.AdminRootImpl;
 import org.repeid.services.util.JsonConfigProvider;
 import org.repeid.util.JsonSerialization;
 
@@ -50,14 +51,14 @@ public class RepeidApplication extends Application {
         ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for injection
         context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
-        /*singletons.add(new ServerVersionResourceImpl());
+        singletons.add(new ServerVersionResourceImpl());
         singletons.add(new RobotsResourceImpl());
         // singletons.add(new RealmsResource()); for public access
         singletons.add(new AdminRootImpl());
         classes.add(ThemeResourceImpl.class);
         classes.add(JsResourceImpl.class);
 
-        classes.add(RepeidTransactionCommitter.class);
+        /*classes.add(RepeidTransactionCommitter.class);
 
         singletons.add(new ObjectMapperResolver(Boolean.parseBoolean(System.getProperty("repeid.jsonPrettyPrint", "false"))));
 
@@ -121,11 +122,12 @@ public class RepeidApplication extends Application {
             session.close();
         }
 
-        sessionFactory.publish(new PostMigrationEvent());
+        sessionFactory.publish(new PostMigrationEvent());*/
 
-        singletons.add(new WelcomeResource(bootstrapAdminUser));
+        singletons.add(new WelcomeResourceImpl());
+        //singletons.add(new WelcomeResourceImpl(bootstrapAdminUser));
 
-        setupScheduledTasks(sessionFactory);*/
+        //setupScheduledTasks(sessionFactory);
     }
 
     protected void migrateModel() {
