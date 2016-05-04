@@ -1,21 +1,56 @@
 package org.repeid.services.resources.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.repeid.models.RepeidSession;
 import org.repeid.representations.idm.OrganizationRepresentation;
+import org.repeid.services.ServicesLogger;
+import org.repeid.services.resources.RepeidApplication;
 import org.repeid.services.resources.admin.OrganizationAdminResource;
 import org.repeid.services.resources.admin.OrganizationsAdminResource;
 
 public class OrganizationsResourceImpl implements OrganizationsAdminResource {
 
+    protected static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+
+    //protected AdminAuth auth;
+    //protected TokenManager tokenManager;
+
+    @Context
+    protected RepeidSession session;
+
+    @Context
+    protected RepeidApplication repeid;
+
+    //@Context
+    //protected ClientConnection clientConnection;
+
+    public OrganizationsResourceImpl() {
+
+    }
+
     @Override
     public List<OrganizationRepresentation> getRealms() {
-        // TODO Auto-generated method stub
-        return null;
+        /*RealmManager realmManager = new RealmManager(session);
+        List<RealmRepresentation> reps = new ArrayList<>();
+        if (auth.getRealm().equals(realmManager.getKeycloakAdminstrationRealm())) {
+            List<RealmModel> realms = session.realms().getRealms();
+            for (RealmModel realm : realms) {
+                addRealmRep(reps, realm, realm.getMasterAdminClient());
+            }
+        } else {
+            ClientModel adminApp = auth.getRealm().getClientByClientId(realmManager.getRealmAdminClientId(auth.getRealm()));
+            addRealmRep(reps, auth.getRealm(), adminApp);
+        }
+        logger.debug(("getRealms()"));
+        return reps;*/
+        return new ArrayList<>();
     }
 
     @Override
