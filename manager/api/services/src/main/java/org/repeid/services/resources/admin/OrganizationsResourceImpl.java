@@ -1,5 +1,6 @@
 package org.repeid.services.resources.admin;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.RepeidSession;
 import org.repeid.representations.idm.OrganizationRepresentation;
 import org.repeid.services.ServicesLogger;
@@ -55,7 +57,29 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
 
     @Override
     public Response importRealm(UriInfo uriInfo, OrganizationRepresentation rep) {
-        // TODO Auto-generated method stub
+       /* RealmManager realmManager = new RealmManager(session);
+        realmManager.setContextPath(keycloak.getContextPath());
+        if (!auth.getRealm().equals(realmManager.getKeycloakAdminstrationRealm())) {
+            throw new ForbiddenException();
+        }
+        if (!auth.hasRealmRole(AdminRoles.CREATE_REALM)) {
+            throw new ForbiddenException();
+        }
+
+        logger.debugv("importRealm: {0}", rep.getRealm());
+
+        try {
+            RealmModel realm = realmManager.importRealm(rep);
+            grantPermissionsToRealmCreator(realm);
+
+            URI location = AdminRoot.realmsUrl(uriInfo).path(realm.getName()).build();
+            logger.debugv("imported realm success, sending back: {0}", location.toString());
+
+            return Response.created(location).build();
+        } catch (ModelDuplicateException e) {
+            return ErrorResponse.exists("Realm " + rep.getRealm() + " already exists");
+        }*/
+
         return null;
     }
 
