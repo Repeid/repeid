@@ -18,19 +18,19 @@
 package org.repeid.representations.idm;
 
 /**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class OrganizationRepresentation {
+public class ErrorRepresentation {
+    private String errorMessage;
 
-    private String name;
-
-    public String getName() {
-        return name;
+    public ErrorRepresentation() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

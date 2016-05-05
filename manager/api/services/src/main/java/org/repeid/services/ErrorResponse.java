@@ -15,22 +15,26 @@
  * limitations under the License.
  */
 
-package org.repeid.representations.idm;
+package org.repeid.services;
+
+import org.repeid.representations.idm.ErrorRepresentation;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
+ * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
-public class OrganizationRepresentation {
+public class ErrorResponse {
 
-    private String name;
-
-    public String getName() {
-        return name;
+    public static Response exists(String message) {
+        return ErrorResponse.error(message, Response.Status.CONFLICT);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static Response error(String message, Response.Status status) {
+        ErrorRepresentation error = new ErrorRepresentation();
+        error.setErrorMessage(message);
+        return Response.status(status).entity(error).type(MediaType.APPLICATION_JSON).build();
     }
 
 }

@@ -10,9 +10,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.repeid.models.ModelDuplicateException;
+import org.repeid.models.OrganizationModel;
 import org.repeid.models.RepeidSession;
 import org.repeid.representations.idm.OrganizationRepresentation;
+import org.repeid.services.ErrorResponse;
 import org.repeid.services.ServicesLogger;
+import org.repeid.services.managers.OrganizationManager;
 import org.repeid.services.resources.RepeidApplication;
 import org.repeid.services.resources.admin.OrganizationAdminResource;
 import org.repeid.services.resources.admin.OrganizationsAdminResource;
@@ -21,8 +24,8 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
 
     protected static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
-    //protected AdminAuth auth;
-    //protected TokenManager tokenManager;
+    // protected AdminAuth auth;
+    // protected TokenManager tokenManager;
 
     @Context
     protected RepeidSession session;
@@ -30,8 +33,8 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
     @Context
     protected RepeidApplication repeid;
 
-    //@Context
-    //protected ClientConnection clientConnection;
+    // @Context
+    // protected ClientConnection clientConnection;
 
     public OrganizationsResourceImpl() {
 
@@ -39,48 +42,37 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
 
     @Override
     public List<OrganizationRepresentation> getRealms() {
-        /*RealmManager realmManager = new RealmManager(session);
-        List<RealmRepresentation> reps = new ArrayList<>();
-        if (auth.getRealm().equals(realmManager.getKeycloakAdminstrationRealm())) {
-            List<RealmModel> realms = session.realms().getRealms();
-            for (RealmModel realm : realms) {
-                addRealmRep(reps, realm, realm.getMasterAdminClient());
-            }
-        } else {
-            ClientModel adminApp = auth.getRealm().getClientByClientId(realmManager.getRealmAdminClientId(auth.getRealm()));
-            addRealmRep(reps, auth.getRealm(), adminApp);
-        }
-        logger.debug(("getRealms()"));
-        return reps;*/
+        /*
+         * RealmManager realmManager = new RealmManager(session);
+         * List<RealmRepresentation> reps = new ArrayList<>(); if
+         * (auth.getRealm().equals(realmManager.getKeycloakAdminstrationRealm())
+         * ) { List<RealmModel> realms = session.realms().getRealms(); for
+         * (RealmModel realm : realms) { addRealmRep(reps, realm,
+         * realm.getMasterAdminClient()); } } else { ClientModel adminApp =
+         * auth.getRealm().getClientByClientId(realmManager.
+         * getRealmAdminClientId(auth.getRealm())); addRealmRep(reps,
+         * auth.getRealm(), adminApp); } logger.debug(("getRealms()")); return
+         * reps;
+         */
         return new ArrayList<>();
     }
 
     @Override
     public Response importRealm(UriInfo uriInfo, OrganizationRepresentation rep) {
-       /* RealmManager realmManager = new RealmManager(session);
-        realmManager.setContextPath(keycloak.getContextPath());
-        if (!auth.getRealm().equals(realmManager.getKeycloakAdminstrationRealm())) {
-            throw new ForbiddenException();
-        }
-        if (!auth.hasRealmRole(AdminRoles.CREATE_REALM)) {
-            throw new ForbiddenException();
-        }
+        OrganizationManager organizationManager = new OrganizationManager(session);
+        organizationManager.setContextPath(repeid.getContextPath());
 
-        logger.debugv("importRealm: {0}", rep.getRealm());
+        logger.debugv("importRealm: {0}", rep.getName());
 
         try {
-            RealmModel realm = realmManager.importRealm(rep);
-            grantPermissionsToRealmCreator(realm);
+            OrganizationModel organization = organizationManager.importOrganization(rep);
+            // logger.debugv("imported organization success, sending back: {0}",
+            // location.toString());
 
-            URI location = AdminRoot.realmsUrl(uriInfo).path(realm.getName()).build();
-            logger.debugv("imported realm success, sending back: {0}", location.toString());
-
-            return Response.created(location).build();
+            return Response.ok().build();
         } catch (ModelDuplicateException e) {
-            return ErrorResponse.exists("Realm " + rep.getRealm() + " already exists");
-        }*/
-
-        return null;
+            return ErrorResponse.exists("Organization " + rep.getName() + " already exists");
+        }
     }
 
     @Override
