@@ -1,20 +1,3 @@
-/*******************************************************************************
- * Repeid, Home of Professional Open Source
- * <p>
- * Copyright 2015 Sistcoop, Inc. and/or its affiliates.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package org.repeid.services.resources.admin;
 
 import java.util.List;
@@ -41,14 +24,12 @@ import org.repeid.manager.api.beans.representations.search.SearchResultsRepresen
 @Consumes(MediaType.APPLICATION_JSON)
 public interface DocumentsResource {
 
-    public static final String TIPO_DOCUMENTO_ID = "tipoDocumentoId";
-
     /**
      * @param tipoDocumentoId
      *            El ID del TipoDocumento.
      */
-    @Path("{" + TIPO_DOCUMENTO_ID + "}")
-    public DocumentResource tipoDocumento(@PathParam(TIPO_DOCUMENTO_ID) String tipoDocumentoId);
+    @Path("{documentId}")
+    public DocumentResource tipoDocumento(final @PathParam("documentId") String documentId);
 
     /**
      * Use este endpoint para crear un nuevo tipoDocumento. Un TipoDocumento
@@ -68,7 +49,7 @@ public interface DocumentsResource {
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(TipoDocumentoRepresentation rep);
+    public Response create(final TipoDocumentoRepresentation rep);
 
     /**
      * Este endpoint provee una forma de buscar tipoDocumentos. Los criterios de

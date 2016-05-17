@@ -17,7 +17,7 @@ public interface AdminRoot {
      * @exclude
      */
     @GET
-    public Response masterRealmAdminConsoleRedirect();
+    public Response masterOrganizationAdminConsoleRedirect();
 
     /**
      * Convenience path to master organization admin console
@@ -27,7 +27,7 @@ public interface AdminRoot {
      */
     @Path("index.{html:html}") // expression is actually "index.html" but this is a hack to get around jax-doclet bug
     @GET
-    public Response masterRealmAdminConsoleRedirectHtml();
+    public Response masterOrganizationAdminConsoleRedirectHtml();
 
     /**
      * path to organization admin console ui
@@ -46,16 +46,16 @@ public interface AdminRoot {
      * @return
      */
     @Path("organizations")
-    public OrganizationsAdminResource getRealmsAdmin(@Context final HttpHeaders headers);
+    public OrganizationsAdminResource getOrganizationsAdmin(@Context final HttpHeaders headers);
 
     /**
-     * Base Path to utils admin REST interface
+     * Base Path to commons admin REST interface
      *
      * @param headers
      * @return
      */
     @Path("commons")
-    public CommonsResource getUtilsResource(@Context final HttpHeaders headers);
+    public CommonsResource getCommonsResource(@Context final HttpHeaders headers);
 
     /**
      * General information about the server

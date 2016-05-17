@@ -41,7 +41,7 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
     }
 
     @Override
-    public List<OrganizationRepresentation> getRealms() {
+    public List<OrganizationRepresentation> getOrganizations() {
         /*
          * RealmManager realmManager = new RealmManager(session);
          * List<RealmRepresentation> reps = new ArrayList<>(); if
@@ -58,7 +58,14 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
     }
 
     @Override
-    public Response importRealm(UriInfo uriInfo, OrganizationRepresentation rep) {
+    public OrganizationAdminResource getOrganizationAdmin(HttpHeaders headers, String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Response importOrganization(UriInfo uriInfo, OrganizationRepresentation rep) {
+        System.out.println(session);
         OrganizationManager organizationManager = new OrganizationManager(session);
         organizationManager.setContextPath(repeid.getContextPath());
 
@@ -73,12 +80,6 @@ public class OrganizationsResourceImpl implements OrganizationsAdminResource {
         } catch (ModelDuplicateException e) {
             return ErrorResponse.exists("Organization " + rep.getName() + " already exists");
         }
-    }
-
-    @Override
-    public OrganizationAdminResource getRealmAdmin(HttpHeaders headers, String name) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

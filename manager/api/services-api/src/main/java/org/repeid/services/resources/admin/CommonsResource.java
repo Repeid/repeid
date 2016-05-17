@@ -19,8 +19,8 @@ public interface CommonsResource {
      * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
      */
     @GET
-    @Path("personTypes")
-    public List<String> getAllTipoPersonas();
+    @Path("personsType")
+    public List<String> getPersonsType();
 
     /**
      * Este endpoint retorna todos los estados civiles soportados por repeid.
@@ -31,7 +31,7 @@ public interface CommonsResource {
      */
     @GET
     @Path("maritalStatus")
-    public List<String> getAllEstadosCiviles();
+    public List<String> getMaritalStatus();
 
     /**
      * Este endpoint retorna todos los sexos soportados por repeid.
@@ -42,7 +42,7 @@ public interface CommonsResource {
      */
     @GET
     @Path("genders")
-    public List<String> getAllSexos();
+    public List<String> getGenders();
 
     /**
      * Este endpoint retorna todos los tipos de empresa soportados por repeid.
@@ -52,7 +52,7 @@ public interface CommonsResource {
      * @statuscode 200 Si la busqueda fue realizada satisfactoriamente.
      */
     @GET
-    @Path("bussinessTypes")
-    public List<String> getAllTiposEmpresa();
+    @Path("bussinessType")
+    public List<String> getBussinessType();
 
 }

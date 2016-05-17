@@ -8,7 +8,7 @@ import org.repeid.services.resources.admin.OrganizationAdminResource;
 public class OrganizationResourceImpl implements OrganizationAdminResource {
 
     @Override
-    public void deleteRealm() {
+    public void deleteOrganization() {
         // TODO Auto-generated method stub
 
     }
@@ -32,13 +32,13 @@ public class OrganizationResourceImpl implements OrganizationAdminResource {
     }
 
     @Override
-    public void clearRealmCache() {
+    public void clearOrganizationCache() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void clearUserCache() {
+    public void clearPersonCache() {
         // TODO Auto-generated method stub
 
     }

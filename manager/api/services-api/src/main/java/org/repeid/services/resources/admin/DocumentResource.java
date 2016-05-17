@@ -73,7 +73,7 @@ public interface DocumentResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(TipoDocumentoRepresentation rep);
+    public Response update(final TipoDocumentoRepresentation rep);
 
     /**
      * Use este endpoint para activar un tipoDocumento por medio de su ID.

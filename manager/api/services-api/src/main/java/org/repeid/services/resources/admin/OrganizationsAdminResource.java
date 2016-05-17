@@ -22,31 +22,31 @@ public interface OrganizationsAdminResource {
     @GET
     @NoCache
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrganizationRepresentation> getRealms();
+    public List<OrganizationRepresentation> getOrganizations();
 
     /**
-     * Import a realm
+     * Import a organization
      * <p>
-     * Imports a realm from a full representation of that realm. Realm name must
+     * Imports a organization from a full representation of that organization. Organization name must
      * be unique.
      *
      * @param uriInfo
-     * @param rep     JSON representation of the realm
+     * @param rep JSON representation of the organization
      * @return
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response importRealm(@Context final UriInfo uriInfo, final OrganizationRepresentation rep);
+    public Response importOrganization(@Context final UriInfo uriInfo, final OrganizationRepresentation rep);
 
     /**
-     * Base path for the admin REST API for one particular realm.
+     * Base path for the admin REST API for one particular organization.
      *
      * @param headers
-     * @param name    realm name (not id!)
+     * @param name organization name (not id!)
      * @return
      */
-    @Path("{realm}")
-    public OrganizationAdminResource getRealmAdmin(@Context final HttpHeaders headers,
-                                                   @PathParam("realm") final String name);
+    @Path("{organization}")
+    public OrganizationAdminResource getOrganizationAdmin(@Context final HttpHeaders headers,
+                                                   @PathParam("organization") final String name);
 
 }

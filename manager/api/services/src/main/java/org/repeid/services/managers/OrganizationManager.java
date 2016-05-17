@@ -50,4 +50,9 @@ public class OrganizationManager {
         return organization;
     }
 
+    public OrganizationModel getRepeidAdminstrationRealm() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

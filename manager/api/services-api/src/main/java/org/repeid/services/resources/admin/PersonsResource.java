@@ -25,14 +25,13 @@ import javax.ws.rs.core.MediaType;
  * @author carlosthe19916@gmail.com
  */
 
-@Path("/personas")
 @Consumes(MediaType.APPLICATION_JSON)
 public interface PersonsResource {
 
-    @Path("/naturales")
-    public NaturalPersonsResource getPersonasNaturalesResource();
+    @Path("/naturals")
+    public NaturalPersonsResource getNaturalPersonsResource();
 
-    @Path("/juridicas")
-    public LegalPersonsResource getPersonasJuridicasResource();
+    @Path("/legals")
+    public LegalPersonsResource getLegalPersonsResource();
 
 }

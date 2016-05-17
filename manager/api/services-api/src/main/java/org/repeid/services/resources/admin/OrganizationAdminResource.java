@@ -1,87 +1,41 @@
 package org.repeid.services.resources.admin;
 
 import java.util.List;
-import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.repeid.manager.api.beans.representations.idm.AdminEventRepresentation;
+import org.repeid.manager.api.beans.representations.idm.EventRepresentation;
+import org.repeid.manager.api.beans.representations.idm.OrganizationEventsConfigRepresentation;
+import org.repeid.representations.idm.OrganizationRepresentation;
 
 public interface OrganizationAdminResource {
 
     /**
-     * Base path for importing clients under this realm.
-     *
-     * @return
-     */
-    /*@Path("client-description-converter")
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN })
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public ClientRepresentation convertClientDescription(String description);*/
-
-    /**
-     * Base path for managing attack detection.
-     *
-     * @return
-     */
-    /*@Path("attack-detection")
-    public AttackDetectionResource getAttackDetection();*/
-
-    /**
-     * Base path for managing clients under this realm.
-     *
-     * @return
-     */
-    /*@Path("clients")
-    public ClientsResource getClients();*/
-
-    /**
-     * Base path for managing client templates under this realm.
-     *
-     * @return
-     */
-    /*@Path("client-templates")
-    public ClientTemplatesResource getClientTemplates();*/
-
-    /**
-     * Base path for managing client initial access tokens
-     *
-     * @return
-     */
-    /*@Path("clients-initial-access")
-    public ClientInitialAccessResource getClientInitialAccess();*/
-
-    /**
-     * base path for managing realm-level roles of this realm
-     *
-     * @return
-     */
-    /*@Path("roles")
-    public RoleContainerResource getRoleContainerResource();*/
-
-    /**
-     * Get the top-level representation of the realm
+     * Get the top-level representation of the organization
      *
      * It will not include nested information like User and Client
      * representations.
      *
      * @return
      */
-    /*@GET
+    @GET
     @NoCache
     @Produces(MediaType.APPLICATION_JSON)
-    public RealmRepresentation getRealm();*/
+    public OrganizationRepresentation getOrganization();
 
     /**
-     * Update the top-level information of the realm
+     * Update the top-level information of the organization
      *
      * Any user, roles or client information in the representation will be
      * ignored. This will only update top-level attributes of the realm.
@@ -89,81 +43,31 @@ public interface OrganizationAdminResource {
      * @param rep
      * @return
      */
-    /*@PUT
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateRealm(final RealmRepresentation rep);*/
+    public Response updateRealm(final OrganizationRepresentation rep);
 
     /**
-     * Delete the realm
+     * Delete the organization
      */
     @DELETE
-    public void deleteRealm();
+    public void deleteOrganization();
 
     /**
-     * Base path for managing users in this realm.
+     * Base path for managing documents in this organization.
      *
      * @return
      */
-    /*@Path("users")
-    public UsersResource users();*/
-
-    /*@Path("user-federation")
-    public UserFederationProvidersResource userFederation();
-
-    @Path("authentication")
-    public AuthenticationManagementResource flows();*/
+    @Path("documents")
+    public DocumentsResource getDocumentsResource();
 
     /**
-     * Path for managing all realm-level or client-level roles defined in this
-     * realm by its id.
+     * base path for managing organization-level persons of this organization
      *
      * @return
      */
-    /*@Path("roles-by-id")
-    public RoleByIdResource rolesById();*/
-
-    /**
-     * Push the realm's revocation policy to any client that has an admin url
-     * associated with it.
-     *
-     */
-    /*@Path("push-revocation")
-    @POST
-    public GlobalRequestResult pushRevocation();*/
-
-    /**
-     * Removes all user sessions. Any client that has an admin url will also be
-     * told to invalidate any sessions they have.
-     *
-     */
-    /*@Path("logout-all")
-    @POST
-    public GlobalRequestResult logoutAll();*/
-
-    /**
-     * Remove a specific user session. Any client that has an admin url will
-     * also be told to invalidate this particular session.
-     *
-     * @param sessionId
-     */
-    /*@Path("sessions/{session}")
-    @DELETE
-    public void deleteSession(@PathParam("session") String sessionId);*/
-
-    /**
-     * Get client session stats
-     * <p>
-     * Returns a JSON map. The key is the client id, the value is the number of
-     * sessions that currently are active with that client. Only clients that
-     * actually have a session associated with them will be in this map.
-     *
-     * @return
-     */
-    @Path("client-session-stats")
-    @GET
-    @NoCache
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Map<String, String>> getClientSessionStats();
+    @Path("persons")
+    public PersonsResource getPersonsResource();
 
     /**
      * Get the events provider configuration
@@ -172,11 +76,11 @@ public interface OrganizationAdminResource {
      *
      * @return
      */
-    /*@GET
+    @GET
     @NoCache
     @Path("events/config")
     @Produces(MediaType.APPLICATION_JSON)
-    public RealmEventsConfigRepresentation getRealmEventsConfig();*/
+    public OrganizationEventsConfigRepresentation getOrganizationEventsConfig();
 
     /**
      * Update the events provider
@@ -185,10 +89,10 @@ public interface OrganizationAdminResource {
      *
      * @param rep
      */
-    /*@PUT
+    @PUT
     @Path("events/config")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateRealmEventsConfig(final RealmEventsConfigRepresentation rep);*/
+    public void updateOrganizationEventsConfig(final OrganizationEventsConfigRepresentation rep);
 
     /**
      * Get events
@@ -214,7 +118,7 @@ public interface OrganizationAdminResource {
      *            Paging size
      * @return
      */
-    /*@Path("events")
+    @Path("events")
     @GET
     @NoCache
     @Produces(MediaType.APPLICATION_JSON)
@@ -222,7 +126,7 @@ public interface OrganizationAdminResource {
             @QueryParam("client") String client, @QueryParam("user") String user,
             @QueryParam("dateFrom") String dateFrom, @QueryParam("dateTo") String dateTo,
             @QueryParam("ipAddress") String ipAddress, @QueryParam("first") Integer firstResult,
-            @QueryParam("max") Integer maxResults);*/
+            @QueryParam("max") Integer maxResults);
 
     /**
      * Get admin events
@@ -243,7 +147,7 @@ public interface OrganizationAdminResource {
      * @param maxResults
      * @return
      */
-    /*@Path("admin-events")
+    @Path("admin-events")
     @GET
     @NoCache
     @Produces(MediaType.APPLICATION_JSON)
@@ -252,96 +156,36 @@ public interface OrganizationAdminResource {
             @QueryParam("authUser") String authUser, @QueryParam("authIpAddress") String authIpAddress,
             @QueryParam("resourcePath") String resourcePath, @QueryParam("dateFrom") String dateFrom,
             @QueryParam("dateTo") String dateTo, @QueryParam("first") Integer firstResult,
-            @QueryParam("max") Integer maxResults);*/
+            @QueryParam("max") Integer maxResults);
 
     /**
      * Delete all events
      *
      */
-   /* @Path("events")
+    @Path("events")
     @DELETE
-    public void clearEvents();*/
+    public void clearEvents();
 
     /**
      * Delete all admin events
      *
      */
-    /*@Path("admin-events")
+    @Path("admin-events")
     @DELETE
-    public void clearAdminEvents();*/
+    public void clearAdminEvents();
 
     /**
-     * Test LDAP connection
-     *
-     * @param action
-     * @param connectionUrl
-     * @param bindDn
-     * @param bindCredential
-     * @return
+     * Clear organization cache
      */
-    /*@Path("testLDAPConnection")
-    @GET
-    @NoCache
-    public Response testLDAPConnection(@QueryParam("action") String action,
-            @QueryParam("connectionUrl") String connectionUrl, @QueryParam("bindDn") String bindDn,
-            @QueryParam("bindCredential") String bindCredential,
-            @QueryParam("useTruststoreSpi") String useTruststoreSpi);*/
-
-    /*@Path("identity-provider")
-    public IdentityProvidersResource getIdentityProviderResource();*/
-
-    /**
-     * Get group hierarchy. Only name and ids are returned.
-     *
-     * @return
-     */
-    /*@GET
-    @NoCache
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("default-groups")
-    public List<GroupRepresentation> getDefaultGroups();*/
-    @PUT
-    @NoCache
-    @Path("default-groups/{groupId}")
-    public void addDefaultGroup(@PathParam("groupId") String groupId);
-
-    @DELETE
-    @NoCache
-    @Path("default-groups/{groupId}")
-    public void removeDefaultGroup(@PathParam("groupId") String groupId);
-
-    /*@Path("groups")
-    public GroupsResource getGroups();*/
-
-    /*@GET
-    @Path("group-by-path/{path: .*}")
-    @NoCache
-    @Produces(MediaType.APPLICATION_JSON)
-    public GroupRepresentation getGroupByPath(@PathParam("path") String path);*/
-
-    /**
-     * Partial import from a JSON file to an existing realm.
-     *
-     * @param rep
-     * @return
-     */
-    /*@Path("partialImport")
+    @Path("clear-organization-cache")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response partialImport(PartialImportRepresentation rep);*/
+    public void clearOrganizationCache();
 
     /**
-     * Clear realm cache
+     * Clear person cache
      */
-    @Path("clear-realm-cache")
+    @Path("clear-person-cache")
     @POST
-    public void clearRealmCache();
-
-    /**
-     * Clear user cache
-     */
-    @Path("clear-user-cache")
-    @POST
-    public void clearUserCache();
+    public void clearPersonCache();
 
 }
