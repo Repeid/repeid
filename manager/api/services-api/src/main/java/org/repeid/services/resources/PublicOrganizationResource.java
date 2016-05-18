@@ -32,6 +32,6 @@ public interface PublicOrganizationResource {
 	@GET
 	@NoCache
 	@Produces(MediaType.APPLICATION_JSON)
-	public PublishedOrganizationRepresentation getRealm();
+	public PublishedOrganizationRepresentation getOrganization();
 
 }
