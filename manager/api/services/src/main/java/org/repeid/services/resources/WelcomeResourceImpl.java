@@ -87,6 +87,7 @@ public class WelcomeResourceImpl implements WelcomeResource {
 				map.put("errorMessage", errorMessage);
 			}
 			FreeMarkerUtil freeMarkerUtil = new FreeMarkerUtil();
+
 			String result = freeMarkerUtil.processTemplate(map, "index.ftl", getTheme());
 
 			ResponseBuilder rb = Response.status(errorMessage == null ? Status.OK : Status.BAD_REQUEST).entity(result)

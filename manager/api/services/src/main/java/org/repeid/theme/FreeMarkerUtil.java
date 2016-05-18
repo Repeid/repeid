@@ -1,22 +1,19 @@
 package org.repeid.theme;
 
-import freemarker.cache.URLTemplateLoader;
-import freemarker.cache.WebappTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import org.repeid.Config;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
+
+import org.repeid.Config;
+
+import freemarker.cache.URLTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 public class FreeMarkerUtil {
 
