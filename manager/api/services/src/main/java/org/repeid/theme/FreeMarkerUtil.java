@@ -20,44 +20,64 @@ import javax.ws.rs.core.Context;
 
 public class FreeMarkerUtil {
 
-    private ConcurrentHashMap<String, Template> cache;
+	private ConcurrentHashMap<String, Template> cache;
 
-    @Context
-    private ServletContext context;
+	@Context
+	private ServletContext context;
 
-    public FreeMarkerUtil() {
-        if (Config.scope("theme").getBoolean("cacheTemplates", true)) {
-            cache = new ConcurrentHashMap<>();
-        }
-    }
+	public FreeMarkerUtil() {
+		if (Config.scope("theme").getBoolean("cacheTemplates", true)) {
+			cache = new ConcurrentHashMap<>();
+		}
+	}
 
-    public String processTemplate(String templateName) throws FreeMarkerException {
-        try {
-            Template template;
-            if (cache != null) {
-                template = cache.get(templateName);
-                if (template == null) {
-                    template = getTemplate(templateName);
-                    if (cache.putIfAbsent(templateName, template) != null) {
-                        template = cache.get(templateName);
-                    }
-                }
-            } else {
-                template = getTemplate(templateName);
-            }
+	public String processTemplate(Object data, String templateName, Theme theme) throws FreeMarkerException {
+		try {
+			Template template;
+			if (cache != null) {
+				String key = theme.getName() + "/" + templateName;
+				template = cache.get(key);
+				if (template == null) {
+					template = getTemplate(templateName, theme);
+					if (cache.putIfAbsent(key, template) != null) {
+						template = cache.get(key);
+					}
+				}
+			} else {
+				template = getTemplate(templateName, theme);
+			}
 
-            Writer out = new StringWriter();
-            template.process(Collections.emptyMap(), out);
-            return out.toString();
-        } catch (Exception e) {
-            throw new FreeMarkerException("Failed to process template " + templateName, e);
-        }
-    }
+			Writer out = new StringWriter();
+			template.process(data, out);
+			return out.toString();
+		} catch (Exception e) {
+			throw new FreeMarkerException("Failed to process template " + templateName, e);
+		}
+	}
 
-    private Template getTemplate(String templateName) throws IOException {
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
-        cfg.setServletContextForTemplateLoading(context, "/WEB-INF");
-        return cfg.getTemplate(templateName);
-    }
+	private Template getTemplate(String templateName, Theme theme) throws IOException {
+		Configuration cfg = new Configuration();
+		cfg.setTemplateLoader(new ThemeTemplateLoader(theme));
+		return cfg.getTemplate(templateName);
+	}
+
+	class ThemeTemplateLoader extends URLTemplateLoader {
+
+		private Theme theme;
+
+		public ThemeTemplateLoader(Theme theme) {
+			this.theme = theme;
+		}
+
+		@Override
+		protected URL getURL(String name) {
+			try {
+				return theme.getTemplate(name);
+			} catch (IOException e) {
+				return null;
+			}
+		}
+
+	}
 
 }
