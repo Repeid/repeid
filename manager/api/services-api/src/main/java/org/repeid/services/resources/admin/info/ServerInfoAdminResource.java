@@ -1,4 +1,4 @@
-package org.repeid.services.resources.admin;
+package org.repeid.services.resources.admin.info;
 
 import javax.ws.rs.GET;
 

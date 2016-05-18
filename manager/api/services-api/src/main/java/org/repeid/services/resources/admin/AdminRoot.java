@@ -7,6 +7,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import org.repeid.services.resources.admin.info.ServerInfoAdminResource;
+
 @Path("/admin")
 public interface AdminRoot {
 

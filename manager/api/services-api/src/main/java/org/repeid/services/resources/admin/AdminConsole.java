@@ -17,56 +17,59 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 public interface AdminConsole {
 
-    /**
-     * Adapter configuration for the admin console for this organization
-     *
-     * @return
-     */
-    @Path("config")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @NoCache
-    public Response config();
+	/**
+	 * Adapter configuration for the admin console for this organization
+	 *
+	 * @return
+	 */
+	@Path("config")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@NoCache
+	// public ClientManager.InstallationAdapterConfig config();
+	public Response config();
 
-    /**
-     * Permission information
-     *
-     * @param headers
-     * @return
-     */
-    @Path("whoami")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @NoCache
-    public Response whoAmI(final @Context HttpHeaders headers);
+	/**
+	 * Permission information
+	 *
+	 * @param headers
+	 * @return
+	 */
+	@Path("whoami")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@NoCache
+	public Response whoAmI(final @Context HttpHeaders headers);
 
-    /**
-     * Logout from the admin console
-     *
-     * @return
-     */
-    @Path("logout")
-    @GET
-    @NoCache
-    public Response logout();
+	/**
+	 * Logout from the admin console
+	 *
+	 * @return
+	 */
+	@Path("logout")
+	@GET
+	@NoCache
+	public Response logout();
 
-    /**
-     * Main page of this organization's admin console
-     *
-     * @return
-     * @throws URISyntaxException
-     */
-    @GET
-    @NoCache
-    public Response getMainPage() throws URISyntaxException, IOException;
+	/**
+	 * Main page of this organization's admin console
+	 *
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	@GET
+	@NoCache
+	public Response getMainPage() throws URISyntaxException, IOException;
 
-    @GET
-    @Path("{indexhtml: index.html}") // this expression is a hack to get around jaxdoclet generation bug. Doesn't like index.html
-    public Response getIndexHtmlRedirect();
+	@GET
+	@Path("{indexhtml: index.html}") // this expression is a hack to get around
+										// jaxdoclet generation bug. Doesn't
+										// like index.html
+	public Response getIndexHtmlRedirect();
 
-    @GET
-    @Path("messages.json")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Properties getMessages(@QueryParam("lang") String lang);
+	@GET
+	@Path("messages.json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Properties getMessages(@QueryParam("lang") String lang);
 
 }

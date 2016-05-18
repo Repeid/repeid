@@ -28,3 +28,6 @@
 /admin/organizations/{organization}/persons/legals
 /admin/commons													// CommonsResource
 /admin/serverinfo   
+
+
+/organizations

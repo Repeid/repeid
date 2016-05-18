@@ -13,6 +13,7 @@ import org.repeid.models.OrganizationModel;
 import org.repeid.models.RepeidSession;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.managers.OrganizationManager;
+import org.repeid.services.resources.admin.info.ServerInfoAdminResource;
 
 public class AdminRootImpl implements AdminRoot {
 

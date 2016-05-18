@@ -1,7 +1,7 @@
 package org.repeid.services.resources.admin;
 
 import org.repeid.manager.api.beans.representations.info.ServerInfoRepresentation;
-import org.repeid.services.resources.admin.ServerInfoAdminResource;
+import org.repeid.services.resources.admin.info.ServerInfoAdminResource;
 
 public class ServerInfoAdminResourceImpl implements ServerInfoAdminResource {
 
