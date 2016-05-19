@@ -3,7 +3,7 @@
         "name" : "base",
         "types": [ "admin", "account", "login", "email" ]
     }, {
-        "name" : "keycloak",
+        "name" : "repeid",
         "types": [ "admin", "account", "login", "common", "email", "welcome" ]
     }]
 }

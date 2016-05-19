@@ -21,6 +21,7 @@
         <module>services-api</module>
         <module>services</module>
         <module>war</module>
+        <module>themes</module>
     </modules>
 
 </project>

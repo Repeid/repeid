@@ -67,7 +67,7 @@ public class ExtendingThemeManager implements ThemeProvider {
 			if (theme == null) {
 				theme = loadTheme(name, type);
 				if (theme == null) {
-					theme = loadTheme("keycloak", type);
+					theme = loadTheme("repeid", type);
 					if (theme == null) {
 						theme = loadTheme("base", type);
 					}
