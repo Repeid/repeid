@@ -61,7 +61,7 @@
         <div class="logo">
                 <img src="welcome-content/keycloak_logo.png" alt="Keycloak" border="0" />
         </div>
-        <h1>Welcome to Keycloak</h1>
+        <h1>Welcome to Repeid</h1>
 
         <#if successMessage?has_content>
             <p>${successMessage}</p>
