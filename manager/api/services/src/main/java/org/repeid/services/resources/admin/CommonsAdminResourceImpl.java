@@ -8,9 +8,9 @@ import org.repeid.models.enums.BussinessType;
 import org.repeid.models.enums.Gender;
 import org.repeid.models.enums.PersonType;
 
-public class CommonsResourceImpl implements CommonsResource {
+public class CommonsAdminResourceImpl implements CommonsAdminResource {
 
-    public CommonsResourceImpl() {
+    public CommonsAdminResourceImpl() {
         // TODO Auto-generated constructor stub
     }
 

@@ -1,5 +1,7 @@
 package org.repeid.models;
 
+import java.util.List;
+
 import org.repeid.provider.Provider;
 
 public interface OrganizationProvider extends Provider {
@@ -15,4 +17,6 @@ public interface OrganizationProvider extends Provider {
     boolean removeOrganization(String id);
 
     void close();
+
+	List<OrganizationModel> getOrganizations();
 }

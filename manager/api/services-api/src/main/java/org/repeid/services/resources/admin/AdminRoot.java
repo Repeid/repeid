@@ -57,7 +57,7 @@ public interface AdminRoot {
      * @return
      */
     @Path("commons")
-    public CommonsResource getCommonsResource(@Context final HttpHeaders headers);
+    public CommonsAdminResource getCommonsResource(@Context final HttpHeaders headers);
 
     /**
      * General information about the server

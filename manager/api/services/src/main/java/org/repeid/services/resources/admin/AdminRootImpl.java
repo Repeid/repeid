@@ -70,14 +70,14 @@ public class AdminRootImpl implements AdminRoot {
 
     @Override
     public OrganizationsAdminResource getOrganizationsAdmin(HttpHeaders headers) {
-        OrganizationsAdminResource adminResource = new OrganizationsResourceImpl();
+        OrganizationsAdminResource adminResource = new OrganizationsAdminResourceImpl();
         ResteasyProviderFactory.getInstance().injectProperties(adminResource);
         return adminResource;
     }
 
     @Override
-    public CommonsResource getCommonsResource(HttpHeaders headers) {
-        CommonsResource commonsResource = new CommonsResourceImpl();
+    public CommonsAdminResource getCommonsResource(HttpHeaders headers) {
+        CommonsAdminResource commonsResource = new CommonsAdminResourceImpl();
         ResteasyProviderFactory.getInstance().injectProperties(commonsResource);
         return commonsResource;
     }

@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/commons")
 @Produces(MediaType.APPLICATION_JSON)
-public interface CommonsResource {
+public interface CommonsAdminResource {
 
     /**
      * Este endpoint retorna todos los tipos de persona soportados por repeid.
