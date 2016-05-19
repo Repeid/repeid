@@ -375,6 +375,8 @@
 
 	<modules>
 		<module>manager</module>
+		<module>wildfly-swarm</module>
+		<module>wildfly-swarm-base</module>
 	</modules>
 
 	<build>
