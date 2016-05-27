@@ -9,7 +9,7 @@
 
 	<properties>
 		<!-- Project properties -->
-		<product.name>Repeid</product.name>
+		<product.name>repeid</product.name>
 		<product.version>${project.version}</product.version>
 		<product.build-time>${timestamp}</product.build-time>
 
@@ -17,53 +17,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<!-- JBoss dependency versions -->
-		<version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
-		<version.jboss.bom>10.0.0.Final</version.jboss.bom>
-		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
-
-		<!-- other plug-in versions -->
-		<version.compiler.plugin>3.1</version.compiler.plugin>
-		<version.war.plugin>2.1.1</version.war.plugin>
-
 		<!-- maven-compiler-plugin -->
-		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<!--Maven version -->
-		<maven.min.version>3.2.1</maven.min.version>
-
-		<!-- Wildfly libraries -->
-		<javax.mail.version>1.5.5</javax.mail.version>
-		<resteasy.version>3.0.14.Final</resteasy.version>
-		<hibernate.entitymanager.version>5.0.7.Final</hibernate.entitymanager.version>
-		<hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
-		<hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
-		<jboss-jaxrs-api_2.0_spec>1.0.0.Final</jboss-jaxrs-api_2.0_spec>
-		<jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec.version>1.0.4.Final
-		</jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec.version>
-		<jboss.logging.version>3.3.0.Final</jboss.logging.version>
-		<jboss.logging.tools.version>2.0.1.Final</jboss.logging.tools.version>
-		<jboss.logging.tools.wf8.version>1.2.0.Final</jboss.logging.tools.wf8.version>
-		<apache.httpcomponents.version>4.5</apache.httpcomponents.version>
-		<apache.httpcomponents.httpcore.version>4.4.1</apache.httpcomponents.httpcore.version>
-		<jackson.version>2.5.4</jackson.version>
-		<bouncycastle.version>1.52</bouncycastle.version>
-		<xmlsec.version>2.0.5</xmlsec.version>
-		<infinispan.version>8.1.0.Final</infinispan.version>
-		<h2.version>1.3.173</h2.version>
-
-		<!--Others libraries -->
-		<servlet.api.30.version>1.0.2.Final</servlet.api.30.version>
-		<mongo.driver.version>3.2.0</mongo.driver.version>
-		<liquibase.version>3.4.1</liquibase.version>
-		<freemarker.version>2.3.23</freemarker.version>
-		<twitter4j.version>4.0.4</twitter4j.version>
-		<google.zxing.version>3.2.1</google.zxing.version>
-
-		<!--Test -->
-		<junit.version>4.12</junit.version>
-		<greenmail.version>1.3.1b</greenmail.version>
+		<!-- Wildfyl swarm -->
+		<version.wildfly.swarm>1.0.0.CR1</version.wildfly.swarm>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 
 	<developers>
@@ -81,305 +41,65 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Define the version of the JBoss Java EE APIs we want to import. Any 
-				dependencies from org.jboss.spec will have their version defined by this 
-				BOM -->
 			<dependency>
-				<groupId>org.wildfly.bom</groupId>
-				<artifactId>wildfly-javaee7</artifactId>
-				<version>${version.jboss.bom}</version>
-				<type>pom</type>
+				<groupId>org.wildfly.swarm</groupId>
+				<artifactId>bom</artifactId>
+				<version>${version.wildfly.swarm}</version>
 				<scope>import</scope>
-			</dependency>
-
-			<!--Wildfly -->
-			<dependency>
-				<groupId>javax.mail</groupId>
-				<artifactId>javax.mail-api</artifactId>
-				<version>${javax.mail.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-jaxrs</artifactId>
-				<version>${resteasy.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-multipart-provider</artifactId>
-				<version>${resteasy.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-jackson2-provider</artifactId>
-				<version>${resteasy.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-client</artifactId>
-				<version>${resteasy.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-undertow</artifactId>
-				<version>${resteasy.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>async-http-servlet-3.0</artifactId>
-				<version>${resteasy.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.1-api</artifactId>
-				<version>${hibernate.javax.persistence.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate.entitymanager.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate.validator.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.jboss.spec.javax.ws.rs</groupId>
-				<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
-				<version>${jboss-jaxrs-api_2.0_spec}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.spec.javax.xml.bind</groupId>
-				<artifactId>jboss-jaxb-api_2.2_spec</artifactId>
-				<version>${jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.jboss.logging</groupId>
-				<artifactId>jboss-logging</artifactId>
-				<version>${jboss.logging.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.logging</groupId>
-				<artifactId>jboss-logging-annotations</artifactId>
-				<version>${jboss.logging.tools.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.logging</groupId>
-				<artifactId>jboss-logging-processor</artifactId>
-				<version>${jboss.logging.tools.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${apache.httpcomponents.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>${apache.httpcomponents.httpcore.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpmime</artifactId>
-				<version>${apache.httpcomponents.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.module</groupId>
-				<artifactId>jackson-module-jaxb-annotations</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.jaxrs</groupId>
-				<artifactId>jackson-jaxrs-json-provider</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.jaxrs</groupId>
-				<artifactId>jackson-jaxrs-base</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk15on</artifactId>
-				<version>${bouncycastle.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcpkix-jdk15on</artifactId>
-				<version>${bouncycastle.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.santuario</groupId>
-				<artifactId>xmlsec</artifactId>
-				<version>${xmlsec.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>servlet-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.codehaus.woodstox</groupId>
-						<artifactId>woodstox-core-asl</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.infinispan</groupId>
-				<artifactId>infinispan-core</artifactId>
-				<version>${infinispan.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>${h2.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- Other libraries -->
-			<dependency>
-				<groupId>org.jboss.spec.javax.servlet</groupId>
-				<artifactId>jboss-servlet-api_3.0_spec</artifactId>
-				<version>${servlet.api.30.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>mongo-java-driver</artifactId>
-				<version>${mongo.driver.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-core</artifactId>
-				<version>${liquibase.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>${freemarker.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.twitter4j</groupId>
-				<artifactId>twitter4j-core</artifactId>
-				<version>${twitter4j.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.google.zxing</groupId>
-				<artifactId>core</artifactId>
-				<version>${google.zxing.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.zxing</groupId>
-				<artifactId>javase</artifactId>
-				<version>${google.zxing.version}</version>
-			</dependency>
-
-			<!-- Test libraries -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>com.icegreen</groupId>
-				<artifactId>greenmail</artifactId>
-				<version>${greenmail.version}</version>
-				<scope>test</scope>
+				<type>pom</type>
 			</dependency>
 
 			<!--Repeid -->
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-common</artifactId>
+				<artifactId>repeid-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-core</artifactId>
+				<artifactId>repeid-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-saml-core</artifactId>
+				<artifactId>repeid-server-spi</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-server-spi</artifactId>
+				<artifactId>repeid-model-infinispan</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-model-infinispan</artifactId>
+				<artifactId>repeid-model-jpa</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-model-jpa</artifactId>
+				<artifactId>repeid-model-mongo</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-model-mongo</artifactId>
+				<artifactId>repeid-services-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-services-api</artifactId>
+				<artifactId>repeid-services</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-services</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.repeid</groupId>
-				<artifactId>repeid-manager-api-themes</artifactId>
+				<artifactId>repeid-themes</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<modules>
-		<module>manager</module>
+		<module>common</module>
 		<module>wildfly-swarm</module>
 	</modules>
-
 </project>

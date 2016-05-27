@@ -11,26 +11,6 @@
 	<artifactId>repeid-wildfly-swarm</artifactId>
 	<packaging>war</packaging>
 
-	<properties>
-		<version.wildfly.swarm>1.0.0.CR1</version.wildfly.swarm>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.wildfly.swarm</groupId>
-				<artifactId>bom</artifactId>
-				<version>${version.wildfly.swarm}</version>
-				<scope>import</scope>
-				<type>pom</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<build>
 		<finalName>repeid</finalName>
 		<plugins>
@@ -71,4 +51,5 @@
 			<artifactId>logging</artifactId>
 		</dependency>
 	</dependencies>
+
 </project>
