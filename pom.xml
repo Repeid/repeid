@@ -15,6 +15,7 @@
 
 		<!-- UTF -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- JBoss dependency versions -->
 		<version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
@@ -28,6 +29,9 @@
 		<!-- maven-compiler-plugin -->
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
+
+		<!--Maven version -->
+		<maven.min.version>3.2.1</maven.min.version>
 
 		<!-- Wildfly libraries -->
 		<javax.mail.version>1.5.5</javax.mail.version>
@@ -376,14 +380,6 @@
 	<modules>
 		<module>manager</module>
 		<module>wildfly-swarm</module>
-		<module>wildfly-swarm-base</module>
 	</modules>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-	</build>
 
 </project>
