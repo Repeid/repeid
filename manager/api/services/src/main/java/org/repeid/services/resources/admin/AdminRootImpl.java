@@ -4,6 +4,7 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.spi.HttpRequest;
@@ -87,6 +88,22 @@ public class AdminRootImpl implements AdminRoot {
         ServerInfoAdminResource adminResource = new ServerInfoAdminResourceImpl();
         ResteasyProviderFactory.getInstance().injectProperties(adminResource);
         return adminResource;
+    }
+    
+    public static UriBuilder adminBaseUrl(UriInfo uriInfo) {
+        return adminBaseUrl(uriInfo.getBaseUriBuilder());
+    }
+
+    public static UriBuilder adminBaseUrl(UriBuilder base) {
+        return base.path(AdminRoot.class);
+    }
+    
+    public static UriBuilder organizationUrl(UriInfo uriInfo) {
+        return organizationUrl(uriInfo.getBaseUriBuilder());
+    }
+
+    public static UriBuilder organizationUrl(UriBuilder base) {
+        return adminBaseUrl(base).path(AdminRoot.class, "getOrganizationsAdmin");
     }
 
 }
