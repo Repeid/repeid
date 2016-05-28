@@ -126,6 +126,7 @@
 		<module>services</module>
 		<module>services-api</module>
 		<module>themes</module>
+		<module>war</module>
 		<module>wildfly-swarm</module>
 	</modules>
 
