@@ -5,21 +5,21 @@
         <artifactId>repeid</artifactId>
         <groupId>org.repeid</groupId>
         <version>1.0.0.Alpha5-SNAPSHOT</version>
-        <relativePath>../../../../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>repeid-manager-api-model-infinispan</artifactId>
+    <artifactId>repeid-model-infinispan</artifactId>
 
     <dependencies>
         <!-- Project dependencies -->
         <dependency>
             <groupId>org.repeid</groupId>
-            <artifactId>repeid-manager-api-core</artifactId>
+            <artifactId>repeid-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.repeid</groupId>
-            <artifactId>repeid-manager-api-server-spi</artifactId>
+            <artifactId>repeid-server-spi</artifactId>
         </dependency>
 
         <!-- Third libraries -->

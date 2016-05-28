@@ -37,6 +37,7 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<!-- Wildfly Swarm Fractions -->
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
@@ -49,6 +50,44 @@
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>logging</artifactId>
+		</dependency>
+
+		<!-- Repeid -->
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-model-infinispan</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-model-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-model-mongo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-server-spi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-services-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-themes</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -24,11 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -37,38 +34,36 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "LEGAL_PERSON")
 public class LegalPersonEntity extends PersonEntity {
 
-    @Id
-    @Access(AccessType.PROPERTY)
-    // we do this because relationships often fetch id, but not entity.  This avoids an extra SQL
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id")
-    private String id;
+	@Id
+	@Access(AccessType.PROPERTY)
+	// we do this because relationships often fetch id, but not entity. This
+	// avoids an extra SQL
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "id")
+	private String id;
 
-    @NotNull
-    @Size(min = 1, max = 70)
-    @NotBlank
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    public LegalPersonEntity() {
-        super();
-    }
+	public LegalPersonEntity() {
+		super();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
 }

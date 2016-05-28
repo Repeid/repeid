@@ -122,11 +122,10 @@ public class OrganizationsAdminResourceImpl implements OrganizationsAdminResourc
 		// auth, session, clientConnection);
 		session.getContext().setOrganization(organization);
 
-		OrganizationAdminResource adminResource = new OrganizationAdminResourceImpl(realmAuth, organization, tokenManager, adminEvent);
+		OrganizationAdminResource adminResource = new OrganizationAdminResourceImpl(/*realmAuth, organization, tokenManager, adminEvent*/);
 		ResteasyProviderFactory.getInstance().injectProperties(adminResource);
 		// resourceContext.initResource(adminResource);
 		return adminResource;
-		return null;
 	}
 
 	protected void addOrganizationRep(List<OrganizationRepresentation> reps,
