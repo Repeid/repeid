@@ -1,59 +1,67 @@
 ext {
+    // Gradle version
+    expectedGradleVersion = "2.7"
+
     //Project properties
-    product.name = 'repeid'
-    product.group = 'org.group'
-    product.version = '1.0.0-SNAPSHOT'
-    product.build_time = $timestamp
-
-
+    product = [
+            name      : 'repeid',
+            group     : 'org.group',
+            version   : '1.0.0-SNAPSHOT',
+            build_time: new Date()
+    ]
 
     //UTF
-    project.build.sourceEncoding = 'UTF-8'
-    project.reporting.outputEncoding ='UTF-8'
+    sourceEncoding = 'UTF-8'
+    outputEncoding = 'UTF-8'
 
     // compiler compatibility
-    compiler.source = '1.8'
-    compiler.target = '1.8'
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 
     // Wildfly swarm
-    version.wildfly.swarm = '1.0.0.CR1'
-    failOnMissingWebXml = false
+    wildflySwarm = [
+            version: '1.0.0.CR1',
+            failOnMissingWebXml: false
+    ]
 
     // sonarqube
-    sonarqube_version = '1.1'
+    sonarqube = [version: '1.1']
 
     // Miredot
-    miredot_version = '2.0-RC2'
+    miredot = [version: '2.0-RC2']
 
     // com.netflix.nebula:gradle-extra-configurations-plugin
-    nebula_extra_plugin = '3.0.3'
+    nebula = [version: '3.0.3']
 
     //checkstyle
-    checkstyle_version = '6.14.1'
-
-    // Gradle
-    expectedGradleVersion = '2.7'
-
-
+    checkstyle = [version: '6.14.1']
 
     // other plug-in versions -->
     version.compiler.plugin = '3.1'
     version.wildfly.maven.plugin = '1.0.2.Final'
 
     // WildFly
-    eap.version = '7.0.0.Beta'
-    jboss.as.version = '7.2.0.Final'
-    wildfly.version = '10.0.0.Final'
+    eap = [version: '7.0.0.Beta']
+    jbossAs = [version: '7.2.0.Final']
+    wildfly = [version: '10.0.0.Final']
 
-    aesh.version = '0.66.4'
-    apache.httpcomponents.version = '4.5'
-    apache.httpcomponents.httpcore.version = '4.4.1'
-    apache.mime4j.version = '0.6'
-    bouncycastle.version = '1.52'
-    cxf.version = '3.1.5'
-    dom4j.version = '1.6.1'
-    github.relaxng.version = '2011.1'
-    h2.version = '1.3.173'
+    aesh = [version: '0.66.4']
+    apache = [
+            httpcomponents: [
+                    version: '4.5',
+                    httpcore: [version: '4.4.1']
+            ],
+            mime4j: [version: '0.6']
+    ]
+    bouncycastle = [version: '1.52']
+    cxf = [version: '3.1.5']
+    dom4j = [version: '1.6.1']
+    github = [
+            relaxng: [version: '2011.1']
+    ]
+    h2 = [version: '1.3.173']
+
+
     hibernate.entitymanager.version = '5.0.7.Final'
     hibernate.javax.persistence.version = '1.0.0.Final'
     infinispan.version = '8.1.0.Final'
@@ -107,93 +115,93 @@ ext {
 
     libraries = [
             // Javax
-            javax_inject:           'javax.inject:javax.inject:1',
-            cdi_api:                'javax.enterprise:cdi-api:1.2',
-            javax_ws_rs_api:        'javax.ws.rs:javax.ws.rs-api:2.0.1',
+            javax_inject                        : 'javax.inject:javax.inject:1',
+            cdi_api                             : 'javax.enterprise:cdi-api:1.2',
+            javax_ws_rs_api                     : 'javax.ws.rs:javax.ws.rs-api:2.0.1',
 
             // Apache Commons
-            commons_codec:			'commons-codec:commons-codec:1.10',
-            commons_lang: 			'commons-lang:commons-lang:2.6',
-            commons_io:				'commons-io:commons-io:2.4',
-            commons_configuration:	'commons-configuration:commons-configuration:1.10',
+            commons_codec                       : 'commons-codec:commons-codec:1.10',
+            commons_lang                        : 'commons-lang:commons-lang:2.6',
+            commons_io                          : 'commons-io:commons-io:2.4',
+            commons_configuration               : 'commons-configuration:commons-configuration:1.10',
 
             // Jboss
-            jboss_servlet:			    'org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.2.Final',
-            jboss_security_spi:		    'org.picketbox:jboss-security-spi:4.9.4.Final',
-            jboss_ejb_api_3_2_spec:     'org.jboss.spec.javax.ejb:jboss-ejb-api_3.2_spec:1.0.0.Final',
+            jboss_servlet                       : 'org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.2.Final',
+            jboss_security_spi                  : 'org.picketbox:jboss-security-spi:4.9.4.Final',
+            jboss_ejb_api_3_2_spec              : 'org.jboss.spec.javax.ejb:jboss-ejb-api_3.2_spec:1.0.0.Final',
 
             // Codehaus jackson
-            jackson_core_asl:		    'org.codehaus.jackson:jackson-core-asl:1.9.13',
-            jackson_mapper_asl:		    'org.codehaus.jackson:jackson-mapper-asl:1.9.13',
+            jackson_core_asl                    : 'org.codehaus.jackson:jackson-core-asl:1.9.13',
+            jackson_mapper_asl                  : 'org.codehaus.jackson:jackson-mapper-asl:1.9.13',
 
-			// Jackson
-			jackson_core:				'com.fasterxml.jackson.core:jackson-core:2.7.0',			
-			jackson_databind:			'com.fasterxml.jackson.core:jackson-databind:2.7.0',
-			jackson_annotations:		'com.fasterxml.jackson.core:jackson-annotations:2.7.0',
-			
+            // Jackson
+            jackson_core                        : 'com.fasterxml.jackson.core:jackson-core:2.7.0',
+            jackson_databind                    : 'com.fasterxml.jackson.core:jackson-databind:2.7.0',
+            jackson_annotations                 : 'com.fasterxml.jackson.core:jackson-annotations:2.7.0',
+
             // Joda time
-            joda_time:                  'joda-time:joda-time:2.9.1',
+            joda_time                           : 'joda-time:joda-time:2.9.1',
 
             // mvel2
-            mvel2:                      'org.mvel:mvel2:2.2.7.Final',
+            mvel2                               : 'org.mvel:mvel2:2.2.7.Final',
 
             // Logging
-            jboss_logging:        		'org.jboss.logging:jboss-logging:3.3.0.Final',
-            jboss_logging_annotations: 	'org.jboss.logging:jboss-logging-annotations:2.0.0.Final',
-            jboss_logging_processor:  	'org.jboss.logging:jboss-logging-processor:2.0.0.Final',
+            jboss_logging                       : 'org.jboss.logging:jboss-logging:3.3.0.Final',
+            jboss_logging_annotations           : 'org.jboss.logging:jboss-logging-annotations:2.0.0.Final',
+            jboss_logging_processor             : 'org.jboss.logging:jboss-logging-processor:2.0.0.Final',
 
-            slf4j_api:                  "org.slf4j:slf4j-api:1.7.5",
-            slf4j_log4j:                "org.slf4j:slf4j-log4j12:1.7.5",
+            slf4j_api                           : "org.slf4j:slf4j-api:1.7.5",
+            slf4j_log4j                         : "org.slf4j:slf4j-log4j12:1.7.5",
 
-            log4j_api:                  'org.apache.logging.log4j:log4j-api:2.5',
-            log4j_core:                 'org.apache.logging.log4j:log4j-core:2.5',
+            log4j_api                           : 'org.apache.logging.log4j:log4j-api:2.5',
+            log4j_core                          : 'org.apache.logging.log4j:log4j-core:2.5',
 
             // Hibernate
-            hibernate_core:             'org.hibernate:hibernate-core:4.3.11.Final',
-            hibernate_jpa:              'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final',
-            hibernate_entitymanager:    'org.hibernate:hibernate-entitymanager:4.3.2.Final',
-            hibernate_validator:        'org.hibernate:hibernate-validator:4.3.2.Final',
-            
+            hibernate_core                      : 'org.hibernate:hibernate-core:4.3.11.Final',
+            hibernate_jpa                       : 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final',
+            hibernate_entitymanager             : 'org.hibernate:hibernate-entitymanager:4.3.2.Final',
+            hibernate_validator                 : 'org.hibernate:hibernate-validator:4.3.2.Final',
+
             //Mongo
-            mongo_java_driver:			'org.mongodb:mongo-java-driver:3.2.1',
-            
+            mongo_java_driver                   : 'org.mongodb:mongo-java-driver:3.2.1',
+
             // Junit
-            junit:                      'junit:junit:4.12',
-            
+            junit                               : 'junit:junit:4.12',
+
             // Hamcrest
-            hamcrest_all: 				'org.hamcrest:hamcrest-all:1.3',
-            
+            hamcrest_all                        : 'org.hamcrest:hamcrest-all:1.3',
+
             // Rest assured
-            rest_assured:				'com.jayway.restassured:rest-assured:2.6.0',
-            
+            rest_assured                        : 'com.jayway.restassured:rest-assured:2.6.0',
+
             // Arquillian
-            arquillian_junit_container:	'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final',
-            wildfly_arquillian_container_managed: 'org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.2.Final',            
-            arquillian_container_chameleon:	'org.arquillian.container:arquillian-container-chameleon:1.0.0.Alpha6',            
-            shrinkwrap_descriptors_impl_javaee:	'org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-javaee:2.0.0-alpha-8',
-            arquillian_persistence_api:	'org.jboss.arquillian.extension:arquillian-persistence-api:1.0.0.Alpha7',
-            arquillian_persistence_impl:	'org.jboss.arquillian.extension:arquillian-persistence-impl:1.0.0.Alpha6',
-            
+            arquillian_junit_container          : 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final',
+            wildfly_arquillian_container_managed: 'org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.2.Final',
+            arquillian_container_chameleon      : 'org.arquillian.container:arquillian-container-chameleon:1.0.0.Alpha6',
+            shrinkwrap_descriptors_impl_javaee  : 'org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-javaee:2.0.0-alpha-8',
+            arquillian_persistence_api          : 'org.jboss.arquillian.extension:arquillian-persistence-api:1.0.0.Alpha7',
+            arquillian_persistence_impl         : 'org.jboss.arquillian.extension:arquillian-persistence-impl:1.0.0.Alpha6',
+
             // Resteasy
-            resteasy_jaxrs:             'org.jboss.resteasy:resteasy-jaxrs:3.0.14.Final',
-            resteasy_jackson_provider:  'org.jboss.resteasy:resteasy-jackson-provider:3.0.14.Final',
-            resteasy_multipart_provider:'org.jboss.resteasy:resteasy-multipart-provider:3.0.14.Final',
-			resteasy_undertow:			'org.jboss.resteasy:resteasy-undertow:3.0.14.Final',
-			
-			// Undertown
-			undertow_core:				'io.undertow:undertow-core:1.3.14.Final',
-			undertow_servlet:			'io.undertow:undertow-servlet:1.3.14.Final',			
-			
+            resteasy_jaxrs                      : 'org.jboss.resteasy:resteasy-jaxrs:3.0.14.Final',
+            resteasy_jackson_provider           : 'org.jboss.resteasy:resteasy-jackson-provider:3.0.14.Final',
+            resteasy_multipart_provider         : 'org.jboss.resteasy:resteasy-multipart-provider:3.0.14.Final',
+            resteasy_undertow                   : 'org.jboss.resteasy:resteasy-undertow:3.0.14.Final',
+
+            // Undertown
+            undertow_core                       : 'io.undertow:undertow-core:1.3.14.Final',
+            undertow_servlet                    : 'io.undertow:undertow-servlet:1.3.14.Final',
+
             // Keycloak
-            keycloak_core:              'org.keycloak:keycloak-core:1.7.0.Final',
+            keycloak_core                       : 'org.keycloak:keycloak-core:1.7.0.Final',
 
             // Dropbox
-            dropbox_core_sdk:           'com.dropbox.core:dropbox-core-sdk:1.8.2',
-            
+            dropbox_core_sdk                    : 'com.dropbox.core:dropbox-core-sdk:1.8.2',
+
             // Google Drive
-            google_api_services_drive:	'com.google.apis:google-api-services-drive:v2-rev173-1.20.0',
-            google_oauth_client_java6:	'com.google.oauth-client:google-oauth-client-java6:1.20.0',
-            google_oauth_client_jetty:	'com.google.oauth-client:google-oauth-client-jetty:1.20.0',
-            google_http_client:			'com.google.http-client:google-http-client:1.21.0'            
+            google_api_services_drive           : 'com.google.apis:google-api-services-drive:v2-rev173-1.20.0',
+            google_oauth_client_java6           : 'com.google.oauth-client:google-oauth-client-java6:1.20.0',
+            google_oauth_client_jetty           : 'com.google.oauth-client:google-oauth-client-jetty:1.20.0',
+            google_http_client                  : 'com.google.http-client:google-http-client:1.21.0'
     ]
 }

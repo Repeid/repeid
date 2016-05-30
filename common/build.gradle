@@ -1,0 +1,12 @@
+dependencies {
+    // Project Dependencies
+    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
+
+    // Third Party Dependencies
+    compile ( libraries.javax_ws_rs_api )
+    compile ( libraries.hibernate_validator )
+
+    provided ( libraries.jboss_servlet )
+    provided ( libraries.resteasy_jaxrs )
+    provided ( libraries.resteasy_multipart_provider )
+}
