@@ -11,26 +11,6 @@
 	<artifactId>repeid-wildfly-swarm</artifactId>
 	<packaging>war</packaging>
 
-	<properties>
-		<version.wildfly.swarm>1.0.0.CR1</version.wildfly.swarm>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.wildfly.swarm</groupId>
-				<artifactId>bom</artifactId>
-				<version>${version.wildfly.swarm}</version>
-				<scope>import</scope>
-				<type>pom</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<build>
 		<finalName>repeid</finalName>
 		<plugins>
@@ -57,6 +37,7 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<!-- Wildfly Swarm Fractions -->
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
@@ -70,5 +51,44 @@
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>logging</artifactId>
 		</dependency>
+
+		<!-- Repeid -->
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-model-infinispan</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-model-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-model-mongo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-server-spi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-services-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.repeid</groupId>
+			<artifactId>repeid-themes</artifactId>
+		</dependency>
 	</dependencies>
+
 </project>

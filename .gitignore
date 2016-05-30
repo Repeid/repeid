@@ -135,3 +135,10 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+
+# verify logs
+verify.log
+log
+jaxrs/.DS_Store
+.DS_Store
+*.db
