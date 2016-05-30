@@ -1,21 +1,109 @@
-/*
- * Hibernate, Relational Persistence for Idiomatic Java
- *
- * License: GNU Lesser General Public License (LGPL), version 2.1 or later.
- * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
- */
-
-// build a map of the dependency artifacts to use.  Allows centralized definition of the version of artifacts to
-// use.  In that respect it serves a role similar to <dependencyManagement> in Maven
 ext {
+    //Project properties
+    product.name = 'repeid'
+    product.group = 'org.group'
+    product.version = '1.0.0-SNAPSHOT'
+    product.build_time = $timestamp
 
-    junitVersion = '4.11'
-//    h2Version = '1.2.145'
-    h2Version = '1.3.176'
-    bytemanVersion = '2.1.2'
-    infinispanVersion = '8.0.1.Final'
-    jnpVersion = '5.0.6.CR1'
-    elVersion = '2.2.4'
+
+
+    //UTF
+    project.build.sourceEncoding = 'UTF-8'
+    project.reporting.outputEncoding ='UTF-8'
+
+    // compiler compatibility
+    compiler.source = '1.8'
+    compiler.target = '1.8'
+
+    // Wildfly swarm
+    version.wildfly.swarm = '1.0.0.CR1'
+    failOnMissingWebXml = false
+
+    // sonarqube
+    sonarqube_version = '1.1'
+
+    // Miredot
+    miredot_version = '2.0-RC2'
+
+    // com.netflix.nebula:gradle-extra-configurations-plugin
+    nebula_extra_plugin = '3.0.3'
+
+    //checkstyle
+    checkstyle_version = '6.14.1'
+
+    // Gradle
+    expectedGradleVersion = '2.7'
+
+
+
+    // other plug-in versions -->
+    version.compiler.plugin = '3.1'
+    version.wildfly.maven.plugin = '1.0.2.Final'
+
+    // WildFly
+    eap.version = '7.0.0.Beta'
+    jboss.as.version = '7.2.0.Final'
+    wildfly.version = '10.0.0.Final'
+
+    aesh.version = '0.66.4'
+    apache.httpcomponents.version = '4.5'
+    apache.httpcomponents.httpcore.version = '4.4.1'
+    apache.mime4j.version = '0.6'
+    bouncycastle.version = '1.52'
+    cxf.version = '3.1.5'
+    dom4j.version = '1.6.1'
+    github.relaxng.version = '2011.1'
+    h2.version = '1.3.173'
+    hibernate.entitymanager.version = '5.0.7.Final'
+    hibernate.javax.persistence.version = '1.0.0.Final'
+    infinispan.version = '8.1.0.Final'
+    jackson.version = '2.5.4'
+    javax.mail.version = '1.5.5'
+    jboss.logging.version = '3.3.0.Final'
+    jboss.logging.tools.version = '2.0.1.Final'
+    jboss.logging.tools.wf8.version = '1.2.0.Final'
+    jboss_jaxrs_api_20_spec = '1.0.0.Final'
+    jboss.spec.javax.xml.bind.jboss_jaxb_api_22_spec.version = '1.0.4.Final'
+    log4j.version = '1.2.16'
+    resteasy.version = '3.0.14.Final'
+    slf4j.version = '1.7.7'
+    sun.istack.version = '2.21'
+    sun.jaxb.version = '2.2.11'
+    sun.xsom.version = '20140925'
+    undertow.version = '1.3.15.Final'
+    wildfly.core.version = '2.0.10.Final'
+    wildfly.build_tools.version = '1.1.0.Final'
+    xmlsec.version = '2.0.5'
+
+    // Others
+    apacheds.version = '2.0.0-M17'
+    apacheds.codec.version = '1.0.0-M23'
+    google.zxing.version = '3.2.1'
+    freemarker.version = '2.3.23'
+    jetty9.version = '9.1.0.v20131115'
+    liquibase.version = '3.4.1'
+    mongo.driver.version = '3.2.0'
+    mysql.version = '5.1.29'
+    osgi.version = '4.2.0'
+    pax.web.version = '4.2.4'
+    postgresql.version = '9.3-1100-jdbc41'
+    mariadb.version = '1.3.7'
+    servlet.api30.version = '1.0.2.Final'
+    twitter4j.version = '4.0.4'
+
+    // Test
+    greenmail.version = '1.3.1b'
+    hamcrest.version = '1.3'
+    jmeter.version = '2.10'
+    junit.version = '4.12'
+    picketlink.version = '2.7.0.Final'
+    selenium.version = '2.35.0'
+    xml_apis.version = '1.4.01'
+
+    // Gradle plugins
+
+    // Surefire Settings
+    surefire.memory.settings = '-Xms512m -Xmx2048m -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=256m'
 
     libraries = [
             // Javax
