@@ -31,7 +31,8 @@ import javax.ws.rs.ext.Provider;
  * @version $Revision: 1 $
  */
 @Provider
-public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
+public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {    
+    
     protected ObjectMapper mapper = new ObjectMapper();
 
 	public ObjectMapperResolver(boolean indent) {
