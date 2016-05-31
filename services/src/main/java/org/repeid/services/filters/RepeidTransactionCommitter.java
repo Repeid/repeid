@@ -8,12 +8,16 @@ import javax.ws.rs.container.ContainerResponseFilter;
 
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.repeid.models.RepeidTransaction;
+import org.repeid.services.ServicesLogger;
 
 public class RepeidTransactionCommitter implements ContainerResponseFilter {
 
+	private static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
+	
     @Override
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {
-        RepeidTransaction tx = ResteasyProviderFactory.getContextData(RepeidTransaction.class);
+    	logger.info("RepeidTransactionCommitter empezado");
+    	RepeidTransaction tx = ResteasyProviderFactory.getContextData(RepeidTransaction.class);
         if (tx != null && tx.isActive()) {
             if (tx.getRollbackOnly()) {
                 tx.rollback();
@@ -21,6 +25,7 @@ public class RepeidTransactionCommitter implements ContainerResponseFilter {
                 tx.commit();
             }
         }
+        logger.info("RepeidTransactionCommitter terminado");
     }
 
 }
