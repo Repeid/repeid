@@ -1,0 +1,15 @@
+dependencies {
+    //Project dependencies
+    compile(":repeid:repeid-common")
+
+    // Third libraries
+    compile ( libraries.bcpkix_jdk15on )
+    compile ( libraries.bcprov_jdk15on )
+
+    compile ( libraries.jackson_core )
+    compile ( libraries.jackson_databind )
+
+    // Test
+    testCompile ( libraries.junit )
+}
+

@@ -1,0 +1,36 @@
+dependencies {
+    //Project dependencies
+    compile(":repeid:repeid-services-api")
+    compile(":repeid:repeid-core")
+    compile(":repeid:repeid-server-api")
+
+    // Third libraries
+    compile ( libraries.bcprov_jdk15on )
+    compile ( libraries.bcpkix_jdk15on )
+    compile ( libraries.freemarker )
+    compile ( libraries.javax_mail_api )
+    compile ( libraries.jboss_servlet_api_30_spec )
+    compile ( libraries.twitter4j_core )
+
+    // not related to jboss-logging-tools, just required for JAX-RS
+    provided ( libraries.jboss_jaxrs_api_20_spec )
+    // These dependencies are the jboss-logging tools magic
+    // the jboss-logging-tools processor
+    provided ( libraries.jboss_logging_processor )
+    // jboss-logging API
+    provided ( libraries.jboss_logging )
+    provided ( libraries.jboss_logging_annotations )
+
+    compile ( libraries.resteasy_jaxrs )
+    compile ( libraries.jboss_jaxrs_api_20_spec )
+    compile ( libraries.resteasy_multipart_provider )
+    compile ( libraries.jackson_core )
+    compile ( libraries.jackson_databind )
+    compile ( libraries.jackson_annotations )
+    compile ( libraries.google_zxing_javase )
+    compile ( libraries.greenmail )
+
+    // Test
+    testCompile ( libraries.junit )
+}
+

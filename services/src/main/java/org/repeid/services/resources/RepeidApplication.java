@@ -50,8 +50,8 @@ public class RepeidApplication extends Application {
 		this.sessionFactory = createSessionFactory();
 
 		dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
-		ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for
-																			// injection
+		ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for injection
+		
 		context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
 		singletons.add(new ServerVersionResourceImpl());
@@ -63,8 +63,7 @@ public class RepeidApplication extends Application {
 
 		classes.add(RepeidTransactionCommitter.class);
 
-		singletons.add(
-				new ObjectMapperResolver(Boolean.parseBoolean(System.getProperty("repeid.jsonPrettyPrint", "false"))));
+		singletons.add(new ObjectMapperResolver(Boolean.parseBoolean(System.getProperty("repeid.jsonPrettyPrint", "false"))));
 
 		/*
 		 * ExportImportManager exportImportManager;

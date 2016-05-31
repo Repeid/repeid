@@ -55,7 +55,7 @@
   },
   "connectionsJpa": {
     "default": {
-      "dataSource": "java:jboss/datasources/KeycloakDS",
+      "dataSource": "java:jboss/datasources/RepeidDS",
       "databaseSchema": "update"
     }
   },
