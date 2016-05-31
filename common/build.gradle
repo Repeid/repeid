@@ -1,12 +1,9 @@
 dependencies {
-    // Project Dependencies
-    compile project(':repeid-manager:repeid-manager-api:repeid-manager-api-beans')
+    // Third libraries
+    compile ( libraries.bcprov_jdk15on )
+    compile ( libraries.bcpkix_jdk15on )
 
-    // Third Party Dependencies
-    compile ( libraries.javax_ws_rs_api )
-    compile ( libraries.hibernate_validator )
-
-    provided ( libraries.jboss_servlet )
-    provided ( libraries.resteasy_jaxrs )
-    provided ( libraries.resteasy_multipart_provider )
+    // Test
+    testCompile ( libraries.junit )
 }
+

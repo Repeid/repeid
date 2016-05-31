@@ -29,8 +29,8 @@ public class DefaultRepeidContext implements RepeidContext {
     @Override
     public URI getAuthServerUrl() {
         UriInfo uri = getUri();
-        RepeidApplication keycloakApplication = getContextObject(RepeidApplication.class);
-        return keycloakApplication.getBaseUri(uri);
+        RepeidApplication repeidApplication = getContextObject(RepeidApplication.class);
+        return repeidApplication.getBaseUri(uri);
     }
 
     @Override

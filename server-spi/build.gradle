@@ -1,0 +1,19 @@
+dependencies {
+    //Project dependencies
+    compile(":repeid:repeid-core")
+
+    // Third libraries
+    compile ( libraries.resteasy_jaxrs )
+
+    compile ( libraries.bcprov_jdk15on )
+    compile ( libraries.bcpkix_jdk15on )
+
+    compile ( libraries.resteasy_jaxrs )
+
+    compile ( libraries.httpclient )
+    compile ( libraries.httpcore )
+
+    // Test
+    testCompile ( libraries.junit )
+}
+
