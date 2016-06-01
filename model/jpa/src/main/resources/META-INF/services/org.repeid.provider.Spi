@@ -1,1 +1,2 @@
 org.repeid.connections.jpa.JpaConnectionSpi
+org.repeid.connections.jpa.updater.JpaUpdaterSpi
