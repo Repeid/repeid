@@ -35,8 +35,7 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
     public void init() {
         serverStartupTimestamp = System.currentTimeMillis();
 
-        ProviderManager pm = new ProviderManager(getClass().getClassLoader(),
-                Config.scope().getArray("providers"));
+        ProviderManager pm = new ProviderManager(getClass().getClassLoader(), Config.scope().getArray("providers"));
 
         ServiceLoader<Spi> load = ServiceLoader.load(Spi.class, getClass().getClassLoader());
         loadSPIs(pm, load);
@@ -45,6 +44,13 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
                 factory.postInit(this);
             }
         }
+        
+        logger.info("--------------------------");
+        logger.info("init()");
+        logger.info("postInit()");
+        logger.info("SPIs");
+        spis.stream().forEach(f -> logger.info(f.getClass()));
+        logger.info("--------------------------");
     }
 
     protected void loadSPIs(ProviderManager pm, ServiceLoader<Spi> load) {

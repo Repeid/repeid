@@ -20,16 +20,7 @@ public class ProviderManager {
 
     public ProviderManager(ClassLoader baseClassLoader, String... resources) {
         ServiceLoader<ProviderLoaderFactory> serviceLoader = ServiceLoader.load(ProviderLoaderFactory.class, getClass().getClassLoader());
-
-        logger.debugv("Provider factory loaders: ");
-        serviceLoader.forEach(f -> logger.debugv("Provider loader factory(<? extends ProviderLoaderFactory>): {0}", f));
-
-        logger.warnv(System.getProperty("line.separator"));
-        logger.warnv("===============================================================================");
-        logger.warnv("PROVIDER LOADER FACTORY list: (Need to be removed on the next version):");
-        serviceLoader.forEach(f -> logger.warnv("Provider loader factory(<? extends ProviderLoaderFactory>): {0}", f));
-        logger.warnv("===============================================================================");
-
+                
         providerLoaders.add(new DefaultProviderLoader(baseClassLoader));
 
         if (resources != null) {

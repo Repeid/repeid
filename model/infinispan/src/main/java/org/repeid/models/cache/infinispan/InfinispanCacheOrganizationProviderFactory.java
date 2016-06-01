@@ -1,7 +1,5 @@
 package org.repeid.models.cache.infinispan;
 
-import org.infinispan.Cache;
-import org.jboss.logging.Logger;
 import org.repeid.Config;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
