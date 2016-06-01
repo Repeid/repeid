@@ -38,7 +38,7 @@ public class LiquibaseJpaUpdaterProvider implements JpaUpdaterProvider {
         logger.debug("Starting database update");
 
         // Need ThreadLocal as liquibase doesn't seem to have API to inject custom objects into tasks
-        ThreadLocalSessionContext.setCurrentSession(session);
+        /*ThreadLocalSessionContext.setCurrentSession(session);
 
         try {
             Liquibase liquibase = getLiquibase(connection, defaultSchema);
@@ -70,7 +70,7 @@ public class LiquibaseJpaUpdaterProvider implements JpaUpdaterProvider {
             throw new RuntimeException("Failed to update database", e);
         } finally {
             ThreadLocalSessionContext.removeCurrentSession();
-        }
+        }*/
 
         logger.debug("Completed database update");
     }

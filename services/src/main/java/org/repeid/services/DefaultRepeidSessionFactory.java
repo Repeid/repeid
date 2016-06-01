@@ -49,6 +49,10 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
         logger.info("SPIs");
         spis.stream().forEach(f -> logger.info(f.getClass()));
         logger.info("--------------------------");
+        logger.info("--------------------------");
+        logger.info("ProviderFactory's");
+        factoriesMap.keySet().stream().forEach(f -> logger.info(factoriesMap.get(f)));
+        logger.info("--------------------------");
     }
 
     protected void loadSPIs(ProviderManager pm, ServiceLoader<Spi> load) {
