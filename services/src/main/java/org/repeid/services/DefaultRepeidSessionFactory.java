@@ -46,8 +46,6 @@ public class DefaultRepeidSessionFactory implements RepeidSessionFactory {
         }
         
         logger.info("--------------------------");
-        logger.info("init()");
-        logger.info("postInit()");
         logger.info("SPIs");
         spis.stream().forEach(f -> logger.info(f.getClass()));
         logger.info("--------------------------");
