@@ -73,8 +73,8 @@ public class RepeidApplication extends Application {
 
 		DBLockManager dbLockManager = new DBLockManager(sessionFactory.create());
 		dbLockManager.checkForcedUnlock();
-		//DBLockProvider dbLock = dbLockManager.getDBLock();
-		//dbLock.waitForLock();
+		DBLockProvider dbLock = dbLockManager.getDBLock();
+		dbLock.waitForLock();
 		
 		/*
 		 * try { migrateModel();

@@ -2,3 +2,4 @@ org.repeid.models.OrganizationSpi
 org.repeid.models.cache.CacheOrganizationProviderSpi
 org.repeid.services.resource.OrganizationResourceSPI
 org.repeid.theme.ThemeSpi
+org.repeid.models.dblock.DBLockSpi

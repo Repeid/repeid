@@ -29,22 +29,20 @@ public class DBLockManager {
 		}
 	}
 
-	// Try to detect ID from realmProvider
+	// Try to detect ID from organizationProvider
 	public DBLockProvider getDBLock() {
-		String realmProviderId = getRealmProviderId();
-		return session.getProvider(DBLockProvider.class, realmProviderId);
+		String organizationProviderId = getOrganizationProviderId();
+		return session.getProvider(DBLockProvider.class, organizationProviderId);
 	}
 
 	public DBLockProviderFactory getDBLockFactory() {
-		String realmProviderId = getRealmProviderId();
-		return (DBLockProviderFactory) session.getRepeidSessionFactory().getProviderFactory(DBLockProvider.class,
-				realmProviderId);
+		String organizationProviderId = getOrganizationProviderId();
+		return (DBLockProviderFactory) session.getRepeidSessionFactory().getProviderFactory(DBLockProvider.class, organizationProviderId);
 	}
 
-	private String getRealmProviderId() {
-		OrganizationProviderFactory realmProviderFactory = (OrganizationProviderFactory) session
-				.getRepeidSessionFactory().getProviderFactory(OrganizationProvider.class);
-		return realmProviderFactory.getId();
+	private String getOrganizationProviderId() {
+		OrganizationProviderFactory organizationProviderFactory = (OrganizationProviderFactory) session.getRepeidSessionFactory().getProviderFactory(OrganizationProvider.class);
+		return organizationProviderFactory.getId();
 	}
 
 }
