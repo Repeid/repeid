@@ -21,10 +21,13 @@ import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.repeid.Config;
 import org.repeid.common.util.SystemEnvProperties;
+import org.repeid.exportimport.ExportImportManager;
 import org.repeid.models.RepeidSessionFactory;
+import org.repeid.models.dblock.DBLockProvider;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.filters.RepeidTransactionCommitter;
+import org.repeid.services.managers.DBLockManager;
 import org.repeid.services.resources.admin.AdminRootImpl;
 import org.repeid.services.util.JsonConfigProvider;
 import org.repeid.services.util.ObjectMapperResolver;
@@ -50,8 +53,9 @@ public class RepeidApplication extends Application {
 		this.sessionFactory = createSessionFactory();
 
 		dispatcher.getDefaultContextObjects().put(RepeidApplication.class, this);
-		ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for injection
-		
+		ResteasyProviderFactory.pushContext(RepeidApplication.class, this); // for
+																			// injection
+
 		context.setAttribute(RepeidSessionFactory.class.getName(), this.sessionFactory);
 
 		singletons.add(new ServerVersionResourceImpl());
@@ -65,14 +69,15 @@ public class RepeidApplication extends Application {
 
 		singletons.add(new ObjectMapperResolver(Boolean.parseBoolean(System.getProperty("repeid.jsonPrettyPrint", "false"))));
 
+		ExportImportManager exportImportManager;
+
+		DBLockManager dbLockManager = new DBLockManager(sessionFactory.create());
+		dbLockManager.checkForcedUnlock();
+		//DBLockProvider dbLock = dbLockManager.getDBLock();
+		//dbLock.waitForLock();
+		
 		/*
-		 * ExportImportManager exportImportManager;
-		 * 
-		 * DBLockManager dbLockManager = new
-		 * DBLockManager(sessionFactory.create());
-		 * dbLockManager.checkForcedUnlock(); DBLockProvider dbLock =
-		 * dbLockManager.getDBLock(); dbLock.waitForLock(); try {
-		 * migrateModel();
+		 * try { migrateModel();
 		 * 
 		 * RepeidSession session = sessionFactory.create(); try {
 		 * session.getTransaction().begin();
