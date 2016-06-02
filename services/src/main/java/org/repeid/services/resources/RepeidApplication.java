@@ -22,11 +22,14 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.repeid.Config;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.exportimport.ExportImportManager;
+import org.repeid.migration.MigrationModelManager;
+import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.dblock.DBLockProvider;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.filters.RepeidTransactionCommitter;
+import org.repeid.services.managers.ApplianceBootstrap;
 import org.repeid.services.managers.DBLockManager;
 import org.repeid.services.resources.admin.AdminRootImpl;
 import org.repeid.services.util.JsonConfigProvider;
@@ -75,34 +78,47 @@ public class RepeidApplication extends Application {
 		dbLockManager.checkForcedUnlock();
 		DBLockProvider dbLock = dbLockManager.getDBLock();
 		dbLock.waitForLock();
-		
-		/*
-		 * try { migrateModel();
-		 * 
-		 * RepeidSession session = sessionFactory.create(); try {
-		 * session.getTransaction().begin();
-		 * 
-		 * ApplianceBootstrap applianceBootstrap = new
-		 * ApplianceBootstrap(session); exportImportManager = new
-		 * ExportImportManager(session);
-		 * 
-		 * boolean createMasterRealm = applianceBootstrap.isNewInstall(); if
-		 * (exportImportManager.isRunImport() &&
-		 * exportImportManager.isImportMasterIncluded()) { createMasterRealm =
-		 * false; }
-		 * 
-		 * if (createMasterRealm) {
-		 * applianceBootstrap.createMasterRealm(contextPath); }
-		 * session.getTransaction().commit(); } catch (RuntimeException re) { if
-		 * (session.getTransaction().isActive()) {
-		 * session.getTransaction().rollback(); } throw re; } finally {
-		 * session.close(); }
-		 * 
-		 * if (exportImportManager.isRunImport()) {
-		 * exportImportManager.runImport(); } else { importRealms(); }
-		 * 
-		 * importAddUser(); } finally { dbLock.releaseLock(); }
-		 * 
+
+		try {
+			migrateModel();
+
+			RepeidSession session = sessionFactory.create();
+			try {
+				session.getTransaction().begin();
+
+				ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
+				exportImportManager = new ExportImportManager(session);
+
+				boolean createMasterRealm = applianceBootstrap.isNewInstall();
+				if (exportImportManager.isRunImport() && exportImportManager.isImportMasterIncluded()) {
+					createMasterRealm = false;
+				}
+
+				if (createMasterRealm) {
+					applianceBootstrap.createMasterRealm(contextPath);
+				}
+				session.getTransaction().commit();
+			} catch (RuntimeException re) {
+				if (session.getTransaction().isActive()) {
+					session.getTransaction().rollback();
+				}
+				throw re;
+			} finally {
+				session.close();
+			}
+
+			if (exportImportManager.isRunImport()) {
+				exportImportManager.runImport();
+			} else {
+				importRealms();
+			}
+
+			importAddUser();
+		} finally {
+			dbLock.releaseLock();
+		}
+
+		 /*
 		 * if (exportImportManager.isRunExport()) {
 		 * exportImportManager.runExport(); }
 		 * 
@@ -123,14 +139,18 @@ public class RepeidApplication extends Application {
 	}
 
 	protected void migrateModel() {
-		/*
-		 * RepeidSession session = sessionFactory.create(); try {
-		 * session.getTransaction().begin();
-		 * MigrationModelManager.migrate(session);
-		 * session.getTransaction().commit(); } catch (Exception e) {
-		 * session.getTransaction().rollback(); logger.migrationFailure(e);
-		 * throw e; } finally { session.close(); }
-		 */
+		RepeidSession session = sessionFactory.create();
+		try {
+			session.getTransaction().begin();
+			MigrationModelManager.migrate(session);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			logger.migrationFailure(e);
+			throw e;
+		} finally {
+			session.close();
+		}
 	}
 
 	public String getContextPath() {
