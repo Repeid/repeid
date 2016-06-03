@@ -10,7 +10,7 @@ import org.repeid.manager.api.beans.representations.idm.PublishedOrganizationRep
 import org.repeid.models.OrganizationModel;
 import org.repeid.services.ServicesLogger;
 
-public class PublicOrganizationResourceImpl implements PublicOrganizationResource {
+public class PublicOrganizationResourceImpl implements PublicRealmResource {
 
 	protected static final ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 

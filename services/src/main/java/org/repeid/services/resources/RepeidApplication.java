@@ -1,7 +1,6 @@
 package org.repeid.services.resources;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -11,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Application;
@@ -23,17 +23,22 @@ import org.repeid.Config;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.exportimport.ExportImportManager;
 import org.repeid.migration.MigrationModelManager;
+import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.dblock.DBLockProvider;
+import org.repeid.models.utils.RepresentationToModel;
+import org.repeid.representations.idm.OrganizationRepresentation;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.filters.RepeidTransactionCommitter;
 import org.repeid.services.managers.ApplianceBootstrap;
 import org.repeid.services.managers.DBLockManager;
+import org.repeid.services.managers.OrganizationManager;
 import org.repeid.services.resources.admin.AdminRootImpl;
 import org.repeid.services.util.JsonConfigProvider;
 import org.repeid.services.util.ObjectMapperResolver;
+import org.repeid.timer.TimerProvider;
 import org.repeid.util.JsonSerialization;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -118,24 +123,26 @@ public class RepeidApplication extends Application {
 			dbLock.releaseLock();
 		}
 
-		 /*
-		 * if (exportImportManager.isRunExport()) {
-		 * exportImportManager.runExport(); }
-		 * 
-		 * boolean bootstrapAdminUser = false; RepeidSession session =
-		 * sessionFactory.create(); try { session.getTransaction().begin();
-		 * bootstrapAdminUser = new
-		 * ApplianceBootstrap(session).isNoMasterUser();
-		 * 
-		 * session.getTransaction().commit(); } finally { session.close(); }
-		 * 
-		 * sessionFactory.publish(new PostMigrationEvent());
-		 */
+		if (exportImportManager.isRunExport()) {
+			exportImportManager.runExport();
+		}
 
-		singletons.add(new WelcomeResourceImpl());
-		// singletons.add(new WelcomeResourceImpl(bootstrapAdminUser));
+		boolean bootstrapAdminUser = false;
+		RepeidSession session = sessionFactory.create();
+		try {
+			session.getTransaction().begin();
+			bootstrapAdminUser = new ApplianceBootstrap(session).isNoMasterUser();
 
-		// setupScheduledTasks(sessionFactory);
+			session.getTransaction().commit();
+		} finally {
+			session.close();
+		}
+
+		sessionFactory.publish(new PostMigrationEvent());
+
+		singletons.add(new WelcomeResource(bootstrapAdminUser));
+
+		setupScheduledTasks(sessionFactory);
 	}
 
 	protected void migrateModel() {
@@ -208,20 +215,17 @@ public class RepeidApplication extends Application {
 	}
 
 	public static void setupScheduledTasks(final RepeidSessionFactory sessionFactory) {
-		/*
-		 * long interval = Config.scope("scheduled").getLong("interval", 60L) *
-		 * 1000;
-		 * 
-		 * RepeidSession session = sessionFactory.create(); try { TimerProvider
-		 * timer = session.getProvider(TimerProvider.class); timer.schedule( new
-		 * ClusterAwareScheduledTaskRunner(sessionFactory, new
-		 * ClearExpiredEvents(), interval), interval, "ClearExpiredEvents");
-		 * timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory,
-		 * new ClearExpiredUserSessions(), interval), interval,
-		 * "ClearExpiredUserSessions"); new
-		 * UsersSyncManager().bootstrapPeriodic(sessionFactory, timer); }
-		 * finally { session.close(); }
-		 */
+		long interval = Config.scope("scheduled").getLong("interval", 60L) * 1000;
+
+		RepeidSession session = sessionFactory.create();
+		try {
+			TimerProvider timer = session.getProvider(TimerProvider.class);
+			timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredEvents(), interval), interval, "ClearExpiredEvents");
+			timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredUserSessions(), interval), interval, "ClearExpiredUserSessions");
+			new UsersSyncManager().bootstrapPeriodic(sessionFactory, timer);
+		} finally {
+			session.close();
+		}
 	}
 
 	public RepeidSessionFactory getSessionFactory() {
@@ -239,76 +243,108 @@ public class RepeidApplication extends Application {
 	}
 
 	public void importRealms() {
-		/*
-		 * String files = System.getProperty("repeid.import"); if (files !=
-		 * null) { StringTokenizer tokenizer = new StringTokenizer(files, ",");
-		 * while (tokenizer.hasMoreTokens()) { String file =
-		 * tokenizer.nextToken().trim(); RealmRepresentation rep; try { rep =
-		 * loadJson(new FileInputStream(file), RealmRepresentation.class); }
-		 * catch (FileNotFoundException e) { throw new RuntimeException(e); }
-		 * importRealm(rep, "file " + file); } }
-		 */
+		String files = System.getProperty("keycloak.import");
+		if (files != null) {
+			StringTokenizer tokenizer = new StringTokenizer(files, ",");
+			while (tokenizer.hasMoreTokens()) {
+				String file = tokenizer.nextToken().trim();
+				OrganizationRepresentation rep;
+				try {
+					rep = loadJson(new FileInputStream(file), OrganizationRepresentation.class);
+				} catch (FileNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				importRealm(rep, "file " + file);
+			}
+		}
 	}
 
-	/*
-	 * public void importRealm(RealmRepresentation rep, String from) {
-	 * RepeidSession session = sessionFactory.create(); boolean exists = false;
-	 * try { session.getTransaction().begin();
-	 * 
-	 * try { RealmManager manager = new RealmManager(session);
-	 * manager.setContextPath(getContextPath());
-	 * 
-	 * if (rep.getId() != null && manager.getRealm(rep.getId()) != null) {
-	 * logger.realmExists(rep.getRealm(), from); exists = true; }
-	 * 
-	 * if (manager.getRealmByName(rep.getRealm()) != null) {
-	 * logger.realmExists(rep.getRealm(), from); exists = true; } if (!exists) {
-	 * RealmModel realm = manager.importRealm(rep);
-	 * logger.importedRealm(realm.getName(), from); }
-	 * session.getTransaction().commit(); } catch (Throwable t) {
-	 * session.getTransaction().rollback(); if (!exists) {
-	 * logger.unableToImportRealm(t, rep.getRealm(), from); } } } finally {
-	 * session.close(); } }
-	 */
+	public void importRealm(OrganizationRepresentation rep, String from) {
+		RepeidSession session = sessionFactory.create();
+		boolean exists = false;
+		try {
+			session.getTransaction().begin();
+
+			try {
+				OrganizationManager manager = new OrganizationManager(session);
+				manager.setContextPath(getContextPath());
+
+				if (rep.getId() != null && manager.getRealm(rep.getId()) != null) {
+					logger.realmExists(rep.getRealm(), from);
+					exists = true;
+				}
+
+				if (manager.getRealmByName(rep.getRealm()) != null) {
+					logger.realmExists(rep.getRealm(), from);
+					exists = true;
+				}
+				if (!exists) {
+					RealmModel realm = manager.importRealm(rep);
+					logger.importedRealm(realm.getName(), from);
+				}
+				session.getTransaction().commit();
+			} catch (Throwable t) {
+				session.getTransaction().rollback();
+				if (!exists) {
+					logger.unableToImportRealm(t, rep.getRealm(), from);
+				}
+			}
+		} finally {
+			session.close();
+		}
+	}
 
 	public void importAddUser() {
-		/*
-		 * String configDir = System.getProperty("jboss.server.config.dir"); if
-		 * (configDir != null) { File addUserFile = new File(configDir +
-		 * File.separator + "repeid-add-user.json"); if (addUserFile.isFile()) {
-		 * logger.imprtingUsersFrom(addUserFile);
-		 * 
-		 * List<RealmRepresentation> realms; try { realms =
-		 * JsonSerialization.readValue(new FileInputStream(addUserFile), new
-		 * TypeReference<List<RealmRepresentation>>() { }); } catch (IOException
-		 * e) { logger.failedToLoadUsers(e); return; }
-		 * 
-		 * for (RealmRepresentation realmRep : realms) { for (UserRepresentation
-		 * userRep : realmRep.getUsers()) { KeycloakSession session =
-		 * sessionFactory.create(); try { session.getTransaction().begin();
-		 * 
-		 * RealmModel realm =
-		 * session.realms().getRealmByName(realmRep.getRealm()); if (realm ==
-		 * null) { logger.addUserFailedRealmNotFound(userRep.getUsername(),
-		 * realmRep.getRealm()); } else { UserModel user =
-		 * session.users().addUser(realm, userRep.getUsername());
-		 * user.setEnabled(userRep.isEnabled());
-		 * RepresentationToModel.createCredentials(userRep, user);
-		 * RepresentationToModel.createRoleMappings(userRep, user, realm); }
-		 * 
-		 * session.getTransaction().commit();
-		 * logger.addUserSuccess(userRep.getUsername(), realmRep.getRealm()); }
-		 * catch (ModelDuplicateException e) {
-		 * session.getTransaction().rollback();
-		 * logger.addUserFailedUserExists(userRep.getUsername(),
-		 * realmRep.getRealm()); } catch (Throwable t) {
-		 * session.getTransaction().rollback(); logger.addUserFailed(t,
-		 * userRep.getUsername(), realmRep.getRealm()); } finally {
-		 * session.close(); } } }
-		 * 
-		 * if (!addUserFile.delete()) {
-		 * logger.failedToDeleteFile(addUserFile.getAbsolutePath()); } } }
-		 */
+		String configDir = System.getProperty("jboss.server.config.dir");
+		if (configDir != null) {
+			File addUserFile = new File(configDir + File.separator + "keycloak-add-user.json");
+			if (addUserFile.isFile()) {
+				logger.imprtingUsersFrom(addUserFile);
+
+				List<RealmRepresentation> realms;
+				try {
+					realms = JsonSerialization.readValue(new FileInputStream(addUserFile), new TypeReference<List<RealmRepresentation>>() {
+					});
+				} catch (IOException e) {
+					logger.failedToLoadUsers(e);
+					return;
+				}
+
+				for (RealmRepresentation realmRep : realms) {
+					for (UserRepresentation userRep : realmRep.getUsers()) {
+						KeycloakSession session = sessionFactory.create();
+						try {
+							session.getTransaction().begin();
+
+							RealmModel realm = session.realms().getRealmByName(realmRep.getRealm());
+							if (realm == null) {
+								logger.addUserFailedRealmNotFound(userRep.getUsername(), realmRep.getRealm());
+							} else {
+								UserModel user = session.users().addUser(realm, userRep.getUsername());
+								user.setEnabled(userRep.isEnabled());
+								RepresentationToModel.createCredentials(userRep, user);
+								RepresentationToModel.createRoleMappings(userRep, user, realm);
+							}
+
+							session.getTransaction().commit();
+							logger.addUserSuccess(userRep.getUsername(), realmRep.getRealm());
+						} catch (ModelDuplicateException e) {
+							session.getTransaction().rollback();
+							logger.addUserFailedUserExists(userRep.getUsername(), realmRep.getRealm());
+						} catch (Throwable t) {
+							session.getTransaction().rollback();
+							logger.addUserFailed(t, userRep.getUsername(), realmRep.getRealm());
+						} finally {
+							session.close();
+						}
+					}
+				}
+
+				if (!addUserFile.delete()) {
+					logger.failedToDeleteFile(addUserFile.getAbsolutePath());
+				}
+			}
+		}
 	}
 
 	private static <T> T loadJson(InputStream is, Class<T> type) {

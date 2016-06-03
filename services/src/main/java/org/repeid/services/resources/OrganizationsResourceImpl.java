@@ -10,7 +10,7 @@ import org.repeid.services.ServicesLogger;
 import org.repeid.services.managers.OrganizationManager;
 import org.repeid.services.resource.OrganizationResourceProvider;
 
-public class OrganizationsResourceImpl implements OrganizationsResource {
+public class OrganizationsResourceImpl implements RealmsResource {
 
 	protected static ServicesLogger logger = ServicesLogger.ROOT_LOGGER;
 
@@ -18,9 +18,9 @@ public class OrganizationsResourceImpl implements OrganizationsResource {
 	protected RepeidSession session;
 
 	@Override
-	public PublicOrganizationResource getOrganizationResource(String name) {
+	public PublicRealmResource getOrganizationResource(String name) {
 		OrganizationModel organization = init(name);
-		PublicOrganizationResource organizationResource = new PublicOrganizationResourceImpl(organization);
+		PublicRealmResource organizationResource = new PublicOrganizationResourceImpl(organization);
 		ResteasyProviderFactory.getInstance().injectProperties(organizationResource);
 		return organizationResource;
 	}

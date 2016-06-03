@@ -4,7 +4,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 @Path("/organizations")
-public interface OrganizationsResource {
+public interface RealmsResource {
 
 	// @Path("{realm}/protocol/{protocol}")
 	// public Object getProtocol(final @PathParam("realm") String name, final
@@ -32,7 +32,7 @@ public interface OrganizationsResource {
 	// name);
 
 	@Path("{organization}")
-	public PublicOrganizationResource getOrganizationResource(final @PathParam("organization") String name);
+	public PublicRealmResource getOrganizationResource(final @PathParam("organization") String name);
 
 	// @Path("{realm}/broker")
 	// public IdentityBrokerService getBrokerService(final @PathParam("realm")
