@@ -13,7 +13,7 @@ import org.repeid.manager.api.beans.representations.idm.PublishedOrganizationRep
 /**
  * Resource class for public realm information
  */
-public interface PublicRealmResource {
+public interface PublicOrganizationResource {
 
 	/**
 	 * CORS preflight

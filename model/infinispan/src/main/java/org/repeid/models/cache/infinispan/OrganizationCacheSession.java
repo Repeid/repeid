@@ -56,6 +56,11 @@ public class OrganizationCacheSession implements CacheOrganizationProvider {
 		delegate = session.getProvider(OrganizationProvider.class);
 		return delegate;
 	}
+	
+	@Override
+    public MigrationModel getMigrationModel() {
+        return getDelegate().getMigrationModel();
+    }
 
 	@Override
 	public List<OrganizationModel> getOrganizations() {

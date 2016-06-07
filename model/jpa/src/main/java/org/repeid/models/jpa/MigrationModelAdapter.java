@@ -6,6 +6,7 @@ import org.repeid.models.jpa.entities.MigrationModelEntity;
 import javax.persistence.EntityManager;
 
 public class MigrationModelAdapter implements MigrationModel {
+    
     protected EntityManager em;
 
     public MigrationModelAdapter(EntityManager em) {
