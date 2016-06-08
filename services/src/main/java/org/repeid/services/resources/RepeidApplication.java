@@ -1,6 +1,9 @@
 package org.repeid.services.resources;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -23,18 +26,16 @@ import org.repeid.Config;
 import org.repeid.common.util.SystemEnvProperties;
 import org.repeid.exportimport.ExportImportManager;
 import org.repeid.migration.MigrationModelManager;
-import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
 import org.repeid.models.dblock.DBLockProvider;
-import org.repeid.models.utils.RepresentationToModel;
+import org.repeid.models.utils.PostMigrationEvent;
 import org.repeid.representations.idm.OrganizationRepresentation;
 import org.repeid.services.DefaultRepeidSessionFactory;
 import org.repeid.services.ServicesLogger;
 import org.repeid.services.filters.RepeidTransactionCommitter;
 import org.repeid.services.managers.ApplianceBootstrap;
 import org.repeid.services.managers.DBLockManager;
-import org.repeid.services.managers.OrganizationManager;
 import org.repeid.services.resources.admin.AdminRootImpl;
 import org.repeid.services.util.JsonConfigProvider;
 import org.repeid.services.util.ObjectMapperResolver;
@@ -139,7 +140,7 @@ public class RepeidApplication extends Application {
 
         sessionFactory.publish(new PostMigrationEvent());
 
-        singletons.add(new WelcomeResource(bootstrapAdminUser));
+        singletons.add(new WelcomeResourceImpl(bootstrapAdminUser));
 
         setupScheduledTasks(sessionFactory);
     }
@@ -220,12 +221,9 @@ public class RepeidApplication extends Application {
         RepeidSession session = sessionFactory.create();
         try {
             TimerProvider timer = session.getProvider(TimerProvider.class);
-            timer.schedule(
-                    new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredEvents(), interval),
-                    interval, "ClearExpiredEvents");
-            timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredUserSessions(),
-                    interval), interval, "ClearExpiredUserSessions");
-            new UsersSyncManager().bootstrapPeriodic(sessionFactory, timer);
+            //timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredEvents(), interval), interval, "ClearExpiredEvents");
+            //timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredUserSessions(), interval), interval, "ClearExpiredUserSessions");
+            //new UsersSyncManager().bootstrapPeriodic(sessionFactory, timer);
         } finally {
             session.close();
         }
@@ -263,7 +261,7 @@ public class RepeidApplication extends Application {
     }
 
     public void importRealm(OrganizationRepresentation rep, String from) {
-        RepeidSession session = sessionFactory.create();
+        /*RepeidSession session = sessionFactory.create();
         boolean exists = false;
         try {
             session.getTransaction().begin();
@@ -294,11 +292,11 @@ public class RepeidApplication extends Application {
             }
         } finally {
             session.close();
-        }
+        }*/
     }
 
     public void importAddUser() {
-        String configDir = System.getProperty("jboss.server.config.dir");
+        /*String configDir = System.getProperty("jboss.server.config.dir");
         if (configDir != null) {
             File addUserFile = new File(configDir + File.separator + "keycloak-add-user.json");
             if (addUserFile.isFile()) {
@@ -348,7 +346,7 @@ public class RepeidApplication extends Application {
                     logger.failedToDeleteFile(addUserFile.getAbsolutePath());
                 }
             }
-        }
+        }*/
     }
 
     private static <T> T loadJson(InputStream is, Class<T> type) {

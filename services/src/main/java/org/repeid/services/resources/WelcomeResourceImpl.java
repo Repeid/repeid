@@ -44,7 +44,7 @@ public class WelcomeResourceImpl implements WelcomeResource {
 
 	private String stateChecker;
 
-	public WelcomeResourceImpl() {
+	public WelcomeResourceImpl(boolean bootstrapAdminUser) {
 
 	}
 
