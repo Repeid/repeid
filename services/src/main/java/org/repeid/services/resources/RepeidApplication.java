@@ -220,7 +220,7 @@ public class RepeidApplication extends Application {
 
         RepeidSession session = sessionFactory.create();
         try {
-            TimerProvider timer = session.getProvider(TimerProvider.class);
+            //TimerProvider timer = session.getProvider(TimerProvider.class);
             //timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredEvents(), interval), interval, "ClearExpiredEvents");
             //timer.schedule(new ClusterAwareScheduledTaskRunner(sessionFactory, new ClearExpiredUserSessions(), interval), interval, "ClearExpiredUserSessions");
             //new UsersSyncManager().bootstrapPeriodic(sessionFactory, timer);
