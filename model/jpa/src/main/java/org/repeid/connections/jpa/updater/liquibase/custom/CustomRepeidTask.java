@@ -25,7 +25,7 @@ public abstract class CustomRepeidTask implements CustomSqlChange {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    protected RepeidSession kcSession;
+    protected RepeidSession rpSession;
 
     protected Database database;
     protected JdbcConnection jdbcConnection;
@@ -50,16 +50,16 @@ public abstract class CustomRepeidTask implements CustomSqlChange {
 
     @Override
     public void setUp() throws SetupException {
-        this.kcSession = ThreadLocalSessionContext.getCurrentSession();
+        this.rpSession = ThreadLocalSessionContext.getCurrentSession();
 
-        if (this.kcSession == null) {
+        if (this.rpSession == null) {
             // Probably running Liquibase from maven plugin. Try to create kcSession programmatically
             logger.info("No RepeidSession provided in ThreadLocal. Initializing RepeidSessionFactory");
 
             try {
                 DefaultRepeidSessionFactory factory = new DefaultRepeidSessionFactory();
                 factory.init();
-                this.kcSession = factory.create();
+                this.rpSession = factory.create();
             } catch (Exception e) {
                 throw new SetupException("Exception when initializing factory", e);
             }
@@ -84,7 +84,7 @@ public abstract class CustomRepeidTask implements CustomSqlChange {
 
     protected boolean isApplicable() throws CustomChangeException {
         try {
-            String correctedTableName = database.correctObjectName("REALM", Table.class);
+            String correctedTableName = database.correctObjectName("ORGANIZATION", Table.class);
             if (SnapshotGeneratorFactory.getInstance().has(new Table().setName(correctedTableName), database)) {
                 ResultSet resultSet = connection.createStatement().executeQuery("SELECT ID FROM " + getTableName(correctedTableName));
                 try {

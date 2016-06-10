@@ -6,11 +6,7 @@ import java.sql.Connection;
 
 public interface JpaUpdaterProvider extends Provider {
 
-    public String FIRST_VERSION = "1.0.0.Final";
-
-    public String LAST_VERSION = "1.9.2";
-
-    public String getCurrentVersionSql(String defaultSchema);
+    public String FIRST_VERSION = "1.0.0.Beta1";
 
     public void update(Connection connection, String defaultSchema);
 

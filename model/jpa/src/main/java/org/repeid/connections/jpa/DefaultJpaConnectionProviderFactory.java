@@ -22,13 +22,13 @@ import org.repeid.timer.TimerProvider;
 
 public class DefaultJpaConnectionProviderFactory implements JpaConnectionProviderFactory, ServerInfoAwareProviderFactory {
 
-    private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProviderFactory.class);
+	private static final Logger logger = Logger.getLogger(DefaultJpaConnectionProviderFactory.class);
 
     private volatile EntityManagerFactory emf;
 
     private Config.Scope config;
-
-    private Map<String, String> operationalInfo;
+    
+    private Map<String,String> operationalInfo;
 
     @Override
     public JpaConnectionProvider create(RepeidSession session) {
@@ -72,7 +72,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 
                     Map<String, Object> properties = new HashMap<String, Object>();
 
-                    String unitName = "repeid-default";
+                    String unitName = "reoeud-default";
 
                     String dataSource = config.get("dataSource");
                     if (dataSource != null) {
@@ -105,7 +105,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
                     if (databaseSchema == null) {
                         throw new RuntimeException("Property 'databaseSchema' needs to be specified in the configuration");
                     }
-
+                    
                     if (databaseSchema.equals("development-update")) {
                         properties.put("hibernate.hbm2ddl.auto", "update");
                         databaseSchema = null;
@@ -118,54 +118,41 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
                     properties.put("hibernate.format_sql", config.getBoolean("formatSql", true));
 
                     connection = getConnection();
-                    try {
-                        prepareOperationalInfo(connection);
+                    try{ 
+	                    prepareOperationalInfo(connection);
 
                         String driverDialect = detectDialect(connection);
                         if (driverDialect != null) {
                             properties.put("hibernate.dialect", driverDialect);
                         }
-
-                        if (databaseSchema != null) {
-                            logger.trace("Updating database");
-
-                            JpaUpdaterProvider updater = session.getProvider(JpaUpdaterProvider.class);
-                            if (updater == null) {
-                                throw new RuntimeException("Can't update database: JPA updater provider not found");
-                            }
-
-                            if (databaseSchema.equals("update")) {
-                                String currentVersion = null;
-                                try {
-                                    ResultSet resultSet = connection.createStatement().executeQuery(updater.getCurrentVersionSql(schema));
-                                    if (resultSet.next()) {
-                                        currentVersion = resultSet.getString(1);
-                                    }
-                                } catch (SQLException e) {
-                                }
-
-                                if (currentVersion == null || !JpaUpdaterProvider.LAST_VERSION.equals(currentVersion)) {
-                                    updater.update(connection, schema);
-                                } else {
-                                    logger.debug("Database is up to date");
-                                }
-                            } else if (databaseSchema.equals("validate")) {
-                                updater.validate(connection, schema);
-                            } else {
-                                throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
-                            }
-
-                            logger.trace("Database update completed");
-                        }
+	                    
+	                    if (databaseSchema != null) {
+	                        logger.trace("Updating database");
+	
+	                        JpaUpdaterProvider updater = session.getProvider(JpaUpdaterProvider.class);
+	                        if (updater == null) {
+	                            throw new RuntimeException("Can't update database: JPA updater provider not found");
+	                        }
+	
+	                        if (databaseSchema.equals("update")) {
+                                updater.update(connection, schema);
+	                        } else if (databaseSchema.equals("validate")) {
+	                            updater.validate(connection, schema);
+	                        } else {
+	                            throw new RuntimeException("Invalid value for databaseSchema: " + databaseSchema);
+	                        }
+	
+	                        logger.trace("Database update completed");
+	                    }
 
                         int globalStatsInterval = config.getInt("globalStatsInterval", -1);
                         if (globalStatsInterval != -1) {
                             properties.put("hibernate.generate_statistics", true);
                         }
 
-                        logger.trace("Creating EntityManagerFactory");
-                        emf = JpaUtils.createEntityManagerFactory(unitName, properties, getClass().getClassLoader());
-                        logger.trace("EntityManagerFactory created");
+	                    logger.trace("Creating EntityManagerFactory");
+	                    emf = JpaUtils.createEntityManagerFactory(unitName, properties, getClass().getClassLoader());
+	                    logger.trace("EntityManagerFactory created");
 
                         if (globalStatsInterval != -1) {
                             startGlobalStats(session, globalStatsInterval);
@@ -183,14 +170,14 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 
                         throw e;
                     } finally {
-                        // Close after creating EntityManagerFactory to prevent in-mem databases from closing
-                        if (connection != null) {
-                            try {
-                                connection.close();
-                            } catch (SQLException e) {
-                                logger.warn("Can't close connection", e);
-                            }
-                        }
+	                    // Close after creating EntityManagerFactory to prevent in-mem databases from closing
+	                    if (connection != null) {
+	                        try {
+	                            connection.close();
+	                        } catch (SQLException e) {
+	                            logger.warn("Can't close connection", e);
+	                        }
+	                    }
                     }
                 }
             }
@@ -198,19 +185,19 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
     }
 
     protected void prepareOperationalInfo(Connection connection) {
-        try {
-            operationalInfo = new LinkedHashMap<>();
-            DatabaseMetaData md = connection.getMetaData();
-            operationalInfo.put("databaseUrl", md.getURL());
-            operationalInfo.put("databaseUser", md.getUserName());
-            operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
-            operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
+  		try {
+  			operationalInfo = new LinkedHashMap<>();
+  			DatabaseMetaData md = connection.getMetaData();
+  			operationalInfo.put("databaseUrl",md.getURL());
+  			operationalInfo.put("databaseUser", md.getUserName());
+  			operationalInfo.put("databaseProduct", md.getDatabaseProductName() + " " + md.getDatabaseProductVersion());
+  			operationalInfo.put("databaseDriver", md.getDriverName() + " " + md.getDriverVersion());
 
             logger.debugf("Database info: %s", operationalInfo.toString());
-        } catch (SQLException e) {
-            logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
-        }
-    }
+  		} catch (SQLException e) {
+  			logger.warn("Unable to prepare operational info due database exception: " + e.getMessage());
+  		}
+  	}
 
 
     protected String detectDialect(Connection connection) {
@@ -274,10 +261,10 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
     public String getSchema() {
         return config.get("schema");
     }
-
+    
     @Override
-    public Map<String, String> getOperationalInfo() {
-        return operationalInfo;
-    }
+  	public Map<String,String> getOperationalInfo() {
+  		return operationalInfo;
+  	}
 
 }
