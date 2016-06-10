@@ -2,7 +2,7 @@ package org.repeid.services.resources.admin.info;
 
 import javax.ws.rs.GET;
 
-import org.repeid.manager.api.beans.representations.info.ServerInfoRepresentation;
+import org.repeid.representations.info.ServerInfoRepresentation;
 
 public interface ServerInfoAdminResource {
 

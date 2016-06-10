@@ -14,9 +14,6 @@ import java.io.OutputStream;
 
 /**
  * Utility class to handle simple JSON serializable for Keycloak.
- *
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
  */
 public class JsonSerialization {
     public static final ObjectMapper mapper = new ObjectMapper();

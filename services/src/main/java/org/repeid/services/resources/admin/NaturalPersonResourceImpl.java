@@ -3,20 +3,19 @@ package org.repeid.services.resources.admin;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
-import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
+import org.repeid.representations.idm.NaturalPersonRepresentation;
 import org.repeid.services.resources.admin.NaturalPersonResource;
 
 public class NaturalPersonResourceImpl implements NaturalPersonResource {
 
     @Override
-    public PersonaNaturalRepresentation toRepresentation() {
+    public NaturalPersonRepresentation toRepresentation() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void update(PersonaNaturalRepresentation rep) {
+    public void update(NaturalPersonRepresentation rep) {
         // TODO Auto-generated method stub
 
     }
@@ -28,19 +27,7 @@ public class NaturalPersonResourceImpl implements NaturalPersonResource {
     }
 
     @Override
-    public StoredFileRepresentation setFoto(MultipartFormDataInput input) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public Response getFirma() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public StoredFileRepresentation setFirma(MultipartFormDataInput input) {
         // TODO Auto-generated method stub
         return null;
     }

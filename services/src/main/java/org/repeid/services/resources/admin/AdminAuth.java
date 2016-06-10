@@ -1,7 +1,6 @@
 package org.repeid.services.resources.admin;
 
 import org.repeid.models.OrganizationModel;
-import org.repeid.representations.AccessToken;
 
 public class AdminAuth {
 

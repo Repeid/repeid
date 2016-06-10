@@ -4,16 +4,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
-import org.repeid.manager.api.beans.representations.StoredFileRepresentation;
+import org.repeid.representations.idm.NaturalPersonRepresentation;
 
 /**
  * PersonaNatural API. Usado para administrar personaNaturales. Nota: Las
@@ -35,7 +32,7 @@ public interface NaturalPersonResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public PersonaNaturalRepresentation toRepresentation();
+    public NaturalPersonRepresentation toRepresentation();
 
     /**
      * Use este endpoint para actualizar la informacion relacionada a una
@@ -50,7 +47,7 @@ public interface NaturalPersonResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(PersonaNaturalRepresentation rep);
+    public void update(NaturalPersonRepresentation rep);
 
     /**
      * Use este endpoint para obtener la foto de una PersonaNatural por medio de
@@ -69,22 +66,6 @@ public interface NaturalPersonResource {
     public Response getFoto();
 
     /**
-     * Use este endpoint para actualizar la foto relacionada a una
-     * personaNatural. La personaNatural es identificada por medio de su ID.
-     *
-     * @param input MultipartFormDataInput input.
-     * @throws PersonaNaturalNotFoundException cuando el request envia una personaNatural que no existe.
-     * @throws NotAuthorizedException          cuando no esta autorizado para invocar este metodo.
-     * @summary Update a Foto by ID
-     * @servicetag admin
-     * @statuscode 200 Si la personaNatural fue actualizada satisfactoriamente.
-     */
-    @POST
-    @Path("foto")
-    @Consumes("multipart/form-data")
-    public StoredFileRepresentation setFoto(MultipartFormDataInput input);
-
-    /**
      * Use este endpoint para obtener la firma en formato de imagen de una
      * PersonaNatural por medio de su ID.
      *
@@ -99,22 +80,6 @@ public interface NaturalPersonResource {
     @Path("firma")
     @Produces("image/png")
     public Response getFirma();
-
-    /**
-     * Use este endpoint para actualizar la firma relacionada a una
-     * personaNatural. La personaNatural es identificada por medio de su ID.
-     *
-     * @param input MultipartFormDataInput input.
-     * @throws PersonaNaturalNotFoundException cuando el request envia una personaNatural que no existe.
-     * @throws NotAuthorizedException          cuando no esta autorizado para invocar este metodo.
-     * @summary Update a Firma by ID
-     * @servicetag admin
-     * @statuscode 200 Si la personaNatural fue actualizada satisfactoriamente.
-     */
-    @POST
-    @Path("firma")
-    @Consumes("multipart/form-data")
-    public StoredFileRepresentation setFirma(MultipartFormDataInput input);
 
     /**
      * Use este endpoint para eliminar una personaNatural por medio de su ID.

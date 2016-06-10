@@ -28,7 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
+import org.repeid.representations.idm.DocumentRepresentation;
 
 /**
  * TipoDocumento API. Usado para administrar tipoDocumentos. Nota: los tipos de
@@ -54,7 +54,7 @@ public interface DocumentResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TipoDocumentoRepresentation toRepresentation();
+    public DocumentRepresentation toRepresentation();
 
     /**
      * Use este endpoint para actualizar la informacion relacionada a un
@@ -73,7 +73,7 @@ public interface DocumentResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(final TipoDocumentoRepresentation rep);
+    public Response update(final DocumentRepresentation rep);
 
     /**
      * Use este endpoint para activar un tipoDocumento por medio de su ID.

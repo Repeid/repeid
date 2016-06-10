@@ -1,7 +1,6 @@
-
 package org.repeid.representations.idm;
 
-public class OrganizationRepresentation {
+public class LegalPersonRepresentation extends PersonRepresentation {
 
 	private String id;
 	private String name;

@@ -8,7 +8,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
+import org.repeid.representations.idm.LegalPersonRepresentation;
 
 /**
  * PersonaJuridica API. Usado para administrar personaJuridicas. Nota: Las
@@ -30,7 +30,7 @@ public interface LegalPersonResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public PersonaJuridicaRepresentation toRepresentation();
+    public LegalPersonRepresentation toRepresentation();
 
     /**
      * Use este endpoint para actualizar la informacion relacionada a una
@@ -45,7 +45,7 @@ public interface LegalPersonResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(PersonaJuridicaRepresentation rep);
+    public void update(LegalPersonRepresentation rep);
 
     /**
      * Use este endpoint para eliminar una personaJuridica por medio de su ID.

@@ -14,9 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.repeid.manager.api.beans.representations.idm.AdminEventRepresentation;
-import org.repeid.manager.api.beans.representations.idm.EventRepresentation;
-import org.repeid.manager.api.beans.representations.idm.OrganizationEventsConfigRepresentation;
+import org.repeid.representations.idm.AdminEventRepresentation;
+import org.repeid.representations.idm.EventRepresentation;
+import org.repeid.representations.idm.OrganizationEventsConfigRepresentation;
 import org.repeid.representations.idm.OrganizationRepresentation;
 
 public interface OrganizationAdminResource {

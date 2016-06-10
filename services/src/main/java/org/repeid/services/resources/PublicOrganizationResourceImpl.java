@@ -6,8 +6,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.HttpResponse;
-import org.repeid.manager.api.beans.representations.idm.PublishedOrganizationRepresentation;
 import org.repeid.models.OrganizationModel;
+import org.repeid.representations.idm.PublishedOrganizationRepresentation;
 import org.repeid.services.ServicesLogger;
 
 public class PublicOrganizationResourceImpl implements PublicOrganizationResource {

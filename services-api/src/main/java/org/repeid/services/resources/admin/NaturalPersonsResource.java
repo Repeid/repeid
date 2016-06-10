@@ -30,9 +30,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.PersonaNaturalRepresentation;
-import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
+import org.repeid.representations.idm.NaturalPersonRepresentation;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
 
 /**
  * @author carlosthe19916@gmail.com
@@ -67,7 +67,7 @@ public interface NaturalPersonsResource {
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(PersonaNaturalRepresentation rep);
+    public Response create(NaturalPersonRepresentation rep);
 
     /**
      * Este endpoint provee una forma de buscar personaNaturales. Los criterios
@@ -100,7 +100,7 @@ public interface NaturalPersonsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PersonaNaturalRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
+    public List<NaturalPersonRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
                                                      @QueryParam("numeroDocumento") String numeroDocumento,
                                                      @QueryParam("apellidoPaterno") String apellidoPaterno,
                                                      @QueryParam("apellidoMaterno") String apellidoMaterno, @QueryParam("nombres") String nombres,
@@ -124,6 +124,6 @@ public interface NaturalPersonsResource {
     @POST
     @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsRepresentation<PersonaNaturalRepresentation> search(SearchCriteriaRepresentation criteria);
+    public SearchResultsRepresentation<NaturalPersonRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

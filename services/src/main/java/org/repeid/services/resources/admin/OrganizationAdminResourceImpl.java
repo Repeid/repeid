@@ -12,14 +12,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.repeid.manager.api.beans.representations.idm.AdminEventRepresentation;
-import org.repeid.manager.api.beans.representations.idm.EventRepresentation;
-import org.repeid.manager.api.beans.representations.idm.OrganizationEventsConfigRepresentation;
 import org.repeid.models.AdminRoles;
 import org.repeid.models.ModelDuplicateException;
 import org.repeid.models.OrganizationModel;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.representations.idm.AdminEventRepresentation;
+import org.repeid.representations.idm.EventRepresentation;
+import org.repeid.representations.idm.OrganizationEventsConfigRepresentation;
 import org.repeid.representations.idm.OrganizationRepresentation;
 import org.repeid.services.ErrorResponse;
 import org.repeid.services.ServicesLogger;

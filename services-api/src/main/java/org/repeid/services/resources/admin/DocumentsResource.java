@@ -13,9 +13,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
-import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
+import org.repeid.representations.idm.DocumentRepresentation;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
 
 /**
  * @author <a href="mailto:carlosthe19916@sistcoop.com">Carlos Feria</a>
@@ -49,7 +49,7 @@ public interface DocumentsResource {
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(final TipoDocumentoRepresentation rep);
+    public Response create(final DocumentRepresentation rep);
 
     /**
      * Este endpoint provee una forma de buscar tipoDocumentos. Los criterios de
@@ -80,7 +80,7 @@ public interface DocumentsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TipoDocumentoRepresentation> search(@QueryParam("abreviatura") String abreviatura,
+    public List<DocumentRepresentation> search(@QueryParam("abreviatura") String abreviatura,
                                                     @QueryParam("denominacion") String denominacion, @QueryParam("tipoPersona") String tipoPersona,
                                                     @QueryParam("estado") Boolean estado, @QueryParam("filterText") String filterText,
                                                     @QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
@@ -102,6 +102,6 @@ public interface DocumentsResource {
     @POST
     @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsRepresentation<TipoDocumentoRepresentation> search(SearchCriteriaRepresentation criteria);
+    public SearchResultsRepresentation<DocumentRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

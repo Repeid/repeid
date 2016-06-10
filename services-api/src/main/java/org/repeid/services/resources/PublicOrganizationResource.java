@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.repeid.manager.api.beans.representations.idm.PublishedOrganizationRepresentation;
+import org.repeid.representations.idm.PublishedOrganizationRepresentation;
 
 /**
  * Resource class for public realm information

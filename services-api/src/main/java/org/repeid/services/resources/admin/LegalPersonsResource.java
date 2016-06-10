@@ -30,9 +30,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
-import org.repeid.manager.api.beans.representations.search.SearchCriteriaRepresentation;
-import org.repeid.manager.api.beans.representations.search.SearchResultsRepresentation;
+import org.repeid.representations.idm.LegalPersonRepresentation;
+import org.repeid.representations.idm.search.SearchCriteriaRepresentation;
+import org.repeid.representations.idm.search.SearchResultsRepresentation;
 
 /**
  * @author carlosthe19916@gmail.com
@@ -67,7 +67,7 @@ public interface LegalPersonsResource {
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(PersonaJuridicaRepresentation rep);
+    public Response create(LegalPersonRepresentation rep);
 
     /**
      * Este endpoint provee una forma de buscar personaJuridicas. Los criterios
@@ -100,7 +100,7 @@ public interface LegalPersonsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PersonaJuridicaRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
+    public List<LegalPersonRepresentation> search(@QueryParam("tipoDocumento") String tipoDocumento,
                                                       @QueryParam("numeroDocumento") String numeroDocumento, @QueryParam("razonSocial") String razonSocial,
                                                       @QueryParam("nombreComercial") String nombreComercial, @QueryParam("filterText") String filterText,
                                                       @QueryParam("first") Integer firstResult, @QueryParam("max") Integer maxResults);
@@ -122,6 +122,6 @@ public interface LegalPersonsResource {
     @POST
     @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResultsRepresentation<PersonaJuridicaRepresentation> search(SearchCriteriaRepresentation criteria);
+    public SearchResultsRepresentation<LegalPersonRepresentation> search(SearchCriteriaRepresentation criteria);
 
 }

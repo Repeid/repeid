@@ -1,18 +1,18 @@
 package org.repeid.services.resources.admin;
 
-import org.repeid.manager.api.beans.representations.PersonaJuridicaRepresentation;
+import org.repeid.representations.idm.LegalPersonRepresentation;
 import org.repeid.services.resources.admin.LegalPersonResource;
 
 public class LegalPersonResourceImpl implements LegalPersonResource {
 
     @Override
-    public PersonaJuridicaRepresentation toRepresentation() {
+    public LegalPersonRepresentation toRepresentation() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void update(PersonaJuridicaRepresentation rep) {
+    public void update(LegalPersonRepresentation rep) {
         // TODO Auto-generated method stub
 
     }

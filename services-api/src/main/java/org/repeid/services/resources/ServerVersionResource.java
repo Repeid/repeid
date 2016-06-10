@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.repeid.manager.api.beans.representations.VersionRepresentation;
+import org.repeid.representations.VersionRepresentation;
 
 @Path("/version")
 public interface ServerVersionResource {

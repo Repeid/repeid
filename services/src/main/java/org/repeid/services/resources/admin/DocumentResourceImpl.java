@@ -2,19 +2,19 @@ package org.repeid.services.resources.admin;
 
 import javax.ws.rs.core.Response;
 
-import org.repeid.manager.api.beans.representations.TipoDocumentoRepresentation;
+import org.repeid.representations.idm.DocumentRepresentation;
 import org.repeid.services.resources.admin.DocumentResource;
 
 public class DocumentResourceImpl implements DocumentResource {
 
     @Override
-    public TipoDocumentoRepresentation toRepresentation() {
+    public DocumentRepresentation toRepresentation() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Response update(TipoDocumentoRepresentation rep) {
+    public Response update(DocumentRepresentation rep) {
         // TODO Auto-generated method stub
         return null;
     }
