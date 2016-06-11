@@ -72,7 +72,7 @@ public class DefaultJpaConnectionProviderFactory implements JpaConnectionProvide
 
                     Map<String, Object> properties = new HashMap<String, Object>();
 
-                    String unitName = "reoeud-default";
+                    String unitName = "repeid-default";
 
                     String dataSource = config.get("dataSource");
                     if (dataSource != null) {
