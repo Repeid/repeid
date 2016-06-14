@@ -1,7 +1,13 @@
 package org.repeid.models;
 
-public interface LegalPersonModel {
+public interface LegalPersonModel extends PersonModel {
 
-    String getId();
+	String NAME = "name";
+
+	String getId();
+
+	String getName();
+
+	void setName(String name);
 
 }

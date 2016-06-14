@@ -10,9 +10,15 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class PersonEntity {
 
+	@Column(name = "organization_id")
+	protected String organizationId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey)
 	protected OrganizationEntity organization;
+
+	@Column(name = "document_id")
+	protected String documentId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "document_id", foreignKey = @ForeignKey)
@@ -46,12 +52,28 @@ public abstract class PersonEntity {
 		this.email = email;
 	}
 
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
+	}
+
 	public OrganizationEntity getOrganization() {
 		return organization;
 	}
 
 	public void setOrganization(OrganizationEntity organization) {
 		this.organization = organization;
+	}
+
+	public String getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 
 	public DocumentEntity getDocument() {
@@ -100,37 +122,6 @@ public abstract class PersonEntity {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((documentNumber == null) ? 0 : documentNumber.hashCode());
-		result = prime * result + ((document == null) ? 0 : document.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof PersonEntity))
-			return false;
-		PersonEntity other = (PersonEntity) obj;
-		if (documentNumber == null) {
-			if (other.documentNumber != null)
-				return false;
-		} else if (!documentNumber.equals(other.documentNumber))
-			return false;
-		if (document == null) {
-			if (other.document != null)
-				return false;
-		} else if (!document.equals(other.document))
-			return false;
-		return true;
 	}
 
 }

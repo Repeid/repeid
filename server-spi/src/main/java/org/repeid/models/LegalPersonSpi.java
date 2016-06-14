@@ -6,24 +6,24 @@ import org.repeid.provider.Spi;
 
 public class LegalPersonSpi implements Spi {
 
-    @Override
-    public String getName() {
-        return "legalPerson";
-    }
+	@Override
+	public String getName() {
+		return "legalPerson";
+	}
 
-    @Override
-    public Class<? extends Provider> getProviderClass() {
-        return LegalPersonProvider.class;
-    }
+	@Override
+	public Class<? extends Provider> getProviderClass() {
+		return LegalPersonProvider.class;
+	}
 
-    @Override
-    public Class<? extends ProviderFactory> getProviderFactoryClass() {
-        return LegalPersonProviderFactory.class;
-    }
+	@Override
+	public Class<? extends ProviderFactory> getProviderFactoryClass() {
+		return LegalPersonProviderFactory.class;
+	}
 
-    @Override
-    public boolean isInternal() {
-        return true;
-    }
+	@Override
+	public boolean isInternal() {
+		return true;
+	}
 
 }

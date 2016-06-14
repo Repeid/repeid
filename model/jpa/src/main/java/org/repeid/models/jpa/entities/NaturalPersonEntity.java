@@ -8,41 +8,55 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "NATURAL_PERSON")
+@NamedQueries({
+    @NamedQuery(name="getAllNaturalPersonsByOrganization", query="select p from NaturalPersonEntity p where p.organizationId = :organizationId order by p.firstName"),    
+    @NamedQuery(name="searchForNaturalPerson", query="select p from NaturalPersonEntity p where p.organizationId = :organizationId and " +
+            "( lower(p.firstName) like :search or lower(concat(p.firstName, ' ', p.lastName)) like :search or p.documentNumber like :search ) order by p.firstName"),    
+    @NamedQuery(name="getOrganizationNaturalPersonById", query="select p from NaturalPersonEntity p where p.id = :id and p.organizationId = :organizationId"),    
+    @NamedQuery(name="getOrganizationNaturalPersonByLastName", query="select p from NaturalPersonEntity p where p.lastName = :lastName and p.organizationId = :organizationId"),    
+    @NamedQuery(name="getOrganizationNaturalPersonByFirstLastName", query="select p from NaturalPersonEntity p where p.firstName = :first and p.lastName = :last and p.organizationId = :organizationId"),
+    @NamedQuery(name="getOrganizationNaturalPersonCount", query="select count(p) from NaturalPersonEntity p where p.organizationId = :organizationId"),    
+    @NamedQuery(name="deleteNaturalPersonsByOrganization", query="delete from NaturalPersonEntity p where p.organizationId = :organizationId")
+})
 public class NaturalPersonEntity extends PersonEntity {
 
 	@Id
-	@Access(AccessType.PROPERTY)// we do this because relationships often fetch id, but not entity. This avoids an extra SQL
+	@Access(AccessType.PROPERTY) // we do this because relationships often fetch
+									// id, but not entity. This avoids an extra
+									// SQL
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@Column(name = "id")
-	private String id;
+	protected String id;
 
 	@Column(name = "first_name")
-	private String firstName;
+	protected String firstName;
 
 	@Column(name = "middle_name")
-	private String middleName;
+	protected String middleName;
 
 	@Column(name = "last_name")
-	private String lastName;
+	protected String lastName;
 
 	@Column(name = "date_birth")
-	private LocalDate date_bith;
+	protected LocalDate dateBirth;
 
 	@Column(name = "gender")
-	private String gender;
+	protected String gender;
 
 	@Column(name = "marriage_status")
-	private String marriageStatus;
+	protected String marriageStatus;
 
 	@Column(name = "job")
-	private String job;
+	protected String job;
 
 	public NaturalPersonEntity() {
 		super();
@@ -80,12 +94,12 @@ public class NaturalPersonEntity extends PersonEntity {
 		this.lastName = lastName;
 	}
 
-	public LocalDate getDate_bith() {
-		return date_bith;
+	public LocalDate getDateBirth() {
+		return dateBirth;
 	}
 
-	public void setDate_bith(LocalDate date_bith) {
-		this.date_bith = date_bith;
+	public void setDatebirth(LocalDate dateBirth) {
+		this.dateBirth = dateBirth;
 	}
 
 	public String getGender() {
@@ -110,6 +124,31 @@ public class NaturalPersonEntity extends PersonEntity {
 
 	public void setJob(String job) {
 		this.job = job;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NaturalPersonEntity other = (NaturalPersonEntity) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }
