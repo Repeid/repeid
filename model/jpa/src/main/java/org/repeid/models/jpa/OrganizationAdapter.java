@@ -28,6 +28,13 @@ public class OrganizationAdapter implements OrganizationModel, JpaModel<Organiza
 		return organization;
 	}
 
+	public static OrganizationEntity toEntity(OrganizationModel model, EntityManager em) {
+		if (model instanceof OrganizationAdapter) {
+			return ((OrganizationAdapter)model).getEntity();
+		}
+		return em.getReference(OrganizationEntity.class, model.getId());
+	}
+
 	@Override
 	public String getId() {
 		return organization.getId();

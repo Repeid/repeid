@@ -15,13 +15,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "LEGAL_PERSON")
 @NamedQueries({
-    @NamedQuery(name="getAllLegalPersonsByOrganization", query="select p from LegalPersonEntity p where p.organizationId = :organizationId order by p.name"),    
-    @NamedQuery(name="searchForLegalPerson", query="select p from LegalPersonEntity p where p.organizationId = :organizationId and " +
+    @NamedQuery(name="getAllLegalPersonsByOrganization", query="select p from LegalPersonEntity p where p.id = :organizationId order by p.name"),    
+    @NamedQuery(name="searchForLegalPerson", query="select p from LegalPersonEntity p where p.id = :organizationId and " +
             "( lower(p.name) like :search or p.documentNumber like :search ) order by p.name"),
-    @NamedQuery(name="getOrganizationLegalPersonById", query="select p from LegalPersonEntity p where p.id = :id and p.organizationId = :organizationId"),    
-    @NamedQuery(name="getOrganizationLegalPersonByName", query="select p from LegalPersonEntity p where p.name = :name and p.organizationId = :organizationId"),    
-    @NamedQuery(name="getOrganizationLegalPersonCount", query="select count(p) from LegalPersonEntity p where p.organizationId = :organizationId"),    
-    @NamedQuery(name="deleteLegalPersonsByOrganization", query="delete from LegalPersonEntity p where p.organizationId = :organizationId")
+    @NamedQuery(name="getOrganizationLegalPersonById", query="select p from LegalPersonEntity p where p.id = :id and p.id = :organizationId"),    
+    @NamedQuery(name="getOrganizationLegalPersonByName", query="select p from LegalPersonEntity p where p.name = :name and p.id = :organizationId"),    
+    @NamedQuery(name="getOrganizationLegalPersonCount", query="select count(p) from LegalPersonEntity p where p.id = :organizationId"),    
+    @NamedQuery(name="deleteLegalPersonsByOrganization", query="delete from LegalPersonEntity p where p.id = :organizationId")
 })
 public class LegalPersonEntity extends PersonEntity {
 

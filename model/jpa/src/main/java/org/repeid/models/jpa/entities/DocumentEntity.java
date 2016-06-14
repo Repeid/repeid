@@ -51,10 +51,6 @@ public class DocumentEntity {
 	@Type(type = "org.hibernate.type.TrueFalseType")
 	@Column(name = "enabled")
 	private boolean enabled;
-
-	// hax! couldn't get constraint to work properly
-    @Column(name = "organization_id")
-    private String organizationId;
     
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey)
@@ -106,13 +102,6 @@ public class DocumentEntity {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-	public String getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(String organizationId) {
-		this.organizationId = organizationId;
 	}
 
 	public OrganizationEntity getOrganization() {

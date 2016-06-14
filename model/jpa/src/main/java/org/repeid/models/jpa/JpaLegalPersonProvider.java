@@ -7,6 +7,7 @@ import org.repeid.models.LegalPersonProvider;
 import org.repeid.models.OrganizationModel;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.jpa.entities.LegalPersonEntity;
+import org.repeid.models.jpa.entities.OrganizationEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,8 @@ public class JpaLegalPersonProvider implements LegalPersonProvider {
         LegalPersonEntity entity = new LegalPersonEntity();
         entity.setId(id);
         entity.setName(name);
-        entity.setOrganizationId(organization.getId());
+        OrganizationEntity ref = em.getReference(OrganizationEntity.class, organization.getId());        
+        entity.setOrganization(ref);
         em.persist(entity);
         em.flush();
         LegalPersonAdapter personModel = new LegalPersonAdapter(session, organization, em, entity);

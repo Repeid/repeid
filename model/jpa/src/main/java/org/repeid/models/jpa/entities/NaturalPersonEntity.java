@@ -17,14 +17,14 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "NATURAL_PERSON")
 @NamedQueries({
-    @NamedQuery(name="getAllNaturalPersonsByOrganization", query="select p from NaturalPersonEntity p where p.organizationId = :organizationId order by p.firstName"),    
-    @NamedQuery(name="searchForNaturalPerson", query="select p from NaturalPersonEntity p where p.organizationId = :organizationId and " +
+    @NamedQuery(name="getAllNaturalPersonsByOrganization", query="select p from NaturalPersonEntity p where p.organization.id = :organizationId order by p.firstName"),    
+    @NamedQuery(name="searchForNaturalPerson", query="select p from NaturalPersonEntity p where p.organization.id = :organizationId and " +
             "( lower(p.firstName) like :search or lower(concat(p.firstName, ' ', p.lastName)) like :search or p.documentNumber like :search ) order by p.firstName"),    
-    @NamedQuery(name="getOrganizationNaturalPersonById", query="select p from NaturalPersonEntity p where p.id = :id and p.organizationId = :organizationId"),    
-    @NamedQuery(name="getOrganizationNaturalPersonByLastName", query="select p from NaturalPersonEntity p where p.lastName = :lastName and p.organizationId = :organizationId"),    
-    @NamedQuery(name="getOrganizationNaturalPersonByFirstLastName", query="select p from NaturalPersonEntity p where p.firstName = :first and p.lastName = :last and p.organizationId = :organizationId"),
-    @NamedQuery(name="getOrganizationNaturalPersonCount", query="select count(p) from NaturalPersonEntity p where p.organizationId = :organizationId"),    
-    @NamedQuery(name="deleteNaturalPersonsByOrganization", query="delete from NaturalPersonEntity p where p.organizationId = :organizationId")
+    @NamedQuery(name="getOrganizationNaturalPersonById", query="select p from NaturalPersonEntity p where p.organization.id = :id and p.organization.id = :organizationId"),    
+    @NamedQuery(name="getOrganizationNaturalPersonByLastName", query="select p from NaturalPersonEntity p where p.lastName = :lastName and p.organization.id = :organizationId"),    
+    @NamedQuery(name="getOrganizationNaturalPersonByFirstLastName", query="select p from NaturalPersonEntity p where p.firstName = :first and p.lastName = :last and p.organization.id = :organizationId"),
+    @NamedQuery(name="getOrganizationNaturalPersonCount", query="select count(p) from NaturalPersonEntity p where p.organization.id = :organizationId"),    
+    @NamedQuery(name="deleteNaturalPersonsByOrganization", query="delete from NaturalPersonEntity p where p.organization.id = :organizationId")
 })
 public class NaturalPersonEntity extends PersonEntity {
 

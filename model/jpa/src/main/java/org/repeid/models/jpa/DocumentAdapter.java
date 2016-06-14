@@ -30,6 +30,13 @@ public class DocumentAdapter implements DocumentModel, JpaModel<DocumentEntity> 
 		return document;
 	}
 
+	public static DocumentEntity toEntity(DocumentModel model, EntityManager em) {
+		if (model instanceof DocumentAdapter) {
+			return ((DocumentAdapter)model).getEntity();
+		}
+		return em.getReference(DocumentEntity.class, model.getId());
+	}
+
 	@Override
 	public String getId() {
 		return document.getId();

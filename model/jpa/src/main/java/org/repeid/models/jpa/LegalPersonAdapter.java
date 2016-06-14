@@ -1,13 +1,13 @@
 package org.repeid.models.jpa;
 
+import javax.persistence.EntityManager;
+
 import org.jboss.logging.Logger;
 import org.repeid.models.DocumentModel;
 import org.repeid.models.LegalPersonModel;
 import org.repeid.models.OrganizationModel;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.jpa.entities.LegalPersonEntity;
-
-import javax.persistence.EntityManager;
 
 public class LegalPersonAdapter implements LegalPersonModel, JpaModel<LegalPersonEntity> {
 
@@ -29,6 +29,13 @@ public class LegalPersonAdapter implements LegalPersonModel, JpaModel<LegalPerso
 	@Override
 	public LegalPersonEntity getEntity() {
 		return legalPerson;
+	}
+
+	public static LegalPersonEntity toEntity(LegalPersonModel model, EntityManager em) {
+		if (model instanceof LegalPersonAdapter) {
+			return ((LegalPersonAdapter)model).getEntity();
+		}
+		return em.getReference(LegalPersonEntity.class, model.getId());
 	}
 
 	@Override

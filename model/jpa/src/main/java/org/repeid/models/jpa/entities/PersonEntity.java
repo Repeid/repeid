@@ -10,15 +10,9 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class PersonEntity {
 
-	@Column(name = "organization_id")
-	protected String organizationId;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey)
 	protected OrganizationEntity organization;
-
-	@Column(name = "document_id")
-	protected String documentId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "document_id", foreignKey = @ForeignKey)
@@ -52,28 +46,12 @@ public abstract class PersonEntity {
 		this.email = email;
 	}
 
-	public String getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(String organizationId) {
-		this.organizationId = organizationId;
-	}
-
 	public OrganizationEntity getOrganization() {
 		return organization;
 	}
 
 	public void setOrganization(OrganizationEntity organization) {
 		this.organization = organization;
-	}
-
-	public String getDocumentId() {
-		return documentId;
-	}
-
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
 	}
 
 	public DocumentEntity getDocument() {

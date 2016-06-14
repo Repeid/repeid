@@ -35,6 +35,13 @@ public class NaturalPersonAdapter implements NaturalPersonModel, JpaModel<Natura
 		return naturalPerson;
 	}
 
+	public static NaturalPersonEntity toEntity(NaturalPersonModel model, EntityManager em) {
+		if (model instanceof NaturalPersonAdapter) {
+			return ((NaturalPersonAdapter)model).getEntity();
+		}
+		return em.getReference(NaturalPersonEntity.class, model.getId());
+	}
+
 	@Override
 	public String getId() {
 		return naturalPerson.getId();

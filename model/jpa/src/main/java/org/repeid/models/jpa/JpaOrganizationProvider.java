@@ -113,8 +113,7 @@ public class JpaOrganizationProvider implements OrganizationProvider {
 		entity.setId(id);
 		entity.setAbbreviation(abbreviation);
 		OrganizationEntity ref = em.getReference(OrganizationEntity.class, organization.getId());
-		entity.setOrganization(ref);
-		entity.setOrganizationId(organization.getId());
+		entity.setOrganization(ref);	
 		em.persist(entity);
 		em.flush();
 		DocumentAdapter adapter = new DocumentAdapter(session, organization, em, entity);
@@ -137,7 +136,7 @@ public class JpaOrganizationProvider implements OrganizationProvider {
 		DocumentEntity entity = em.find(DocumentEntity.class, id);
 		if (entity == null)
 			return null;
-		if (!organization.getId().equals(entity.getOrganizationId()))
+		if (!organization.getId().equals(entity.getOrganization().getId()))
 			return null;
 		DocumentAdapter adapter = new DocumentAdapter(session, organization, em, entity);
 		return adapter;

@@ -13,7 +13,9 @@ import org.repeid.models.NaturalPersonModel;
 import org.repeid.models.NaturalPersonProvider;
 import org.repeid.models.OrganizationModel;
 import org.repeid.models.RepeidSession;
+import org.repeid.models.jpa.entities.DocumentEntity;
 import org.repeid.models.jpa.entities.NaturalPersonEntity;
+import org.repeid.models.jpa.entities.OrganizationEntity;
 
 public class JpaNaturalPersonProvider implements NaturalPersonProvider {
 
@@ -45,8 +47,10 @@ public class JpaNaturalPersonProvider implements NaturalPersonProvider {
         NaturalPersonEntity entity = new NaturalPersonEntity();
         entity.setId(id);
         entity.setDocumentNumber(documentNumber);
-        entity.setDocumentId(document.getId());
-        entity.setOrganizationId(organization.getId());
+        DocumentEntity documentRef = em.getReference(DocumentEntity.class, document.getId());
+        OrganizationEntity organizationRef = em.getReference(OrganizationEntity.class, organization.getId());
+        entity.setDocument(documentRef);
+        entity.setOrganization(organizationRef);
         em.persist(entity);
         em.flush();
         NaturalPersonAdapter personModel = new NaturalPersonAdapter(session, organization, em, entity);
