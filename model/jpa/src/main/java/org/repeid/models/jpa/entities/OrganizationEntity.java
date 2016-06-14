@@ -6,6 +6,10 @@ import java.util.Collection;
 
 @Table(name = "ORGANIZATION")
 @Entity
+@NamedQueries({
+    @NamedQuery(name="getAllOrganizationIds", query="select organization.id from OrganizationEntity organization"),
+    @NamedQuery(name="getOrganizationIdByName", query="select organization.id from OrganizationEntity organization where organization.name = :name"),
+})
 public class OrganizationEntity {
 
     @Id

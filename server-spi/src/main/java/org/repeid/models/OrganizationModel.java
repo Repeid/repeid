@@ -1,15 +1,41 @@
 package org.repeid.models;
 
+import java.util.Set;
+
+import org.repeid.provider.ProviderEvent;
+
 public interface OrganizationModel {
 
-    String getId();
+	interface OrganizationCreationEvent extends ProviderEvent {
+        OrganizationModel getCreatedOrganization();
+    }
 
-    String getName();
+    interface DocumentCreationEvent extends ProviderEvent {
+    	DocumentModel getCreatedDocument();
+    	OrganizationModel getOrganization();
+    }
+    
+	String getId();
 
-    void setName(String name);
+	String getName();
 
-    boolean isEnabled();
+	void setName(String name);
 
-    void setEnabled(boolean enabled);
+	boolean isEnabled();
 
+	void setEnabled(boolean enabled);
+
+	
+	DocumentModel addDocument(String abbreviation);
+
+	DocumentModel addDocument(String id, String abbreviation);
+	
+	DocumentModel getDocumentById(String id);
+	
+	boolean removeDocument(DocumentModel document);
+
+	boolean removeDocumentById(String id);
+	
+	Set<DocumentModel> getDocuments();
+	
 }

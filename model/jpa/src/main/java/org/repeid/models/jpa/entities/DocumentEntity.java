@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -18,6 +20,12 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "DOCUMENT")
+@NamedQueries({
+    @NamedQuery(name="getOrganizationDocuments", query="select document from DocumentEntity document where document.organization = :organization"),
+    @NamedQuery(name="getOrganizationDocumentIds", query="select document.id from DocumentEntity document where document.organization.id = :organization"),
+    @NamedQuery(name="getOrganizationDocumentByAbbreviation", query="select document from DocumentEntity document where document.abbreviation = :abbreviation and document.organization.id = :organization"),
+    @NamedQuery(name="getOrganizationDocumentIdByAbbreviation", query="select document.id from DocumentEntity document where document.abbreviation = :abbreviation and document.organization.id = :organization")
+})
 public class DocumentEntity {
 
 	@Id
@@ -44,10 +52,14 @@ public class DocumentEntity {
 	@Column(name = "enabled")
 	private boolean enabled;
 
+	// hax! couldn't get constraint to work properly
+    @Column(name = "organization_id")
+    private String organizationId;
+    
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey)
 	private OrganizationEntity organization;
-
+    
 	public String getId() {
 		return id;
 	}
@@ -95,6 +107,13 @@ public class DocumentEntity {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
+	}
 
 	public OrganizationEntity getOrganization() {
 		return organization;
@@ -108,7 +127,7 @@ public class DocumentEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((abbreviation == null) ? 0 : abbreviation.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -118,13 +137,13 @@ public class DocumentEntity {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof DocumentEntity))
+		if (getClass() != obj.getClass())
 			return false;
 		DocumentEntity other = (DocumentEntity) obj;
-		if (abbreviation == null) {
-			if (other.abbreviation != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!abbreviation.equals(other.abbreviation))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

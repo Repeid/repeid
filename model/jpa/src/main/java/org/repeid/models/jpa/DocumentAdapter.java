@@ -10,28 +10,24 @@ import javax.persistence.EntityManager;
 
 public class DocumentAdapter implements DocumentModel, JpaModel<DocumentEntity> {
 
-    protected static final Logger logger = Logger.getLogger(DocumentAdapter.class);
+	protected static final Logger logger = Logger.getLogger(DocumentAdapter.class);
 
-    protected DocumentEntity document;
-    protected EntityManager em;
-    protected OrganizationModel organization;
-    protected RepeidSession session;
+	protected DocumentEntity document;
+	protected EntityManager em;
 
-    public DocumentAdapter(RepeidSession session, OrganizationModel organization, EntityManager em, DocumentEntity document) {
-        this.em = em;
-        this.organization = organization;
-        this.document = document;
-        this.session = session;
-    }
+	public DocumentAdapter(RepeidSession session, OrganizationModel organization, EntityManager em,
+			DocumentEntity document) {
 
-    @Override
-    public DocumentEntity getEntity() {
-        return document;
-    }
+	}
 
-    @Override
-    public String getId() {
-        return document.getId();
-    }
+	@Override
+	public DocumentEntity getEntity() {
+		return document;
+	}
+
+	@Override
+	public String getId() {
+		return document.getId();
+	}
 
 }
