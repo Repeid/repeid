@@ -19,6 +19,7 @@ package org.repeid.models.cache.infinispan;
 
 import org.jboss.logging.Logger;
 import org.repeid.migration.MigrationModel;
+import org.repeid.models.DocumentModel;
 import org.repeid.models.OrganizationModel;
 import org.repeid.models.OrganizationProvider;
 import org.repeid.models.RepeidSession;
@@ -103,6 +104,42 @@ public class OrganizationCacheSession implements CacheOrganizationProvider {
 	}
 
 	@Override
+	public DocumentModel addOrganizationDocument(OrganizationModel organization, String abbreviation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DocumentModel addOrganizationDocument(OrganizationModel organization, String id, String abbreviation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DocumentModel getOrganizationDocument(OrganizationModel organization, String abbreviation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DocumentModel getDocumentById(String id, OrganizationModel organization) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<DocumentModel> getOrganizationDocuments(OrganizationModel organization) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean removeDocument(OrganizationModel organization, DocumentModel document) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public boolean removeOrganization(String id) {
 		// TODO Auto-generated method stub
 		return false;
@@ -111,37 +148,39 @@ public class OrganizationCacheSession implements CacheOrganizationProvider {
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void registerOrganizationInvalidation(String id) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void registerDocumentInvalidation(String id) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void registerNaturalPersonInvalidation(String id) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void registerLegalPersonInvalidation(String id) {
 		// TODO Auto-generated method stub
-
+		
 	}
+
+	
 
 }
