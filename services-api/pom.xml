@@ -141,6 +141,30 @@
 					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.qmino</groupId>
+				<artifactId>miredot-plugin</artifactId>
+				<version>2.0-RC3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>restdoc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<organizationId>f7f300d6-135f-469b-bbdf-36267a599e5b</organizationId>
+					<restModel>
+						<restFramework>
+							<name>jax-rs</name>
+						</restFramework>
+					</restModel>
+					<output>
+						<html></html>
+					</output>
+					<!-- insert other configuration here (optional) -->
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
