@@ -12,7 +12,7 @@ public class CachedDocument extends AbstractRevisioned implements InOrganization
 	private String personType;
 	private boolean enabled;
 
-	public CachedDocument(Long revision, OrganizationModel organization, DocumentModel document) {
+	public CachedDocument(Long revision, DocumentModel document, OrganizationModel organization) {
 		super(revision, document.getId());
 		this.organization = organization.getId();
 		this.abbreviation = document.getAbbreviature();

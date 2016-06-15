@@ -66,9 +66,6 @@
     }
   },
   "connectionsInfinispan": {
-    "provider": "default",
-    "default": {
-      "cacheContainer": "java:comp/env/infinispan/Keycloak"
-    }
+    "provider": "default"
   }
 }
