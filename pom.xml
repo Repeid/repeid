@@ -136,6 +136,7 @@
 		<module>themes</module>
 		<module>war</module>
 		<module>wildfly-swarm</module>
+		<module>testsuite</module>
 	</modules>
 
 	<dependencyManagement>
