@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<parent>
 		<groupId>org.repeid.testsuite</groupId>
@@ -34,8 +33,7 @@
 		<auth.server.management.port.jmx>10099</auth.server.management.port.jmx>
 		<auth.server.ssl.required>false</auth.server.ssl.required>
 		<auth.server.jboss.startup.timeout>60</auth.server.jboss.startup.timeout>
-		<auth.server.memory.settings>-Xms64m -Xmx512m -XX:MetaspaceSize=96M
-			-XX:MaxMetaspaceSize=256m</auth.server.memory.settings>
+		<auth.server.memory.settings>-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m</auth.server.memory.settings>
 		<auth.server.config.property.name>serverConfig</auth.server.config.property.name>
 		<auth.server.adapter.impl.class>org.jboss.as.arquillian.container.managed.ManagedDeployableContainer</auth.server.adapter.impl.class>
 
@@ -73,7 +71,7 @@
 							<configuration>
 								<artifactItems>
 									<artifactItem>
-										<groupId>org.keycloak.testsuite</groupId>
+										<groupId>org.repeid.testsuite</groupId>
 										<artifactId>${auth.server.jboss.artifactId}</artifactId>
 										<version>${project.version}</version>
 										<type>zip</type>
@@ -101,7 +99,7 @@
 									<resource>
 										<directory>src/test/resources</directory>
 										<includes>
-											<include>keycloak-add-user.json</include>
+											<include>repeid-add-user.json</include>
 										</includes>
 										<filtering>true</filtering>
 									</resource>
@@ -157,14 +155,14 @@
 						<properties>
 							<property>
 								<name>listener</name>
-								<value>org.keycloak.testsuite.util.TestEventsLogger</value>
+								<value>org.repeid.testsuite.util.TestEventsLogger</value>
 							</property>
 						</properties>
 					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-	</build>
+	</build> 
 
 	<profiles>
 
@@ -277,7 +275,7 @@
 									<configuration>
 										<artifactItems>
 											<artifactItem>
-												<groupId>org.keycloak.testsuite</groupId>
+												<groupId>org.repeid.testsuite</groupId>
 												<artifactId>integration-arquillian-server-wildfly-balancer</artifactId>
 												<version>${project.version}</version>
 												<type>zip</type>
@@ -362,13 +360,13 @@
 							<configuration>
 								<changeLogFile>META-INF/jpa-changelog-master.xml</changeLogFile>
 
-								<url>${keycloak.connectionsJpa.url}</url>
-								<driver>${keycloak.connectionsJpa.driver}</driver>
-								<username>${keycloak.connectionsJpa.user}</username>
-								<password>${keycloak.connectionsJpa.password}</password>
+								<url>${repeid.connectionsJpa.url}</url>
+								<driver>${repeid.connectionsJpa.driver}</driver>
+								<username>${repeid.connectionsJpa.user}</username>
+								<password>${repeid.connectionsJpa.password}</password>
 
 								<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-								<databaseClass>${keycloak.connectionsJpa.liquibaseDatabaseClass}</databaseClass>
+								<databaseClass>${repeid.connectionsJpa.liquibaseDatabaseClass}</databaseClass>
 							</configuration>
 							<executions>
 								<execution>
@@ -431,7 +429,7 @@
 								<configuration>
 									<artifactItems>
 										<artifactItem>
-											<groupId>org.keycloak.testsuite</groupId>
+											<groupId>org.repeid.testsuite</groupId>
 											<artifactId>${migrated.auth.server.jboss.artifactId}</artifactId>
 											<version>${project.version}</version>
 											<type>zip</type>
@@ -474,8 +472,8 @@
 							<configuration>
 								<systemPropertyVariables>
 									<auth.server.jboss.kc16>true</auth.server.jboss.kc16>
-									<keycloak.migration.home>${containers.home}/keycloak-${migrated.auth.server.version}</keycloak.migration.home>
-									<keycloak.migration.file>src/test/resources/migration-test/migration-realm-16.json</keycloak.migration.file>
+									<repeid.migration.home>${containers.home}/repeid-${migrated.auth.server.version}</repeid.migration.home>
+									<repeid.migration.file>src/test/resources/migration-test/migration-realm-16.json</repeid.migration.file>
 								</systemPropertyVariables>
 							</configuration>
 						</plugin>
@@ -503,8 +501,8 @@
 							<configuration>
 								<systemPropertyVariables>
 									<auth.server.jboss.kc15>true</auth.server.jboss.kc15>
-									<keycloak.migration.home>${containers.home}/keycloak-${migrated.auth.server.version}</keycloak.migration.home>
-									<keycloak.migration.file>src/test/resources/migration-test/migration-realm-15.json</keycloak.migration.file>
+									<repeid.migration.home>${containers.home}/repeid-${migrated.auth.server.version}</repeid.migration.home>
+									<repeid.migration.file>src/test/resources/migration-test/migration-realm-15.json</repeid.migration.file>
 								</systemPropertyVariables>
 							</configuration>
 						</plugin>
@@ -532,7 +530,7 @@
 							<configuration>
 								<systemPropertyVariables>
 									<auth.server.jboss.kc14>true</auth.server.jboss.kc14>
-									<keycloak.migration.home>${containers.home}/keycloak-${migrated.auth.server.version}</keycloak.migration.home>
+									<repeid.migration.home>${containers.home}/repeid-${migrated.auth.server.version}</repeid.migration.home>
 								</systemPropertyVariables>
 							</configuration>
 						</plugin>
@@ -560,7 +558,7 @@
 							<configuration>
 								<systemPropertyVariables>
 									<auth.server.jboss.kc13>true</auth.server.jboss.kc13>
-									<keycloak.migration.home>${containers.home}/keycloak-${migrated.auth.server.version}</keycloak.migration.home>
+									<repeid.migration.home>${containers.home}/repeid-${migrated.auth.server.version}</repeid.migration.home>
 								</systemPropertyVariables>
 							</configuration>
 						</plugin>
@@ -588,7 +586,7 @@
 							<configuration>
 								<systemPropertyVariables>
 									<auth.server.jboss.kc12>true</auth.server.jboss.kc12>
-									<keycloak.migration.home>${containers.home}/keycloak-${migrated.auth.server.version}</keycloak.migration.home>
+									<repeid.migration.home>${containers.home}/repeid-${migrated.auth.server.version}</repeid.migration.home>
 								</systemPropertyVariables>
 							</configuration>
 						</plugin>
@@ -721,44 +719,45 @@
 
 				<!-- Keycloak deps for tests -->
 
+<!-- 
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-dependencies-server-all</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-dependencies-server-all</artifactId>
 					<type>pom</type>
 				</dependency>
 
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-core</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-core</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-admin-client</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-admin-client</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-client-registration-api</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-client-registration-api</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-services</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-services</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-adapter-core</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-adapter-core</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>org.keycloak</groupId>
-					<artifactId>keycloak-adapter-spi</artifactId>
+					<groupId>org.repeid</groupId>
+					<artifactId>repeid-adapter-spi</artifactId>
 				</dependency>
-
+ -->
 				<!--UNDERTOW -->
 
-				<dependency>
-					<groupId>org.keycloak.testsuite</groupId>
+				<!--<dependency>
+					<groupId>org.repeid.testsuite</groupId>
 					<artifactId>integration-arquillian-servers-auth-server-undertow</artifactId>
 					<version>${project.version}</version>
-				</dependency>
+				</dependency>-->
 
 				<dependency>
 					<groupId>org.jboss.arquillian.container</groupId>
