@@ -1,6 +1,6 @@
 dependencies {
     //Project dependencies
-    compile(":repeid:repeid-common")
+    compile project (":repeid-common")
 
     // Third libraries
     compile ( libraries.bcpkix_jdk15on )
@@ -12,4 +12,3 @@ dependencies {
     // Test
     testCompile ( libraries.junit )
 }
-

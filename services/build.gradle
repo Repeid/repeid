@@ -1,8 +1,8 @@
 dependencies {
     //Project dependencies
-    compile(":repeid:repeid-services-api")
-    compile(":repeid:repeid-core")
-    compile(":repeid:repeid-server-api")
+    compile project (":repeid-services-api")
+    compile project (":repeid-core")
+    compile project (":repeid-server-spi")
 
     // Third libraries
     compile ( libraries.bcprov_jdk15on )

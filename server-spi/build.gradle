@@ -1,6 +1,6 @@
 dependencies {
     //Project dependencies
-    compile(":repeid:repeid-core")
+    compile project (":repeid-core")
 
     // Third libraries
     compile ( libraries.resteasy_jaxrs )
