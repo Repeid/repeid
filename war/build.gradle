@@ -1,13 +1,13 @@
 dependencies {
     //Project dependencies
-    compile(":repeid:repeid-common")
-    compile(":repeid:repeid-core")
-    compile(":repeid:repeid-model-infinispan")
-    compile(":repeid:repeid-model-jpa")
-    compile(":repeid:repeid-model-mongo")
-    compile(":repeid:repeid-server-spi")
-    compile(":repeid:repeid-services-api")
-    compile(":repeid:repeid-services")
-    compile(":repeid:repeid-themes")
+    compile(":repeid-common")
+    compile(":repeid-core")
+    compile(":repeid-model-infinispan")
+    compile(":repeid-model-jpa")
+    compile(":repeid-model-mongo")
+    compile(":repeid-server-spi")
+    compile(":repeid-services-api")
+    compile(":repeid-services")
+    compile(":repeid-themes")
 
 }

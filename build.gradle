@@ -29,8 +29,8 @@ subprojects { subProject ->
 
     defaultTasks "build"
 
-    group = product.group
-    version = product.version
+    group = project.group
+    version = project.version
 
     if ( subProject.name.startsWith( 'release' ) || subProject.name.startsWith( 'documentation' ) ) {
         return;

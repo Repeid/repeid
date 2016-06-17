@@ -1,3 +1,5 @@
+//apply plugin: 'miredot'
+
 dependencies {
     //Project dependencies
     compile project (":repeid-core")
@@ -33,3 +35,21 @@ dependencies {
     testCompile ( libraries.junit )
 }
 
+/*group = 'org.sistcoop'
+miredot {
+    source = sourceSets.main.allJava
+    destination = sourceSets.main.output
+    organizationId = 'f7f300d6-135f-469b-bbdf-36267a599e5b'
+
+    restModel {
+        restFramework {
+            name = 'jax-rs'
+        }
+    }
+
+    output {
+        formats {
+            'html' {}
+        }
+    }
+}*/

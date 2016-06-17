@@ -1,0 +1,19 @@
+apply plugin: 'checkstyle'
+
+logger.info('Checkstyle Plugin activated')
+logger.info("pluginConfigPath: ${project.pluginConfigPath}")
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Report configs
+checkstyle {
+    sourceSets = [project.sourceSets.main]
+    configFile = rootProject.file('tools/config/checkstyle/checkstyle.xml')
+    showViolations = false
+}
+// exclude generated java sources - by explicitly setting the base source dir
+checkstyleMain.source = 'src/main/java'
+
+
+// because cfg package is a mess mainly from annotation stuff
+checkstyleMain.exclude '**/org/repeid/cfg/**'
+checkstyleMain.exclude '**/org/repeid/cfg/*'
