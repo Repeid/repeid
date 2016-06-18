@@ -2,9 +2,9 @@ dependencies {
     //Project dependencies
     compile project (":repeid-dependencies:server-min")
 
-    compile project (":repeid-model:model-jpa")
-    compile project (":repeid-model:model-infinispan")
-    compile project (":repeid-model:model-mongo")
+    compile project (":repeid-model:repeid-model-jpa")
+    compile project (":repeid-model:repeid-model-infinispan")
+    compile project (":repeid-model:repeid-model-mongo")
 
     // Third libraries
     compile ( libraries.mongo_java_driver)
