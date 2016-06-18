@@ -1,0 +1,13 @@
+apply plugin: 'codenarc'
+
+logger.info('Codenarc Plugin aktiviert')
+
+dependencies {
+    codenarc 'org.codenarc:CodeNarc:+'
+}
+
+codenarc {
+    ignoreFailures true
+    // configFile = file("${project.pluginConfigPath}/codenarc/StarterRuleSetAllRules.groovy")
+    configFile = file("${project.pluginConfigPath}/codenarc/StarterRuleSetAllRulesbyCategory.groovy")
+}

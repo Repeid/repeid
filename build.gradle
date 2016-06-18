@@ -42,6 +42,7 @@ idea {
 
 
 subprojects { subProject ->
+
     apply from: "$rootProject.projectDir/gradle/plugin-maven.gradle"
     apply from: "$rootProject.projectDir/gradle/plugin-groovy.gradle"
     apply from: "$rootProject.projectDir/gradle/plugin-jacoco.gradle"
@@ -226,20 +227,36 @@ subprojects { subProject ->
     }
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // IDE options
+    idea {
+        module {
+            jdkName = subProject.sourceCompatibility
 
+            excludeDirs = [file( ".gradle" )]
+            excludeDirs += file( "$buildDir/classes" )
+            excludeDirs += file( "$buildDir/bundles" )
+            excludeDirs += file( "$buildDir/packages" )
+            excludeDirs += file( "$buildDir/dependency-cache" )
+            excludeDirs += file( "$buildDir/libs" )
+            excludeDirs += file( "$buildDir/reports" )
+            excludeDirs += file( "$buildDir/test-results" )
+            excludeDirs += file( "$buildDir/tmp" )
+            excludeDirs += file( "$buildDir/matrix" )
+            excludeDirs += file( "$buildDir/resources" )
 
-
-
-
-
-
-
-
+            downloadSources = true
+            scopes.PROVIDED.plus += [configurations.provided]
+        }
+    }
 
     eclipse {
         jdt {
-            sourceCompatibility = "${sourceCompatibility}"
-            targetCompatibility = "${targetCompatibility}"
+            sourceCompatibility = subProject.sourceCompatibility
+            targetCompatibility = subProject.targetCompatibility
+        }
+        classpath {
+            plusConfigurations.add( configurations.provided )
         }
     }
 
@@ -247,37 +264,58 @@ subprojects { subProject ->
     // TODO: Eclipse's annotation processor handling is also fairly stupid (and completely lacks in the
     // Gradle plugin).  For now, just compile first in order to get the logging classes.
     eclipseClasspath.dependsOn compile
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    // Report configs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    /*checkstyle {
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Report configs
+    checkstyle {
         sourceSets = [ subProject.sourceSets.main ]
-        configFile = rootProject.file( 'tools/config/checkstyle/checkstyle.xml' )
+        configFile = rootProject.file( 'shared/config/checkstyle/checkstyle.xml' )
         showViolations = false
-    }*/
+    }
     // exclude generated java sources - by explicitly setting the base source dir
-    //checkstyleMain.source = 'src/main/java'
+    checkstyleMain.source = 'src/main/java'
 
-    /*findbugs {
+
+    findbugs {
         sourceSets = [ subProject.sourceSets.main, subProject.sourceSets.test ]
         ignoreFailures = true
         toolVersion = '3.0.1'
         // for now we need to set this to low so that FindBugs will actually report the DM_CONVERT_CASE warning we care about
         reportLevel = 'low'
         // remove all low level bug warnings except DM_CONVERT_CASE
-        //excludeFilterConfig=resources.text.fromString(excludeAllLowLevelBugsExcept('DM_CONVERT_CASE'))
-    }*/
+        excludeFilterConfig=resources.text.fromString(excludeAllLowLevelBugsExcept('DM_CONVERT_CASE'))
+    }
+
+    // exclude generated java sources and cfg package is a mess mainly from annotation stuff
+    findbugsMain.doFirst {
+        classes = classes.filter {
+            !it.path.contains( 'org/hibernate/hql/internal/antlr' ) &&
+                    !it.path.contains( 'org/hibernate/boot/jaxb/cfg/spi' ) &&
+                    !it.path.contains( 'org/hibernate/sql/ordering/antlr/Generated' ) &&
+                    !it.path.contains( 'org/hibernate/sql/ordering/antlr/OrderByTemplateTokenTypes' ) &&
+                    !it.path.contains( 'org/hibernate/boot/jaxb/hbm/spi/Jaxb' ) &&
+                    !it.path.contains( 'org/hibernate/boot/jaxb/hbm/spi/Adapter' ) &&
+                    !it.path.contains( 'org/hibernate/boot/jaxb/hbm/spi/ObjectFactory' ) &&
+                    !it.path.contains( 'org/hibernate/cfg' ) &&
+                    !it.path.contains( '_\$logger' )
+        }
+    }
 
     // because cfg package is a mess mainly from annotation stuff
-    //checkstyleMain.exclude '**/org/repeid/cfg/**'
-    //checkstyleMain.exclude '**/org/repeid/cfg/*'
+    checkstyleMain.exclude '**/org/hibernate/cfg/**'
+    checkstyleMain.exclude '**/org/hibernate/cfg/*'
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Publishing
     publishing {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
 
-                artifact(sourcesJar) {
+                artifact( sourcesJar ) {
                     classifier 'sources'
                 }
             }
@@ -293,14 +331,11 @@ subprojects { subProject ->
 
     model {
         tasks.generatePomFileForMavenJavaPublication {
-            destination = file("$subProject.buildDir/generated-pom.xml")
+            destination = file( "$subProject.buildDir/generated-pom.xml" )
         }
     }
-
-    /*task sourcesJar(type: Jar, dependsOn: compileJava) {
-        from sourceSets.main.allSource
-        classifier = 'sources'
-    }*/
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
 }
 
 task release(type: Task, dependsOn: 'release:release')
