@@ -1,6 +1,7 @@
-apply plugin: "eclipse"
-apply plugin: "idea"
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply from: "./libraries.gradle"
+apply from: "./databases.gradle"
 
 buildscript {
     apply from: "./libraries.gradle"
@@ -20,19 +21,47 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
 }
 
-subprojects { subProject ->
-    apply plugin: "eclipse"
+idea {
+    project {
+        jdkName = "$rootProject.sourceCompatibility"
+        languageLevel = "$rootProject.targetCompatibility"
+        vcs = 'Git'
+    }
+    module {
+        name = "repeid"
+    }
+}
 
-    defaultTasks "build"
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+subprojects { subProject ->
+    apply from: "$rootProject.projectDir/gradle/plugin-maven.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-groovy.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jacoco.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-pmd.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jdepend.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-codenarc.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-wildfly.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jetty.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-eclipse.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-idea.gradle"
+
+    defaultTasks 'build'
 
     group = project.group
     version = project.version
 
-    if ( subProject.name.startsWith( 'release' ) || subProject.name.startsWith( 'documentation' ) ) {
+    // minimize changes, at least for now (gradle uses 'build' by default)..
+    buildDir = "target"
+
+    if (subProject.name.startsWith('release') || subProject.name.startsWith('documentation')) {
         return;
     }
 
@@ -40,35 +69,131 @@ subprojects { subProject ->
     apply plugin: "java"
     apply plugin: "maven-publish"
 
-    apply plugin: "findbugs"
-    apply plugin: "checkstyle"
+    apply from: "$rootProject.projectDir/gradle/plugin-findbugs.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-checkstyle.gradle"
     apply plugin: "build-dashboard"
     apply plugin: "project-report"
 
     apply plugin: "nebula.provided-base"
 
-    repositories {
-        mavenCentral()
+    sourceCompatibility = rootProject.sourceCompatibility
+    targetCompatibility = rootProject.targetCompatibility
+
+    configurations {
+        provided {
+            // todo : need to make sure these are non-exported
+            description = 'Non-exported compile-time dependencies.'
+        }
+        jbossLoggingTool {
+            description = 'Dependencies for running the jboss-logging tooling.'
+        }
+        configurations {
+            all*.exclude group: 'xml-apis', module: 'xml-apis'
+        }
     }
 
     // appropriately inject the common dependencies into each sub-project
     dependencies {
-        //compile ( libraries.slf4j_api )
-        //compile ( libraries.slf4j_log4j )
-        //testCompile( libraries.junit )
+        compile libraries.jboss_logging
+
+        provided libraries.jboss_logging_annotations
+
+        jbossLoggingTool(libraries.jboss_logging_processor)
+
+        testCompile(libraries.junit)
+        testCompile(libraries.byteman)
+        testCompile(libraries.byteman_install)
+        testCompile(libraries.byteman_bmunit)
+
+        testRuntime(libraries.log4j)
+        testRuntime(libraries.javassist)
+        testRuntime(libraries.woodstox)
+
+        //Databases
+        testRuntime(libraries.h2)
+        testRuntime(libraries.hsqldb)
+        testRuntime(libraries.postgresql)
+        testRuntime(libraries.mysql)
+        testRuntime(libraries.mariadb)
+        testRuntime(libraries.informix)
+        if (db.equalsIgnoreCase("oracle")) {
+            dependencies {
+                testRuntime(libraries.oracle)
+            }
+        }
+        if (db.equalsIgnoreCase("mssql")) {
+            dependencies {
+                testRuntime(libraries.mssql)
+            }
+        }
 
         // 6.6 gave me some NPE problems from within checkstyle...
-        checkstyle "com.puppycrawl.tools:checkstyle:${rootProject.checkstyle.version}"
+        //checkstyle 'com.puppycrawl.tools:checkstyle:6.5'
+    }
+
+    // mac-specific stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // should really use Jvm.current().toolsJar
+    ext.toolsJar = file("${System.getProperty('java.home')}/../lib/tools.jar")
+    if (ext.toolsJar.exists()) {
+        dependencies {
+            testCompile files(toolsJar)
+        }
+    }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // compilation
+    task compile
+    compile.dependsOn compileJava, processResources, compileTestJava, processTestResources
+
+    sourceSets.main {
+        compileClasspath += configurations.provided
+        compileClasspath += configurations.jbossLoggingTool
+    }
+
+    subProject.getConvention().findPlugin(JavaPluginConvention.class).sourceSets.each { sourceSet ->
+        JavaCompile javaCompileTask = project.tasks.findByName(sourceSet.compileJavaTaskName) as JavaCompile
+
+        // NOTE : this aptDir stuff is needed until we can have IntelliJ run annotation processors for us
+        //		which cannot happen until we can fold testsuite back into hibernate-core/src/test
+        //		which cannot happen until... ugh
+        File aptDir = subProject.file("${subProject.buildDir}/generated-src/apt/${sourceSet.name}")
+        sourceSet.allJava.srcDir(aptDir)
+
+        javaCompileTask.options.compilerArgs += [
+                "-nowarn",
+                "-encoding", "UTF-8",
+                "-s", "${aptDir.absolutePath}"
+        ]
+        javaCompileTask.doFirst {
+            aptDir.mkdirs()
+        }
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    task compile
-    compile.dependsOn compileJava, processResources, compileTestJava, processTestResources
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // testing
 
-    test {
-        systemProperties['repeid.test.validatefailureexpected'] = true
-        systemProperties += System.properties.findAll { it.key.startsWith( "repeid.") }
+    subProject.tasks.withType(Test.class).all { task ->
+        task.jvmArgs += [
+                '-XX:+HeapDumpOnOutOfMemoryError',
+                "-XX:HeapDumpPath=${project.file("${project.buildDir}/OOM-dump.hprof").absolutePath}",
+                '-XX:MetaspaceSize=512M'
+        ]
+
+        task.maxHeapSize = '2G'
+
+        task.systemProperties['repeid.test.validatefailureexpected'] = true
+        task.systemProperties += System.properties.findAll { it.key.startsWith("repeid.") }
+
+        // uncomment to help identify pauses in test executions : where they occur
+        task.beforeTest { descriptor ->
+            println "Starting test: " + descriptor
+        }
+        task.afterTest { descriptor ->
+            println "Completed test: " + descriptor
+        }
     }
 
     processTestResources.doLast( {
@@ -79,7 +204,37 @@ subprojects { subProject ->
             }
             into sourceSets.test.output.classesDir
         }
+        /*copy {
+            ext.targetDir = file( "${buildDir}/resources/test" )
+            from file('src/test/resources')
+            into targetDir
+            filter( ReplaceTokens, tokens: dbBundle[db] );
+        }*/
     } )
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // artifact
+
+    task sourcesJar(type: Jar, dependsOn: compileJava) {
+        from sourceSets.main.allSource
+        classifier = 'sources'
+    }
+
+    sourcesJar {
+        manifest = jar.manifest
+    }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+
+
+
 
     eclipse {
         jdt {
@@ -94,15 +249,15 @@ subprojects { subProject ->
     eclipseClasspath.dependsOn compile
 
     // Report configs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    checkstyle {
+    /*checkstyle {
         sourceSets = [ subProject.sourceSets.main ]
         configFile = rootProject.file( 'tools/config/checkstyle/checkstyle.xml' )
         showViolations = false
-    }
+    }*/
     // exclude generated java sources - by explicitly setting the base source dir
-    checkstyleMain.source = 'src/main/java'
+    //checkstyleMain.source = 'src/main/java'
 
-    findbugs {
+    /*findbugs {
         sourceSets = [ subProject.sourceSets.main, subProject.sourceSets.test ]
         ignoreFailures = true
         toolVersion = '3.0.1'
@@ -110,11 +265,11 @@ subprojects { subProject ->
         reportLevel = 'low'
         // remove all low level bug warnings except DM_CONVERT_CASE
         //excludeFilterConfig=resources.text.fromString(excludeAllLowLevelBugsExcept('DM_CONVERT_CASE'))
-    }
+    }*/
 
     // because cfg package is a mess mainly from annotation stuff
-    checkstyleMain.exclude '**/org/repeid/cfg/**'
-    checkstyleMain.exclude '**/org/repeid/cfg/*'
+    //checkstyleMain.exclude '**/org/repeid/cfg/**'
+    //checkstyleMain.exclude '**/org/repeid/cfg/*'
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     publishing {
@@ -122,7 +277,7 @@ subprojects { subProject ->
             mavenJava(MavenPublication) {
                 from components.java
 
-                artifact( sourcesJar ) {
+                artifact(sourcesJar) {
                     classifier 'sources'
                 }
             }
@@ -138,12 +293,34 @@ subprojects { subProject ->
 
     model {
         tasks.generatePomFileForMavenJavaPublication {
-            destination = file( "$subProject.buildDir/generated-pom.xml" )
+            destination = file("$subProject.buildDir/generated-pom.xml")
         }
     }
 
-    task sourcesJar(type: Jar, dependsOn: compileJava) {
+    /*task sourcesJar(type: Jar, dependsOn: compileJava) {
         from sourceSets.main.allSource
         classifier = 'sources'
+    }*/
+}
+
+task release(type: Task, dependsOn: 'release:release')
+
+task wrapper(type: Wrapper) {
+    gradleVersion = expectedGradleVersion
+}
+
+def excludeAllLowLevelBugsExcept(String[] bugTypes){
+    def writer = new StringWriter()
+    def xml = new groovy.xml.MarkupBuilder(writer);
+    xml.FindBugsFilter {
+        Match {
+            Confidence( value: '3' )
+            bugTypes.each { bug ->
+                Not {
+                    Bug( pattern: "${bug}" )
+                }
+            }
+        }
     }
+    return writer.toString(  )
 }

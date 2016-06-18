@@ -1,4 +1,6 @@
 ext {
+    gradleApplyFromPath = "/config"
+
     // Gradle version
     expectedGradleVersion = "2.7"
 
@@ -263,13 +265,13 @@ ext {
             javassist                       : "org.javassist:javassist:${javassist.version}",
             // Woodstox
             woodstox                        : "org.codehaus.woodstox:woodstox-core-asl:${woodstox.version}",
-            hsqldb                          : "org.hsqldb:hsqldb:${javassist.version}",
-            derby                           : "org.apache.derby:derby:${javassist.version}",
-            postgresql                      : "org.postgresql:postgresql:${javassist.version}",
-            mysql                           : "mysql:mysql-connector-java:${javassist.version}",
-            mariadb                         : "org.mariadb.jdbc:mariadb-java-client:${javassist.version}",
-            oracle                          : "com.oracle.ojdbc:ojdbc7:${javassist.version}",
-            mssql                           : "com.microsoft.sqlserver:sqljdbc4:${javassist.version}",
-            informix                        : "com.ibm.informix:jdbc:${javassist.version}",
+            hsqldb                          : "org.hsqldb:hsqldb:${hsqldb.version}",
+            derby                           : "org.apache.derby:derby:${derby.version}",
+            postgresql                      : "org.postgresql:postgresql:${postgresql.version}",
+            mysql                           : "mysql:mysql-connector-java:${mysql.version}",
+            mariadb                         : "org.mariadb.jdbc:mariadb-java-client:${mariadb.version}",
+            oracle                          : "com.oracle.ojdbc:ojdbc7:${oracle.version}",
+            mssql                           : "com.microsoft.sqlserver:sqljdbc4:${mssql.version}",
+            informix                        : "com.ibm.informix:jdbc:${informix.version}",
     ]
 }
