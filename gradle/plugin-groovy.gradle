@@ -1,22 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 
-logger.info("Groovy $project.groovyVersion Plugin activated")
+logger.info("Groovy Plugin activated")
 
-/*
- *  Wildfly 8.2.0.Final may doesn't work with Java 8
- *  so we do automatic project change to Java 7 for it
- */
-if(project.wildflyVersion == '8.2.0.Final') {
-    project.javaVersion = 1.7
-}
-
-sourceCompatibility = project.javaVersion
-targetCompatibility = project.javaVersion
+sourceCompatibility = rootProject.sourceCompatibility
+targetCompatibility = rootProject.targetCompatibility
 
 compileJava.options.encoding = project.encoding
 compileTestJava.options.encoding = project.encoding
-
-dependencies {
-    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.groovyVersion
-}

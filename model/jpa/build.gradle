@@ -1,0 +1,16 @@
+dependencies {
+    //Project dependencies
+    compile project (":repeid-core")
+    compile project (":repeid-server-spi")
+    compile project (":repeid-services")
+
+    // Third libraries
+    compile ( libraries.bcprov_jdk15on )
+    compile ( libraries.h2 )
+    compile ( libraries.hibernate_jpa_21_api )
+    compile ( libraries.hibernate_entitymanager )
+    compile ( libraries.resteasy_jaxrs )
+
+    // Test
+    testCompile ( libraries.junit )
+}

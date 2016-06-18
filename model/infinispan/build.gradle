@@ -1,0 +1,11 @@
+dependencies {
+    //Project dependencies
+    compile project (":repeid-core")
+    compile project (":repeid-server-spi")
+
+    // Third libraries
+    compile ( libraries.infinispan_core )
+
+    // Test
+    testCompile ( libraries.junit )
+}

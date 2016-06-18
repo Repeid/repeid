@@ -1,13 +1,14 @@
+apply plugin: 'war'
+
 dependencies {
     //Project dependencies
-    compile(":repeid-common")
-    compile(":repeid-core")
-    compile(":repeid-model-infinispan")
-    compile(":repeid-model-jpa")
-    compile(":repeid-model-mongo")
-    compile(":repeid-server-spi")
-    compile(":repeid-services-api")
-    compile(":repeid-services")
-    compile(":repeid-themes")
-
+    compile project (":repeid-common")
+    compile project (":repeid-core")
+    compile project (":repeid-model:repeid-model-infinispan")
+    compile project (":repeid-model:repeid-model-jpa")
+    compile project (":repeid-model:repeid-model-mongo")
+    compile project (":repeid-server-spi")
+    compile project (":repeid-services-api")
+    compile project (":repeid-services")
+    compile project (":repeid-themes")
 }

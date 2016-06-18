@@ -1,6 +1,9 @@
 ext {
     gradleApplyFromPath = "/config"
 
+    findbugToolVersion = "3.0.1"
+    pmdToolVersion = "5.3.5"
+
     // Gradle version
     expectedGradleVersion = "2.7"
 
@@ -250,7 +253,7 @@ ext {
             wildfly_version                 : "org.wildfly.core:wildfly-version:${wildfly.core.version}",
             wildfly_web_common              : "org.wildfly:wildfly-web-common:${wildfly.version}",
             infinispan_core                 : "org.infinispan:infinispan-core:${infinispan.version}",
-            liquibase_core                  : "org.liquibase:liquibase_core:${liquibase.version}",
+            liquibase_core                  : "org.liquibase:liquibase-core:${liquibase.version}",
             osgi_core                       : "org.osgi:org.osgi.core:${osgi.version}",
             osgi_enterprise                 : "org.osgi:org.osgi.enterprise:${osgi.version}",
             pax_web_runtime                 : "org.ops4j.pax.web:pax-web-runtime:${pax.web.version}",

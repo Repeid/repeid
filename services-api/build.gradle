@@ -1,4 +1,4 @@
-//apply plugin: 'miredot'
+apply plugin: 'miredot'
 
 dependencies {
     //Project dependencies
@@ -35,7 +35,7 @@ dependencies {
     testCompile ( libraries.junit )
 }
 
-/*group = 'org.sistcoop'
+
 miredot {
     source = sourceSets.main.allJava
     destination = sourceSets.main.output
@@ -52,4 +52,4 @@ miredot {
             'html' {}
         }
     }
-}*/
+}

@@ -38,19 +38,11 @@ idea {
     }
 }
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 subprojects { subProject ->
 
-    apply from: "$rootProject.projectDir/gradle/plugin-maven.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-groovy.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-jacoco.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-pmd.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-jdepend.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-codenarc.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-wildfly.gradle"
-    apply from: "$rootProject.projectDir/gradle/plugin-jetty.gradle"
     apply from: "$rootProject.projectDir/gradle/plugin-eclipse.gradle"
     apply from: "$rootProject.projectDir/gradle/plugin-idea.gradle"
 
@@ -74,6 +66,15 @@ subprojects { subProject ->
     apply from: "$rootProject.projectDir/gradle/plugin-checkstyle.gradle"
     apply plugin: "build-dashboard"
     apply plugin: "project-report"
+
+    apply from: "$rootProject.projectDir/gradle/plugin-maven.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-groovy.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jacoco.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-pmd.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jdepend.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-codenarc.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-wildfly.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jetty.gradle"
 
     apply plugin: "nebula.provided-base"
 
@@ -132,14 +133,6 @@ subprojects { subProject ->
         //checkstyle 'com.puppycrawl.tools:checkstyle:6.5'
     }
 
-    // mac-specific stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // should really use Jvm.current().toolsJar
-    ext.toolsJar = file("${System.getProperty('java.home')}/../lib/tools.jar")
-    if (ext.toolsJar.exists()) {
-        dependencies {
-            testCompile files(toolsJar)
-        }
-    }
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,42 +145,11 @@ subprojects { subProject ->
         compileClasspath += configurations.jbossLoggingTool
     }
 
-    subProject.getConvention().findPlugin(JavaPluginConvention.class).sourceSets.each { sourceSet ->
-        JavaCompile javaCompileTask = project.tasks.findByName(sourceSet.compileJavaTaskName) as JavaCompile
-
-        // NOTE : this aptDir stuff is needed until we can have IntelliJ run annotation processors for us
-        //		which cannot happen until we can fold testsuite back into hibernate-core/src/test
-        //		which cannot happen until... ugh
-        File aptDir = subProject.file("${subProject.buildDir}/generated-src/apt/${sourceSet.name}")
-        sourceSet.allJava.srcDir(aptDir)
-
-        javaCompileTask.options.compilerArgs += [
-                "-nowarn",
-                "-encoding", "UTF-8",
-                "-s", "${aptDir.absolutePath}"
-        ]
-        javaCompileTask.doFirst {
-            aptDir.mkdirs()
-        }
-    }
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // testing
-
     subProject.tasks.withType(Test.class).all { task ->
-        task.jvmArgs += [
-                '-XX:+HeapDumpOnOutOfMemoryError',
-                "-XX:HeapDumpPath=${project.file("${project.buildDir}/OOM-dump.hprof").absolutePath}",
-                '-XX:MetaspaceSize=512M'
-        ]
-
-        task.maxHeapSize = '2G'
-
-        task.systemProperties['repeid.test.validatefailureexpected'] = true
-        task.systemProperties += System.properties.findAll { it.key.startsWith("repeid.") }
-
         // uncomment to help identify pauses in test executions : where they occur
         task.beforeTest { descriptor ->
             println "Starting test: " + descriptor
@@ -196,22 +158,6 @@ subprojects { subProject ->
             println "Completed test: " + descriptor
         }
     }
-
-    processTestResources.doLast( {
-        copy {
-            from( sourceSets.test.java.srcDirs ) {
-                include '**/*.properties'
-                include '**/*.xml'
-            }
-            into sourceSets.test.output.classesDir
-        }
-        /*copy {
-            ext.targetDir = file( "${buildDir}/resources/test" )
-            from file('src/test/resources')
-            into targetDir
-            filter( ReplaceTokens, tokens: dbBundle[db] );
-        }*/
-    } )
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -232,19 +178,6 @@ subprojects { subProject ->
     idea {
         module {
             jdkName = subProject.sourceCompatibility
-
-            excludeDirs = [file( ".gradle" )]
-            excludeDirs += file( "$buildDir/classes" )
-            excludeDirs += file( "$buildDir/bundles" )
-            excludeDirs += file( "$buildDir/packages" )
-            excludeDirs += file( "$buildDir/dependency-cache" )
-            excludeDirs += file( "$buildDir/libs" )
-            excludeDirs += file( "$buildDir/reports" )
-            excludeDirs += file( "$buildDir/test-results" )
-            excludeDirs += file( "$buildDir/tmp" )
-            excludeDirs += file( "$buildDir/matrix" )
-            excludeDirs += file( "$buildDir/resources" )
-
             downloadSources = true
             scopes.PROVIDED.plus += [configurations.provided]
         }
@@ -271,7 +204,7 @@ subprojects { subProject ->
     // Report configs
     checkstyle {
         sourceSets = [ subProject.sourceSets.main ]
-        configFile = rootProject.file( 'shared/config/checkstyle/checkstyle.xml' )
+        configFile = rootProject.file( 'config/checkstyle/checkstyle.xml' )
         showViolations = false
     }
     // exclude generated java sources - by explicitly setting the base source dir
@@ -281,31 +214,14 @@ subprojects { subProject ->
     findbugs {
         sourceSets = [ subProject.sourceSets.main, subProject.sourceSets.test ]
         ignoreFailures = true
-        toolVersion = '3.0.1'
+        toolVersion = rootProject.findbugToolVersion
         // for now we need to set this to low so that FindBugs will actually report the DM_CONVERT_CASE warning we care about
         reportLevel = 'low'
-        // remove all low level bug warnings except DM_CONVERT_CASE
-        excludeFilterConfig=resources.text.fromString(excludeAllLowLevelBugsExcept('DM_CONVERT_CASE'))
-    }
-
-    // exclude generated java sources and cfg package is a mess mainly from annotation stuff
-    findbugsMain.doFirst {
-        classes = classes.filter {
-            !it.path.contains( 'org/hibernate/hql/internal/antlr' ) &&
-                    !it.path.contains( 'org/hibernate/boot/jaxb/cfg/spi' ) &&
-                    !it.path.contains( 'org/hibernate/sql/ordering/antlr/Generated' ) &&
-                    !it.path.contains( 'org/hibernate/sql/ordering/antlr/OrderByTemplateTokenTypes' ) &&
-                    !it.path.contains( 'org/hibernate/boot/jaxb/hbm/spi/Jaxb' ) &&
-                    !it.path.contains( 'org/hibernate/boot/jaxb/hbm/spi/Adapter' ) &&
-                    !it.path.contains( 'org/hibernate/boot/jaxb/hbm/spi/ObjectFactory' ) &&
-                    !it.path.contains( 'org/hibernate/cfg' ) &&
-                    !it.path.contains( '_\$logger' )
-        }
     }
 
     // because cfg package is a mess mainly from annotation stuff
-    checkstyleMain.exclude '**/org/hibernate/cfg/**'
-    checkstyleMain.exclude '**/org/hibernate/cfg/*'
+    checkstyleMain.exclude '**/org/repeid/cfg/**'
+    checkstyleMain.exclude '**/org/repeid/cfg/*'
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -319,13 +235,6 @@ subprojects { subProject ->
                     classifier 'sources'
                 }
             }
-            // http://issues.gradle.org/browse/GRADLE-2966
-            // Once ^^ is resolved:
-            //		1) Move hibernate-testing module into hibernate-core tests
-            //		2) Define a second publication on hibernate-core for publishing the testing jar
-            // We could kind of do this now, but it would just be the jar.  Every module would still need
-            // to duplicate the testing dependencies.  Well, on second thought, we could centralize the
-            // testing dependencies here within the subprojects block
         }
     }
 
@@ -335,27 +244,11 @@ subprojects { subProject ->
         }
     }
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
 }
 
-task release(type: Task, dependsOn: 'release:release')
+//task release(type: Task, dependsOn: 'release:release')
 
 task wrapper(type: Wrapper) {
     gradleVersion = expectedGradleVersion
-}
-
-def excludeAllLowLevelBugsExcept(String[] bugTypes){
-    def writer = new StringWriter()
-    def xml = new groovy.xml.MarkupBuilder(writer);
-    xml.FindBugsFilter {
-        Match {
-            Confidence( value: '3' )
-            bugTypes.each { bug ->
-                Not {
-                    Bug( pattern: "${bug}" )
-                }
-            }
-        }
-    }
-    return writer.toString(  )
 }

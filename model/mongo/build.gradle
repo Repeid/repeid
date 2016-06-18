@@ -1,0 +1,10 @@
+dependencies {
+    //Project dependencies
+    compile project (":repeid-core")
+    compile project (":repeid-server-spi")
+
+    // Third libraries
+
+    // Test
+    testCompile ( libraries.junit )
+}

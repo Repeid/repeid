@@ -1,22 +1,3 @@
 apply plugin: 'checkstyle'
 
 logger.info('Checkstyle Plugin activated')
-logger.info("pluginConfigPath: ${project.pluginConfigPath}")
-
-tasks.withType(Checkstyle) {
-
-    exclude '**/generated/**'
-
-    ignoreFailures = true
-}
-
-plugins.withType(GroovyBasePlugin) {
-    sourceSets.all { sourceSet ->
-        task "${sourceSet.getTaskName('checkstyle', 'groovy')}"(type: Checkstyle) {
-            configFile = new File("${project.pluginConfigPath}/checkstyle", "checkstyle-groovy.xml")
-            source sourceSet.allGroovy
-            classpath = sourceSet.compileClasspath
-            reports.xml.destination new File(checkstyle.reportsDir, "${sourceSet.name}-groovy.xml")
-        }
-    }
-}

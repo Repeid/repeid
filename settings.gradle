@@ -1,6 +1,13 @@
+if ( !JavaVersion.current().java8Compatible ) {
+    throw new GradleException( "Gradle must be run with Java 8" )
+}
+
 include 'common'
 include 'core'
 include 'model'
+include 'model:infinispan'
+include 'model:jpa'
+include 'model:mongo'
 include 'server-spi'
 include 'services'
 include 'services-api'
@@ -8,9 +15,14 @@ include 'themes'
 include 'war'
 include 'wildfly-swarm'
 
+include 'release'
+
 project(':common').name = 'repeid-common'
 project(':core').name = 'repeid-core'
 project(':model').name = 'repeid-model'
+project(':model:infinispan').name = 'repeid-model-infinispan'
+project(':model:jpa').name = 'repeid-model-jpa'
+project(':model:mongo').name = 'repeid-model-mongo'
 project(':server-spi').name = 'repeid-server-spi'
 project(':services').name = 'repeid-services'
 project(':services-api').name = 'repeid-services-api'

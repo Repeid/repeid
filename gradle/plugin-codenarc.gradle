@@ -9,5 +9,5 @@ dependencies {
 codenarc {
     ignoreFailures true
     // configFile = file("${project.pluginConfigPath}/codenarc/StarterRuleSetAllRules.groovy")
-    configFile = file("${project.pluginConfigPath}/codenarc/StarterRuleSetAllRulesbyCategory.groovy")
+    configFile = file("${rootProject.projectDir}/config/codenarc/StarterRuleSetAllRulesbyCategory.groovy")
 }
