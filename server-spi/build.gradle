@@ -3,15 +3,11 @@ dependencies {
     compile project (":repeid-core")
 
     // Third libraries
-    compile ( libraries.resteasy_jaxrs )
-
-    compile ( libraries.bcprov_jdk15on )
-    compile ( libraries.bcpkix_jdk15on )
-
-    compile ( libraries.resteasy_jaxrs )
-
-    compile ( libraries.httpclient )
-    compile ( libraries.httpcore )
+    provided ( libraries.resteasy_jaxrs )
+    provided ( libraries.bcprov_jdk15on )
+    provided ( libraries.bcpkix_jdk15on )
+    provided ( libraries.jboss_logging )
+    provided ( libraries.httpclient )
 
     // Test
     testCompile ( libraries.junit )

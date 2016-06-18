@@ -1,14 +1,16 @@
-apply plugin: 'war'
-
 dependencies {
     //Project dependencies
     compile project (":repeid-common")
     compile project (":repeid-core")
-    compile project (":repeid-model:model-infinispan")
-    compile project (":repeid-model:model-jpa")
-    compile project (":repeid-model:model-mongo")
-    compile project (":repeid-server-spi")
     compile project (":repeid-services-api")
     compile project (":repeid-services")
+    compile project (":repeid-server-spi")
     compile project (":repeid-themes")
+
+    // Third libraries
+    compile ( libraries.bcprov_jdk15on)
+    compile ( libraries.bcpkix_jdk15on )
+    compile ( libraries.google_zxing_javase )
+    compile ( libraries.freemarker )
+
 }

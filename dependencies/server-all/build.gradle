@@ -1,0 +1,15 @@
+dependencies {
+    //Project dependencies
+    compile project (":repeid-dependencies:server-min")
+
+    compile project (":repeid-model:model-jpa")
+    compile project (":repeid-model:model-infinispan")
+    compile project (":repeid-model:model-mongo")
+
+    // Third libraries
+    compile ( libraries.mongo_java_driver)
+    compile ( libraries.liquibase_core ) {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+    
+}

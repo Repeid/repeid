@@ -1,9 +1,9 @@
 dependencies {
     // Third libraries
-    compile ( libraries.bcprov_jdk15on )
-    compile ( libraries.bcpkix_jdk15on )
+    compile(libraries.bcprov_jdk15on)
+    compile(libraries.bcpkix_jdk15on)
 
     // Test
-    testCompile ( libraries.junit )
+    testCompile(libraries.junit)
 }
 
