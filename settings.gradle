@@ -19,7 +19,6 @@ include 'war'
 include 'wildfly-swarm'
 
 include 'testsuite'
-
 include 'release'
 
 project(':common').name = 'repeid-common'
@@ -37,3 +36,13 @@ project(':services-api').name = 'repeid-services-api'
 project(':themes').name = 'repeid-themes'
 project(':war').name = 'repeid-war'
 project(':wildfly-swarm').name = 'repeid-wildfly-swarm'
+
+
+// wildfly
+include 'wildfly'
+include 'wildfly:adduser'
+include 'wildfly:extensions'
+include 'wildfly:server-subsystem'
+project(':wildfly:adduser').name = 'wildfly-adduser'
+project(':wildfly:extensions').name = 'wildfly-extensions'
+project(':wildfly:server-subsystem').name = 'wildfly-server-subsystem'

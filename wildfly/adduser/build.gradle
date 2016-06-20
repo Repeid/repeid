@@ -1,0 +1,10 @@
+dependencies {
+    //Project dependencies
+    compile project (":repeid-server-spi")
+    compile project (":repeid-common")
+    compile project (":repeid-core")
+
+    // Third libraries
+    compile "org.wildfly.core:wildfly-domain-management:${wildfly.core.version}"
+    compile ( libraries.aesh )
+}

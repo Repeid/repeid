@@ -1,0 +1,9 @@
+dependencies {
+    //Project dependencies
+    compile project (":repeid-server-spi")
+    compile project (":repeid-services")
+    compile project (":repeid-core")
+
+    // Third libraries
+    provided ( libraries.wildfly_controller )
+}

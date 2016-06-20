@@ -1,0 +1,12 @@
+dependencies {
+    // Third libraries
+    provided ( libraries.wildfly_controller )
+    provided ( libraries.wildfly_server )
+    provided ( libraries.wildfly_web_common )
+    provided ( libraries.jboss_logging_annotations )
+    provided ( libraries.jboss_logging_processor )
+
+    // Test
+    testCompile ( libraries.wildfly_subsystem_test_framework )
+    testCompile ( libraries.junit )
+}
