@@ -6,7 +6,7 @@ dependencies {
     compile project (":repeid-core")
     compile project (":repeid-model:repeid-model-infinispan")
     compile project (":repeid-model:repeid-model-jpa")
-    compile project (":repeid-model:repeid-model-mongo")
+    //compile project (":repeid-model:repeid-model-mongo")
     compile project (":repeid-server-spi")
     compile project (":repeid-services-api")
     compile project (":repeid-services")
