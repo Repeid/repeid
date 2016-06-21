@@ -31,7 +31,7 @@
         <xs:annotation>
             <xs:documentation>
                 <![CDATA[
-                    The Keycloak server subsystem, used to configure the Keycloak server
+                    The Repeid server subsystem, used to configure the Repeid server
                 ]]>
             </xs:documentation>
         </xs:annotation>

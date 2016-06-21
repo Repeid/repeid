@@ -1,4 +1,7 @@
 dependencies {
+	//Project dependencies
+    compile project (":repeid-common")
+
     // Third libraries
     compile ( libraries.bcprov_jdk15on)
     compile ( libraries.bcpkix_jdk15on )
