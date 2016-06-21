@@ -22,9 +22,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
- */
 public class AddUser {
 
     private static final String COMMAND_NAME = "add-user";
@@ -88,7 +85,7 @@ public class AddUser {
             throw new Exception("'" + configDir + "' does not exist or is not a directory");
         }
 
-        File addUserFile = new File(configDir, "keycloak-add-user.json");
+        File addUserFile = new File(configDir, "repeid-add-user.json");
         return addUserFile;
     }
 
