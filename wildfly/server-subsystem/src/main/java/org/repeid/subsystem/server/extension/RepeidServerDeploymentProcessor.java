@@ -40,8 +40,11 @@ public class RepeidServerDeploymentProcessor implements DeploymentUnitProcessor 
             ServiceTarget st = context.getServiceTarget();
             st.addDependency(cacheContainerService);
             st.addDependency(cacheContainerService.append("organizations"));
+            st.addDependency(cacheContainerService.append("documents"));
             st.addDependency(cacheContainerService.append("naturalPersons"));
             st.addDependency(cacheContainerService.append("legalPersons"));
+            st.addDependency(cacheContainerService.append("work"));
+            st.addDependency(cacheContainerService.append("organizationVersions"));
             //st.addDependency(cacheContainerService.append("realms"));
             //st.addDependency(cacheContainerService.append("users"));
             //st.addDependency(cacheContainerService.append("sessions"));

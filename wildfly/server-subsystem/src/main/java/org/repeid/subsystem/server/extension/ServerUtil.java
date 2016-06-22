@@ -19,7 +19,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.PER
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.PATH;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.REDEPLOY;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.RUNTIME_NAME;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.URL;
 import org.jboss.as.controller.operations.common.Util;
 import org.jboss.as.controller.registry.ImmutableManagementResourceRegistration;
 
@@ -33,7 +32,7 @@ import org.jboss.modules.ModuleLoadException;
  */
 public class ServerUtil {
 
-    private static final ModuleIdentifier KEYCLOAK_SUBSYSTEM = ModuleIdentifier.create("org.keycloak.keycloak-server-subsystem");
+    private static final ModuleIdentifier REPEID_SUBSYSTEM = ModuleIdentifier.create("org.repeid.repeid-server-subsystem");
 
     private final String deploymentName;
     private final Module subsysModule;
@@ -47,9 +46,9 @@ public class ServerUtil {
 
     private Module findSubsysModule() {
         try {
-            return Module.getModuleFromCallerModuleLoader(KEYCLOAK_SUBSYSTEM);
+            return Module.getModuleFromCallerModuleLoader(REPEID_SUBSYSTEM);
         } catch (ModuleLoadException e) {
-            throw new IllegalStateException("Can't find Keycloak subsystem.", e);
+            throw new IllegalStateException("Can't find Repeid subsystem.", e);
         }
     }
 
@@ -80,7 +79,7 @@ public class ServerUtil {
         op.get("owner").set(new ModelNode().add("subsystem", RepeidExtension.SUBSYSTEM_NAME));
 
         if (serverWar == null) {
-            throw new OperationFailedException("Keycloak Server WAR not found in keycloak-server-subsystem module");
+            throw new OperationFailedException("Repeid Server WAR not found in repeid-server-subsystem module");
         }
 
         op.get(CONTENT).add(makeContentItem());

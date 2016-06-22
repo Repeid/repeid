@@ -22,7 +22,7 @@ public class RepeidSubsystemDefinition extends SimpleResourceDefinition {
     static final SimpleAttributeDefinition WEB_CONTEXT =
         new SimpleAttributeDefinitionBuilder("web-context", ModelType.STRING, true)
             .setAllowExpression(true)
-            .setDefaultValue(new ModelNode("auth"))
+            .setDefaultValue(new ModelNode("repeid"))
             .setRestartAllServices()
             .build();
 

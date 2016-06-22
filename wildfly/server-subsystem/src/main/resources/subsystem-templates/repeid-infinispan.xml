@@ -1,21 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--
-  ~ Copyright 2016 Red Hat, Inc. and/or its affiliates
-  ~ and other contributors as indicated by the @author tags.
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
 <!--  See src/resources/configuration/ReadMe.txt for how the configuration assembly works -->
 <config default-supplement="default">
     <extension-module>org.jboss.as.clustering.infinispan</extension-module>
@@ -25,15 +8,16 @@
     <supplement name="default">
         <replacement placeholder="CACHE-CONTAINERS">
             <cache-container name="repeid" jndi-name="infinispan/Repeid">
-                <local-cache name="realms"/>
-                <local-cache name="users">
+                <local-cache name="organizations"/>
+                <local-cache name="naturalPersons">
                     <eviction max-entries="10000" strategy="LRU"/>
                 </local-cache>
-                <local-cache name="sessions"/>
-                <local-cache name="offlineSessions"/>
-                <local-cache name="loginFailures"/>
+                <local-cache name="legalPersons">
+                    <eviction max-entries="10000" strategy="LRU"/>
+                </local-cache>
+                <local-cache name="documents"/>
                 <local-cache name="work"/>
-                <local-cache name="realmVersions">
+                <local-cache name="organizationVersions">
                     <transaction mode="BATCH" locking="PESSIMISTIC"/>
                 </local-cache>
                 <local-cache name="authorization">
@@ -91,15 +75,16 @@
         <replacement placeholder="CACHE-CONTAINERS">
             <cache-container name="repeid" jndi-name="infinispan/Repeid">
                 <transport lock-timeout="60000"/>
-                <invalidation-cache name="realms" mode="SYNC"/>
-                <invalidation-cache name="users" mode="SYNC">
+                <invalidation-cache name="organizations" mode="SYNC"/>
+                <invalidation-cache name="naturalPersons" mode="SYNC">
                     <eviction max-entries="10000" strategy="LRU"/>
                 </invalidation-cache>
-                <distributed-cache name="sessions" mode="SYNC" owners="1"/>
-                <distributed-cache name="offlineSessions" mode="SYNC" owners="1"/>
-                <distributed-cache name="loginFailures" mode="SYNC" owners="1"/>
+                <invalidation-cache name="legalPersons" mode="SYNC">
+                    <eviction max-entries="10000" strategy="LRU"/>
+                </invalidation-cache>
+                <distributed-cache name="documents" mode="SYNC" owners="1"/>
                 <replicated-cache name="work" mode="SYNC" />
-                <local-cache name="realmVersions">
+                <local-cache name="organizationVersions">
                     <transaction mode="BATCH" locking="PESSIMISTIC"/>
                 </local-cache>
             </cache-container>
