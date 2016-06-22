@@ -18,7 +18,6 @@ include 'themes'
 include 'war'
 include 'wildfly-swarm'
 
-include 'testsuite'
 include 'release'
 
 project(':common').name = 'repeid-common'
@@ -37,6 +36,11 @@ project(':themes').name = 'repeid-themes'
 project(':war').name = 'repeid-war'
 project(':wildfly-swarm').name = 'repeid-wildfly-swarm'
 
+// distribution
+include 'distribution'
+
+// testsuite
+include 'testsuite'
 
 // wildfly
 include 'wildfly'
