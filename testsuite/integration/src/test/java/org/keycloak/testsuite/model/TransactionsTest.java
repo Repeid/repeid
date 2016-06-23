@@ -3,8 +3,8 @@ package org.keycloak.testsuite.model;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.keycloak.models.KeycloakSession;
 import org.keycloak.testsuite.rule.KeycloakRule;
+import org.repeid.models.RepeidSession;
 
 public class TransactionsTest {
 
@@ -13,7 +13,7 @@ public class TransactionsTest {
 
     @Test
     public void testTransactionActive() {
-        KeycloakSession session = kc.startSession();
+        RepeidSession session = kc.startSession();
 
         Assert.assertTrue(session.getTransaction().isActive());
         session.getTransaction().commit();
