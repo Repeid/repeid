@@ -65,28 +65,28 @@ public class ImportTest extends AbstractModelTest {
     public void demoDelete() throws Exception {
         // was having trouble deleting this realm from admin console
         RealmRepresentation rep = AbstractModelTest.loadJson("model/testrealm2.json");
-        RealmModel realm = realmManager.importRealm(rep);
+        RealmModel realm = organizationManager.importRealm(rep);
         commit();
-        realm = realmManager.getRealmByName("demo-delete");
-        realmManager.removeRealm(realm);
+        realm = organizationManager.getRealmByName("demo-delete");
+        organizationManager.removeRealm(realm);
     }
 
     @Test
     public void install() throws Exception {
         RealmRepresentation rep = AbstractModelTest.loadJson("model/testrealm.json");
         rep.setId("demo");
-        RealmModel realm = realmManager.importRealm(rep);
+        RealmModel realm = organizationManager.importRealm(rep);
 
         // Commit after import
         commit();
 
-        realm = realmManager.getRealm("demo");
-        assertDataImportedInRealm(realmManager.getSession(), realm);
+        realm = organizationManager.getRealm("demo");
+        assertDataImportedInRealm(organizationManager.getSession(), realm);
 
         commit();
 
-        realm = realmManager.getRealm("demo");
-        realmManager.removeRealm(realm);
+        realm = organizationManager.getRealm("demo");
+        organizationManager.removeRealm(realm);
     }
 
     // Moved to static method, so it's possible to test this from other places too (for example export-import tests)
@@ -384,7 +384,7 @@ public class ImportTest extends AbstractModelTest {
 
     @Test
     public void install2() throws Exception {
-        RealmManager manager = realmManager;
+        RealmManager manager = organizationManager;
         RealmRepresentation rep = AbstractModelTest.loadJson("model/testrealm-demo.json");
         rep.setId("demo");
         RealmModel realm =manager.importRealm(rep);

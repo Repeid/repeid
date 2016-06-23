@@ -17,7 +17,10 @@ import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.Retry;
 import org.repeid.Config;
 import org.repeid.common.util.Time;
+import org.repeid.models.OrganizationModel;
+import org.repeid.models.RepeidSession;
 import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.services.managers.OrganizationManager;
 import org.repeid.util.JsonSerialization;
 
 import io.undertow.servlet.api.DeploymentInfo;
@@ -38,7 +41,7 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
     protected void before() throws Throwable {
         temporaryFolder = new TemporaryFolder();
         temporaryFolder.create();
-        System.setProperty("keycloak.tmp.dir", temporaryFolder.newFolder().getAbsolutePath());
+        System.setProperty("repeid.tmp.dir", temporaryFolder.newFolder().getAbsolutePath());
 
         server = new RepeidServer();
 
@@ -56,10 +59,10 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
     }
 
     public UserRepresentation getUser(String realm, String name) {
-        KeycloakSession session = server.getSessionFactory().create();
+        RepeidSession session = server.getSessionFactory().create();
         session.getTransaction().begin();
         try {
-            RealmModel realmByName = session.realms().getRealmByName(realm);
+            OrganizationModel realmByName = session.realms().getRealmByName(realm);
             UserModel user = session.users().getUserByUsername(name, realmByName);
             UserRepresentation userRep = user != null ? ModelToRepresentation.toRepresentation(user) : null;
             session.getTransaction().commit();
@@ -70,10 +73,10 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
     }
 
     public UserRepresentation getUserById(String realm, String id) {
-        KeycloakSession session = server.getSessionFactory().create();
+        RepeidSession session = server.getSessionFactory().create();
         session.getTransaction().begin();
         try {
-            RealmModel realmByName = session.realms().getRealmByName(realm);
+            OrganizationModel realmByName = session.realms().getRealmByName(realm);
             UserRepresentation userRep = ModelToRepresentation.toRepresentation(session.users().getUserById(id, realmByName));
             session.getTransaction().commit();
             return userRep;
@@ -83,13 +86,13 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
     }
 
     protected void setupKeycloak() {
-        KeycloakSession session = server.getSessionFactory().create();
+        RepeidSession session = server.getSessionFactory().create();
         session.getTransaction().begin();
 
         try {
-            RealmManager manager = new RealmManager(session);
+            OrganizationManager manager = new OrganizationManager(session);
 
-            RealmModel adminstrationRealm = manager.getRealm(Config.getAdminRealm());
+            OrganizationModel adminstrationRealm = manager.getRealm(Config.getAdminRealm());
 
             configure(session, manager, adminstrationRealm);
 
@@ -100,15 +103,15 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
     }
 
     public void update(KeycloakRule.KeycloakSetup configurer, String realmId) {
-        KeycloakSession session = server.getSessionFactory().create();
+        RepeidSession session = server.getSessionFactory().create();
         session.getTransaction().begin();
 
         try {
-            RealmManager manager = new RealmManager(session);
+            OrganizationManager manager = new OrganizationManager(session);
             manager.setContextPath("/auth");
 
-            RealmModel adminstrationRealm = manager.getRealm(Config.getAdminRealm());
-            RealmModel appRealm = manager.getRealm(realmId);
+            OrganizationModel adminstrationRealm = manager.getRealm(Config.getAdminRealm());
+            OrganizationModel appRealm = manager.getRealm(realmId);
 
             configurer.session = session;
             configurer.config(manager, adminstrationRealm, appRealm);
@@ -119,7 +122,7 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
         }
     }
 
-    protected void configure(KeycloakSession session, RealmManager manager, RealmModel adminRealm) {
+    protected void configure(RepeidSession session, OrganizationManager manager, OrganizationModel adminRealm) {
 
     }
 
@@ -191,12 +194,12 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
     }
 
     protected void removeTestRealms() {
-        KeycloakSession session = server.getSessionFactory().create();
+        RepeidSession session = server.getSessionFactory().create();
         try {
             session.getTransaction().begin();
-            RealmManager realmManager = new RealmManager(session);
+            OrganizationManager realmManager = new OrganizationManager(session);
             for (String realmName : getTestRealms()) {
-                RealmModel realm = realmManager.getRealmByName(realmName);
+                OrganizationModel realm = realmManager.getRealmByName(realmName);
                 if (realm != null) {
                     realmManager.removeRealm(realm);
                 }
@@ -218,13 +221,13 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
         return JsonSerialization.readValue(bytes, RealmRepresentation.class);
     }
 
-    public KeycloakSession startSession() {
-        KeycloakSession session = server.getSessionFactory().create();
+    public RepeidSession startSession() {
+        RepeidSession session = server.getSessionFactory().create();
         session.getTransaction().begin();
         return session;
     }
 
-    public void stopSession(KeycloakSession session, boolean commit) {
+    public void stopSession(RepeidSession session, boolean commit) {
         KeycloakTransaction transaction = session.getTransaction();
         if (commit && !transaction.getRollbackOnly()) {
             transaction.commit();

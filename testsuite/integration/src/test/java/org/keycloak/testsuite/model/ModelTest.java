@@ -34,7 +34,7 @@ public class ModelTest extends AbstractModelTest {
 
     @Test
     public void importExportRealm() {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         realm.setRegistrationAllowed(true);
         realm.setRegistrationEmailAsUsername(true);
         realm.setResetPasswordAllowed(true);
@@ -62,7 +62,7 @@ public class ModelTest extends AbstractModelTest {
         realm.setEventsExpiration(200);
         realm.setEventsEnabled(true);
 
-        RealmModel persisted = realmManager.getRealm(realm.getId());
+        RealmModel persisted = organizationManager.getRealm(realm.getId());
         assertEquals(realm, persisted);
 
         RealmModel copy = importExport(realm, "copy");
@@ -101,8 +101,8 @@ public class ModelTest extends AbstractModelTest {
         RealmRepresentation representation = ModelToRepresentation.toRepresentation(src, true);
         representation.setRealm(copyName);
         representation.setId(copyName);
-        RealmModel copy = realmManager.importRealm(representation);
-        return realmManager.getRealm(copy.getId());
+        RealmModel copy = organizationManager.importRealm(representation);
+        return organizationManager.getRealm(copy.getId());
     }
 
 }

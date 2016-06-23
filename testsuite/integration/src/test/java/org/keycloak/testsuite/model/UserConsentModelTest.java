@@ -40,7 +40,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Before
     public void setupEnv() {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
 
         ClientModel fooClient = realm.addClient("foo-client");
         ClientModel barClient = realm.addClient("bar-client");
@@ -92,7 +92,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Test
     public void basicConsentTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
         ClientModel barClient = realm.getClientByClientId("bar-client");
 
@@ -124,7 +124,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Test
     public void getAllConsentTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
 
         UserModel john = session.users().getUserByUsername("john", realm);
@@ -145,7 +145,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Test
     public void updateWithRoleRemovalTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
         UserModel john = session.users().getUserByUsername("john", realm);
 
@@ -166,7 +166,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
         commit();
 
-        realm = realmManager.getRealm("original");
+        realm = organizationManager.getRealm("original");
         fooClient = realm.getClientByClientId("foo-client");
         john = session.users().getUserByUsername("john", realm);
         johnConsent = john.getConsentByClient(fooClient.getId());
@@ -180,7 +180,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Test
     public void revokeTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
         UserModel john = session.users().getUserByUsername("john", realm);
 
@@ -188,7 +188,7 @@ public class UserConsentModelTest extends AbstractModelTest {
 
         commit();
 
-        realm = realmManager.getRealm("original");
+        realm = organizationManager.getRealm("original");
         john = session.users().getUserByUsername("john", realm);
         Assert.assertNull(john.getConsentByClient(fooClient.getId()));
     }
@@ -196,21 +196,21 @@ public class UserConsentModelTest extends AbstractModelTest {
     @Test
     public void deleteUserTest() {
         // Validate user deleted without any referential constraint errors
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         UserModel john = session.users().getUserByUsername("john", realm);
         session.users().removeUser(realm, john);
     }
 
     @Test
     public void deleteProtocolMapperTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
         ProtocolMapperModel fooMapper = fooClient.getProtocolMapperByName(OIDCLoginProtocol.LOGIN_PROTOCOL, "foo");
         fooClient.removeProtocolMapper(fooMapper);
 
         commit();
 
-        realm = realmManager.getRealm("original");
+        realm = organizationManager.getRealm("original");
         fooClient = realm.getClientByClientId("foo-client");
         UserModel john = session.users().getUserByUsername("john", realm);
         UserConsentModel johnConsent = john.getConsentByClient(fooClient.getId());
@@ -222,13 +222,13 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Test
     public void deleteRoleTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         RoleModel realmRole = realm.getRole("realm-role");
         realm.removeRole(realmRole);
 
         commit();
 
-        realm = realmManager.getRealm("original");
+        realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
         ClientModel barClient = realm.getClientByClientId("bar-client");
         UserModel john = session.users().getUserByUsername("john", realm);
@@ -242,13 +242,13 @@ public class UserConsentModelTest extends AbstractModelTest {
 
     @Test
     public void deleteClientTest() {
-        RealmModel realm = realmManager.getRealm("original");
+        RealmModel realm = organizationManager.getRealm("original");
         ClientModel barClient = realm.getClientByClientId("bar-client");
         realm.removeClient(barClient.getId());
 
         commit();
 
-        realm = realmManager.getRealm("original");
+        realm = organizationManager.getRealm("original");
         ClientModel fooClient = realm.getClientByClientId("foo-client");
         Assert.assertNull(realm.getClientByClientId("bar-client"));
 

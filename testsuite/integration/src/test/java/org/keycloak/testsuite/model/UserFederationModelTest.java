@@ -39,7 +39,7 @@ public class UserFederationModelTest extends AbstractModelTest {
 
     @Test
     public void federationMapperCrudTest() {
-        RealmModel realm = realmManager.createRealm("test-realm");
+        RealmModel realm = organizationManager.createRealm("test-realm");
         UserFederationProviderModel fedProvider = realm.addUserFederationProvider("dummy", new TreeMap<String, String>(), 1, "my-cool-provider", -1, -1, 0);
         UserFederationProviderModel fedProvider2 = realm.addUserFederationProvider("dummy", new TreeMap<String, String>(), 1, "my-cool-provider2", -1, -1, 0);
 
@@ -55,13 +55,13 @@ public class UserFederationModelTest extends AbstractModelTest {
 
         try {
             UserFederationMapperModel conflictMapper = createMapper("name1", fedProvider.getId(), "key4", "value4");
-            realmManager.getRealmByName("test-realm").addUserFederationMapper(conflictMapper);
+            organizationManager.getRealmByName("test-realm").addUserFederationMapper(conflictMapper);
             commit();
             Assert.fail("Don't expect to end here");
         } catch (ModelDuplicateException expected) {
         }
 
-        realm = realmManager.getRealmByName("test-realm");
+        realm = organizationManager.getRealmByName("test-realm");
         Set<UserFederationMapperModel> mappers = realm.getUserFederationMappers();
         Assert.assertEquals(3, mappers.size());
         Assert.assertTrue(mappers.contains(mapperModel1));
@@ -78,7 +78,7 @@ public class UserFederationModelTest extends AbstractModelTest {
 
         commit();
 
-        realm = realmManager.getRealmByName("test-realm");
+        realm = organizationManager.getRealmByName("test-realm");
         mapperModel3 = realm.getUserFederationMapperById(mapperModel3.getId());
         Assert.assertEquals(2, mapperModel3.getConfig().size());
         Assert.assertEquals("value3", mapperModel3.getConfig().get("key3"));
@@ -88,7 +88,7 @@ public class UserFederationModelTest extends AbstractModelTest {
 
     @Test
     public void federationProviderRemovalTest() {
-        RealmModel realm = realmManager.createRealm("test-realm");
+        RealmModel realm = organizationManager.createRealm("test-realm");
         UserFederationProviderModel fedProvider = realm.addUserFederationProvider("dummy", new TreeMap<String, String>(), 1, "my-cool-provider", -1, -1, 0);
         UserFederationProviderModel fedProvider2 = realm.addUserFederationProvider("dummy", new TreeMap<String, String>(), 1, "my-cool-provider2", -1, -1, 0);
 
@@ -102,34 +102,34 @@ public class UserFederationModelTest extends AbstractModelTest {
 
         commit();
 
-        realmManager.getRealmByName("test-realm").removeUserFederationProvider(fedProvider);
+        organizationManager.getRealmByName("test-realm").removeUserFederationProvider(fedProvider);
 
         commit();
 
-        realm = realmManager.getRealmByName("test-realm");
+        realm = organizationManager.getRealmByName("test-realm");
         Set<UserFederationMapperModel> mappers = realm.getUserFederationMappers();
         Assert.assertEquals(1, mappers.size());
         Assert.assertEquals(mapperModel3, mappers.iterator().next());
 
-        realm = realmManager.getRealmByName("test-realm");
-        realmManager.removeRealm(realm);
+        realm = organizationManager.getRealmByName("test-realm");
+        organizationManager.removeRealm(realm);
 
         commit();
     }
 
     @Test
     public void federationProvidersSetTest() {
-        RealmModel realm = realmManager.createRealm("test-realm");
+        RealmModel realm = organizationManager.createRealm("test-realm");
         UserFederationProviderModel ldapProvider = new UserFederationProviderModel(null, "ldap", new TreeMap<String, String>(), 1, "my-cool-provider", -1, -1, 0);
         realm.setUserFederationProviders(Arrays.asList(ldapProvider));
 
         commit();
 
-        realm = realmManager.getRealmByName("test-realm");
+        realm = organizationManager.getRealmByName("test-realm");
         List<UserFederationProviderModel> fedProviders = realm.getUserFederationProviders();
         Assert.assertEquals(1, fedProviders.size());
         ldapProvider = fedProviders.get(0);
-        Set<UserFederationMapperModel> fedMappers = realmManager.getRealmByName("test-realm").getUserFederationMappersByFederationProvider(ldapProvider.getId());
+        Set<UserFederationMapperModel> fedMappers = organizationManager.getRealmByName("test-realm").getUserFederationMappersByFederationProvider(ldapProvider.getId());
 
         UserFederationProviderModel dummyProvider = new UserFederationProviderModel(null, "dummy", new TreeMap<String, String>(), 1, "my-cool-provider", -1, -1, 0);
         try {
@@ -144,13 +144,13 @@ public class UserFederationModelTest extends AbstractModelTest {
 
         commit();
 
-        realm = realmManager.getRealmByName("test-realm");
+        realm = organizationManager.getRealmByName("test-realm");
         Assert.assertEquals(fedMappers.size(), realm.getUserFederationMappersByFederationProvider(ldapProvider.getId()).size());
         realm.setUserFederationProviders(new ArrayList<UserFederationProviderModel>());
 
         commit();
 
-        realm = realmManager.getRealmByName("test-realm");
+        realm = organizationManager.getRealmByName("test-realm");
         Assert.assertTrue(realm.getUserFederationMappersByFederationProvider(ldapProvider.getId()).isEmpty());
     }
 

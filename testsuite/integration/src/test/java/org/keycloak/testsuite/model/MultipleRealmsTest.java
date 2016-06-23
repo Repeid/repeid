@@ -38,8 +38,8 @@ public class MultipleRealmsTest extends AbstractModelTest {
     @Override
     public void before() throws Exception {
         super.before();
-        realm1 = realmManager.createRealm("id1", "realm1");
-        realm2 = realmManager.createRealm("id2", "realm2");
+        realm1 = organizationManager.createRealm("id1", "realm1");
+        realm2 = organizationManager.createRealm("id2", "realm2");
 
         createObjects(realm1);
         createObjects(realm2);
@@ -107,8 +107,8 @@ public class MultipleRealmsTest extends AbstractModelTest {
         ClientModel app1 = realm.addClient("app1");
         realm.addClient("app2");
 
-        realmManager.getSession().users().addUser(realm, "user1");
-        realmManager.getSession().users().addUser(realm, "user2");
+        organizationManager.getSession().users().addUser(realm, "user1");
+        organizationManager.getSession().users().addUser(realm, "user2");
 
         realm.addRole("role1");
         realm.addRole("role2");

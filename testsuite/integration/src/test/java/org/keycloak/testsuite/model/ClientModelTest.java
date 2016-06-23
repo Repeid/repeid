@@ -47,7 +47,7 @@ public class ClientModelTest extends AbstractModelTest {
     public void before() throws Exception {
         super.before();
 
-        realm = realmManager.createRealm("original");
+        realm = organizationManager.createRealm("original");
         client = realm.addClient("application");
         client.setName("Application");
         client.setDescription("Description");
@@ -164,7 +164,7 @@ public class ClientModelTest extends AbstractModelTest {
 
     @Test
     public void persist() {
-        RealmModel persisted = realmManager.getRealm(realm.getId());
+        RealmModel persisted = organizationManager.getRealm(realm.getId());
 
         ClientModel actual = persisted.getClientByClientId("app-name");
         assertEquals(client, actual);
@@ -178,7 +178,7 @@ public class ClientModelTest extends AbstractModelTest {
             protocolMapper.setId(null);
         }
 
-        RealmModel realm = realmManager.createRealm("copy");
+        RealmModel realm = organizationManager.createRealm("copy");
         ClientModel copy = RepresentationToModel.createClient(session, realm, representation, true);
 
         assertEquals(client, copy);
@@ -188,7 +188,7 @@ public class ClientModelTest extends AbstractModelTest {
     public void testAddApplicationWithId() {
         client = realm.addClient("app-123", "application2");
         commit();
-        client = realmManager.getRealm(realm.getId()).getClientById("app-123");
+        client = organizationManager.getRealm(realm.getId()).getClientById("app-123");
         Assert.assertNotNull(client);
     }
 
@@ -198,7 +198,7 @@ public class ClientModelTest extends AbstractModelTest {
         ClientTemplateModel template = realm.addClientTemplate("template");
         client.setClientTemplate(template);
         commit();
-        realm = realmManager.getRealmByName("original");
+        realm = organizationManager.getRealmByName("original");
         try {
             realm.removeClientTemplate(template.getId());
             Assert.fail();

@@ -45,7 +45,7 @@ public class CompositeRolesModelTest extends AbstractModelTest {
     @Override
     public void before() throws Exception {
         super.before();
-        RealmManager manager = realmManager;
+        RealmManager manager = organizationManager;
         RealmRepresentation rep = AbstractModelTest.loadJson("model/testcomposites.json");
         rep.setId("TestComposites");
         manager.importRealm(rep);
@@ -54,7 +54,7 @@ public class CompositeRolesModelTest extends AbstractModelTest {
     @Test
     public void testNoClientID() throws IOException {
 
-        RealmManager manager = realmManager;
+        RealmManager manager = organizationManager;
         RealmRepresentation rep = AbstractModelTest.loadJson("model/testrealm-noclient-id.json");
         rep.setId("TestNoClientID");
         expectedException.expect(RuntimeException.class);
@@ -91,8 +91,8 @@ public class CompositeRolesModelTest extends AbstractModelTest {
     private Set<RoleModel> getRequestedRoles(String applicationName, String username) {
         Set<RoleModel> requestedRoles = new HashSet<RoleModel>();
 
-        RealmModel realm = realmManager.getRealm("TestComposites");
-        UserModel user = realmManager.getSession().users().getUserByUsername(username, realm);
+        RealmModel realm = organizationManager.getRealm("TestComposites");
+        UserModel user = organizationManager.getSession().users().getUserByUsername(username, realm);
         ClientModel application = realm.getClientByClientId(applicationName);
 
         Set<RoleModel> roleMappings = user.getRoleMappings();
@@ -126,7 +126,7 @@ public class CompositeRolesModelTest extends AbstractModelTest {
     }
 
     private RoleModel getRole(String appName, String roleName) {
-        RealmModel realm = realmManager.getRealm("TestComposites");
+        RealmModel realm = organizationManager.getRealm("TestComposites");
         if ("realm".equals(appName)) {
             return realm.getRole(roleName);
         }  else {

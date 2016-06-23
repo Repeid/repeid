@@ -20,7 +20,6 @@ package org.keycloak.testsuite.model;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.keycloak.models.ClientModel;
 import org.keycloak.models.KeycloakSession;
@@ -37,8 +36,8 @@ public class ConcurrentTransactionsTest extends AbstractModelTest {
 
     @Test
     public void persistClient() throws Exception {
-        RealmModel realm = realmManager.createRealm("original");
-        KeycloakSession session = realmManager.getSession();
+        RealmModel realm = organizationManager.createRealm("original");
+        KeycloakSession session = organizationManager.getSession();
 
         ClientModel client = session.realms().addClient(realm, "client");
         client.setSecret("old");
@@ -132,7 +131,7 @@ public class ConcurrentTransactionsTest extends AbstractModelTest {
 
         commit();
 
-        session = realmManager.getSession();
+        session = organizationManager.getSession();
 
         realm = session.realms().getRealmByName("original");
         ClientModel clientFromCache = session.realms().getClientById(clientDBId, realm);

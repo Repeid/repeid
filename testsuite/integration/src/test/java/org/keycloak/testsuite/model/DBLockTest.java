@@ -68,7 +68,7 @@ public class DBLockTest extends AbstractModelTest {
         long startupTime = System.currentTimeMillis();
 
         final Semaphore semaphore = new Semaphore();
-        final KeycloakSessionFactory sessionFactory = realmManager.getSession().getKeycloakSessionFactory();
+        final KeycloakSessionFactory sessionFactory = organizationManager.getSession().getKeycloakSessionFactory();
 
         List<Thread> threads = new LinkedList<>();
         for (int i=0 ; i<THREADS_COUNT ; i++) {

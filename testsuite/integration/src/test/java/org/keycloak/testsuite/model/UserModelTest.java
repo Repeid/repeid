@@ -42,8 +42,8 @@ public class UserModelTest extends AbstractModelTest {
 
     @Test
     public void persistUser() {
-        RealmModel realm = realmManager.createRealm("original");
-        KeycloakSession session = realmManager.getSession();
+        RealmModel realm = organizationManager.createRealm("original");
+        KeycloakSession session = organizationManager.getSession();
         UserModel user = session.users().addUser(realm, "user");
         user.setFirstName("first-name");
         user.setLastName("last-name");
@@ -55,12 +55,12 @@ public class UserModelTest extends AbstractModelTest {
         user.addRequiredAction(RequiredAction.CONFIGURE_TOTP);
         user.addRequiredAction(RequiredAction.UPDATE_PASSWORD);
 
-        RealmModel searchRealm = realmManager.getRealm(realm.getId());
+        RealmModel searchRealm = organizationManager.getRealm(realm.getId());
         UserModel persisted = session.users().getUserByUsername("user", searchRealm);
 
         assertEquals(user, persisted);
 
-        searchRealm = realmManager.getRealm(realm.getId());
+        searchRealm = organizationManager.getRealm(realm.getId());
         UserModel persisted2 =  session.users().getUserById(user.getId(), searchRealm);
         assertEquals(user, persisted2);
 
@@ -86,7 +86,7 @@ public class UserModelTest extends AbstractModelTest {
     
     @Test
     public void webOriginSetTest() {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         ClientModel client = realm.addClient("user");
 
         Assert.assertTrue(client.getWebOrigins().isEmpty());
@@ -123,7 +123,7 @@ public class UserModelTest extends AbstractModelTest {
 
     @Test
     public void testUserRequiredActions() throws Exception {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         UserModel user = session.users().addUser(realm, "user");
 
         Assert.assertTrue(user.getRequiredActions().isEmpty());
@@ -131,7 +131,7 @@ public class UserModelTest extends AbstractModelTest {
         user.addRequiredAction(RequiredAction.CONFIGURE_TOTP);
         String id = realm.getId();
         commit();
-        realm = realmManager.getRealm(id);
+        realm = organizationManager.getRealm(id);
         user = session.users().getUserByUsername("user", realm);
 
         Assert.assertEquals(1, user.getRequiredActions().size());
@@ -164,7 +164,7 @@ public class UserModelTest extends AbstractModelTest {
 
     @Test
     public void testUserMultipleAttributes() throws Exception {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         UserModel user = session.users().addUser(realm, "user");
         UserModel userNoAttrs = session.users().addUser(realm, "user-noattrs");
 
@@ -175,7 +175,7 @@ public class UserModelTest extends AbstractModelTest {
         commit();
 
         // Test read attributes
-        realm = realmManager.getRealmByName("original");
+        realm = organizationManager.getRealmByName("original");
         user = session.users().getUserByUsername("user", realm);
 
         attrVals = user.getAttribute("key1");
@@ -203,7 +203,7 @@ public class UserModelTest extends AbstractModelTest {
 
         commit();
 
-        realm = realmManager.getRealmByName("original");
+        realm = organizationManager.getRealmByName("original");
         user = session.users().getUserByUsername("user", realm);
         Assert.assertNull(user.getFirstAttribute("key1"));
         attrVals = user.getAttribute("key2");
@@ -213,7 +213,7 @@ public class UserModelTest extends AbstractModelTest {
 
     @Test
     public void testSearchByString() {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         UserModel user1 = session.users().addUser(realm, "user1");
 
         commit();
@@ -224,7 +224,7 @@ public class UserModelTest extends AbstractModelTest {
 
     @Test
     public void testSearchByUserAttribute() throws Exception {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         UserModel user1 = session.users().addUser(realm, "user1");
         UserModel user2 = session.users().addUser(realm, "user2");
         UserModel user3 = session.users().addUser(realm, "user3");
@@ -259,7 +259,7 @@ public class UserModelTest extends AbstractModelTest {
 
     @Test
     public void testServiceAccountLink() throws Exception {
-        RealmModel realm = realmManager.createRealm("original");
+        RealmModel realm = organizationManager.createRealm("original");
         ClientModel client = realm.addClient("foo");
 
         UserModel user1 = session.users().addUser(realm, "user1");
@@ -283,7 +283,7 @@ public class UserModelTest extends AbstractModelTest {
         commit();
 
         // Search and assert service account user not found
-        realm = realmManager.getRealmByName("original");
+        realm = organizationManager.getRealmByName("original");
         UserModel searched = session.users().getUserByServiceAccountClient(client);
         Assert.assertEquals(searched, user1);
         users = session.users().searchForUser("John Doe", realm);
@@ -304,41 +304,41 @@ public class UserModelTest extends AbstractModelTest {
         Assert.assertEquals(2, session.users().getUsersCount(realm));
 
         // Remove client
-        new ClientManager(realmManager).removeClient(realm, client);
+        new ClientManager(organizationManager).removeClient(realm, client);
         commit();
 
         // Assert service account removed as well
-        realm = realmManager.getRealmByName("original");
+        realm = organizationManager.getRealmByName("original");
         Assert.assertNull(session.users().getUserByUsername("user1", realm));
     }
 
     @Test
     public void testGrantToAll() {
-        RealmModel realm1 = realmManager.createRealm("realm1");
+        RealmModel realm1 = organizationManager.createRealm("realm1");
         RoleModel role1 = realm1.addRole("role1");
-        UserModel user1 = realmManager.getSession().users().addUser(realm1, "user1");
-        UserModel user2 = realmManager.getSession().users().addUser(realm1, "user2");
+        UserModel user1 = organizationManager.getSession().users().addUser(realm1, "user1");
+        UserModel user2 = organizationManager.getSession().users().addUser(realm1, "user2");
 
-        RealmModel realm2 = realmManager.createRealm("realm2");
-        UserModel realm2User1 = realmManager.getSession().users().addUser(realm2, "user1");
-
-        commit();
-
-        realm1 = realmManager.getRealmByName("realm1");
-        role1 = realm1.getRole("role1");
-        realmManager.getSession().users().grantToAllUsers(realm1, role1);
+        RealmModel realm2 = organizationManager.createRealm("realm2");
+        UserModel realm2User1 = organizationManager.getSession().users().addUser(realm2, "user1");
 
         commit();
 
-        realm1 = realmManager.getRealmByName("realm1");
+        realm1 = organizationManager.getRealmByName("realm1");
         role1 = realm1.getRole("role1");
-        user1 = realmManager.getSession().users().getUserByUsername("user1", realm1);
-        user2 = realmManager.getSession().users().getUserByUsername("user2", realm1);
+        organizationManager.getSession().users().grantToAllUsers(realm1, role1);
+
+        commit();
+
+        realm1 = organizationManager.getRealmByName("realm1");
+        role1 = realm1.getRole("role1");
+        user1 = organizationManager.getSession().users().getUserByUsername("user1", realm1);
+        user2 = organizationManager.getSession().users().getUserByUsername("user2", realm1);
         Assert.assertTrue(user1.hasRole(role1));
         Assert.assertTrue(user2.hasRole(role1));
 
-        realm2 = realmManager.getRealmByName("realm2");
-        realm2User1 = realmManager.getSession().users().getUserByUsername("user1", realm2);
+        realm2 = organizationManager.getRealmByName("realm2");
+        realm2User1 = organizationManager.getSession().users().getUserByUsername("user1", realm2);
         Assert.assertFalse(realm2User1.hasRole(role1));
     }
 
