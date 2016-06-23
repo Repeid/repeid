@@ -1,0 +1,53 @@
+dependencies {
+    //Project dependencies
+    //compile project (":dependencies:dependencies-server-all")
+    //compile project (keycloak-admin-client)
+    //compile project (":wildfly:wildfly-adduser")
+
+    //compile project (":repeid-server-spi")
+
+    // Third libraries
+    compile ( libraries.bcprov_jdk15on)
+    compile ( libraries.bcpkix_jdk15on )
+
+    compile ( libraries.log4j )
+    compile ( libraries.jboss_servlet_api_30_spec )
+    compile ( libraries.jboss_jaxrs_api_20_spec )
+    compile ( libraries.async_http_servlet_30 )
+    compile ( libraries.resteasy_jaxrs ) {
+        exclude group: 'log4j', module: 'log4j'
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
+    compile ( libraries.resteasy_client )
+    compile ( libraries.resteasy_undertow )
+    compile ( libraries.resteasy_multipart_provider )
+    compile ( libraries.resteasy_jackson2_provider )
+    compile ( libraries.google_zxing_javase )
+    compile ( libraries.httpclient )
+    compile ( libraries.jboss_logging )
+    compile ( libraries.undertow_servlet )
+    compile ( libraries.undertow_core )
+    compile ( libraries.jackson_core )
+    compile ( libraries.jackson_databind )
+    compile ( libraries.jackson_annotations )
+    compile ( libraries.junit )
+    compile ( libraries.hamcrest_all )
+    compile ( libraries.hibernate_jpa_21_api )
+    compile ( libraries.h2 )
+    compile ( libraries.hibernate_entitymanager )
+    compile ( libraries.greenmail ) {
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+    }
+    compile ( libraries.infinispan_core )
+    compile ( libraries.selenium_java )
+    compile ( libraries.xml_apis )
+    compile ( libraries.selenium_chrome_driver )
+
+    // Apache DS
+    testCompile ( libraries.picketlink_wildfly_common )
+    testCompile ( libraries.wildfly_undertow )
+    compile ( libraries.mysql_connector_java )
+    compile ( libraries.postgresql )
+    compile ( libraries.mariadb )
+}

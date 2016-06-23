@@ -1,4 +1,4 @@
-# Repeid Arquillian Integration Testsuite
+# Keycloak Arquillian Integration Testsuite
 
 ## Overview
 
@@ -9,7 +9,7 @@ For overview see the **Modules Overview** section at the bottom of this README.
 
 ### Auth Server
 
-Repeid server is automatically started by the testsuite on the `BeforeSuite` event and stopped on `AfterSuite` event.
+Keycloak server is automatically started by the testsuite on the `BeforeSuite` event and stopped on `AfterSuite` event.
 
 By default the server runs in embedded Undertow.
 
@@ -17,7 +17,7 @@ By default the server runs in embedded Undertow.
 
 Testsuite supports running server on Wildfly/EAP. For this it's necessary to:
 - build the project including the `distribution` module
- (artifact `repeid-server-dist`/`-overlay` needs to be available before running the testsuite),
+ (artifact `keycloak-server-dist`/`-overlay` needs to be available before running the testsuite),
 - activate profile `auth-server-wildfly` or `auth-server-eap7`.
 
 [More details...](servers/auth-server/README.md)

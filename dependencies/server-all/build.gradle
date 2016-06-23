@@ -1,6 +1,6 @@
 dependencies {
     //Project dependencies
-    compile project (":repeid-dependencies:server-min")
+    compile project (":dependencies:dependencies-server-min")
 
     compile project (":repeid-model:repeid-model-jpa")
     compile project (":repeid-model:repeid-model-infinispan")

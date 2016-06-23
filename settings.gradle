@@ -2,11 +2,9 @@ if ( !JavaVersion.current().java8Compatible ) {
     throw new GradleException( "Gradle must be run with Java 8" )
 }
 
+// core projects
 include 'common'
 include 'core'
-include 'dependencies'
-include 'dependencies:server-all'
-include 'dependencies:server-min'
 include 'model'
 include 'model:infinispan'
 include 'model:jpa'
@@ -18,13 +16,8 @@ include 'themes'
 include 'war'
 include 'wildfly-swarm'
 
-include 'release'
-
 project(':common').name = 'repeid-common'
 project(':core').name = 'repeid-core'
-project(':dependencies').name = 'repeid-dependencies'
-project(':dependencies:server-all').name = 'server-all'
-project(':dependencies:server-min').name = 'server-min'
 project(':model').name = 'repeid-model'
 project(':model:infinispan').name = 'repeid-model-infinispan'
 project(':model:jpa').name = 'repeid-model-jpa'
@@ -36,11 +29,28 @@ project(':themes').name = 'repeid-themes'
 project(':war').name = 'repeid-war'
 project(':wildfly-swarm').name = 'repeid-wildfly-swarm'
 
+// release
+include 'release'
+project(':release').name = 'release'
 // distribution
 include 'distribution'
+project(':distribution').name = 'distribution'
+
+// dependencies
+include 'dependencies'
+include 'dependencies:server-all'
+include 'dependencies:server-min'
+project(':dependencies').name = 'dependencies'
+project(':dependencies:server-all').name = 'dependencies-server-all'
+project(':dependencies:server-min').name = 'dependencies-server-min'
 
 // testsuite
 include 'testsuite'
+include 'testsuite:integration'
+include 'testsuite:integration-arquillian'
+project(':testsuite').name = 'testsuite'
+project(':testsuite:integration').name = 'testsuite-integration'
+project(':testsuite:integration-arquillian').name = 'testsuite-integration-arquillian'
 
 // wildfly
 include 'wildfly'
