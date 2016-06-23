@@ -90,7 +90,7 @@ public class AccessTokenPerfTest {
     {
         ResteasyClient client;
 
-        private String baseUrl = Constants.AUTH_SERVER_ROOT;
+        private String baseUrl = Constants.REPEID_SERVER_ROOT;
 
         private String realm = "test";
 
