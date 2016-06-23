@@ -43,7 +43,7 @@ import org.keycloak.saml.SAML2ErrorResponseBuilder;
 import org.keycloak.saml.common.constants.JBossSAMLURIConstants;
 import org.keycloak.saml.processing.core.saml.v2.constants.X500SAMLProfileConstants;
 import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.pages.LoginPage;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.keycloak.testsuite.rule.ErrorServlet;
@@ -105,7 +105,7 @@ public class SamlAdapterTestStrategy  extends ExternalResource {
     }
 
     public static RealmModel baseAdapterTestInitialization(KeycloakSession session, RealmManager manager, RealmModel adminRealm, Class<?> clazz) {
-        RealmRepresentation representation = KeycloakServer.loadJson(clazz.getResourceAsStream("/keycloak-saml/testsaml.json"), RealmRepresentation.class);
+        RealmRepresentation representation = RepeidServer.loadJson(clazz.getResourceAsStream("/keycloak-saml/testsaml.json"), RealmRepresentation.class);
         RealmModel demoRealm = manager.importRealm(representation);
         return demoRealm;
     }

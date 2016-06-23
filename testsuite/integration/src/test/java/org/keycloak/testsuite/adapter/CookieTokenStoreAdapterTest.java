@@ -36,7 +36,7 @@ import org.keycloak.testsuite.pages.LoginPage;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.keycloak.testsuite.rule.WebResource;
 import org.keycloak.testsuite.rule.WebRule;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.common.util.Time;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -58,7 +58,7 @@ public class CookieTokenStoreAdapterTest {
             // Other tests may left Time offset uncleared, which could cause issues
             Time.setOffset(0);
 
-            RealmRepresentation representation = KeycloakServer.loadJson(getClass().getResourceAsStream("/adapter-test/demorealm.json"), RealmRepresentation.class);
+            RealmRepresentation representation = RepeidServer.loadJson(getClass().getResourceAsStream("/adapter-test/demorealm.json"), RealmRepresentation.class);
             manager.importRealm(representation);
 
             URL url = getClass().getResource("/adapter-test/cust-app-keycloak.json");

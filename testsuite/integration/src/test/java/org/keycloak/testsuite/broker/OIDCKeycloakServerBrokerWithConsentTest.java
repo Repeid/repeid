@@ -33,7 +33,7 @@ import org.keycloak.representations.idm.IdentityProviderRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.openqa.selenium.NoSuchElementException;
 
@@ -54,7 +54,7 @@ public class OIDCKeycloakServerBrokerWithConsentTest extends AbstractIdentityPro
     public static AbstractKeycloakRule oidcServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(PORT);
         }
 

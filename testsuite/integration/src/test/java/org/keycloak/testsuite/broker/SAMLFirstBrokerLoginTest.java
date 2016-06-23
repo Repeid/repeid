@@ -21,7 +21,7 @@ import org.junit.ClassRule;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 
 /**
@@ -35,7 +35,7 @@ public class SAMLFirstBrokerLoginTest extends AbstractFirstBrokerLoginTest {
     public static AbstractKeycloakRule samlServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(PORT);
         }
 

@@ -31,7 +31,7 @@ import org.keycloak.testsuite.Constants;
 import org.keycloak.testsuite.pages.AccountApplicationsPage;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.keycloak.testsuite.rule.WebResource;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.util.JsonSerialization;
 import org.openqa.selenium.NoSuchElementException;
 
@@ -53,7 +53,7 @@ public class OIDCKeyCloakServerBrokerBasicTest extends AbstractKeycloakIdentityP
     public static AbstractKeycloakRule samlServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(PORT);
         }
 

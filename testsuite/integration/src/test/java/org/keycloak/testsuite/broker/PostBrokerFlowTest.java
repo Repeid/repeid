@@ -36,7 +36,7 @@ import org.keycloak.models.utils.DefaultAuthenticationFlows;
 import org.keycloak.models.utils.TimeBasedOTP;
 import org.keycloak.representations.idm.IdentityProviderRepresentation;
 import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.pages.IdpConfirmLinkPage;
 import org.keycloak.testsuite.pages.LoginConfigTotpPage;
 import org.keycloak.testsuite.pages.LoginTotpPage;
@@ -62,7 +62,7 @@ public class PostBrokerFlowTest extends AbstractIdentityProviderTest {
     public static AbstractKeycloakRule samlServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(PORT);
         }
 

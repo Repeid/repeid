@@ -29,7 +29,7 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.hash.Pbkdf2PasswordHashProvider;
 import org.keycloak.models.Constants;
 import org.keycloak.representations.idm.*;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.util.JsonSerialization;
 import org.keycloak.wildfly.adduser.AddUser;
 
@@ -81,7 +81,7 @@ public class AddUserTest {
         assertEquals(Pbkdf2PasswordHashProvider.ID, credentials.getAlgorithm());
         assertEquals(new Integer(100000), credentials.getHashIterations());
 
-        KeycloakServer server = new KeycloakServer();
+        RepeidServer server = new RepeidServer();
         try {
             server.start();
 

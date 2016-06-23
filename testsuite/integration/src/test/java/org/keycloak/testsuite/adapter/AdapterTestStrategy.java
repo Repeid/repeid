@@ -42,7 +42,7 @@ import org.keycloak.testsuite.rule.ErrorServlet;
 import org.keycloak.testsuite.rule.KeycloakRule;
 import org.keycloak.testsuite.rule.WebResource;
 import org.keycloak.testsuite.rule.WebRule;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.util.BasicAuthHelper;
 import org.keycloak.common.util.Time;
 import org.openqa.selenium.WebDriver;
@@ -108,7 +108,7 @@ public class AdapterTestStrategy extends ExternalResource {
     }
 
     public static RealmModel baseAdapterTestInitialization(KeycloakSession session, RealmManager manager, RealmModel adminRealm, Class<?> clazz) {
-        RealmRepresentation representation = KeycloakServer.loadJson(clazz.getResourceAsStream("/adapter-test/demorealm.json"), RealmRepresentation.class);
+        RealmRepresentation representation = RepeidServer.loadJson(clazz.getResourceAsStream("/adapter-test/demorealm.json"), RealmRepresentation.class);
         RealmModel demoRealm = manager.importRealm(representation);
         return demoRealm;
     }

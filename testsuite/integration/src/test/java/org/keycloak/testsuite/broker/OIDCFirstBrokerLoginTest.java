@@ -31,7 +31,7 @@ import org.keycloak.models.UserModel;
 import org.keycloak.models.utils.DefaultAuthenticationFlows;
 import org.keycloak.representations.idm.IdentityProviderRepresentation;
 import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.keycloak.testsuite.rule.KeycloakRule;
 import org.openqa.selenium.NoSuchElementException;
@@ -51,7 +51,7 @@ public class OIDCFirstBrokerLoginTest extends AbstractFirstBrokerLoginTest {
     public static AbstractKeycloakRule samlServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(PORT);
         }
 

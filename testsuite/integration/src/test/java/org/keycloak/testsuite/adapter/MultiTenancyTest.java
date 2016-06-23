@@ -30,7 +30,7 @@ import org.keycloak.testsuite.pages.LoginPage;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.keycloak.testsuite.rule.WebResource;
 import org.keycloak.testsuite.rule.WebRule;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -51,10 +51,10 @@ public class MultiTenancyTest {
     public static AbstractKeycloakRule keycloakRule = new AbstractKeycloakRule() {
         @Override
         protected void configure(KeycloakSession session, RealmManager manager, RealmModel adminRealm) {
-            RealmRepresentation tenant1 = KeycloakServer.loadJson(getClass().getResourceAsStream("/adapter-test/tenant1-realm.json"), RealmRepresentation.class);
+            RealmRepresentation tenant1 = RepeidServer.loadJson(getClass().getResourceAsStream("/adapter-test/tenant1-realm.json"), RealmRepresentation.class);
             manager.importRealm(tenant1);
 
-            RealmRepresentation tenant2 = KeycloakServer.loadJson(getClass().getResourceAsStream("/adapter-test/tenant2-realm.json"), RealmRepresentation.class);
+            RealmRepresentation tenant2 = RepeidServer.loadJson(getClass().getResourceAsStream("/adapter-test/tenant2-realm.json"), RealmRepresentation.class);
             manager.importRealm(tenant2);
 
             createApplicationDeployment()

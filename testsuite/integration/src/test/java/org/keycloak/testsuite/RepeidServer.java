@@ -1,20 +1,21 @@
-/*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.keycloak.testsuite;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import javax.servlet.DispatcherType;
+
+import org.jboss.logging.Logger;
+import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
+import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
+import org.jboss.resteasy.spi.ResteasyDeployment;
+import org.keycloak.testsuite.util.cli.TestsuiteCLI;
+import org.repeid.models.RepeidSession;
+import org.repeid.models.RepeidSessionFactory;
+import org.repeid.util.JsonSerialization;
 
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
@@ -23,39 +24,14 @@ import io.undertow.servlet.api.DefaultServletConfig;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.FilterInfo;
 import io.undertow.servlet.api.ServletInfo;
-import org.jboss.logging.Logger;
-import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
-import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
-import org.jboss.resteasy.spi.ResteasyDeployment;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.models.RealmModel;
-import org.keycloak.representations.idm.RealmRepresentation;
-import org.keycloak.services.filters.KeycloakSessionServletFilter;
-import org.keycloak.services.managers.ApplianceBootstrap;
-import org.keycloak.services.managers.RealmManager;
-import org.keycloak.services.resources.KeycloakApplication;
-import org.keycloak.testsuite.util.cli.TestsuiteCLI;
-import org.keycloak.util.JsonSerialization;
 
-import javax.servlet.DispatcherType;
-import javax.ws.rs.core.Application;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+public class RepeidServer {
 
-/**
- * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
- */
-public class KeycloakServer {
-
-    private static final Logger log = Logger.getLogger(KeycloakServer.class);
+    private static final Logger log = Logger.getLogger(RepeidServer.class);
 
     private boolean sysout = false;
 
-    public static class KeycloakServerConfig {
+    public static class RepeidServerConfig {
         private String host = "localhost";
         private int port = 8081;
         private int workerThreads = Math.max(Runtime.getRuntime().availableProcessors(), 2) * 8;
@@ -106,15 +82,15 @@ public class KeycloakServer {
         bootstrapKeycloakServer(args);
     }
 
-    public static KeycloakServer bootstrapKeycloakServer(String[] args) throws Throwable {
-        File f = new File(System.getProperty("user.home"), ".keycloak-server.properties");
+    public static RepeidServer bootstrapKeycloakServer(String[] args) throws Throwable {
+        File f = new File(System.getProperty("user.home"), ".repeid-server.properties");
         if (f.isFile()) {
             Properties p = new Properties();
             p.load(new FileInputStream(f));
             System.getProperties().putAll(p);
         }
 
-        KeycloakServerConfig config = new KeycloakServerConfig();
+        RepeidServerConfig config = new RepeidServerConfig();
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-b")) {
@@ -126,16 +102,16 @@ public class KeycloakServer {
             }
         }
 
-        if (System.getProperty("keycloak.port") != null) {
-            config.setPort(Integer.valueOf(System.getProperty("keycloak.port")));
+        if (System.getProperty("repeid.port") != null) {
+            config.setPort(Integer.valueOf(System.getProperty("repeid.port")));
         }
 
-        if (System.getProperty("keycloak.bind.address") != null) {
-            config.setHost(System.getProperty("keycloak.bind.address"));
+        if (System.getProperty("repeid.bind.address") != null) {
+            config.setHost(System.getProperty("repeid.bind.address"));
         }
 
-        if (System.getenv("KEYCLOAK_DEV_PORT") != null) {
-            config.setPort(Integer.valueOf(System.getenv("KEYCLOAK_DEV_PORT")));
+        if (System.getenv("REPEID_DEV_PORT") != null) {
+            config.setPort(Integer.valueOf(System.getenv("REPEID_DEV_PORT")));
         }
 
         if (System.getProperties().containsKey("resources")) {
@@ -161,23 +137,23 @@ public class KeycloakServer {
                 throw new RuntimeException("Invalid resources forms directory");
             }
 
-            if (!System.getProperties().containsKey("keycloak.theme.dir")) {
-                System.setProperty("keycloak.theme.dir", file(dir.getAbsolutePath(), "themes", "src", "main", "resources", "theme").getAbsolutePath());
+            if (!System.getProperties().containsKey("repeid.theme.dir")) {
+                System.setProperty("repeid.theme.dir", file(dir.getAbsolutePath(), "themes", "src", "main", "resources", "theme").getAbsolutePath());
             } else {
-                String foo = System.getProperty("keycloak.theme.dir");
+                String foo = System.getProperty("repeid.theme.dir");
                 System.out.println(foo);
             }
 
-            if (!System.getProperties().containsKey("keycloak.theme.cacheTemplates")) {
-                System.setProperty("keycloak.theme.cacheTemplates", "false");
+            if (!System.getProperties().containsKey("repeid.theme.cacheTemplates")) {
+                System.setProperty("repeid.theme.cacheTemplates", "false");
             }
 
-            if (!System.getProperties().containsKey("keycloak.theme.cacheThemes")) {
-                System.setProperty("keycloak.theme.cacheThemes", "false");
+            if (!System.getProperties().containsKey("repeid.theme.cacheThemes")) {
+                System.setProperty("repeid.theme.cacheThemes", "false");
             }
 
-            if (!System.getProperties().containsKey("keycloak.theme.staticMaxAge")) {
-                System.setProperty("keycloak.theme.staticMaxAge", "-1");
+            if (!System.getProperties().containsKey("repeid.theme.staticMaxAge")) {
+                System.setProperty("repeid.theme.staticMaxAge", "-1");
             }
 
             config.setResourcesHome(dir.getAbsolutePath());
@@ -188,49 +164,49 @@ public class KeycloakServer {
             config.setWorkerThreads(undertowWorkerThreads);
         }
 
-        final KeycloakServer keycloak = new KeycloakServer(config);
-        keycloak.sysout = true;
-        keycloak.start();
+        final RepeidServer repeid = new RepeidServer(config);
+        repeid.sysout = true;
+        repeid.start();
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-import")) {
-                keycloak.importRealm(new FileInputStream(args[++i]));
+                repeid.importRealm(new FileInputStream(args[++i]));
             }
         }
 
         if (System.getProperties().containsKey("import")) {
-            keycloak.importRealm(new FileInputStream(System.getProperty("import")));
+            repeid.importRealm(new FileInputStream(System.getProperty("import")));
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                keycloak.stop();
+                repeid.stop();
             }
         });
 
         if (System.getProperties().containsKey("startTestsuiteCLI")) {
-            new TestsuiteCLI(keycloak).start();
+            new TestsuiteCLI(repeid).start();
         }
 
-        return keycloak;
+        return repeid;
     }
 
-    private KeycloakServerConfig config;
+    private RepeidServerConfig config;
 
-    private KeycloakSessionFactory sessionFactory;
+    private RepeidSessionFactory sessionFactory;
 
     private UndertowJaxrsServer server;
 
-    public KeycloakServer() {
-        this(new KeycloakServerConfig());
+    public RepeidServer() {
+        this(new RepeidServerConfig());
     }
 
-    public KeycloakServer(KeycloakServerConfig config) {
+    public RepeidServer(RepeidServerConfig config) {
         this.config = config;
     }
 
-    public KeycloakSessionFactory getSessionFactory() {
+    public RepeidSessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
@@ -238,7 +214,7 @@ public class KeycloakServer {
         return server;
     }
 
-    public KeycloakServerConfig getConfig() {
+    public RepeidServerConfig getConfig() {
         return config;
     }
 
@@ -275,8 +251,8 @@ public class KeycloakServer {
     }
 
     protected void setupDevConfig() {
-        if (System.getProperty("keycloak.createAdminUser", "true").equals("true")) {
-            KeycloakSession session = sessionFactory.create();
+        if (System.getProperty("repeid.createAdminUser", "true").equals("true")) {
+            RepeidSession session = sessionFactory.create();
             try {
                 session.getTransaction().begin();
                 if (new ApplianceBootstrap(session).isNoMasterUser()) {
@@ -356,7 +332,7 @@ public class KeycloakServer {
         sessionFactory.close();
         server.stop();
 
-        info("Stopped Keycloak");
+        info("Stopped Repeid");
     }
 
     private static File file(String... path) {

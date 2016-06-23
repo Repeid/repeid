@@ -28,7 +28,7 @@ import org.keycloak.models.UserModel;
 import org.keycloak.saml.processing.api.saml.v2.request.SAML2Request;
 import org.keycloak.saml.processing.web.util.PostBindingUtil;
 import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 
 import javax.mail.MessagingException;
@@ -45,7 +45,7 @@ public class SAMLBrokerUserPropertyTest extends AbstractKeycloakIdentityProvider
     public static AbstractKeycloakRule samlServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(8082);
         }
 

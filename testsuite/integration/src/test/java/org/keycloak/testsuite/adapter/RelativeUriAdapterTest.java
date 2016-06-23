@@ -33,7 +33,7 @@ import org.keycloak.testsuite.pages.LoginPage;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
 import org.keycloak.testsuite.rule.WebResource;
 import org.keycloak.testsuite.rule.WebRule;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.openqa.selenium.WebDriver;
 
 import javax.ws.rs.core.UriBuilder;
@@ -58,7 +58,7 @@ public class RelativeUriAdapterTest {
     public static AbstractKeycloakRule keycloakRule = new AbstractKeycloakRule(){
         @Override
         protected void configure(KeycloakSession session, RealmManager manager, RealmModel adminRealm) {
-            RealmRepresentation representation = KeycloakServer.loadJson(getClass().getResourceAsStream("/adapter-test/demorealm-relative.json"), RealmRepresentation.class);
+            RealmRepresentation representation = RepeidServer.loadJson(getClass().getResourceAsStream("/adapter-test/demorealm-relative.json"), RealmRepresentation.class);
             RealmModel realm = manager.importRealm(representation);
 
             realmPublicKey = realm.getPublicKey();

@@ -29,7 +29,7 @@ import java.util.Map;
 import org.jboss.logging.Logger;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 
 /**
  * See Testsuite.md (section how to create many users and offline sessions)
@@ -63,7 +63,7 @@ public class TestsuiteCLI {
     private final KeycloakSessionFactory sessionFactory;
     private final Map<String, Class<? extends AbstractCommand>> commands = new LinkedHashMap<>();
 
-    public TestsuiteCLI(KeycloakServer server) {
+    public TestsuiteCLI(RepeidServer server) {
         this.sessionFactory = server.getSessionFactory();
 
         // register builtin commands

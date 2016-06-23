@@ -25,7 +25,7 @@ import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.services.managers.RealmManager;
 import org.keycloak.testsuite.rule.AbstractKeycloakRule;
-import org.keycloak.testsuite.KeycloakServer;
+import org.keycloak.testsuite.RepeidServer;
 import org.keycloak.saml.processing.api.saml.v2.request.SAML2Request;
 import org.keycloak.dom.saml.v2.protocol.ResponseType;
 import org.keycloak.saml.processing.web.util.PostBindingUtil;
@@ -46,7 +46,7 @@ public class SAMLKeyCloakServerBrokerWithSignatureTest extends AbstractKeycloakI
     public static AbstractKeycloakRule samlServerRule = new AbstractKeycloakRule() {
 
         @Override
-        protected void configureServer(KeycloakServer server) {
+        protected void configureServer(RepeidServer server) {
             server.getConfig().setPort(8082);
         }
 

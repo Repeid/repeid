@@ -1,21 +1,24 @@
-/*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.keycloak.testsuite.rule;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.util.Map;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.Servlet;
+import javax.ws.rs.core.Application;
+
+import org.jboss.resteasy.spi.ResteasyDeployment;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.TemporaryFolder;
+import org.keycloak.testsuite.RepeidServer;
+import org.keycloak.testsuite.Retry;
+import org.repeid.Config;
+import org.repeid.common.util.Time;
+import org.repeid.models.utils.ModelToRepresentation;
+import org.repeid.util.JsonSerialization;
 
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.ErrorPage;
@@ -25,50 +28,19 @@ import io.undertow.servlet.api.SecurityConstraint;
 import io.undertow.servlet.api.SecurityInfo;
 import io.undertow.servlet.api.ServletInfo;
 import io.undertow.servlet.api.WebResourceCollection;
-import org.jboss.resteasy.spi.ResteasyDeployment;
-import org.junit.rules.ExternalResource;
-import org.junit.rules.TemporaryFolder;
-import org.keycloak.Config;
-import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.servlet.KeycloakOIDCFilter;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakTransaction;
-import org.keycloak.models.RealmModel;
-import org.keycloak.models.UserModel;
-import org.keycloak.models.utils.ModelToRepresentation;
-import org.keycloak.representations.idm.RealmRepresentation;
-import org.keycloak.representations.idm.UserRepresentation;
-import org.keycloak.services.managers.RealmManager;
-import org.keycloak.testsuite.Retry;
-import org.keycloak.testsuite.KeycloakServer;
-import org.keycloak.util.JsonSerialization;
-import org.keycloak.common.util.Time;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Servlet;
-import javax.ws.rs.core.Application;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-import java.util.Map;
-
-/**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
- */
 public abstract class AbstractKeycloakRule extends ExternalResource {
 
     protected TemporaryFolder temporaryFolder;
 
-    protected KeycloakServer server;
+    protected RepeidServer server;
 
     protected void before() throws Throwable {
         temporaryFolder = new TemporaryFolder();
         temporaryFolder.create();
         System.setProperty("keycloak.tmp.dir", temporaryFolder.newFolder().getAbsolutePath());
 
-        server = new KeycloakServer();
+        server = new RepeidServer();
 
         configureServer(server);
 
@@ -79,7 +51,7 @@ public abstract class AbstractKeycloakRule extends ExternalResource {
         setupKeycloak();
     }
 
-    protected void configureServer(KeycloakServer server) {
+    protected void configureServer(RepeidServer server) {
 
     }
 
