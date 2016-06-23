@@ -11,5 +11,5 @@ dependencies {
     compile ( libraries.liquibase_core ) {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
-    
+
 }

@@ -15,6 +15,9 @@ import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.keycloak.testsuite.util.cli.TestsuiteCLI;
 import org.repeid.models.RepeidSession;
 import org.repeid.models.RepeidSessionFactory;
+import org.repeid.services.filters.RepeidSessionServletFilter;
+import org.repeid.services.managers.ApplianceBootstrap;
+import org.repeid.services.resources.RepeidApplication;
 import org.repeid.util.JsonSerialization;
 
 import io.undertow.Undertow;
@@ -79,10 +82,10 @@ public class RepeidServer {
     }
 
     public static void main(String[] args) throws Throwable {
-        bootstrapKeycloakServer(args);
+        bootstrapRepeidServer(args);
     }
 
-    public static RepeidServer bootstrapKeycloakServer(String[] args) throws Throwable {
+    public static RepeidServer bootstrapRepeidServer(String[] args) throws Throwable {
         File f = new File(System.getProperty("user.home"), ".repeid-server.properties");
         if (f.isFile()) {
             Properties p = new Properties();
@@ -210,7 +213,7 @@ public class RepeidServer {
         return sessionFactory;
     }
 
-    public UndertowJaxrsServer getServer() {
+    public UndertowJaxrsServer getServer() {    	
         return server;
     }
 
@@ -219,12 +222,12 @@ public class RepeidServer {
     }
 
     public void importRealm(InputStream realm) {
-        RealmRepresentation rep = loadJson(realm, RealmRepresentation.class);
-        importRealm(rep);
+        //RealmRepresentation rep = loadJson(realm, RealmRepresentation.class);
+        //importRealm(rep);
     }
 
-    public void importRealm(RealmRepresentation rep) {
-        KeycloakSession session = sessionFactory.create();;
+    /*public void importRealm(RealmRepresentation rep) {
+        RepeidSession session = sessionFactory.create();;
         session.getTransaction().begin();
 
         try {
@@ -248,7 +251,7 @@ public class RepeidServer {
         } finally {
             session.close();
         }
-    }
+    }*/
 
     protected void setupDevConfig() {
         if (System.getProperty("repeid.createAdminUser", "true").equals("true")) {
@@ -269,7 +272,7 @@ public class RepeidServer {
         long start = System.currentTimeMillis();
 
         ResteasyDeployment deployment = new ResteasyDeployment();
-        deployment.setApplicationClass(KeycloakApplication.class.getName());
+        deployment.setApplicationClass(RepeidApplication.class.getName());
 
         Builder builder = Undertow.builder()
                 .addHttpListener(config.getPort(), config.getHost())
@@ -282,20 +285,20 @@ public class RepeidServer {
 
             DeploymentInfo di = server.undertowDeployment(deployment, "");
             di.setClassLoader(getClass().getClassLoader());
-            di.setContextPath("/auth");
-            di.setDeploymentName("Keycloak");
+            di.setContextPath("/repeid");
+            di.setDeploymentName("Repeid");
             di.setDefaultEncoding("UTF-8");
 
             di.setDefaultServletConfig(new DefaultServletConfig(true));
 
-            ServletInfo restEasyDispatcher = Servlets.servlet("Keycloak REST Interface", HttpServlet30Dispatcher.class);
+            ServletInfo restEasyDispatcher = Servlets.servlet("Repeid REST Interface", HttpServlet30Dispatcher.class);
 
             restEasyDispatcher.addInitParam("resteasy.servlet.mapping.prefix", "/");
             restEasyDispatcher.setAsyncSupported(true);
 
             di.addServlet(restEasyDispatcher);
 
-            FilterInfo filter = Servlets.filter("SessionFilter", KeycloakSessionServletFilter.class);
+            FilterInfo filter = Servlets.filter("SessionFilter", RepeidSessionServletFilter.class);
 
             filter.setAsyncSupported(true);
 
@@ -304,7 +307,7 @@ public class RepeidServer {
 
             server.deploy(di);
 
-            sessionFactory = ((KeycloakApplication) deployment.getApplication()).getSessionFactory();
+            sessionFactory = ((RepeidApplication) deployment.getApplication()).getSessionFactory();
 
             setupDevConfig();
 
@@ -312,7 +315,7 @@ public class RepeidServer {
                 info("Loading resources from " + config.getResourcesHome());
             }
 
-            info("Started Keycloak (http://" + config.getHost() + ":" + config.getPort() + "/auth) in "
+            info("Started Repeid (http://" + config.getHost() + ":" + config.getPort() + "/repeid) in "
                     + (System.currentTimeMillis() - start) + " ms\n");
         } catch (RuntimeException e) {
             server.stop();

@@ -1,6 +1,6 @@
 dependencies {
     //Project dependencies
-    //compile project (":dependencies:dependencies-server-all")
+    compile project (":dependencies:dependencies-server-all")
     //compile project (keycloak-admin-client)
     compile project (":wildfly:wildfly-adduser")
 
