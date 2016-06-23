@@ -40,9 +40,9 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
     compile ( libraries.infinispan_core )
-    compile ( libraries.selenium_java )
+    //compile ( libraries.selenium_java )
     compile ( libraries.xml_apis )
-    compile ( libraries.selenium_chrome_driver )
+    //compile ( libraries.selenium_chrome_driver )
 
     // Apache DS
     testCompile ( libraries.picketlink_wildfly_common )
