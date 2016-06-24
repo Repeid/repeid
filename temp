@@ -1,0 +1,254 @@
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply from: "./libraries.gradle"
+apply from: "./databases.gradle"
+
+buildscript {
+    apply from: "./libraries.gradle"
+
+    repositories {
+        maven { url "http://nexus.qmino.com/content/repositories/miredot" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:${sonarqube.version}"
+        classpath "com.qmino:miredot-plugin:${miredot.version}"
+        classpath "com.netflix.nebula:gradle-extra-configurations-plugin:${nebula.version}"
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+idea {
+    project {
+        jdkName = "$rootProject.sourceCompatibility"
+        languageLevel = "$rootProject.targetCompatibility"
+        vcs = 'Git'
+    }
+    module {
+        name = "repeid"
+    }
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+subprojects { subProject ->
+
+    apply from: "$rootProject.projectDir/gradle/plugin-eclipse.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-idea.gradle"
+
+    defaultTasks 'build'
+
+    group = project.group
+    version = project.version
+
+    // minimize changes, at least for now (gradle uses 'build' by default)..
+    buildDir = "target"
+
+    if (subProject.name.startsWith('release') || subProject.name.startsWith('documentation')) {
+        return;
+    }
+
+    // everything below here in the closure applies to java projects
+    apply plugin: "java"
+    apply plugin: "maven-publish"
+
+    apply from: "$rootProject.projectDir/gradle/plugin-findbugs.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-checkstyle.gradle"
+    apply plugin: "build-dashboard"
+    apply plugin: "project-report"
+
+    apply from: "$rootProject.projectDir/gradle/plugin-maven.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-groovy.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jacoco.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-pmd.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jdepend.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-codenarc.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-wildfly.gradle"
+    apply from: "$rootProject.projectDir/gradle/plugin-jetty.gradle"
+
+    apply plugin: "nebula.provided-base"
+
+    sourceCompatibility = rootProject.sourceCompatibility
+    targetCompatibility = rootProject.targetCompatibility
+
+    configurations {
+        provided {
+            // todo : need to make sure these are non-exported
+            description = 'Non-exported compile-time dependencies.'
+        }
+        jbossLoggingTool {
+            description = 'Dependencies for running the jboss-logging tooling.'
+        }
+        configurations {
+            all*.exclude group: 'xml-apis', module: 'xml-apis'
+        }
+    }
+
+    // appropriately inject the common dependencies into each sub-project
+    dependencies {
+        compile libraries.jboss_logging
+
+        provided libraries.jboss_logging_annotations
+
+        jbossLoggingTool(libraries.jboss_logging_processor)
+
+        testCompile(libraries.junit)
+        testCompile(libraries.byteman)
+        testCompile(libraries.byteman_install)
+        testCompile(libraries.byteman_bmunit)
+
+        testRuntime(libraries.log4j)
+        testRuntime(libraries.javassist)
+        testRuntime(libraries.woodstox)
+
+        //Databases
+        testRuntime(libraries.h2)
+        testRuntime(libraries.hsqldb)
+        testRuntime(libraries.postgresql)
+        testRuntime(libraries.mysql)
+        testRuntime(libraries.mariadb)
+        testRuntime(libraries.informix)
+        if (db.equalsIgnoreCase("oracle")) {
+            dependencies {
+                testRuntime(libraries.oracle)
+            }
+        }
+        if (db.equalsIgnoreCase("mssql")) {
+            dependencies {
+                testRuntime(libraries.mssql)
+            }
+        }
+
+        // 6.6 gave me some NPE problems from within checkstyle...
+        //checkstyle 'com.puppycrawl.tools:checkstyle:6.5'
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // compilation
+    task compile
+    compile.dependsOn compileJava, processResources, compileTestJava, processTestResources
+
+    sourceSets.main {
+        compileClasspath += configurations.provided
+        compileClasspath += configurations.jbossLoggingTool
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // testing
+    subProject.tasks.withType(Test.class).all { task ->
+        // uncomment to help identify pauses in test executions : where they occur
+        task.beforeTest { descriptor ->
+            println "Starting test: " + descriptor
+        }
+        task.afterTest { descriptor ->
+            println "Completed test: " + descriptor
+        }
+    }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // artifact
+
+    task sourcesJar(type: Jar, dependsOn: compileJava) {
+        from sourceSets.main.allSource
+        classifier = 'sources'
+    }
+
+    sourcesJar {
+        manifest = jar.manifest
+    }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // IDE options
+    idea {
+        module {
+            jdkName = subProject.sourceCompatibility
+            downloadSources = true
+            scopes.PROVIDED.plus += [configurations.provided]
+        }
+    }
+
+    eclipse {
+        jdt {
+            sourceCompatibility = subProject.sourceCompatibility
+            targetCompatibility = subProject.targetCompatibility
+        }
+        classpath {
+            plusConfigurations.add( configurations.provided )
+        }
+    }
+
+    // eclipseClasspath will not add sources to classpath unless the dirs actually exist.
+    // TODO: Eclipse's annotation processor handling is also fairly stupid (and completely lacks in the
+    // Gradle plugin).  For now, just compile first in order to get the logging classes.
+    eclipseClasspath.dependsOn compile
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Report configs
+    checkstyle {
+        sourceSets = [ subProject.sourceSets.main ]
+        configFile = rootProject.file( 'config/checkstyle/checkstyle.xml' )
+        showViolations = false
+    }
+    // exclude generated java sources - by explicitly setting the base source dir
+    checkstyleMain.source = 'src/main/java'
+
+
+    findbugs {
+        sourceSets = [ subProject.sourceSets.main, subProject.sourceSets.test ]
+        ignoreFailures = true
+        toolVersion = rootProject.findbugToolVersion
+        // for now we need to set this to low so that FindBugs will actually report the DM_CONVERT_CASE warning we care about
+        reportLevel = 'low'
+    }
+
+    // because cfg package is a mess mainly from annotation stuff
+    checkstyleMain.exclude '**/org/repeid/cfg/**'
+    checkstyleMain.exclude '**/org/repeid/cfg/*'
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Publishing
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifact( sourcesJar ) {
+                    classifier 'sources'
+                }
+            }
+        }
+    }
+
+    model {
+        tasks.generatePomFileForMavenJavaPublication {
+            destination = file( "$subProject.buildDir/generated-pom.xml" )
+        }
+    }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+}
+
+//task release(type: Task, dependsOn: 'release:release')
+
+task wrapper(type: Wrapper) {
+    gradleVersion = expectedGradleVersion
+}

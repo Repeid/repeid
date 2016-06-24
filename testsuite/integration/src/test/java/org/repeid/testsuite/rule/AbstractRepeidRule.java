@@ -149,7 +149,7 @@ public abstract class AbstractRepeidRule extends ExternalResource {
     }
 
     public void addErrorPage(String errorPage, DeploymentInfo di) {
-        ServletInfo servlet = new ServletInfo("Error Page", ErrorServlet.class);
+        /*ServletInfo servlet = new ServletInfo("Error Page", ErrorServlet.class);
         servlet.addMapping("/error.html");
         SecurityConstraint constraint = new SecurityConstraint();
         WebResourceCollection collection = new WebResourceCollection();
@@ -162,7 +162,7 @@ public abstract class AbstractRepeidRule extends ExternalResource {
                 .addErrorPage(new ErrorPage(errorPage, 400))
                 .addErrorPage(new ErrorPage(errorPage, 401))
                 .addErrorPage(new ErrorPage(errorPage, 403))
-                .addErrorPage(new ErrorPage(errorPage, 500));
+                .addErrorPage(new ErrorPage(errorPage, 500));*/
     }
 
     public void deployJaxrsApplication(String name, String contextPath, Class<? extends Application> applicationClass, Map<String,String> initParams) {
