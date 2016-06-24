@@ -15,14 +15,13 @@ dependencies {
     // not related to jboss-logging-tools, just required for JAX-RS
     provided ( libraries.jboss_jaxrs_api_20_spec )
 
-    // These dependencies are the jboss-logging tools magic
-    // the jboss-logging-tools processor
+    // These dependencies are the jboss-logging tools magic the jboss-logging-tools processor
     provided ( libraries.jboss_logging_processor )
 
     // jboss-logging API
     compile ( libraries.jboss_logging )
     provided ( libraries.jboss_logging_annotations )
-    provided ( libraries.jboss_logging_processor )
+    provided ( libraries.jboss_logging_processor, optional )
 
     compile ( libraries.resteasy_jaxrs ) {
         exclude group: 'log4j', module: 'log4j'

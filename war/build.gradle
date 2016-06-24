@@ -1,14 +1,41 @@
+apply plugin: "com.github.nikit.cpp.wildfly.deploy"
 apply plugin: 'war'
 
 dependencies {
     //Project dependencies
-    compile project (":repeid-common")
-    compile project (":repeid-core")
-    compile project (":repeid-model:repeid-model-infinispan")
-    compile project (":repeid-model:repeid-model-jpa")
-    //compile project (":repeid-model:repeid-model-mongo")
-    compile project (":repeid-server-spi")
-    compile project (":repeid-services-api")
-    compile project (":repeid-services")
-    compile project (":repeid-themes")
+    compile project(":repeid-common")
+    compile project(":repeid-core")
+    compile project(":repeid-model:repeid-model-infinispan")
+    compile project(":repeid-model:repeid-model-jpa")
+    compile project(":repeid-model:repeid-model-mongo")
+    compile project(":repeid-server-spi")
+    compile project(":repeid-services-api")
+    compile project(":repeid-services")
+    compile project(":repeid-themes")
+}
+
+String getArtifactName(helpers.Artifact a) {
+    int dash = helpers.StringUtils.rfind(a.displayName, '-' as char)
+    if (dash == -1) {
+        return a.displayName
+    }
+    return a.displayName.substring(0, dash)
+}
+
+deployConfig {
+    deployFile = "scripts/deploy" // list of files to deploy
+    jbossHome = "C:\\Users\\ahren-dev01\\wildfly-10.0.0.Final"
+    artifactNamesClosure = {
+        helpers.JbossDeployer deployer,
+        File file ->
+            String fileName = file.name
+            String newArtifactName = getArtifactName(new helpers.Artifact(displayName: file.name))
+            Closure findPreviousVersionArtifactClosure = { helpers.Artifact a -> return getArtifactName(a) == newArtifactName }
+            return [runtimeName: fileName, displayName: fileName, undeployName: deployer.findOne(findPreviousVersionArtifactClosure)?.displayName]
+    }
+    boxes = [
+            'Local': [
+                    wildfly: new helpers.Server()
+            ]
+    ]
 }

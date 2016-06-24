@@ -9,6 +9,7 @@ buildscript {
     repositories {
         maven { url "http://nexus.qmino.com/content/repositories/miredot" }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven {  url "https://dl.bintray.com/nikit007/mvn-repo/" }
         mavenCentral()
         mavenLocal()
         jcenter()
@@ -18,6 +19,8 @@ buildscript {
         classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:${sonarqube.version}"
         classpath "com.qmino:miredot-plugin:${miredot.version}"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:${nebula.version}"
+        classpath "com.github.nikit.cpp.helpers:db:1.0.7" // need for use helpers.MysqlHelper
+        classpath "gradle.plugin.com.github.nikit.cpp:wildflyDeployPlugin:1.0.8"
     }
 }
 
@@ -35,6 +38,7 @@ subprojects {
     apply plugin: "java"
 
     apply plugin: "nebula.provided-base"
+    apply plugin: 'nebula.optional-base'
 
     group = project.group
     version = project.version
