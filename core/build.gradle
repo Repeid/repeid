@@ -1,3 +1,11 @@
+apply plugin: 'java'
+apply plugin: 'osgi'
+
+def repeid = [
+        osgi_import: "*;resolution:=optional",
+        osgi_export: "org.repeid.*"
+]
+
 dependencies {
 	//Project dependencies
     compile project (":repeid-common")
@@ -11,4 +19,15 @@ dependencies {
 
     // Test
     testCompile ( libraries.junit )
+}
+
+jar {
+    manifest { // the manifest of the default jar is of type OsgiManifest
+        instruction 'Bundle-ClassPath', '.'
+        instruction 'Bundle-Name', "${project.name}"
+        instruction 'Bundle-SymbolicName', "${project.group}.${project.name}"
+
+        instruction 'Import-Package', "${repeid.osgi_import}"
+        instruction 'Export-Package', "${repeid.osgi_export}"
+    }
 }
