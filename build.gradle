@@ -44,7 +44,7 @@ subprojects {
 
     // appropriately inject the common dependencies into each sub-project
     dependencies {
-        compile libraries.jboss_logging
+        /*compile libraries.jboss_logging
 
         provided libraries.jboss_logging_annotations
 
@@ -63,7 +63,7 @@ subprojects {
         testRuntime(libraries.postgresql)
         testRuntime(libraries.mysql)
         testRuntime(libraries.mariadb)
-        testRuntime(libraries.informix)
+        testRuntime(libraries.informix)*/
     }
 
 }
