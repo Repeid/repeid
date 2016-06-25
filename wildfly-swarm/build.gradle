@@ -1,4 +1,21 @@
-apply plugin: 'war'
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'wildfly-swarm'
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'org.wildfly.swarm.examples.gradle.Main'
+
+swarm {
+    properties {
+        swarm.http.port = 8181
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.wildfly.swarm:bom:1.0.0.CR2"
+    }
+}
 
 dependencies {
     //Project dependencies
@@ -11,4 +28,7 @@ dependencies {
     compile project(":repeid-services-api")
     compile project(":repeid-services")
     compile project(":repeid-themes")
+
+    //
+    compile "org.wildfly.swarm:jaxrs"
 }

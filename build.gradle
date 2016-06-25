@@ -19,8 +19,8 @@ buildscript {
         classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:${sonarqube.version}"
         classpath "com.qmino:miredot-plugin:${miredot.version}"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:${nebula.version}"
-        classpath "com.github.nikit.cpp.helpers:db:1.0.7" // need for use helpers.MysqlHelper
-        classpath "gradle.plugin.com.github.nikit.cpp:wildflyDeployPlugin:1.0.8"
+        classpath "io.spring.gradle:dependency-management-plugin:0.5.7.RELEASE"
+        classpath "org.wildfly.swarm:wildfly-swarm-plugin:1.0.0.CR2"
     }
 }
 
