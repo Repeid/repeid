@@ -11,7 +11,9 @@ dependencies {
     }
     compile ( libraries.h2 )
     compile ( libraries.hibernate_jpa_21_api )
-    compile ( libraries.hibernate_entitymanager )
+    compile ( libraries.hibernate_entitymanager ) {
+        exclude group: 'dom4j', module: 'dom4j'
+    }
     compile ( libraries.resteasy_jaxrs ) {
         exclude group: 'log4j', module: 'log4j'
         exclude group: 'org.slf4j', module: 'slf4j-api'
